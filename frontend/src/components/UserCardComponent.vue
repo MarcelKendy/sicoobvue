@@ -86,25 +86,26 @@
 import db from '../../src/services/localbase'
 import ModalLogout from './Modals/ModalLogout.vue'
   export default {
-  components: { ModalLogout },
+    props:['user'],
+    components: { ModalLogout },
     name: 'UserCardComponent',
 
     data: () => ({
       items: [{title: 'Logout'}],
       confirmation_logout: false,
       menu: false,
-      user_name: '',
-      user_cpf: ''
+      name: '',
+      cpf: ''
     }),
-    mounted() {
-      this.user_name = this.$store.state.user.full_name
-      this.user_cpf = this.$store.state.user.cpf
-    },
     methods: {
       logout () {
-        db.collection('user').delete().then(() => {
+        db.collection('user').doc('logged_token').delete().then(() => {
           this.$router.push('/login')
+          this.$store.state.user = {}
         })
+      },
+      getStateUser () {
+        
       },
       openModalLogout () {
         this.confirmation_logout = true
@@ -113,6 +114,16 @@ import ModalLogout from './Modals/ModalLogout.vue'
         this.confirmation_logout = false
       }      
     },
+    
+    computed: {
+      user_name () {
+        return this.$store.state.user.full_name || this.$store.state.user[0].full_name
+      },
+      user_cpf() {
+        return this.$store.state.user.cpf || this.$store.state.user[0].cpf
+      },
+    },
+    
   }
 </script>
 <style scoped>

@@ -1,13 +1,14 @@
 <template>
   <div>
     <v-card class="hover-card" outlined shaped>
-    <v-card-title class="title-card">
+    <v-card-title :class="dark_theme ? 'title-card-dark' : 'title-card'">
       Produtos e Comissões
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
         label="Pesquisar"
+        :dark="dark_theme"
         single-line
         color="rgba(18,210,175)"
         hide-details
@@ -94,21 +95,7 @@
       </template>
     </v-data-table>
   </v-card>
-  <div>
-    <v-btn
-    color="rgb(0, 209, 94)"
-    dark
-    fab
-    fixed
-    right 
-    bottom
-    @click="addModal()"
-  >
-    <v-icon>
-      mdi-plus
-    </v-icon>
-  </v-btn>
-  </div>
+  
   <modal-add :open="add_modal" @closeAddModal="addModal" @addCommission="addCommission"></modal-add>  
   <modal-edit :open="edit_modal" :commission="edited_item" @closeEditModal="editModal" @editCommission="editCommission"></modal-edit>  
   <modal-delete :open="delete_modal" :commission="deleted_item" @closeDeleteModal="deleteModal" @deleteCommission="deleteCommission"></modal-delete>  
@@ -164,8 +151,28 @@
       </v-btn>
     <span class="tooltiptext">{{!this.dark_theme ? 'Mudar o tema de cores para "dark"' : 'Mudar o tema de cores para "light"'}}</span>
   </div>
-  
+  <div class="">
+    <v-tooltip left>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+        color="rgb(0, 209, 94)"
+        dark
+        fab
+        right
+        fixed
+        v-bind="attrs"
+        v-on="on"
+        @click="addModal()"
+        >
+          <v-icon>
+            mdi-plus
+          </v-icon>
+        </v-btn>
+      </template>
+      <span>Adicionar</span>
+    </v-tooltip>
   </div>
+</div>
 </template>
 
 <script>
@@ -263,6 +270,11 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
   }
 </script>
 <style scoped>
+  .fixing {
+    position: absolute;
+    top:30vw;
+    left:93vw;
+  }
   .hover-card {
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;  
     transition: box-shadow .3s;
@@ -270,13 +282,25 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
   .hover-card:hover {
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; 
   }
+  .title-card-dark {
+    color:white;
+    font-weight: bolder;
+    font-family: 'Quicksand', sans-serif;
+    transition: .4s;
+    background-color: rgb(24, 25, 26);
+    border-bottom: solid;
+    border-width: 1px;
+    border-color:rgba(18,210,175);
+  }
   .title-card {
     font-weight: bolder;
     font-family: 'Quicksand', sans-serif;
     transition: .4s;
-    background-color: rgb(231, 241, 250);
+    border-bottom: solid;
+    border-width: 2px;
+    border-color:rgba(18,210,175);
   }
-  .hover-card:hover .title-card {
+  .hover-card:hover .title-card, .hover-card:hover .title-card-dark{
     transition: .4s;
     color: rgba(18,210,175); 
   }

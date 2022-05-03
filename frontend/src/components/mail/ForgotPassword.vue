@@ -16,7 +16,7 @@
                 color="red"
                 dark
                 elevation="7"
-                icon="mdi-alert"
+                icon="mdi-robot-dead"
                 rounded
                 single-line
                 sticky
@@ -29,7 +29,7 @@
                 color="red"
                 dark
                 elevation="7"
-                icon="mdi-alert"
+                icon="mdi-robot-confused"
                 rounded
                 single-line
                 sticky
@@ -37,10 +37,11 @@
                 <strong>Usuário inexistente!</strong>
                 <p>Não existe um usuário de E-mail {{email}}.<br> Contate o desenvolvedor. <strong>Ramal: 1506</strong></p>
             </v-banner>
-            <form ref="form">
+            <v-form ref="form" v-model="valid" lazy-validation>
                  <v-text-field
                     style="padding-top:30px"
                     class="px-3"
+                    :rules="requiredRule"
                     label="Nome"
                     placeholder="Insira o nome cadastrado"
                     v-model="name"
@@ -51,6 +52,7 @@
                     ></v-text-field>
                     <v-text-field
                     class="px-3"
+                    :rules="emailRule"
                     label="E-mail"
                     placeholder="Insira o E-mail cadastrado"
                     v-model="email"
@@ -59,7 +61,7 @@
                     color="#40bfff"
                     @click="not_exists = error = false"
                 ></v-text-field>
-            </form>
+            </v-form>
            
         </v-card-text>
          
@@ -68,18 +70,18 @@
           <v-btn
             color="red darken-1"
             text
-            :loading="loading"
+            :disabled="loading"
             @click="closeModal"
           >
             Cancelar
           </v-btn>
           <v-btn
-            dark
+            class="white--text"
+            :disabled="!valid"
             :loading="loading"
             color="green"
             @click="getPassword"
-            type="submit"
-            value="Send"
+            
           >
 
             Enviar
@@ -98,13 +100,21 @@ export default {
     data () {
         return {
             dialog: false,
+            valid: true,
             error: false,
             loading: false,
             not_exists: false,
             name: '',
             email: '',
             message: '',
-            software_name: 'Sicoob Credisg Software'
+            software_name: 'Sicoob Credisg Software',
+            emailRule: [
+              v => !!v || "Digite o seu E-mail",
+              v => /.+@.+\..+/.test(v) || "E-mail inválido"
+            ],
+            requiredRule: [
+              v => !!v || "Essa informação é obrigatória"
+            ],
         }
         
     },
@@ -116,12 +126,12 @@ export default {
     methods: {
         sendEmail() {
             try {
-                emailjs.sendForm('service_gacoq7w', 'template_x6ehuag', 'nome='+this.name+'&email='+this.email, 'FRJFFdpcsV5eietF6',{
+                emailjs.send('service_gacoq7w', 'template_x6ehuag',{
                     to_name: this.name,
                     to_email:this.email,
                     message: this.message,
                     from_name: this.software_name
-                },
+                },'FRJFFdpcsV5eietF6'
                 ).then(this.success())
             } catch(error) {
                 console.log({error})
@@ -131,24 +141,30 @@ export default {
         },
         success () {
           this.error = this.not_exists = this.loading = false  
+          this.name = this.email = this.message = ''
+          this.$refs.form.reset()
           this.$emit('success')    
         },
         closeModal () {
           this.error = this.not_exists = this.loading = false 
           this.name = this.email = this.message = '' 
+          this.$refs.form.reset()
           this.$emit('closeModalMail')    
         },
         getPassword () {
-            this.loading = true
-            this.$http.post('get_user_password', {email: this.email}).then((response)=>{
-                if (response.data.length) {
-                    this.message = 'Olá, a sua senha é: "' + response.data[0].password + '".'
-                    this.sendEmail()
-                } else {
-                    this.not_exists = true
-                    this.loading = false
-                }
-            })
+            if (this.$refs.form.validate()) {
+              this.error = this.not_exists = false
+              this.loading = true
+              this.$http.post('get_user_password', {email: this.email}).then((response)=>{
+                  if (response.data.length) {
+                      this.message = 'Olá, a sua senha é: "' + response.data[0].password + '".'
+                      this.sendEmail()
+                  } else {
+                      this.not_exists = true
+                      this.loading = false
+                  }
+              })
+          }
         }
     }
 }

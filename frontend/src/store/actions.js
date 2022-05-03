@@ -53,7 +53,6 @@ export default {
       },
       login({commit}, data) {
         if (data) { 
-          db.collection('user').delete().then(() => {
               db.collection('user').add({
                 id: data.id, 
                 name: data.name, 
@@ -62,10 +61,9 @@ export default {
                 email: data.email,
                 accesses: data.accesses,
                 password: data.password
-              }).then(() => {
+              }, 'logged_token').then(() => {
                 commit('getUser')
               })
-          })
         }
       }
 }

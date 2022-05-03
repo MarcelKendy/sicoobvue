@@ -99,8 +99,8 @@ import UserCardComponent from './components/UserCardComponent.vue'
           { title: 'Comissão', icon: 'mdi-view-list', to: '/comissao'},
           { title: 'Sobre', icon: 'mdi-help', to: '/about' }
       ],
-      state_user: [],
-      login_check: false
+      login_check: false,
+      store_ready: false
     }),
     watch: {
       $route: {
@@ -112,22 +112,17 @@ import UserCardComponent from './components/UserCardComponent.vue'
       
     },
     mounted () {
-      db.collection('user').get().then(user => {
-        this.state_user = user
-        if (!this.state_user.length && this.$route.name != 'Login') {
+      db.collection('user').limit(1).get().then(user => {
+        if (!user.length && this.$route.name != 'Login') {
           this.$router.push('/login')
-        }
-        this.$store.state.user = this.state_user[0]
-        this.login_check = true
+        } 
+          console.log(user, 'mounted app')
+          this.$store.state.user = user[0]
+          this.login_check = true
       })  
      
     },
     methods: {
-      logout () {
-        db.collection('user').delete().then(() => {
-          this.$router.push('/login')
-        })
-      }   
        
     },
   }

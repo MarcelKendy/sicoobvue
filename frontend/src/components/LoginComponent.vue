@@ -18,12 +18,11 @@
                                         <v-col cols="12">
                                             <v-text-field v-model="formLogin.password" @keyup.enter="validate('login')" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :color="color_default" :rules="passwordRule" :type="show1 ? 'text' : 'password'" name="login_password" label="Senha" hint="No mínimo 5 caracteres" counter @click:append="show1 = !show1"></v-text-field>
                                         </v-col>
-                                        <v-col class="d-flex" cols="12" sm="6" xsm="12">
-                                          <span class="forgot-text" @click="modal_mail = true">Esqueci minha senha</span>
+                                        <v-col class="d-flex" cols="12"  sm="6" xsm="12">
+                                          <span v-if="!loading_btn" class="forgot-text" @click="modal_mail = true">Esqueci minha senha</span>
                                         </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col class="d-flex" cols="12" sm="4" xsm="12" align-end>
-                                            
                                             <v-btn x-large block :disabled="!validLogin" :loading="loading_btn" class="white--text btn btn-3" :color="color_default" @click="validate('login')"> Login </v-btn>
                                         </v-col>
                                     </v-row>
@@ -140,6 +139,7 @@ import ForgotPassword from './mail/ForgotPassword.vue';
             this.$http.post('get_user', this.formLogin).then((response)=>{
               if (response.data.length) {
                 this.$store.dispatch('login', response.data[0]).then(
+                  this.$store.state.user = response.data[0],
                   this.$router.push('/')
                 )
               } else {

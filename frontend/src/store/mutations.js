@@ -9,5 +9,5 @@ export default {
       db.collection('user').get().then(user => {
         state.user = user
       })  
-  }    
+  },    
 }
