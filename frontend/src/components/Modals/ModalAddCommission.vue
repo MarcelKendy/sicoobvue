@@ -173,6 +173,13 @@ export default {
               'Crédito Consignado',
               'Consórcio',
               'Previdência'
+            ],
+            status: [
+              'Aguardando Venda',
+              'Venda não realizada',
+              'Aguardando UPS',
+              'Aceito',
+              'Recusado'
             ]
         }
         

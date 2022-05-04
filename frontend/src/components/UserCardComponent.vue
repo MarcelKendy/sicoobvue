@@ -91,7 +91,7 @@ import ModalLogout from './Modals/ModalLogout.vue'
     name: 'UserCardComponent',
 
     data: () => ({
-      items: [{title: 'Logout'}],
+      items: [{title: 'Log Out'}],
       confirmation_logout: false,
       menu: false,
       name: '',

@@ -286,7 +286,7 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
     color:white;
     font-weight: bolder;
     font-family: 'Quicksand', sans-serif;
-    transition: .4s;
+    transition: .8s;
     background-color: rgb(24, 25, 26);
     border-bottom: solid;
     border-width: 1px;
@@ -295,7 +295,7 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
   .title-card {
     font-weight: bolder;
     font-family: 'Quicksand', sans-serif;
-    transition: .4s;
+    transition: .8s;
     border-bottom: solid;
     border-width: 2px;
     border-color:rgba(18,210,175);

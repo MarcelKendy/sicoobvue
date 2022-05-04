@@ -16,6 +16,7 @@ class UserController extends Controller
     public function getUser (Request $request) {
         $match = ['email' => $request->email, 'password' => $request->password];
         $user = User::where($match)->get();
+        $user[0]['accesses'] = json_decode($user[0]['accesses']);
         return response()->json($user);
     }
 
@@ -32,7 +33,8 @@ class UserController extends Controller
         $newUser->email = $request->email;
         $newUser->cpf = $request->cpf;
         $newUser->password = $request->password;
-        $newUser->accesses = 'basic';
+        $accesses = json_encode(array('commissions' => 'operator'));
+        $newUser->accesses = $accesses;
         $newUser->save();
         return response()->json($newUser);
     }
