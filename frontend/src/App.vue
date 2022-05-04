@@ -116,7 +116,6 @@ import UserCardComponent from './components/UserCardComponent.vue'
         if (!user.length && this.$route.name != 'Login') {
           this.$router.push('/login')
         } 
-          console.log(user, 'mounted app')
           this.$store.state.user = user[0]
           this.login_check = true
       })  

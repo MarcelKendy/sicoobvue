@@ -59,8 +59,7 @@ export default {
                 full_name: data.full_name,
                 cpf: data.cpf, 
                 email: data.email,
-                accesses: data.accesses,
-                password: data.password
+                accesses: data.accesses
               }, 'logged_token').then(() => {
                 commit('getUser')
               })
