@@ -112,17 +112,19 @@ import UserCardComponent from './components/UserCardComponent.vue'
       
     },
     mounted () {
-      db.collection('user').limit(1).get().then(user => {
-        if (!user.length && this.$route.name != 'Login') {
-          this.$router.push('/login')
-        } 
-          this.$store.state.user = user[0]
-          this.login_check = true
-      })  
-     
+      this.verifyLoggedUser()
     },
     methods: {
-       
+       verifyLoggedUser () {
+         db.collection('user').limit(1).get().then(user => {
+          if (!user.length && this.$route.name != 'Login') {
+            this.$router.push('/login')
+          } 
+          this.$store.state.user = {}
+          Object.assign(this.$store.state.user, (user[0]))
+          this.login_check = true
+        })  
+       }
     },
   }
 </script>

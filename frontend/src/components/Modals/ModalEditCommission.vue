@@ -106,7 +106,7 @@
         </v-row>
         <v-row align="center">
           <v-col
-            cols="12"
+            cols="6"
           >
             <v-text-field
               class="px-3"
@@ -117,7 +117,45 @@
               v-model="item.operator"
               outlined
             ></v-text-field>
-          </v-col>  
+          </v-col> 
+          <v-col
+            cols="6"
+          >
+            <v-select
+              :menu-props="{ top: true, offsetY: false }"
+              outlined
+              :items="status"
+              color="rgb(0, 209, 94)"
+              label="Status"
+              v-model="item.status"
+              prepend-icon="mdi-clock"
+            >
+              <template v-slot:selection="{ item }">
+                <v-chip
+                  class="ma-0"
+                  :color="statusStyle(item, 'color')"
+                  text-color="white"
+                >
+                  
+                    <v-icon>{{statusStyle(item, 'icon')}}</v-icon>
+                 
+                  <span class="item-select-badge">{{item}}</span>
+                </v-chip>
+              </template>
+              <template  v-slot:item="{ item }">
+                <v-chip
+                  class="ma-0"
+                  :color="statusStyle(item, 'color')"
+                  text-color="white"
+                >
+                  
+                    <v-icon>{{statusStyle(item, 'icon')}}</v-icon>
+                  
+                  <span class="item-select-badge">{{item}}</span>
+                </v-chip>
+              </template>
+            </v-select>
+          </v-col>   
         </v-row>
         </v-card-text>
         <v-divider></v-divider> 
@@ -160,9 +198,24 @@ export default {
               'Seguro Equipamentos',
               'Seguro Residencial e Empresarial',
               'Seguro Agrícola',
+              'Seguro Prestamista',
               'Crédito Consignado',
               'Consórcio',
               'Previdência'
+            ],
+            status: [
+              'Aguardando Venda',
+              'Venda não realizada',
+              'Aguardando UPS',
+              'Aceito UPS',
+              'Recusado UPS'
+            ],
+            status_style: [
+              {status: 'Aguardando Venda', color: 'blue lighten-1', icon: 'mdi-store-clock-outline'},
+              {status: 'Venda não realizada', color: 'blue-grey darken-1', icon: 'mdi-store-remove-outline'},
+              {status: 'Aguardando UPS', color: 'orange darken-1', icon: 'mdi-account-tie'},
+              {status: 'Aceito UPS', color: 'green', icon: 'mdi-check-outline'},
+              {status: 'Recusado UPS', color: 'red', icon: 'mdi-close-outline'},
             ]
         }
         
@@ -176,12 +229,25 @@ export default {
         }
     },
     methods: {
-        editCommission () {
-          this.$emit('editCommission', this.item)
-        },
-        closeModal () {
-          this.$emit('closeEditModal')      
-        }
+      statusStyle (status, type) {
+        let value = ''
+        this.status_style.forEach((item) => {
+          if (item.status == status) {
+            if (type == 'color') {
+              value = item.color 
+            } else {
+              value = item.icon
+            } 
+          }    
+        })
+        return value
+      },
+      editCommission () {
+        this.$emit('editCommission', this.item)
+      },
+      closeModal () {
+        this.$emit('closeEditModal')      
+      }
     }
 }
 </script>
@@ -190,5 +256,9 @@ export default {
   .title-modal {
     font-family: 'Quicksand', sans-serif;
     color: orange
+  }
+  .item-select-badge {
+    font-weight:bold;
+    padding-left:5px
   }
 </style>

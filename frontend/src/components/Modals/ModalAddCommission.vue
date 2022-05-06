@@ -77,6 +77,27 @@
           <v-col
             cols="12"
             md="6"
+          > 
+            <v-text-field-money
+              
+              label="Valor Comissão R$"
+              v-bind:properties="{
+                prependIcon: 'mdi-cash',
+                color: 'rgb(0, 209, 94)',
+                class: 'px-3',
+                placeholder: 'Valor a ser comissionado',
+                disabled: item.product != 'Seguro Prestamista',
+                outlined: true,
+                //v_model: item.product == 'Seguro Prestamista' ? item.custom_value : item.value 
+              }"
+              v-model="item.product == 'Seguro Prestamista' ? item.custom_value : item.value"
+            ></v-text-field-money>
+          </v-col>  
+        </v-row>
+        <v-row align="center">
+         <v-col
+            cols="12"
+            md="6"
           >
             <v-text-field
               class="px-3"
@@ -88,10 +109,9 @@
               outlined
             ></v-text-field>
           </v-col>  
-        </v-row>
-        <v-row align="center">
           <v-col
             cols="12"
+            md="6"
           >
             <v-text-field
               class="px-3"
@@ -106,7 +126,7 @@
         </v-row>
         <v-row align="center">
           <v-col
-            cols="12"
+            cols="6"
           >
             <v-text-field
               class="px-3"
@@ -118,7 +138,46 @@
               outlined
             ></v-text-field>
           </v-col>  
+          <v-col
+            cols="6"
+          >
+            <v-select
+              :menu-props="{ top: true, offsetY: false }"
+              outlined
+              :items="status"
+              color="rgb(0, 209, 94)"
+              label="Status"
+              v-model="item.status"
+              prepend-icon="mdi-clock"
+            >
+              <template v-slot:selection="{ item }">
+                <v-chip
+                  class="ma-0"
+                  :color="statusStyle(item, 'color')"
+                  text-color="white"
+                >
+                  
+                    <v-icon>{{statusStyle(item, 'icon')}}</v-icon>
+                 
+                  <span class="item-select-badge">{{item}}</span>
+                </v-chip>
+              </template>
+              <template  v-slot:item="{ item }">
+                <v-chip
+                  class="ma-0"
+                  :color="statusStyle(item, 'color')"
+                  text-color="white"
+                >
+                  
+                    <v-icon>{{statusStyle(item, 'icon')}}</v-icon>
+                  
+                  <span class="item-select-badge">{{item}}</span>
+                </v-chip>
+              </template>
+            </v-select>
+          </v-col>  
         </v-row>
+        
         </v-card-text>
         <v-divider></v-divider> 
         <v-card-actions>
@@ -152,12 +211,14 @@ export default {
             dialog: false,
             date_picker: false,
             item: { 
+              user_id: '',
               date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10), 
               product: '', 
               value: '', 
               indicator: '', 
               seller: '', 
               operator: '', 
+              status: '',
               indicator_commission: 0,
               seller_commission: 0, 
               operator_commission: 0 
@@ -170,6 +231,7 @@ export default {
               'Seguro Equipamentos',
               'Seguro Residencial e Empresarial',
               'Seguro Agrícola',
+              'Seguro Prestamista',
               'Crédito Consignado',
               'Consórcio',
               'Previdência'
@@ -178,8 +240,15 @@ export default {
               'Aguardando Venda',
               'Venda não realizada',
               'Aguardando UPS',
-              'Aceito',
-              'Recusado'
+              'Aceito UPS',
+              'Recusado UPS'
+            ],
+            status_style: [
+              {status: 'Aguardando Venda', color: 'blue lighten-1', icon: 'mdi-store-clock-outline'},
+              {status: 'Venda não realizada', color: 'blue-grey darken-1', icon: 'mdi-store-remove-outline'},
+              {status: 'Aguardando UPS', color: 'orange darken-1', icon: 'mdi-account-tie'},
+              {status: 'Aceito UPS', color: 'green', icon: 'mdi-check-outline'},
+              {status: 'Recusado UPS', color: 'red', icon: 'mdi-close-outline'},
             ]
         }
         
@@ -190,7 +259,21 @@ export default {
         }
     },
     methods: {
+      statusStyle (status, type) {
+        let value = ''
+        this.status_style.forEach((item) => {
+          if (item.status == status) {
+            if (type == 'color') {
+              value = item.color 
+            } else {
+              value = item.icon
+            } 
+          }    
+        })
+        return value
+      },
         addCommission () {
+          this.item.user_id = this.$store.state.user.id
           this.$emit('addCommission', this.item)
           this.item = {date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)}
         },
@@ -206,5 +289,9 @@ export default {
   .title-modal {
     font-family: 'Quicksand', sans-serif;
     color: rgb(0, 209, 94);
+  }
+  .item-select-badge {
+    font-weight:bold;
+    padding-left:5px
   }
 </style>

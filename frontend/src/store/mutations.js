@@ -7,7 +7,8 @@ export default {
     },
     getUser (state) {
       db.collection('user').get().then(user => {
-        state.user = user
+        state.user = {}
+        Object.assign(state.user, user[0])
       })  
   },    
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('date');
             $table->string('product');
             $table->decimal('value',15,2)->nullable();
+            $table->decimal('custom_value',15,2)->nullable();
             $table->string('status');
             $table->string('indicator');
             $table->string('seller')->nullable();

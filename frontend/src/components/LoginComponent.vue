@@ -69,7 +69,7 @@
                                             <v-text-field v-model="formRegister.password" :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" :rules="passwordRule" :type="show2 ? 'text' : 'password'" name="register_password" label="Senha" hint="No mínimo 5 caracteres" counter :color="color_default" @click:append="show2 = !show2"></v-text-field>
                                         </v-col>
                                         <v-col cols="12">
-                                            <v-text-field block v-model="formRegister.verify" :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.verifyPasswordRule, matchPasswords]" :type="show2 ? 'text' : 'password'" name="verify_password" label="Confirme a senha" :color="color_default" counter @click:append="show2 = !show2"></v-text-field>
+                                            <v-text-field block @keyup.enter="validate('register')" v-model="formRegister.verify" :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.verifyPasswordRule, matchPasswords]" :type="show2 ? 'text' : 'password'" name="verify_password" label="Confirme a senha" :color="color_default" counter @click:append="show2 = !show2"></v-text-field>
                                         </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col class="d-flex ml-auto" cols="12" sm="4" xsm="12">
@@ -139,7 +139,6 @@ import ForgotPassword from './mail/ForgotPassword.vue';
             this.$http.post('get_user', this.formLogin).then((response)=>{
               if (response.data.length) {
                 this.$store.dispatch('login', response.data[0]).then(
-                  this.$store.state.user = response.data[0],
                   this.$router.push('/')
                 )
               } else {

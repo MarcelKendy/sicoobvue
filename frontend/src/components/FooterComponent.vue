@@ -39,21 +39,33 @@
       <v-menu
         transition="slide-y-reverse-transition"
         top
-        
+        offset-y
+        offset-x
+        v-model="link_modal"
       >
+        
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            small
-            class="purple"
+          <v-badge
+            
             color="primary"
-            dark
-            v-bind="attrs"
-            v-on="on"
+            :icon="!link_modal ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+            overlap
+            
           >
-            Links Úteis
-          </v-btn>
+            <v-btn
+              small
+              class="purple"
+              color="primary"
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
+              Links
+            </v-btn>
+          </v-badge>
         </template>
-        <v-list>
+       
+        <v-list style="">
           
           <v-list-item
             class="effect"
@@ -96,7 +108,7 @@
     name: 'FooterComponent',
 
     data: () => ({
-
+      link_modal: false,
       items: [
         {img: 'logosicoobcredisg.png', width: '68', height: '44', title: 'Interativa',   destination: 'http://172.22.84.243/interativa/'},
         {img: 'cpro.png',              width: '88', height: '35', title: 'CPro',   destination: 'http://172.22.84.243/CPro/'},

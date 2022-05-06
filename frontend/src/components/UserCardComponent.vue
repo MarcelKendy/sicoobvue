@@ -117,10 +117,10 @@ import ModalLogout from './Modals/ModalLogout.vue'
     
     computed: {
       user_name () {
-        return this.$store.state.user.full_name || this.$store.state.user[0].full_name
+        return this.$store.state.user.full_name 
       },
       user_cpf() {
-        return this.$store.state.user.cpf || this.$store.state.user[0].cpf
+        return this.$store.state.user.cpf 
       },
     },
     

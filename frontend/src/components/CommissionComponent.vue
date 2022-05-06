@@ -39,13 +39,41 @@
           <span>{{commissionPrint(item)}}</span>
         </td>
       </template>
-      <template v-slot:[`item.value`]="{ item }">
+      <template v-slot:[`item.date`]="{ item }">
         <v-chip
-          color="blue"
-          dark
+          color="blue-grey lighten-2"
           small
         >
-          R$ {{ (+item.value).toFixed(2) }}
+          <v-tooltip left>
+            <template v-slot:activator="{ on, attrs }">
+              <span v-bind="attrs" v-on="on">
+              {{ formatDate(item.date, 0) }}
+              </span>
+            </template>
+            <span>{{ formatDate(item.date, 1) }}</span>
+          </v-tooltip>  
+        </v-chip>
+      </template>
+      <template v-slot:[`item.value`]="{ item }">
+       
+          <v-chip
+            color="green lighten-1"
+            dark
+            small
+            
+          >
+            {{'R$ ' + (+item.value).toFixed(2) }}
+          </v-chip>
+        
+      </template>
+       <template v-slot:[`item.status`]="{ item }">
+        <v-chip
+          class="ma-0"
+          :color="statusStyle(item.status, 'color')"
+          text-color="white"
+        >
+          <v-icon>{{ statusStyle(item.status, 'icon') }}</v-icon>
+          <span class="item-select-badge">{{item.status}}</span>
         </v-chip>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
@@ -201,17 +229,62 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
           { text: 'Data', value: 'date', align: 'start' },
           { text: 'Produto', value: 'product' },
           { text: 'Valor', value: 'value' },
+          { text: 'Status', value: 'status' },
           { text: 'Indicador', value: 'indicator' },
           { text: 'Vendedor', value: 'seller' },
           { text: 'Operador', value: 'operator' },
           { text: 'Ações', value: 'actions', sortable: false },
         ],
+        status_style: [
+          {status: 'Aguardando Venda', color: 'blue lighten-1', icon: 'mdi-store-clock-outline'},
+          {status: 'Venda não realizada', color: 'blue-grey darken-1', icon: 'mdi-store-remove-outline'},
+          {status: 'Aguardando UPS', color: 'orange darken-1', icon: 'mdi-account-tie'},
+          {status: 'Aceito UPS', color: 'green', icon: 'mdi-check-outline'},
+          {status: 'Recusado UPS', color: 'red', icon: 'mdi-close-outline'},
+        ]
       }
     },
     created () {
       this.getCommissions()
     },
+    /*computed: {
+      commission_print () {
+        return item => {
+          console.log(item, 'computed')
+          if (item.indicator == item.seller) {
+            return item.indicator + ': R$ ' + (item.indicator_commission + item.seller_commission) + ' - ' + item.operator + ': R$ ' + item.operator_commission        
+          } else if (item.indicator == item.operator) {
+            return item.indicator + ': R$ ' + (item.indicator_commission + item.operator_commission) + ' - ' + item.seller + ': R$ ' + item.seller_commission
+          } else {
+            return item.indicator + ': R$ ' + item.indicator_commission + ' - ' + item.seller + ': R$ ' + item.seller_commission + ' - ' + item.operator + ': R$ ' + item.operator_commission
+          }  
+        }
+      }
+    },*/
     methods: {
+      statusStyle (status, type) {
+        let value = ''
+        this.status_style.forEach((item) => {
+          if (item.status == status) {
+            if (type == 'color') {
+              value = item.color 
+            } else {
+              value = item.icon
+            } 
+          }    
+        })
+        return value
+      },
+      formatDate (date, type) {
+        if (type == 0) {
+          let day_month = date.slice(5)
+          let day = day_month.slice(3)
+          let month = day_month.slice(0,2)
+          return (day + '/' + month)
+        } else {
+          return date.slice(0,4)
+        }
+      },
       commissionPrint (item) {
         if (item.indicator == item.seller) {
           return item.indicator + ': R$ ' + (item.indicator_commission + item.seller_commission) + ' - ' + item.operator + ': R$ ' + item.operator_commission        
@@ -251,7 +324,7 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
       editCommission (item) {
         this.$http.put(`edit_commission/${item.id}`, item).then((response)=>{
           console.log(response.data)
-          this.items = this.items.map(commission => commission.id !== item.id ? commission : item)
+          this.items = this.items.map(commission => commission.id !== item.id ? commission : response.data)
           this.editModal()
           this.snackbar_edit = true
         })  
@@ -270,6 +343,9 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
   }
 </script>
 <style scoped>
+  .item-select-badge {
+    padding-left:5px
+  }
   .fixing {
     position: absolute;
     top:30vw;
