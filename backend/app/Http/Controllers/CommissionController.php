@@ -23,104 +23,130 @@ class CommissionController extends Controller
     {
         $newCommission = new Commission();
         $newCommission->user_id = $request->user_id;
-        $newCommission->date = $request->date;
+        $newCommission->date_indicator = $request->date_indicator;
+        $newCommission->date_seller = $request->date_seller;
+        $newCommission->date_operator = $request->date_operator;
         $newCommission->product = $request->product;
         $newCommission->value = $request->value;
         $newCommission->indicator = $request->indicator;
         $newCommission->seller = $request->seller;
         $newCommission->operator = $request->operator;
         $newCommission->status = $request->status;
+        $newCommission->commission_percentage = $request->commission_percentage;
+
         if ($request->custom_value) {
             $newCommission->custom_value = $request->custom_value;
             $value = $request->custom_value;
         } else {
             $value = $request->value;
         }
-        $commissions = $this->calculateCommission($request->product, $value);
-        $newCommission->indicator_commission = $commissions[0];
-        $newCommission->seller_commission = $commissions[1];
-        $newCommission->operator_commission = $commissions[2];
+        if ($value) {
+            $commissions = $this->calculateCommission($request->product, $value, $request->commission_percentage);
+            $newCommission->indicator_commission = $commissions[0];
+            $newCommission->seller_commission = $commissions[1];
+            $newCommission->operator_commission = $commissions[2];
+        }
 
         $newCommission->save();
         return response()->json($newCommission);
     }
 
-    public function calculateCommission($product, $value)
+    public function calculateCommission($product, $value, $commission_percentage)
     {
+        $commission_percentage = $commission_percentage / 100;
         switch ($product) {
 
             case 'Seguro Prestamista':
-                return $this->calculatingCommission($value, 0.20);
+                $commission_sicoob_value = (($commission_percentage * $value) * 0.80);
+                return $this->calculatingCommission($commission_sicoob_value);
+
+            case 'Seguro de Vida - Sicoob Seguradora':
+                $commission_sicoob_value = (($commission_percentage * $value) * 0.80);
+                return $this->calculatingCommission($commission_sicoob_value);
 
             case 'Seguro de Vida':
-                return $this->calculatingCommission($value, 0.20, true);
+                $commission_sicoob_value = (($commission_percentage * $value) * 0.80);
+                return $this->calculatingCommission($commission_sicoob_value, true);
 
             case 'Seguro de Vida Coletivo':
-                return $this->calculatingCommission($value, 0.20);
+                $commission_sicoob_value = (($commission_percentage * $value) * 0.80);
+                return $this->calculatingCommission($commission_sicoob_value);
 
             case 'Seguro Animal de Elite':
-                return $this->calculatingCommission($value, 0.20);
+                $commission_sicoob_value = (($commission_percentage * $value) * 0.80);
+                return $this->calculatingCommission($commission_sicoob_value);
 
             case 'Seguro Auto':
-                return $this->calculatingCommission($value, 0.20);
+                $commission_sicoob_value = (($commission_percentage * $value) * 0.80);
+                return $this->calculatingCommission($commission_sicoob_value);
 
             case 'Seguro Equipamentos':
-                return $this->calculatingCommission($value, 0.20);
+                $commission_sicoob_value = (($commission_percentage * $value) * 0.80);
+                return $this->calculatingCommission($commission_sicoob_value);
 
             case 'Seguro Residencial e Empresarial':
-                return $this->calculatingCommission($value, 0.20);
+                $commission_sicoob_value = (($commission_percentage * $value) * 0.80);
+                return $this->calculatingCommission($commission_sicoob_value);
 
             case 'Seguro Agrícola':
-                return $this->calculatingCommission($value, 0.20);
+                $commission_sicoob_value = (($commission_percentage * $value) * 0.80);
+                return $this->calculatingCommission($commission_sicoob_value);
 
             case 'Crédito Consignado':
-                return $this->calculatingCommission($value, 0.20);
+                $commission_sicoob_value = ($commission_percentage * $value);
+                return $this->calculatingCommission($commission_sicoob_value);
 
             case 'Consórcio':
-                return $this->calculatingCommission($value, 0.20);
+                $commission_sicoob_value = ($commission_percentage * $value);
+                return $this->calculatingCommission($commission_sicoob_value);
 
-            case 'Previdência':
-                return $this->calculatingCommission($value, 0.20);
         }
     }
 
-    public function calculatingCommission($value, $sicoob_commission_percentage, $life_ensurance = false)
+
+    public function calculatingCommission($sicoob_commission_value)
     {
-        $sicoob_commission_value = $value * $sicoob_commission_percentage;
-        if ($life_ensurance) {
-            $sicoob_commission_value = 0.75 * $sicoob_commission_value;
-        }
         $sicoob_commission_value_taxing = 0.965 * $sicoob_commission_value;
         $employees_commission_value = 0.04 * $sicoob_commission_value_taxing;
         $indicator_commission_value = 0.20 * $employees_commission_value;
         $seller_commission_value = 0.60 * $employees_commission_value;
         $operator_commission_value = 0.20 * $employees_commission_value;
+        $indicator_commission_value = number_format($indicator_commission_value, 2, '.', '');
+        $seller_commission_value = number_format($seller_commission_value, 2, '.', '');
+        $operator_commission_value = number_format($operator_commission_value, 2, '.', '');
         return [$indicator_commission_value, $seller_commission_value, $operator_commission_value];
     }
 
     public function editCommission(Commission $commission, Request $request)
     {
-        $commission->date = $request->date;
+        $commission->date_indicator = $request->date_indicator;
+        $commission->date_seller = $request->date_seller;
+        $commission->date_operator = $request->date_operator;
         $commission->indicator = $request->indicator;
         $commission->seller = $request->seller;
         $commission->operator = $request->operator;
         $commission->status = $request->status;
+
         if ($request->custom_value) {
-            if (($commission->custom_value != $request->custom_value) || ($commission->product != $request->product)) {
-                $commissions                      = $this->calculateCommission($request->product, $request->custom_value);
+            if (($commission->custom_value != $request->custom_value) || ($commission->product != $request->product) || ($commission->commission_percentage != $request->commission_percentage)) {
+                $commissions                      = $this->calculateCommission($request->product, $request->custom_value, $request->commission_percentage);
                 $commission->indicator_commission = $commissions[0];
                 $commission->seller_commission    = $commissions[1];
                 $commission->operator_commission  = $commissions[2];
             }
             $commission->custom_value = $request->custom_value;
         } else {
-            if (($commission->value != $request->value) || ($commission->product != $request->product)) {
-                $commissions = $this->calculateCommission($request->product, $request->value);
+            if (($commission->value != $request->value) || ($commission->product != $request->product) || ($commission->commission_percentage != $request->commission_percentage)) {
+                $commissions                      = $this->calculateCommission($request->product, $request->value, $request->commission_percentage);
                 $commission->indicator_commission = $commissions[0];
                 $commission->seller_commission    = $commissions[1];
                 $commission->operator_commission  = $commissions[2];
             }
+            if ($commission->custom_value){
+                $commission->custom_value = null;
+            }
         }
+        $commission->commission_percentage = $request->commission_percentage;
         $commission->value = $request->value;
         $commission->product = $request->product;
 

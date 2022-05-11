@@ -16,10 +16,13 @@ return new class extends Migration
         Schema::create('commissions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('date');
+            $table->string('date_indicator');
+            $table->string('date_seller')->nullable();
+            $table->string('date_operator')->nullable();
             $table->string('product');
             $table->decimal('value',15,2)->nullable();
             $table->decimal('custom_value',15,2)->nullable();
+            $table->decimal('commission_percentage',4,2)->nullable();
             $table->string('status');
             $table->string('indicator');
             $table->string('seller')->nullable();

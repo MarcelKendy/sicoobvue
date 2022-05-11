@@ -11,7 +11,6 @@
         :dark="dark_theme"
         single-line
         color="rgba(18,210,175)"
-        hide-details
       ></v-text-field>
     </v-card-title>
     <v-data-table
@@ -21,7 +20,7 @@
       :headers="headers"
       :items="items"
       :search="search"
-      :sort-by="['date', 'value']"
+      :sort-by="['date_indicator', 'value']"
       multi-sort
       show-expand
       :expanded.sync="expanded"
@@ -33,13 +32,18 @@
     >
       <template v-slot:[`footer.page-text`]="items"> {{ items.pageStart }} até {{ items.pageStop }} - Total: <strong>{{ items.itemsLength }}</strong> </template>
       <template v-slot:expanded-item="{ headers, item }">
-        <td :colspan="headers.length">
-          <span><strong class="blue--text">Comissões de {{item.product}}:</strong></span>
+        <td :colspan="headers.length" v-if="item.value">
+          <span><strong class="blue--text">Comissões dos empregados referentes ao produto "{{item.product}}": </strong><span style="font-size: 13px;padding-left: 10px"> (Comissão da <span class="green--text">cooperativa</span>: {{item.commission_percentage}}%)</span></span>
+          <br v-if="item.custom_value">
+          <span v-if="item.custom_value" ><span class="blue--text">Valor comissionado:</span><span> R$ {{item.custom_value}}</span></span>
           <br>
           <span>{{commissionPrint(item)}}</span>
         </td>
+        <td :colspan="headers.length" v-else>
+          <span class="orange--text">A venda ainda não foi realizada</span>
+        </td>
       </template>
-      <template v-slot:[`item.date`]="{ item }">
+      <template v-slot:[`item.date_indicator`]="{ item }">
         <v-chip
           color="blue-grey lighten-2"
           small
@@ -47,10 +51,10 @@
           <v-tooltip left>
             <template v-slot:activator="{ on, attrs }">
               <span v-bind="attrs" v-on="on">
-              {{ formatDate(item.date, 0) }}
+              {{ formatDate(item.date_indicator, 'd_m') }}
               </span>
             </template>
-            <span>{{ formatDate(item.date, 1) }}</span>
+            <span>{{ formatDate(item.date_indicator, 'y') }}</span>
           </v-tooltip>  
         </v-chip>
       </template>
@@ -62,7 +66,9 @@
             small
             
           >
-            {{'R$ ' + (+item.value).toFixed(2) }}
+            <span v-if="item.value">{{'R$ ' + (+item.value).toFixed(2) }}</span>
+            <span v-else>Aguardando</span>
+
           </v-chip>
         
       </template>
@@ -78,7 +84,6 @@
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-speed-dial
-           
           :id="item.id"
           direction="left"
           open-on-hover
@@ -93,10 +98,8 @@
               fab
               icon
             >
-              <v-icon v-if="item.menu">
-                mdi-close
-              </v-icon>
-              <v-icon v-else>
+              
+              <v-icon>
                 mdi-dots-vertical
               </v-icon>
             </v-btn>
@@ -105,20 +108,54 @@
             fab
             dark
             small
+            v-if="disableBtns('edit', item)"
             color="yellow darken-2"
             @click="editModal(item)"
           >
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
+          <v-tooltip top v-else>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                fab
+                dark
+                small
+                
+                color="yellow darken-2"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon>mdi-pencil-off</v-icon>
+              </v-btn>
+            </template>
+            <span>Edição bloqueada</span>
+          </v-tooltip>  
           <v-btn
             fab
             dark
             small
+            v-if="disableBtns('delete', item)"
             color="red"
             @click="deleteModal(item)"
           >
             <v-icon>mdi-delete</v-icon>
           </v-btn>
+          <v-tooltip top v-else>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                fab
+                dark
+                small
+                
+                color="red"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon>mdi-delete-off</v-icon>
+              </v-btn>
+            </template>
+            <span>Exclusão bloqueda</span>
+          </v-tooltip>  
     </v-speed-dial>
       </template>
     </v-data-table>
@@ -179,27 +216,28 @@
       </v-btn>
     <span class="tooltiptext">{{!this.dark_theme ? 'Mudar o tema de cores para "dark"' : 'Mudar o tema de cores para "light"'}}</span>
   </div>
-  <div class="">
-    <v-tooltip left>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
+   
+  <v-tooltip left>
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+        fixed
+        bottom
+        right
         color="rgb(0, 209, 94)"
         dark
         fab
-        right
-        fixed
         v-bind="attrs"
         v-on="on"
         @click="addModal()"
-        >
-          <v-icon>
-            mdi-plus
-          </v-icon>
-        </v-btn>
-      </template>
-      <span>Adicionar</span>
-    </v-tooltip>
-  </div>
+      >
+        <v-icon >
+          mdi-plus
+        </v-icon>
+      </v-btn>
+    </template>
+    <span>Adicionar</span>
+  </v-tooltip>
+      
 </div>
 </template>
 
@@ -226,7 +264,7 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
         snackbar_delete: false,
         dark_theme: false,
         headers: [
-          { text: 'Data', value: 'date', align: 'start' },
+          { text: 'Data', value: 'date_indicator', align: 'start' },
           { text: 'Produto', value: 'product' },
           { text: 'Valor', value: 'value' },
           { text: 'Status', value: 'status' },
@@ -262,6 +300,22 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
       }
     },*/
     methods: {
+      disableBtns (type, item) {
+        let logged_user_id = this.$store.state.user.id 
+        let logged_user_access = this.$store.state.user.accesses.commissions
+        if (type == 'edit') {
+          return !((logged_user_access == 'indicator') && (item.user_id != logged_user_id))
+        } else {
+          switch (logged_user_access) {
+            case 'indicator':
+              return !(item.status != 'Aguardando Venda' || item.user_id != logged_user_id)
+            case 'seller':
+              return !((item.status == 'Aprovado UPS' || item.status == 'Recusado UPS') || (item.user_id != logged_user_id)) 
+            case 'operator':
+              return true
+          }
+        }
+      },
       statusStyle (status, type) {
         let value = ''
         this.status_style.forEach((item) => {
@@ -276,20 +330,20 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
         return value
       },
       formatDate (date, type) {
-        if (type == 0) {
-          let day_month = date.slice(5)
+        if (type == 'd_m') {
+          let day_month = date.slice(5,10)
           let day = day_month.slice(3)
           let month = day_month.slice(0,2)
           return (day + '/' + month)
-        } else {
+        } if (type == 'y') {
           return date.slice(0,4)
         }
       },
       commissionPrint (item) {
         if (item.indicator == item.seller) {
-          return item.indicator + ': R$ ' + (item.indicator_commission + item.seller_commission) + ' - ' + item.operator + ': R$ ' + item.operator_commission        
+          return item.indicator + ': R$ ' + (+item.indicator_commission + +item.seller_commission) + ' - ' + item.operator + ': R$ ' + item.operator_commission        
         } else if (item.indicator == item.operator) {
-          return item.indicator + ': R$ ' + (item.indicator_commission + item.operator_commission) + ' - ' + item.seller + ': R$ ' + item.seller_commission
+          return item.indicator + ': R$ ' + (+item.indicator_commission + +item.operator_commission) + ' - ' + item.seller + ': R$ ' + item.seller_commission
         } else {
           return item.indicator + ': R$ ' + item.indicator_commission + ' - ' + item.seller + ': R$ ' + item.seller_commission + ' - ' + item.operator + ': R$ ' + item.operator_commission
         }
@@ -314,6 +368,8 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
         this.delete_modal = !this.delete_modal
       },
       addCommission (item) {
+        item.user_id = this.$store.state.user.id
+        console.log(item, 'item')
         this.$http.post('add_commission', item).then((response)=>{
           console.log(response.data)
           this.items.push(response.data)

@@ -73,7 +73,7 @@
       <v-spacer></v-spacer>
 
       
-      <user-card-component/>
+      <user-card/>
     </v-app-bar>
   
 
@@ -87,9 +87,9 @@
 <script>
 import db from '../src/services/localbase'
 import FooterComponent from './components/FooterComponent.vue'
-import UserCardComponent from './components/UserCardComponent.vue'
+import UserCard from './components/util/UserCard.vue'
   export default {
-  components: { FooterComponent, UserCardComponent },
+  components: { FooterComponent, UserCard },
     data: () => 
     ({ 
       drawer: false,
@@ -128,6 +128,7 @@ import UserCardComponent from './components/UserCardComponent.vue'
     },
   }
 </script>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Asap+Condensed:ital@1&family=Bebas+Neue&family=Concert+One&family=Courgette&family=Dancing+Script:wght@500&family=Fredoka+One&family=Pacifico&family=Parisienne&family=Patrick+Hand&family=Permanent+Marker&family=Press+Start+2P&family=Quicksand&family=Satisfy&family=Shadows+Into+Light&family=Yanone+Kaffeesatz:wght@600&display=swap');
 /*

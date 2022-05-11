@@ -54,7 +54,7 @@
                   <v-img
                     max-width="35px"
                     alt="Sicoob"
-                    src="../assets/images/sicoobicon.png"
+                    src="../../assets/images/sicoobicon.png"
                   ></v-img>
                   
                
@@ -83,12 +83,12 @@
 </template>
 
 <script>
-import db from '../../src/services/localbase'
-import ModalLogout from './Modals/ModalLogout.vue'
+import db from '../../../src/services/localbase'
+import ModalLogout from './../Modals/ModalLogout.vue'
   export default {
     props:['user'],
     components: { ModalLogout },
-    name: 'UserCardComponent',
+    name: 'UserCard',
 
     data: () => ({
       items: [{title: 'Log Out'}],
