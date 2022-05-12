@@ -123,9 +123,11 @@
           > 
            <DateTimePicker
               label="Data/Hora da Indicação"
-              :clearComponent="clear_datetime_picker"
+              :updateComponent="update_datetime_picker"
+              @resetValidation="resetValidation"
               v-model="item.date_indicator"
               :color="color"
+              :clearable="true"
             ></DateTimePicker>
           </v-col>
         </v-row>
@@ -144,7 +146,7 @@
               prepend-icon="mdi-account-tie-voice"
               placeholder="Nome Completo do Vendedor"
               v-model="item.seller"
-              :rules="requiredRule"
+              :rules="requiredSellerRule"
               outlined
             ></v-text-field>
           </v-col>  
@@ -154,7 +156,9 @@
         >
           <DateTimePicker
             label="Data/Hora da Venda"
-            :clearComponent="clear_datetime_picker"
+            :updateComponent="update_datetime_picker"
+            @resetValidation="resetValidation"
+            :rules="requiredSellerRule"
             v-model="item.date_seller"
             :color="color"
           ></DateTimePicker>
@@ -171,7 +175,7 @@
                 prependIcon: 'mdi-cash',
                 color: color,
                 class: 'px-3',
-                rules: requiredRule,
+                rules: valueRule,
                 placeholder: 'Valor efetivo do produto',
                 outlined: true,
                 suffix: 'R$'
@@ -188,7 +192,7 @@
               v-bind:label="'Comissão da Cooperativa (%)'"
               v-bind:readonly="((item.product == 'Seguro Prestamista') || (item.product == 'Seguro de Vida - Sicoob Seguradora') || (item.product == 'Consórcio'))"
               v-bind:outlined="true"
-              v-bind:rules="requiredRule"
+              v-bind:rules="requiredSellerRule"
               v-bind:color="color"
               v-bind:valueWhenIsEmpty="null"
               v-bind:options="options"
@@ -206,7 +210,7 @@
                 prependIcon: 'mdi-cash',
                 color: color,
                 class: 'px-3',
-                rules: requiredRule,
+                rules: valueRule,
                 placeholder: 'Valor efetivo a ser comissionado',
                 outlined: true,
                 suffix: 'R$'
@@ -226,7 +230,7 @@
           >
             <v-text-field
               class="px-3"
-              :rules="requiredRule"
+              :rules="requiredOperatorRule"
               label="Operador"
               :color="color"
               prepend-icon="mdi-account-tie"
@@ -241,8 +245,10 @@
           >
              <DateTimePicker
               label="Data/Hora da Operação"
-              :clearComponent="clear_datetime_picker"
+              :updateComponent="update_datetime_picker"
+              @resetValidation="resetValidation"
               v-model="item.date_operator"
+              :rules="requiredOperatorRule"
               :color="color"
             ></DateTimePicker>
           </v-col>  
@@ -265,7 +271,6 @@
             :color="color"
             text
             @click="editCommission()"
-            :disabled="!valid"
           >
             Salvar
           </v-btn>
@@ -286,7 +291,7 @@ export default {
             valid: true,
             dialog: false,
             loading: false,
-            clear_datetime_picker: false,
+            update_datetime_picker: false,
             item: { 
               user_id: '',
               date_indicator: '',
@@ -328,38 +333,57 @@ export default {
             ],
             status: [
               'Aguardando Venda',
-              'Venda não realizada',
+              'Venda não Realizada',
               'Aguardando UPS',
               'Aceito UPS',
               'Recusado UPS'
             ],
             status_style: [
               {status: 'Aguardando Venda', color: 'blue lighten-1', icon: 'mdi-store-clock-outline'},
-              {status: 'Venda não realizada', color: 'blue-grey darken-1', icon: 'mdi-store-remove-outline'},
+              {status: 'Venda não Realizada', color: 'blue-grey darken-1', icon: 'mdi-store-remove-outline'},
               {status: 'Aguardando UPS', color: 'orange darken-1', icon: 'mdi-account-tie'},
               {status: 'Aceito UPS', color: 'green', icon: 'mdi-check-outline'},
               {status: 'Recusado UPS', color: 'red', icon: 'mdi-close-outline'},
             ],
             /* RULES */
             requiredRule: 
-               [v => (!!v)  || "Essa informação é obrigatória"]    
-            ,
+            [
+              v => (!!v)  || "Essa informação é obrigatória"
+            ],
+            requiredSellerRule: [
+              v => (!!v || (this.item.status == 'Aguardando Venda' || this.item.status == 'Venda não Realizada' || this.item.status == '' )) || "O status selecionado indica que a venda ocorreu, então essa informação é obrigatória"
+            ],
+            requiredOperatorRule: [
+              v => (!!v || (this.item.status != 'Recusado UPS' && this.item.status != 'Aceito UPS' )) || "O status selecionado indica que a venda foi operada, então essa informação é obrigatória"
+            ],
+            valueRule: [
+              v => ((!!v && (parseFloat(this.item.value) > 0 || "O valor não pode ser 0")) || (this.item.status == 'Aguardando Venda' || this.item.status == 'Venda não Realizada' || this.item.status == '' )) || "O status selecionado indica que a venda foi operada, então essa informação é obrigatória"
+            ]
         }
         
     },
     watch: {
         open: function () {
           this.dialog = this.open
+          this.update_datetime_picker = this.dialog
           this.loading = false
+          if (this.$refs.form) {
+            this.$refs.form.resetValidation()
+          }
         },
         commission: function () {
-          this.item = this.commission
+          Object.assign(Object.assign(this.item, this.defaultItem), this.commission)
           if (this.$refs.form) {
             this.$refs.form.resetValidation()
           }
         }
     },
     methods: {
+      resetValidation () {
+        if (this.$refs.form) {
+          this.$refs.form.resetValidation()
+        }
+      },
       accesses (type) {
         switch (type) {
 
@@ -419,9 +443,11 @@ export default {
       },
       
       editCommission () {
-        this.loading = true
-        this.$emit('editCommission', this.item)
-        Object.assign(this.item, this.defaultItem)
+        if (this.$refs.form.validate()) {
+          this.loading = true
+          this.$emit('editCommission', this.item)
+          Object.assign(this.item, this.defaultItem)
+        }
       },
       closeModal () {
         this.$emit('closeEditModal')  

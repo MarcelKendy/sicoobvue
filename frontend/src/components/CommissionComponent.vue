@@ -275,7 +275,7 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
         ],
         status_style: [
           {status: 'Aguardando Venda', color: 'blue lighten-1', icon: 'mdi-store-clock-outline'},
-          {status: 'Venda não realizada', color: 'blue-grey darken-1', icon: 'mdi-store-remove-outline'},
+          {status: 'Venda não Realizada', color: 'blue-grey darken-1', icon: 'mdi-store-remove-outline'},
           {status: 'Aguardando UPS', color: 'orange darken-1', icon: 'mdi-account-tie'},
           {status: 'Aceito UPS', color: 'green', icon: 'mdi-check-outline'},
           {status: 'Recusado UPS', color: 'red', icon: 'mdi-close-outline'},

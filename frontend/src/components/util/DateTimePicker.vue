@@ -23,7 +23,7 @@
       <template v-slot:default="dialog">
         <v-card>
           <v-tabs v-model="tabs" fixed-tabs>
-            <v-tabs-slider color="rgb(30,140,10)"></v-tabs-slider>
+            <v-tabs-slider color="black"></v-tabs-slider>
             <v-tab href="#pick-date" class="primary--text">
               <v-icon :color="tabs == 'pick-date' ? color : 'gray'">mdi-calendar</v-icon>
             </v-tab>
@@ -66,7 +66,8 @@ export default {
       datePicker: '',
       timePicker: '',
       tabs: 'pick-date',
-      value_mutable: '',
+      value_mutable: this.value
+    
     };
   },
   props: {
@@ -106,7 +107,7 @@ export default {
       type: [String],
       default: 'mdi-calendar-clock'
     },
-    clearComponent: {
+    updateComponent: {
       required: false,
       type: [Boolean],
     },
@@ -114,45 +115,47 @@ export default {
   watch: {
     datePicker: function () {
       if (this.timePicker) {
-        this.$emit('input', this.datePicker + ' ' + this.timePicker);
+        this.$emit('input', this.datePicker + ' ' + this.timePicker)
+        this.value_mutable = this.datePicker + ' ' + this.timePicker
+      } else {
+        this.$set(this, "tabs", "pick-time")
       }
-      this.$set(this, "tabs", "pick-time");
     },
     timePicker: function () {
       if (this.datePicker) {
-        this.$emit('input', this.datePicker + ' ' + this.timePicker);
+        this.$emit('input', this.datePicker + ' ' + this.timePicker)
+        this.value_mutable = this.datePicker + ' ' + this.timePicker
       } else {
         this.$set(this, "tabs", "pick-date");
       }
     },
-    value: function () {
-      this.value_mutable = this.value
-      if (this.value_mutable) {
-        let date = this.value_mutable.slice(0,10)
-        let time = this.value_mutable.slice(11,17)
-        this.datePicker = date
-        this.timePicker = time
-      }
-      
-    },
-    clear: function () {
-      this.$set(this, 'datePicker', null);
-      this.$set(this, 'timePicker', null);
-      this.$emit('input', null);
-    },
-    clearComponent: function () {
-      if (this.clearComponent) {
-        this.datePicker = '';
-        this.timePicker = '';
-        this.$set(this, 'datePicker', null);
-        this.$set(this, 'timePicker', null);
-      }
+    updateComponent: function () {
+      if (this.updateComponent) {
+        this.value_mutable = this.value
+        if (this.value_mutable) {
+          this.updateValue()
+        }
+      } else {
+        this.clear()
+      } 
     }
   },
   methods: {
+    updateValue () {
+      let date = this.value_mutable.slice(0,10)
+      let time = this.value_mutable.slice(11,17)
+      this.datePicker = date
+      this.timePicker = time
+      this.$set(this, "datePicker", date);
+      this.$set(this, "timePicker", time);
+    },
     clear() {
+      this.value_mutable = ''
+      this.$emit('resetValidation')
       this.datePicker = '';
       this.timePicker = '';
+      this.$set(this, 'datePicker', null);
+      this.$set(this, 'timePicker', null);
       this.$emit('input', null);
     },
   },
@@ -168,7 +171,7 @@ export default {
       this.$set(this, "timePicker", time);
       this.$emit("input", date + " " + time);
     }
-  },
+  }
   
 };
 </script>

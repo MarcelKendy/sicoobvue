@@ -70,6 +70,7 @@
                 :items="status_computed"
                 :color="color"
                 :rules="requiredRule"
+                @change="changeStatus"
                 label="Status"
                 v-model="item.status"
                 prepend-icon="mdi-clock"
@@ -123,7 +124,8 @@
           > 
           <DateTimePicker
             label="Data/Hora da Indicação"
-            :clearComponent="clear_datetime_picker"
+            :updateComponent="update_datetime_picker"
+            @resetValidation="resetValidation"
             v-model="item.date_indicator"
             :color="color"
           ></DateTimePicker>
@@ -144,7 +146,7 @@
               prepend-icon="mdi-account-tie-voice"
               placeholder="Nome Completo do Vendedor"
               v-model="item.seller"
-              :rules="requiredRule"
+              :rules="requiredSellerRule"
               outlined
             ></v-text-field>
           </v-col>  
@@ -154,7 +156,9 @@
           >
             <DateTimePicker
               label="Data/Hora da Venda"
-              :clearComponent="clear_datetime_picker"
+              :updateComponent="update_datetime_picker"
+              @resetValidation="resetValidation"
+              :rules="requiredSellerRule"
               v-model="item.date_seller"
               :color="color"
             ></DateTimePicker>
@@ -171,7 +175,7 @@
                 prependIcon: 'mdi-cash',
                 color: color,
                 class: 'px-3',
-                rules: requiredRule,
+                rules: valueRule,
                 placeholder: 'Valor efetivo do produto',
                 outlined: true,
                 suffix: 'R$'
@@ -188,7 +192,7 @@
               v-bind:label="'Comissão da Cooperativa (%)'"
               v-bind:readonly="((item.product == 'Seguro Prestamista') || (item.product == 'Seguro de Vida - Sicoob Seguradora') || (item.product == 'Consórcio'))"
               v-bind:outlined="true"
-              v-bind:rules="requiredRule"
+              v-bind:rules="requiredSellerRule"
               v-bind:color="color"
               v-bind:valueWhenIsEmpty="null"
               v-bind:options="options"
@@ -206,7 +210,7 @@
                 prependIcon: 'mdi-cash',
                 color: color,
                 class: 'px-3',
-                rules: requiredRule,
+                rules: valueRule,
                 placeholder: 'Valor a ser comissionado',
                 outlined: true,
                 suffix: 'R$'
@@ -226,7 +230,7 @@
           >
             <v-text-field
               class="px-3"
-              :rules="requiredRule"
+              :rules="requiredOperatorRule"
               label="Operador"
               :color="color"
               prepend-icon="mdi-account-tie"
@@ -241,7 +245,9 @@
           >
             <DateTimePicker
               label="Data/Hora da Operação"
-              :clearComponent="clear_datetime_picker"
+              :updateComponent="update_datetime_picker"
+              @resetValidation="resetValidation"
+              :rules="requiredOperatorRule"
               v-model="item.date_operator"
               :color="color"
             ></DateTimePicker>   
@@ -265,10 +271,11 @@
             :color="color"
             text
             @click="addCommission()"
-            :disabled="!valid"
+            
           >
             Salvar
           </v-btn>
+          <!--:disabled="!valid"-->
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -285,7 +292,7 @@ export default {
             color: 'rgb(0, 209, 94)',
             valid: true,
             dialog: false,
-            clear_datetime_picker: false,
+            update_datetime_picker: false,
             loading: false,
             item: { 
               user_id: '',
@@ -328,7 +335,7 @@ export default {
             ],
             status_style: [
               {status: 'Aguardando Venda', color: 'blue lighten-1', icon: 'mdi-store-clock-outline'},
-              {status: 'Venda não realizada', color: 'blue-grey darken-1', icon: 'mdi-store-remove-outline'},
+              {status: 'Venda não Realizada', color: 'blue-grey darken-1', icon: 'mdi-store-remove-outline'},
               {status: 'Aguardando UPS', color: 'orange darken-1', icon: 'mdi-account-tie'},
               {status: 'Aceito UPS', color: 'green', icon: 'mdi-check-outline'},
               {status: 'Recusado UPS', color: 'red', icon: 'mdi-close-outline'},
@@ -337,17 +344,34 @@ export default {
             requiredRule: [
               v => !!v || "Essa informação é obrigatória"
             ],
+            requiredSellerRule: [
+              v => (!!v || (this.item.status == 'Aguardando Venda' || this.item.status == 'Venda não Realizada' || this.item.status == '' )) || "O status selecionado indica que a venda ocorreu, então essa informação é obrigatória"
+            ],
+            requiredOperatorRule: [
+              v => (!!v || (this.item.status != 'Recusado UPS' && this.item.status != 'Aceito UPS' )) || "O status selecionado indica que a venda foi operada, então essa informação é obrigatória"
+            ],
+            valueRule: [
+              v => ((!!v && (parseFloat(this.item.value) > 0 || "O valor não pode ser 0")) || (this.item.status == 'Aguardando Venda' || this.item.status == 'Venda não Realizada' || this.item.status == '' )) || "O status selecionado indica que a venda foi operada, então essa informação é obrigatória"
+            ]
         }
         
     },
     watch: {
       open: function () {
         this.dialog = this.open
-        this.clear_datetime_picker = !this.clear_datetime_picker
+        this.update_datetime_picker = this.dialog
+        if (this.$refs.form) {
+          this.$refs.form.resetValidation()
+        }
         this.loading = false
       }
     },
     methods: {
+      resetValidation () {
+        if (this.$refs.form) {
+          this.$refs.form.resetValidation()
+        }
+      },
       status () {
         switch (this.$store.state.user.accesses.commissions) {
           case 'indicator':
@@ -358,13 +382,13 @@ export default {
           case 'seller':
             return [
               'Aguardando Venda',
-              'Venda não realizada',
+              'Venda não Realizada',
               'Aguardando UPS'
             ]
           case 'operator':
             return [
               'Aguardando Venda',
-              'Venda não realizada',
+              'Venda não Realizada',
               'Aguardando UPS',
               'Aceito UPS',
               'Recusado UPS'
@@ -401,6 +425,9 @@ export default {
         })
         return value
       },
+      changeStatus() {
+        this.$refs.form.resetValidation()
+      },
       changeProduct (item) {
         switch(item) {
           case 'Seguro Prestamista':
@@ -423,7 +450,7 @@ export default {
       },
       addCommission () {
         if (this.$refs.form.validate()) {
-          this.loading = true  
+          this.loading = true
           this.$emit('addCommission', this.item)
           this.$refs.form.resetValidation()
           Object.assign(this.item, this.defaultItem)
