@@ -32,7 +32,7 @@
     >
       <template v-slot:[`footer.page-text`]="items"> {{ items.pageStart }} até {{ items.pageStop }} - Total: <strong>{{ items.itemsLength }}</strong> </template>
       <template v-slot:expanded-item="{ headers, item }">
-        <td :colspan="headers.length" v-if="item.value">
+        <td :colspan="headers.length" v-if="item.status == 'Aprovado UPS'">
           <span><strong class="blue--text">Comissões dos empregados referentes ao produto "{{item.product}}": </strong><span style="font-size: 13px;padding-left: 10px"> (Comissão da <span class="green--text">cooperativa</span>: {{item.commission_percentage}}%)</span></span>
           <br v-if="item.custom_value">
           <span v-if="item.custom_value" ><span class="blue--text">Valor comissionado:</span><span> R$ {{item.custom_value}}</span></span>
@@ -40,7 +40,7 @@
           <span>{{commissionPrint(item)}}</span>
         </td>
         <td :colspan="headers.length" v-else>
-          <span class="orange--text">A venda ainda não foi realizada</span>
+          <span class="yellow--text text--darken-2">A UPS ainda não aprovou a venda</span>
         </td>
       </template>
       <template v-slot:[`item.date_indicator`]="{ item }">
@@ -62,9 +62,10 @@
        
           <v-chip
             color="green lighten-1"
-            dark
-            small
+            :class="dark_theme ? 'white--text ' : 'green--text text--lighten-1'"
             
+            small
+            :outlined="!dark_theme"
           >
             <span v-if="item.value">{{'R$ ' + (+item.value).toFixed(2) }}</span>
             <span v-else>Aguardando</span>
@@ -268,16 +269,16 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
           { text: 'Produto', value: 'product' },
           { text: 'Valor', value: 'value' },
           { text: 'Status', value: 'status' },
-          { text: 'Indicador', value: 'indicator' },
-          { text: 'Vendedor', value: 'seller' },
-          { text: 'Operador', value: 'operator' },
+          { text: 'Indicador', value: 'indicator.full_name' },
+          { text: 'Vendedor', value: 'seller.full_name' },
+          { text: 'Operador', value: 'operator.full_name' },
           { text: 'Ações', value: 'actions', sortable: false },
         ],
         status_style: [
           {status: 'Aguardando Venda', color: 'blue lighten-1', icon: 'mdi-store-clock-outline'},
           {status: 'Venda não Realizada', color: 'blue-grey darken-1', icon: 'mdi-store-remove-outline'},
           {status: 'Aguardando UPS', color: 'orange darken-1', icon: 'mdi-account-tie'},
-          {status: 'Aceito UPS', color: 'green', icon: 'mdi-check-outline'},
+          {status: 'Aprovado UPS', color: 'green', icon: 'mdi-check-outline'},
           {status: 'Recusado UPS', color: 'red', icon: 'mdi-close-outline'},
         ]
       }
@@ -340,17 +341,18 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
         }
       },
       commissionPrint (item) {
-        if (item.indicator == item.seller) {
-          return item.indicator + ': R$ ' + (+item.indicator_commission + +item.seller_commission) + ' - ' + item.operator + ': R$ ' + item.operator_commission        
-        } else if (item.indicator == item.operator) {
-          return item.indicator + ': R$ ' + (+item.indicator_commission + +item.operator_commission) + ' - ' + item.seller + ': R$ ' + item.seller_commission
+        if (item.indicator_id == item.seller_id) {
+          return item.indicator.full_name + ': R$ ' + (+item.indicator_commission + +item.seller_commission) + ' - ' + item.operator.full_name + ': R$ ' + item.operator_commission        
+        } else if (item.indicator_id == item.operator_id) {
+          return item.indicator.full_name + ': R$ ' + (+item.indicator_commission + +item.operator_commission) + ' - ' + item.seller.full_name + ': R$ ' + item.seller_commission
         } else {
-          return item.indicator + ': R$ ' + item.indicator_commission + ' - ' + item.seller + ': R$ ' + item.seller_commission + ' - ' + item.operator + ': R$ ' + item.operator_commission
+          return item.indicator.full_name + ': R$ ' + item.indicator_commission + ' - ' + item.seller.full_name + ': R$ ' + item.seller_commission + ' - ' + item.operator.full_name + ': R$ ' + item.operator_commission
         }
       },
       getCommissions () {
         this.$http.get('get_commissions').then((response)=>{
-          this.items = response.data; 
+          this.items = response.data 
+          console.log(this.items)
           this.loading_commissions = false
         })
       },
@@ -369,7 +371,6 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
       },
       addCommission (item) {
         item.user_id = this.$store.state.user.id
-        console.log(item, 'item')
         this.$http.post('add_commission', item).then((response)=>{
           console.log(response.data)
           this.items.push(response.data)

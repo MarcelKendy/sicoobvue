@@ -9,7 +9,19 @@ class UserController extends Controller
 {
 
     public function getUsers (Request $request) {
-        $allUsers = User::all();
+
+        if (isset($request->select)) {
+            $select = $request->select;
+        } else {
+            $select = '*';
+        }
+        if (isset($request->where)) {
+            $where = $request->where;
+        } else {
+            $where = 'true';
+        }
+
+        $allUsers = User::select($select)->whereRaw($where)->get();
         return response()->json($allUsers);
     }
 

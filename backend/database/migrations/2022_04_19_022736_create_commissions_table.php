@@ -24,9 +24,9 @@ return new class extends Migration
             $table->decimal('custom_value',15,2)->nullable();
             $table->decimal('commission_percentage',4,2)->nullable();
             $table->string('status');
-            $table->string('indicator');
-            $table->string('seller')->nullable();
-            $table->string('operator')->nullable();
+            $table->foreignId('indicator_id')->references('id')->on('users')->constrained()->cascadeOnDelete();
+            $table->foreignId('seller_id')->references('id')->on('users')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('operator_id')->references('id')->on('users')->nullable()->constrained()->cascadeOnDelete();
             $table->decimal('indicator_commission',15,2)->nullable();
             $table->decimal('seller_commission',15,2)->nullable();
             $table->decimal('operator_commission',15,2)->nullable();

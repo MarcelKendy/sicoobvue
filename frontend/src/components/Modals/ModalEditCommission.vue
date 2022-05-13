@@ -70,7 +70,7 @@
                 :color="color"
                 :rules="requiredRule"
                 label="Status"
-                @change="$refs.form.resetValidation()"
+                @change="changeStatus()"
                 v-model="item.status"
                 prepend-icon="mdi-clock"
               >
@@ -106,16 +106,35 @@
             cols="12"
             sm="6"
           >
-            <v-text-field
+            <v-autocomplete
               class="px-3"
               label="Indicador"
               :color="color"
               prepend-icon="mdi-bullhorn-outline"
               :rules="requiredRule"
-              placeholder="Nome Completo do Indicador"
-              v-model="item.indicator"
-              outlined
-            ></v-text-field>
+              placeholder="Enter para confirmar"
+              v-model="item.indicator_id"
+              :items="users"
+              :loading="loading_users"
+              auto-select-first
+              item-text="full_name"
+              item-value="id"
+              solo
+            >
+              <template v-slot:no-data>
+                <div class="px-4">
+                <span style="font-family: 'Quicksand', sans-serif; font-weight:bold">Nenhum usuário encontrado</span>
+                 <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-icon style="padding-left:5px" small v-bind="attrs" v-on="on" :color="color">
+                      mdi-alert-circle-outline
+                    </v-icon>
+                  </template>
+                  <span>Se existem usuários cadastrados (considerando o filtro), houve um erro de rede. Certifique-se de sua conexão e atualize a página</span>
+                </v-tooltip>
+                </div>
+              </template>
+            </v-autocomplete>
           </v-col>
           <v-col
             cols="12"
@@ -139,16 +158,35 @@
             cols="12"
             md="6"
           >
-            <v-text-field
+            <v-autocomplete
               class="px-3"
               label="Vendedor"
               :color="color"
               prepend-icon="mdi-account-tie-voice"
-              placeholder="Nome Completo do Vendedor"
-              v-model="item.seller"
               :rules="requiredSellerRule"
-              outlined
-            ></v-text-field>
+              placeholder="Enter para confirmar"
+              v-model="item.seller_id"
+              :items="users"
+              :loading="loading_users"
+              auto-select-first
+              item-text="full_name"
+              item-value="id"
+              solo
+            >
+              <template v-slot:no-data>
+                <div class="px-4">
+                <span style="font-family: 'Quicksand', sans-serif; font-weight:bold">Nenhum usuário encontrado</span>
+                 <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-icon style="padding-left:5px" small v-bind="attrs" v-on="on" :color="color">
+                      mdi-alert-circle-outline
+                    </v-icon>
+                  </template>
+                  <span>Se existem usuários cadastrados (considerando o filtro), houve um erro de rede. Certifique-se de sua conexão e atualize a página</span>
+                </v-tooltip>
+                </div>
+              </template>
+            </v-autocomplete>
           </v-col>  
         <v-col
           cols="12"
@@ -228,16 +266,35 @@
             cols="12"
             md="6"
           >
-            <v-text-field
+            <v-autocomplete
               class="px-3"
-              :rules="requiredOperatorRule"
               label="Operador"
               :color="color"
               prepend-icon="mdi-account-tie"
-              placeholder="Nome Completo do Operador"
-              v-model="item.operator"
-              outlined
-            ></v-text-field>
+              :rules="requiredOperatorRule"
+              placeholder="Enter para confirmar"
+              v-model="item.operator_id"
+              :items="users"
+              :loading="loading_users"
+              auto-select-first
+              item-text="full_name"
+              item-value="id"
+              solo
+            >
+              <template v-slot:no-data>
+                <div class="px-4">
+                <span style="font-family: 'Quicksand', sans-serif; font-weight:bold">Nenhum usuário encontrado</span>
+                 <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-icon style="padding-left:5px" small v-bind="attrs" v-on="on" :color="color">
+                      mdi-alert-circle-outline
+                    </v-icon>
+                  </template>
+                  <span>Se existem usuários cadastrados (considerando o filtro), houve um erro de rede. Certifique-se de sua conexão e atualize a página</span>
+                </v-tooltip>
+                </div>
+              </template>
+            </v-autocomplete>
           </v-col>  
           <v-col
             cols="12"
@@ -291,7 +348,9 @@ export default {
             valid: true,
             dialog: false,
             loading: false,
+            loading_users: false,
             update_datetime_picker: false,
+            users: [],
             item: { 
               user_id: '',
               date_indicator: '',
@@ -301,9 +360,9 @@ export default {
               value: '',
               custom_value: '',
               commission_percentage: '', 
-              indicator: '', 
-              seller: '', 
-              operator: '', 
+              indicator_id: '', 
+              seller_id: '', 
+              operator_id: '', 
               status: '',
               indicator_commission: '',
               seller_commission: '', 
@@ -335,14 +394,14 @@ export default {
               'Aguardando Venda',
               'Venda não Realizada',
               'Aguardando UPS',
-              'Aceito UPS',
+              'Aprovado UPS',
               'Recusado UPS'
             ],
             status_style: [
               {status: 'Aguardando Venda', color: 'blue lighten-1', icon: 'mdi-store-clock-outline'},
               {status: 'Venda não Realizada', color: 'blue-grey darken-1', icon: 'mdi-store-remove-outline'},
               {status: 'Aguardando UPS', color: 'orange darken-1', icon: 'mdi-account-tie'},
-              {status: 'Aceito UPS', color: 'green', icon: 'mdi-check-outline'},
+              {status: 'Aprovado UPS', color: 'green', icon: 'mdi-check-outline'},
               {status: 'Recusado UPS', color: 'red', icon: 'mdi-close-outline'},
             ],
             /* RULES */
@@ -354,7 +413,7 @@ export default {
               v => (!!v || (this.item.status == 'Aguardando Venda' || this.item.status == 'Venda não Realizada' || this.item.status == '' )) || "O status selecionado indica que a venda ocorreu, então essa informação é obrigatória"
             ],
             requiredOperatorRule: [
-              v => (!!v || (this.item.status != 'Recusado UPS' && this.item.status != 'Aceito UPS' )) || "O status selecionado indica que a venda foi operada, então essa informação é obrigatória"
+              v => (!!v || (this.item.status != 'Recusado UPS' && this.item.status != 'Aprovado UPS' )) || "O status selecionado indica que a venda foi operada, então essa informação é obrigatória"
             ],
             valueRule: [
               v => ((!!v && (parseFloat(this.item.value) > 0 || "O valor não pode ser 0")) || (this.item.status == 'Aguardando Venda' || this.item.status == 'Venda não Realizada' || this.item.status == '' )) || "O status selecionado indica que a venda foi operada, então essa informação é obrigatória"
@@ -367,8 +426,9 @@ export default {
           this.dialog = this.open
           this.update_datetime_picker = this.dialog
           this.loading = false
-          if (this.$refs.form) {
-            this.$refs.form.resetValidation()
+          this.resetValidation()
+          if (this.dialog) {
+            this.get_users()
           }
         },
         commission: function () {
@@ -379,6 +439,13 @@ export default {
         }
     },
     methods: {
+       get_users () {
+        this.loading_users = true
+        this.$http.post('get_users', {select: ['id', 'full_name']}).then((response)=>{
+          this.users = response.data
+          this.loading_users = false
+        })
+      },
       resetValidation () {
         if (this.$refs.form) {
           this.$refs.form.resetValidation()
@@ -401,12 +468,8 @@ export default {
 
         }
       },
-      changeStatus (item) {
-        switch (item) {
-          case 'Aguardando Venda':
-            this.$refs.form.resetValidation()
-            break
-        }
+      changeStatus () {
+        this.$refs.form.resetValidation()
       },
       changeProduct (item) {
         switch(item) {
@@ -465,9 +528,9 @@ export default {
           value: '',
           custom_value: '',
           commission_percentage: '', 
-          indicator: '', 
-          seller: '', 
-          operator: '', 
+          indicator_id: '', 
+          seller_id: '', 
+          operator_id: '', 
           status: '',
           indicator_commission: '',
           seller_commission: '', 

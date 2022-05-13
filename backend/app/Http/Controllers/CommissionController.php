@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Commission;
+use App\Models\User;
 
 class CommissionController extends Controller
 {
 
     public function getCommissions(Request $request)
     {
-        $allCommissions = Commission::all();
+        $allCommissions = Commission::with('indicator', 'seller', 'operator')->get();
         return response()->json($allCommissions);
     }
 
@@ -28,9 +29,9 @@ class CommissionController extends Controller
         $newCommission->date_operator = $request->date_operator;
         $newCommission->product = $request->product;
         $newCommission->value = $request->value;
-        $newCommission->indicator = $request->indicator;
-        $newCommission->seller = $request->seller;
-        $newCommission->operator = $request->operator;
+        $newCommission->indicator_id = $request->indicator_id;
+        $newCommission->seller_id = $request->seller_id;
+        $newCommission->operator_id = $request->operator_id;
         $newCommission->status = $request->status;
         $newCommission->commission_percentage = $request->commission_percentage;
 
@@ -40,15 +41,14 @@ class CommissionController extends Controller
         } else {
             $value = $request->value;
         }
-        if ($value) {
+        if ($newCommission->status == 'Aprovado UPS') {
             $commissions = $this->calculateCommission($request->product, $value, $request->commission_percentage);
             $newCommission->indicator_commission = $commissions[0];
             $newCommission->seller_commission = $commissions[1];
             $newCommission->operator_commission = $commissions[2];
         }
-
         $newCommission->save();
-        return response()->json($newCommission);
+        return response()->json($newCommission->load('indicator', 'seller', 'operator'));
     }
 
     public function calculateCommission($product, $value, $commission_percentage)
@@ -122,36 +122,49 @@ class CommissionController extends Controller
         $commission->date_indicator = $request->date_indicator;
         $commission->date_seller = $request->date_seller;
         $commission->date_operator = $request->date_operator;
-        $commission->indicator = $request->indicator;
-        $commission->seller = $request->seller;
-        $commission->operator = $request->operator;
-        $commission->status = $request->status;
+        $commission->indicator_id = $request->indicator_id;
+        $commission->seller_id = $request->seller_id;
+        $commission->operator_id = $request->operator_id;
 
         if ($request->custom_value) {
-            if (($commission->custom_value != $request->custom_value) || ($commission->product != $request->product) || ($commission->commission_percentage != $request->commission_percentage)) {
-                $commissions                      = $this->calculateCommission($request->product, $request->custom_value, $request->commission_percentage);
-                $commission->indicator_commission = $commissions[0];
-                $commission->seller_commission    = $commissions[1];
-                $commission->operator_commission  = $commissions[2];
+            if ($request->status == 'Aprovado UPS') {
+                if (($commission->custom_value != $request->custom_value) || ($commission->product != $request->product) || ($commission->commission_percentage != $request->commission_percentage) || ($commission->status != $request->status)) {
+
+                    $commissions                      = $this->calculateCommission($request->product, $request->custom_value, $request->commission_percentage);
+                    $commission->indicator_commission = $commissions[0];
+                    $commission->seller_commission    = $commissions[1];
+                    $commission->operator_commission  = $commissions[2];
+                }
+            } else if ($commission->status == 'Aprovado UPS') {
+                $commission->indicator_commission = null;
+                $commission->seller_commission    = null;
+                $commission->operator_commission  = null;
             }
             $commission->custom_value = $request->custom_value;
         } else {
-            if (($commission->value != $request->value) || ($commission->product != $request->product) || ($commission->commission_percentage != $request->commission_percentage)) {
-                $commissions                      = $this->calculateCommission($request->product, $request->value, $request->commission_percentage);
-                $commission->indicator_commission = $commissions[0];
-                $commission->seller_commission    = $commissions[1];
-                $commission->operator_commission  = $commissions[2];
+            if ($request->status == 'Aprovado UPS') {
+                if (($commission->value != $request->value) || ($commission->product != $request->product) || ($commission->commission_percentage != $request->commission_percentage) || ($commission->status != $request->status)) {
+                    $commissions                      = $this->calculateCommission($request->product, $request->value, $request->commission_percentage);
+                    $commission->indicator_commission = $commissions[0];
+                    $commission->seller_commission    = $commissions[1];
+                    $commission->operator_commission  = $commissions[2];
+                }
+            } else if ($commission->status == 'Aprovado UPS') {
+                $commission->indicator_commission = null;
+                $commission->seller_commission    = null;
+                $commission->operator_commission  = null;
             }
             if ($commission->custom_value){
                 $commission->custom_value = null;
             }
         }
+        $commission->status = $request->status;
         $commission->commission_percentage = $request->commission_percentage;
         $commission->value = $request->value;
         $commission->product = $request->product;
 
         $commission->save();
-        return response()->json($commission);
+        return response()->json($commission->load('indicator', 'seller', 'operator'));
     }
 
     public function deleteCommission(Commission $commission, Request $request)

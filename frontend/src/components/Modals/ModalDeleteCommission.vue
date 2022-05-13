@@ -37,7 +37,7 @@
             single-line
             sticky
           >
-          <strong>{{item.date_indicator}} - Produto: </strong>{{item.product}}<strong> - Valor</strong> R$ {{item.value}}
+          <strong>Inserido em: </strong>{{created_at_date()}}<strong> Às </strong>{{created_at_time()}}<br><strong>Por: </strong><span v-if="loading_user">Carregando...</span><span v-else>{{user_name}}</span><br><strong>Produto: </strong> {{item.product}}<span v-if="item.value"><br><strong>Valor:</strong> R$ {{item.value}}</span>
           </v-banner>
         </v-card-text>
         <v-card-text class="mt-7" v-else>
@@ -86,7 +86,9 @@ export default {
     data () {
         return {
             dialog: false,
+            loading_user: false,
             loading: false,
+            user_name: '',
             item: {}
         }
     },
@@ -97,16 +99,45 @@ export default {
       },
       commission: function () {
         Object.assign(this.item, this.commission)
+        this.get_info()
       }
     },
     methods: {
+        get_info () {
+          this.loading_user = true
+          this.$http.post('get_users',{where: 'id = ' + this.item.user_id}).then((response)=>{
+            this.user_name = response.data[0].full_name
+            this.loading_user = false
+          })
+        },
         closeModal () {
           this.$emit('closeDeleteModal')    
         },
         deleteCommission () {
           this.loading = true
           this.$emit('deleteCommission', this.item.id)    
+        },
+        created_at_date () {
+        let br_date = ''
+        if (this.item.created_at) {
+          let us_date = this.item.created_at.slice(0,10)
+          let year = us_date.slice(0,4)
+          let month = us_date.slice(5,7)
+          let day = us_date.slice(8)
+          br_date = day + '/' + month + '/' + year  
+        } 
+        return br_date
+      },
+      created_at_time () {
+        let time_formatted = ''
+        if (this.item.created_at) {
+          let time_raw = this.item.created_at.slice(11)
+          let hour = parseInt(time_raw.slice(0,2)) - 3
+          let minute = time_raw.slice(3,5)
+          time_formatted = hour + ':' + minute  
         }
+        return time_formatted
+      }
     }
 }
 </script>
