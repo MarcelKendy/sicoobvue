@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import HomeView from '../views/HomeView.vue'
+import DashboardView from '../views/DashboardView.vue'
 import TasksView from '../views/TasksView.vue'
 import AboutView from '../views/AboutView.vue'
 import LandingView from '../views/LandingView.vue'
@@ -21,8 +22,13 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/tasks',
-    name: 'Tasks',
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: DashboardView
+  },
+  {
+    path: '/checklist',
+    name: 'Checklist',
     component: TasksView
   },
   {
@@ -31,13 +37,13 @@ const routes = [
     component: LandingView
   },
   {
-    path: '/comissao',
-    name: 'Comissão',
+    path: '/comissoes',
+    name: 'Comissões',
     component: CommissionView
   },
   {
     path: '/about',
-    name: 'About',
+    name: 'Sobre',
     component: AboutView
   }
 ]

@@ -22,29 +22,29 @@
                         >
                             <v-icon>{{this.card_active ? 'mdi-close' : 'mdi-plus' }}</v-icon>
                         </v-btn>
-                </v-fab-transition><span class="tooltiptext_plus">{{this.card_active ? 'Close Add' : 'New Task'}}</span>
+                </v-fab-transition><span class="tooltiptext_plus">{{this.card_active ? 'Fechar' : 'Nova Tarefa'}}</span>
                 </div>
                 
             
-                <v-toolbar-title style="padding-left: 20px;font-family: 'Quicksand', sans-serif;"><strong>Tasks List</strong></v-toolbar-title>
+                <v-toolbar-title style="padding-left: 20px;font-family: 'Quicksand', sans-serif;"><strong>CheckList</strong></v-toolbar-title>
                 <div style="padding-left: 40px">
                     <v-tooltip top color="rgb(44, 44, 44)">
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on">mdi-magnify</v-icon>
                         </template>
-                        <span>Search tasks by name or description</span>
+                        <span>Procure suas tarefas por nome ou por descrição</span>
                     </v-tooltip>
                 </div>
                 <div style="padding-left: 18px; padding-top: 20px">
-                    <v-text-field class="search"  placeholder="Search..." :disabled="loading" v-model="search"></v-text-field>  
+                    <v-text-field class="search"  placeholder="Pesquisar..." :disabled="loading" v-model="search"></v-text-field>  
                 </div>      
                 <v-spacer></v-spacer>
                 
                 <div @click="filterDone" v-if="this.$vuetify.breakpoint.name != 'xs'" class="tooltip" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 7px 10px, rgba(0, 0, 0, 0.32) 0px 2px 2px; border-radius: 10px; cursor: pointer;">
-                    <span style="padding-left: 10px;font-family: 'Quicksand', sans-serif;font-weight: bold">{{this.done_filter ? 'Tasks Done ' : 'All Tasks '}}</span>
+                    <span style="padding-left: 10px;font-family: 'Quicksand', sans-serif;font-weight: bold">{{this.done_filter ? 'Tarefas Concluídas ' : 'Todas as tarefas '}}</span>
                     <v-btn :loading="done_filter_loading" icon >
                         <v-icon>{{this.done_filter ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-marked-circle-outline'}}</v-icon>
-                    </v-btn><span class="tooltiptext">{{this.done_filter ? 'Show All Tasks' : 'Show tasks done'}}</span>
+                    </v-btn><span class="tooltiptext">{{this.done_filter ? 'Mostrar tudo' : 'Mostrar concluídas'}}</span>
                 </div>     
                 <v-btn v-else :loading="done_filter_loading" icon @click="filterDone" >
                     <v-icon>{{this.done_filter ? 'mdi-checkbox-marked-circle' : 'mdi-checkbox-marked-circle-outline'}}</v-icon>
@@ -65,7 +65,7 @@
             <div v-else-if="no_tasks" class="mt-16 animate__animated animate__bounceInUp" >
                 <center style="padding-bottom: 60px">
                     <v-icon size="50" color="rgba(18,210,195)">mdi-emoticon-sad</v-icon>
-                    <div style="color: rgba(18,210,195); font-size: 24px;font-weight: bold;font-family: 'Quicksand', sans-serif;">No tasks included</div>
+                    <div style="color: rgba(18,210,195); font-size: 24px;font-weight: bold;font-family: 'Quicksand', sans-serif;">Nenhuma tarefa encontrada</div>
                 </center>
             </div>
             <drop-list v-else :items="items" @reorder="$event.apply(items)">
@@ -88,7 +88,8 @@
             rounded="pill"
             color="red"
             >
-            <strong style="padding-left: 35px" class="white--text">Data has been removed successfully</strong>
+            <v-icon class="pr-3" dark >mdi-alert-circle-check</v-icon>
+            <strong style="padding-left: 35px" class="white--text">Dado removido com sucesso</strong>
         </v-snackbar>
   </div>
 </template>
@@ -221,7 +222,7 @@ export default {
         display: inline-block;
     }
     .tooltip .tooltiptext {
-        font-size: 5px;
+        font-size: 1px;
         visibility: hidden;
         width: 40px;
         background-color: rgb(44, 44, 44);
@@ -234,7 +235,7 @@ export default {
         top: -40px;
         bottom: auto;
         /*right: -10%; */
-        left: 30%;
+        left: 40%;
         opacity: 0;
         transition: 0.3s;
     }
@@ -253,8 +254,8 @@ export default {
         visibility: visible;
         opacity: 0.9;
         width: 140px;
-        right: -10%;
-        left: 0;
+        left: 12%;
+        right: 0;
     }
     .tooltip_plus {
         position: relative;

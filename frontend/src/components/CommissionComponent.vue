@@ -1,8 +1,51 @@
+
 <template>
   <div>
+    <div class="tooltip" style="padding-bottom: 15px; font-weight:700">
+      <v-btn
+          rounded
+          elevation="9"
+          :color="!dark_theme ? 'rgb(36, 0, 121)' : 'yellow lighten-2'"
+          :dark="!dark_theme"
+          @click="dark_theme = !dark_theme"
+          small
+        >
+          <span class="second_font-bold">Tema</span>
+          <v-icon
+            dark
+            right
+          >
+            {{!dark_theme ? 'mdi-weather-night' : 'mdi-white-balance-sunny'}}
+          </v-icon>
+        </v-btn>
+      <span class="tooltiptext">{{!this.dark_theme ? 'Mudar o tema de cores para "dark"' : 'Mudar o tema de cores para "light"'}}</span>
+    </div>
+        
+   <v-tooltip left >
+      <template v-slot:activator="{ on, attrs }" >
+        <v-btn
+          small
+          fixed
+          right
+          color="rgb(0, 209, 94)"
+          dark
+          fab
+          v-bind="attrs"
+          v-on="on"
+          @click="addModal()"
+        >
+          <v-icon >
+            mdi-plus
+          </v-icon>
+        </v-btn>
+      </template>
+      <span>Adicionar</span>
+    </v-tooltip>
+      
     <v-card class="hover-card" outlined shaped>
     <v-card-title :class="dark_theme ? 'title-card-dark' : 'title-card'">
-      Produtos e Comissões
+      <span>Produtos e Comissões</span>
+        
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -14,6 +57,7 @@
       ></v-text-field>
     </v-card-title>
     <v-data-table
+      style="font-weight: bolder"
       :dark="dark_theme"
       class="data-table-commission"
       :loading="loading_commissions"
@@ -67,8 +111,8 @@
             small
             :outlined="!dark_theme"
           >
-            <span v-if="item.value">{{'R$ ' + (+item.value).toFixed(2) }}</span>
-            <span v-else>Aguardando</span>
+            <span v-if="item.value" class="second_font-bold">{{'R$ ' + (+item.value).toFixed(2) }}</span>
+            <span v-else class="second_font">Aguardando</span>
 
           </v-chip>
         
@@ -197,48 +241,6 @@
     <strong style="padding-left: 35px" class="white--text">Dado removido com sucesso</strong>
   </v-snackbar>
   <br>
-  
-  <div class="tooltip">
-    <v-btn
-        rounded
-        elevation="9"
-        :color="!dark_theme ? 'rgb(36, 0, 121)' : 'yellow lighten-2'"
-        :dark="!dark_theme"
-        @click="dark_theme = !dark_theme"
-        small
-      >
-        <strong>Tema</strong>
-        <v-icon
-          dark
-          right
-        >
-          {{!dark_theme ? 'mdi-weather-night' : 'mdi-white-balance-sunny'}}
-        </v-icon>
-      </v-btn>
-    <span class="tooltiptext">{{!this.dark_theme ? 'Mudar o tema de cores para "dark"' : 'Mudar o tema de cores para "light"'}}</span>
-  </div>
-   
-  <v-tooltip left>
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn
-        fixed
-        bottom
-        right
-        color="rgb(0, 209, 94)"
-        dark
-        fab
-        v-bind="attrs"
-        v-on="on"
-        @click="addModal()"
-      >
-        <v-icon >
-          mdi-plus
-        </v-icon>
-      </v-btn>
-    </template>
-    <span>Adicionar</span>
-  </v-tooltip>
-      
 </div>
 </template>
 
@@ -289,7 +291,6 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
     /*computed: {
       commission_print () {
         return item => {
-          console.log(item, 'computed')
           if (item.indicator == item.seller) {
             return item.indicator + ': R$ ' + (item.indicator_commission + item.seller_commission) + ' - ' + item.operator + ': R$ ' + item.operator_commission        
           } else if (item.indicator == item.operator) {
@@ -352,7 +353,6 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
       getCommissions () {
         this.$http.get('get_commissions').then((response)=>{
           this.items = response.data 
-          console.log(this.items)
           this.loading_commissions = false
         })
       },
@@ -372,7 +372,6 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
       addCommission (item) {
         item.user_id = this.$store.state.user.id
         this.$http.post('add_commission', item).then((response)=>{
-          console.log(response.data)
           this.items.push(response.data)
           this.addModal()
           this.snackbar_add = true
@@ -380,15 +379,13 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
       },
       editCommission (item) {
         this.$http.put(`edit_commission/${item.id}`, item).then((response)=>{
-          console.log(response.data)
           this.items = this.items.map(commission => commission.id !== item.id ? commission : response.data)
           this.editModal()
           this.snackbar_edit = true
         })  
       },
       deleteCommission (id) {
-        this.$http.delete(`delete_commission/${id}`).then((response)=>{
-          console.log(response.data)
+        this.$http.delete(`delete_commission/${id}`).then(()=>{
           this.items = this.items.filter(( commission )=>{
             return commission.id !== id  
           })
@@ -480,5 +477,12 @@ import ModalDelete from './Modals/ModalDeleteCommission.vue'
     width: 240px;
     top: 5%;
     left: 105%;
+  }
+  .second_font-bold {
+    font-family: 'Varela Round', sans-serif;
+    font-weight: 700;
+  }
+   .second_font {
+    font-family: 'Varela Round', sans-serif;
   }
 </style>

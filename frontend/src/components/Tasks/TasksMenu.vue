@@ -31,7 +31,8 @@
       rounded="pill"
       color="orange"
     >
-      <strong style="padding-left: 35px" class="white--text">Data has been edited successfully</strong>
+      <v-icon class="pr-3" dark >mdi-check-circle</v-icon>
+      <strong style="padding-left: 35px" class="white--text">Dado editado com sucesso</strong>
     </v-snackbar>  
 </div>
 </template>
@@ -49,7 +50,7 @@ export default {
         {
             icon: 'mdi-pencil',
             color: 'orange',
-            title: 'Edit',
+            title: 'Editar',
             modal: false,
             click () {
                 this.modal = true        
@@ -58,7 +59,7 @@ export default {
         { 
             icon: 'mdi-trash-can', 
             color: 'red',
-            title: 'Delete', 
+            title: 'Deletar', 
             modal: false,
             click () {
                 this.modal = true        

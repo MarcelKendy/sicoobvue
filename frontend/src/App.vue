@@ -32,19 +32,21 @@
           v-for="item in items"
           :key="item.title"
           :to="item.to"
-          link
         >
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
+          
+         
+          <v-list-item-icon >
+            <v-img v-if="item.img" width="10" :src="require('./assets/icons/' + item.img)"></v-img>
+            <v-icon v-else color="rgb(18,150,145)">{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
+
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-
 
 
     <v-app-bar v-if="$route.name != 'Login'"
@@ -77,7 +79,8 @@
     </v-app-bar>
   
 
-    <v-main>
+    <v-main  style="font-family: 'Quicksand', sans-serif;">
+      <bread-crumb-component :activeRoute="this.$route.name"></bread-crumb-component>
       <router-view></router-view>
     </v-main>
     <footer-component v-if="$route.name != 'Login'"></footer-component>
@@ -88,16 +91,18 @@
 import db from '../src/services/localbase'
 import FooterComponent from './components/FooterComponent.vue'
 import UserCard from './components/util/UserCard.vue'
+import BreadCrumbComponent from './components/BreadCrumbComponent.vue'
   export default {
-  components: { FooterComponent, UserCard },
+  components: { FooterComponent, UserCard, BreadCrumbComponent },
     data: () => 
     ({ 
       drawer: false,
       items: [
-          { title: 'Home', icon: 'mdi-view-dashboard', to: '/'},
-          { title: 'Checklist', icon: 'mdi-view-list', to: '/tasks'},
-          { title: 'Comissão', icon: 'mdi-view-list', to: '/comissao'},
-          { title: 'Sobre', icon: 'mdi-help', to: '/about' }
+          { title: 'Home', icon: 'mdi-view-dashboard', img: 'landing-page.png', to: '/'},
+          { title: 'Dashboard', icon: 'mdi-view-dashboard', img: 'dashboard-4.png', to: '/dashboard'},
+          { title: 'Checklist', icon: 'mdi-list-status', img: 'checklist.png', to: '/checklist'},
+          { title: 'Comissões', icon: 'mdi-view-list', img: 'comissao.png', to: '/comissoes'},
+          { title: 'Sobre', icon: 'mdi-help', img: 'about.png', to: '/about' }
       ],
       login_check: false,
       store_ready: false
@@ -107,7 +112,8 @@ import UserCard from './components/util/UserCard.vue'
         immediate: true,
         handler(to) {
           document.title = 'Sicoob Credisg - ' + to.name || 'Sicoob Credisg';
-        }
+        },
+        
       },
       
     },
@@ -130,7 +136,7 @@ import UserCard from './components/util/UserCard.vue'
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Asap+Condensed:ital@1&family=Bebas+Neue&family=Concert+One&family=Courgette&family=Dancing+Script:wght@500&family=Fredoka+One&family=Pacifico&family=Parisienne&family=Patrick+Hand&family=Permanent+Marker&family=Press+Start+2P&family=Quicksand&family=Satisfy&family=Shadows+Into+Light&family=Yanone+Kaffeesatz:wght@600&display=swap');
+
 /*
 font-family: 'Asap Condensed', sans-serif;
 font-family: 'Bebas Neue', cursive;

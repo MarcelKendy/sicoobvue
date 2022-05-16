@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div  style="font-weight: bold">
     
     <v-list-item
       :class="item.done ? 'blue lighten-4 hover-list' : 'hover-list'"
@@ -47,9 +47,8 @@ export default {
     },
     doneTask() {
       this.item.done = !this.item.done
-      this.$http.put(`done_task/${this.item.id}`, this.item).then((response)=>{
+      this.$http.put(`done_task/${this.item.id}`, this.item).then(()=>{
         this.$emit('doneEdited', this.item.id)
-        console.log(response.data) 
       })     
     }
   }

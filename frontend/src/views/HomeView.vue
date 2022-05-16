@@ -1,16 +1,16 @@
 <template>
-  <dashboard-component />
+  <home-component />
 </template>
 
 <script>
-  import DashboardComponent from '../components/DashboardComponent'
+  import HomeComponent from '../components/HomeComponent'
 
 
   export default {
     name: 'HomeView',
 
     components: {
-      DashboardComponent
+      HomeComponent
     },
   }
 </script>

@@ -1,15 +1,15 @@
 <template>
   <v-container>
-    <v-row >
-      <v-col cols="12" align="center" class="mg-auto" >
+    <v-row class="text-center">
+      <v-col cols="12"  align="center" class="mg-auto" >
         <v-img
-          :src="require('../assets/icons/dashboard-1.png')"
+          :src="require('../assets/icons/landing-page.png')"
+
           width="200"
         />
        
       </v-col>
-</v-row>
-<v-row class="text-center" justify="center" align="center">
+
       <v-col class="mb-4">
         <h1 class="display-2 font-weight-bold mb-3">
           Bem Vindo
@@ -25,7 +25,7 @@
         cols="12"
       >
         <h2 class="headline font-weight-bold mb-3">
-          Aqui será a tela de Dashboard 
+          Aqui será a tela Home/Inicial do sistema
         </h2>
       </v-col>
       <v-col
@@ -126,7 +126,7 @@
 
 <script>
   export default {
-    name: 'DashboardComponent',
+    name: 'HomeComponent',
 
     data: () => ({
       ecosystem: [

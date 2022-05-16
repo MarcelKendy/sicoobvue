@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\LogLogin;
 
 class UserController extends Controller
 {
@@ -26,10 +27,21 @@ class UserController extends Controller
     }
 
     public function getUser (Request $request) {
-        $match = ['email' => $request->email, 'password' => $request->password];
+        $match = ['email' => $request->email];
         $user = User::where($match)->get();
-        $user[0]['accesses'] = json_decode($user[0]['accesses']);
-        return response()->json($user);
+        if (isset($user[0]['password'])) {
+            if (password_verify($request->password, $user[0]['password'])) {
+                $user[0]['accesses'] = json_decode($user[0]['accesses']);
+                $log_login = new LogLogin();
+                $log_login->user_id = $user[0]['id'];
+                $log_login->save();
+                return response()->json($user);
+            } else {
+                return 505;
+            }
+        } else {
+            return 404;
+        }
     }
 
     public function getUserPassword (Request $request) {
@@ -44,8 +56,8 @@ class UserController extends Controller
         $newUser->full_name = $request->firstName.' '.$request->lastName;
         $newUser->email = $request->email;
         $newUser->cpf = $request->cpf;
-        $newUser->password = $request->password;
-        $accesses = json_encode(array('commissions' => 'operator'));
+        $newUser->password = password_hash($request->password, PASSWORD_DEFAULT);
+        $accesses = json_encode(array('commissions' => 'basic'));
         $newUser->accesses = $accesses;
         $newUser->save();
         return response()->json($newUser);

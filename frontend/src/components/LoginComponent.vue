@@ -23,7 +23,7 @@
                                         </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col class="d-flex" cols="12" sm="4" xsm="12" align-end>
-                                            <v-btn x-large block :disabled="!validLogin" :loading="loading_btn" class="white--text btn btn-3" :color="color_default" @click="validate('login')"> Login </v-btn>
+                                            <v-btn x-large block :disabled="!validLogin" :loading="loading_btn" class="white--text btn btn-3" :color="color_default" @click="validate('login')"><strong> Login </strong></v-btn>
                                         </v-col>
                                     </v-row>
                                 </v-form>
@@ -73,7 +73,7 @@
                                         </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col class="d-flex ml-auto" cols="12" sm="4" xsm="12">
-                                            <v-btn x-large block :disabled="!validRegister" :loading="loading_btn" class="white--text btn btn-3" :color="color_default" @click="validate('register')">Salvar</v-btn>
+                                            <v-btn x-large block :disabled="!validRegister" :loading="loading_btn" class="white--text btn btn-3" :color="color_default" @click="validate('register')"><strong>Salvar</strong></v-btn>
                                         </v-col>
                                     </v-row>
                                 </v-form>
@@ -89,7 +89,7 @@
                   color="red"
                 >
                   <v-icon class="pr-3" dark >mdi-alert</v-icon>
-                  <strong style="padding-left: 35px" class="white--text">Dados de Login inválidos</strong>
+                  <strong style="padding-left: 35px" class="white--text">{{error_login}}</strong>
                 </v-snackbar>
                 <v-snackbar
                   v-model="register_succeeded"
@@ -122,66 +122,13 @@ import ForgotPassword from './mail/ForgotPassword.vue';
   export default {
   components: { ForgotPassword },
     name: 'LoginComponent',
-    computed: {
-      matchPasswords() {
-        return this.formRegister.password === this.formRegister.verify || "As senhas não coincidem";
-      },
-       logged_user() {
-          return this.$store.state.user    
-      },
-    },
-    methods: {
-      validate(form) {
-        if (form == 'login') {
-          if (this.$refs.loginForm.validate()) {
-            this.validLogin = false
-            this.loading_btn = true
-            this.$http.post('get_user', this.formLogin).then((response)=>{
-              if (response.data.length) {
-                this.$store.dispatch('login', response.data[0]).then(
-                  this.$router.push('/')
-                )
-              } else {
-                this.loading_btn = false
-                this.invalid_credentials = true
-                this.validLogin = true
-              }
-            })
-          }  
-        } else {
-          if (this.$refs.registerForm.validate()) {
-            this.validRegister = false
-            this.loading_btn = true
-            this.$http.post('add_user', this.formRegister).then(()=>{
-              this.loading_btn = false
-              this.tab = '1'
-              this.register_succeeded = true
-              this.formRegister = {firstName: "", lastName: "", email: "", cpf: "", password: "", verify: ""}
-              this.$refs.registerForm.reset()
-            })
-          }  
-        }
-      },
-      reset() {
-        this.$refs.form.reset();
-      },
-      resetValidation() {
-        this.$refs.form.resetValidation();
-      },
-      emailSuccess () {
-        this.closeModalMail()
-        this.success_mail = true
-      },
-      closeModalMail () {
-        this.modal_mail = false
-      }
-    },
-    data: () => ({
+     data: () => ({
       tab: 0,
       tabs: [
           {name:"Login", icon:"mdi-account"},
           {name:"Cadastro", icon:"mdi-account-outline"}
       ],
+      error_login: '',
       validLogin: true,
       validRegister: true,
       show1: false,
@@ -233,8 +180,69 @@ import ForgotPassword from './mail/ForgotPassword.vue';
       rules: {
         verifyPasswordRule: value => !!value || "Confirme a sua senha"
       }
-    })
-    
+    }),
+    computed: {
+      matchPasswords() {
+        return this.formRegister.password === this.formRegister.verify || "As senhas não coincidem";
+      },
+       logged_user() {
+          return this.$store.state.user    
+      },
+    },
+    methods: {
+      validate(form) {
+        if (form == 'login') {
+          if (this.$refs.loginForm.validate()) {
+            this.validLogin = false
+            this.loading_btn = true
+            this.$http.post('get_user', this.formLogin).then((response)=>{
+              if (response.data == 404) {
+                this.error_login = 'Esse Email não está cadastrado'
+                this.loading_btn = false
+                this.invalid_credentials = true
+                this.validLogin = true
+              } else {
+                if (response.data == 505) {
+                  this.error_login = 'Senha incorreta'
+                  this.loading_btn = false
+                  this.invalid_credentials = true
+                  this.validLogin = true
+                } else {
+                  this.$store.dispatch('login', response.data[0]).then(
+                    this.$router.push('/')
+                  )
+                }
+              }
+            })
+          }  
+        } else {
+          if (this.$refs.registerForm.validate()) {
+            this.validRegister = false
+            this.loading_btn = true
+            this.$http.post('add_user', this.formRegister).then(()=>{
+              this.loading_btn = false
+              this.tab = '1'
+              this.register_succeeded = true
+              this.formRegister = {firstName: "", lastName: "", email: "", cpf: "", password: "", verify: ""}
+              this.$refs.registerForm.reset()
+            })
+          }  
+        }
+      },
+      reset() {
+        this.$refs.form.reset();
+      },
+      resetValidation() {
+        this.$refs.form.resetValidation();
+      },
+      emailSuccess () {
+        this.closeModalMail()
+        this.success_mail = true
+      },
+      closeModalMail () {
+        this.modal_mail = false
+      }
+    }
   }
 </script>
 <style scoped>

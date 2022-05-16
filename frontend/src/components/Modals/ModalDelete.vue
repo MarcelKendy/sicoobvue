@@ -7,11 +7,11 @@
     > 
       <v-card>
         <v-card-title class="text-h5">
-          Delete
+          Deletar
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text class="mt-4">
-          Are you sure that you want to delete the task "{{this.item.title}}" ?      
+          Você tem certeza que deseja deletar a tarefa "{{this.item.title}}" ?      
         </v-card-text>
          
         <v-card-actions>
@@ -21,14 +21,14 @@
             text
             @click="$emit('closeModalDelete')"
           >
-            Cancel
+            Cancelar
           </v-btn>
           <v-btn
             color="red darken-1"
             text
             @click="deleteTask"
           >
-            Delete
+            Deletar
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -47,13 +47,11 @@ export default {
         
     },
     created() {
-        Object.assign(this.item, this.task);
+        Object.assign(this.item, this.task)
     },
     methods: {
         deleteTask () {
-            //this.$store.dispatch('deleteTask', this.item.id)
-            this.$http.delete(`delete_task/${this.item.id}`).then((response)=>{
-              console.log(response.data)
+            this.$http.delete(`delete_task/${this.item.id}`).then(()=>{
               this.$emit('taskDeleted', this.item.id)
               this.$emit('closeModalDelete')    
             })  

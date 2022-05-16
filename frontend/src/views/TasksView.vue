@@ -10,16 +10,16 @@
               shaped
               class="hover-card"
             >
-              <v-card-title class="title-card" style="font-family: 'Quicksand', sans-serif;"><strong>Add a New Task:</strong></v-card-title>
-              <v-card-subtitle style="font-family: 'Quicksand', sans-serif;"><strong> Fill the information and click "Confirm", or press "enter"</strong></v-card-subtitle>
+              <v-card-title class="title-card" style="font-family: 'Quicksand', sans-serif;"><strong>Adicionar uma nova Tarefa:</strong></v-card-title>
+              <v-card-subtitle style="font-family: 'Quicksand', sans-serif;"><strong> Insira os dados e clique em "Confirmar" ou aperte "enter"</strong></v-card-subtitle>
               <v-card-text>
                 <v-col
                   cols="12"
                 >
                   <v-text-field
                     color="success"
-                    label="Task name"
-                    placeholder="Type the name"
+                    label="Nome"
+                    placeholder="Insira o nome"
                     outlined
                     v-model="new_task.title"
                     dense
@@ -27,8 +27,8 @@
                   ></v-text-field>
                   <v-text-field
                     color="success"
-                    label="Description"
-                    placeholder="Type the description"
+                    label="Descrição"
+                    placeholder="Insira a descrição"
                     outlined
                     v-model="new_task.subtitle"
                     dense
@@ -43,7 +43,7 @@
                   color="success"
                   @click="addTask"
                 >
-                  <span>Confirm</span>    
+                  <span>Confirmar</span>    
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -61,17 +61,15 @@
       rounded="pill"
       color="success"
     >
-      <strong style="padding-left: 35px" class="white--text">{{ text_included }}</strong>
+      <v-icon class="pr-3" dark >mdi-check-circle</v-icon>
+      <strong style="padding-left: 35px" class="white--text">Dado salvo com sucesso</strong>
     </v-snackbar>
       
   </div>
 </template>
 
 <script>
-//<v-icon size="100" color="red lighten-1">mdi-emoticon-sad</v-icon> <v-img src="../assets/images/thamaraespeio.png" max-width="100px" max-height="150px"></v-img>
-// <div v-else>
-//      <tile color="#03fca9"></tile>
-//</div>
+
  import TasksList from '../components/Tasks/TasksList.vue'
   export default {
     name: 'TasksView',
@@ -84,7 +82,6 @@
         items: [],
         snackbarActivate: false,
         show_card: false,
-        text_included: 'Data has been saved successfully!',
         loading_tasks: true
       }
     },
@@ -92,7 +89,6 @@
       addTask () {
         //this.$store.dispatch('addTask', this.new_task) 
         this.$http.post('add_task', this.new_task).then((response)=>{
-          console.log(response.data)
           this.items.push(response.data)
           this.snackbarActivate = true
         })

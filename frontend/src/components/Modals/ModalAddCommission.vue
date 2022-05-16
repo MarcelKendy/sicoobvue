@@ -164,7 +164,7 @@
               label="Vendedor"
               :color="color"
               prepend-icon="mdi-account-tie-voice"
-              :rules="requiredSellerRule"
+              :rules="sellerRule"
               placeholder="Enter para confirmar"
               v-model="item.seller_id"
               :items="users"
@@ -272,7 +272,7 @@
               label="Operador"
               :color="color"
               prepend-icon="mdi-account-tie"
-              :rules="requiredOperatorRule"
+              :rules="operatorRule"
               placeholder="Enter para confirmar"
               v-model="item.operator_id"
               :items="users"
@@ -412,6 +412,12 @@ export default {
             ],
             valueRule: [
               v => ((!!v && (parseFloat(this.item.value) > 0 || "O valor não pode ser 0")) || (this.item.status == 'Aguardando Venda' || this.item.status == 'Venda não Realizada' || this.item.status == '' )) || "O status selecionado indica que a venda foi operada, então essa informação é obrigatória"
+            ],
+            sellerRule: [
+              v => ((!!v && (this.item.seller_id != this.item.operator_id || "O vendedor e o operador devem ser distintos")) || (this.item.status == 'Aguardando Venda' || this.item.status == 'Venda não Realizada' || this.item.status == '' )) || "O status selecionado indica que a venda foi operada, então essa informação é obrigatória"
+            ],
+            operatorRule: [
+              v => ((!!v && (this.item.operator_id != this.item.seller_id || "O operador e o vendedor devem ser distintos")) || (this.item.status != 'Recusado UPS' && this.item.status != 'Aprovado UPS' )) || "O status selecionado indica que a venda foi operada, então essa informação é obrigatória"
             ]
         }
         
