@@ -100,7 +100,7 @@
               }
             ]  
           break
-          default:
+          case 'Home':
             this.items = [
               {
                 text: 'Home',
@@ -108,7 +108,7 @@
                 disabled: true,
                 href: '/',
               }
-            ]
+            ]  
           break
         }
       }

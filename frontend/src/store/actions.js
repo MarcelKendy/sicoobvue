@@ -55,7 +55,8 @@ export default {
         if (data) { 
               db.collection('user').add({
                 id: data.id, 
-                name: data.name, 
+                name: data.name,
+                role: data.role,  
                 full_name: data.full_name,
                 cpf: data.cpf, 
                 email: data.email,

@@ -90,7 +90,7 @@
 <script>
 import db from '../src/services/localbase'
 import FooterComponent from './components/FooterComponent.vue'
-import UserCard from './components/util/UserCard.vue'
+import UserCard from './components/UserCard.vue'
 import BreadCrumbComponent from './components/BreadCrumbComponent.vue'
   export default {
   components: { FooterComponent, UserCard, BreadCrumbComponent },

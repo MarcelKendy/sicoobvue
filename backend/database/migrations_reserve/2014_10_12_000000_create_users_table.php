@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('full_name');
+            $table->string('role');
             $table->string('cpf')->unique();
             $table->string('email')->unique();
             $table->string('photo')->nullable();

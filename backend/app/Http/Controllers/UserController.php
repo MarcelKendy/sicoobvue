@@ -56,6 +56,7 @@ class UserController extends Controller
         $newUser->full_name = $request->firstName.' '.$request->lastName;
         $newUser->email = $request->email;
         $newUser->cpf = $request->cpf;
+        $newUser->role = $request->role;
         $newUser->password = password_hash($request->password, PASSWORD_DEFAULT);
         $accesses = json_encode(array('commissions' => 'basic'));
         $newUser->accesses = $accesses;
@@ -65,14 +66,16 @@ class UserController extends Controller
 
     public function editUser (User $user, Request $request) {
         $user->name = $request->name;
-        $user->full_name = $request->full_name;
+        $user->full_name = $request->name.' '.$request->last_name;
         $user->email = $request->email;
         $user->cpf = $request->cpf;
+        $user->role = $request->role;
         if (isset($request->password)) {
-            $user->password = $request->password;
+            $user->password = password_hash($request->password, PASSWORD_DEFAULT);
         }
         if (isset($request->accesses)) {
-            $user->accesses = $request->accesses;
+            $accesses = json_encode($request->accesses);
+            $user->accesses = $accesses;
         }
 
         $user->save();

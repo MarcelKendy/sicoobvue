@@ -65,6 +65,9 @@
                                             />
                                             
                                         </v-col>
+                                         <v-col cols="12">
+                                            <v-text-field v-model="formRegister.role" :rules="requiredRule" label="Cargo na Cooperativa" :color="color_default" name="register_role" maxlength="50" required></v-text-field>
+                                        </v-col>
                                         <v-col cols="12">
                                             <v-text-field v-model="formRegister.password" :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" :rules="passwordRule" :type="show2 ? 'text' : 'password'" name="register_password" label="Senha" hint="No mínimo 5 caracteres" counter :color="color_default" @click:append="show2 = !show2"></v-text-field>
                                         </v-col>
@@ -148,6 +151,7 @@ import ForgotPassword from './mail/ForgotPassword.vue';
         lastName: "",
         email: "",
         cpf: "",
+        role: "",
         password: "",
         verify: ""
       },
@@ -159,7 +163,9 @@ import ForgotPassword from './mail/ForgotPassword.vue';
       ],
       passwordRule: [
         v => !!v || "Digite sua senha",
-        v => (v && v.length >= 5) || "No mínimo 5 caracteres"
+        v => (v && v.length >= 5) || "No mínimo 5 caracteres",
+        v => /[0-9]/.test(v) || "É necessário ao menos um número",
+        v => /\W|_/.test(v) || "É necessário ao menos um caracter especial"
       ],
       requiredRule: [
         v => !!v || "Essa informação é obrigatória"
@@ -223,7 +229,7 @@ import ForgotPassword from './mail/ForgotPassword.vue';
               this.loading_btn = false
               this.tab = '1'
               this.register_succeeded = true
-              this.formRegister = {firstName: "", lastName: "", email: "", cpf: "", password: "", verify: ""}
+              this.formRegister = {firstName: "", lastName: "", role: "", email: "", cpf: "", password: "", verify: ""}
               this.$refs.registerForm.reset()
             })
           }  
@@ -276,7 +282,7 @@ import ForgotPassword from './mail/ForgotPassword.vue';
   padding: 30px;
   text-align: center;
   text-transform: uppercase;
-  transition: 0.5s;
+  transition: 0.2s;
   background-size: 200% auto;
   color: white;
   text-shadow: 0px 0px 10px rgba(0,0,0,0.2);
@@ -298,7 +304,7 @@ import ForgotPassword from './mail/ForgotPassword.vue';
 <style lang="scss">
   
 
-  .gamer-border {
+.gamer-border {
 	--angle: 0deg;
 	
 	border: 2px solid;
