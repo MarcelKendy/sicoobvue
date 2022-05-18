@@ -3,14 +3,13 @@
 </template>
 
 <script>
-  import HomeComponent from '../components/HomeComponent'
+import HomeComponent from "../components/HomeComponent";
 
+export default {
+  name: "HomeView",
 
-  export default {
-    name: 'HomeView',
-
-    components: {
-      HomeComponent
-    },
-  }
+  components: {
+    HomeComponent,
+  },
+};
 </script>

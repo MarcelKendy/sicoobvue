@@ -1,21 +1,19 @@
 <template>
-<div>
-  <v-container>
-    <commission-component></commission-component>
-  </v-container>
-</div>
-  
+  <div>
+    <v-container>
+      <commission-component></commission-component>
+    </v-container>
+  </div>
 </template>
 
 <script>
-  import CommissionComponent from '../components/CommissionComponent.vue'
+import CommissionComponent from "../components/CommissionComponent.vue";
 
+export default {
+  name: "CommissionView",
 
-  export default {
-    name: 'CommissionView',
-
-    components: {
-      CommissionComponent
-    },
-  }
+  components: {
+    CommissionComponent,
+  },
+};
 </script>

@@ -65,21 +65,22 @@ class UserController extends Controller
     }
 
     public function editUser (User $user, Request $request) {
-        $user->name = $request->name;
-        $user->full_name = $request->name.' '.$request->last_name;
+        $name = substr($request->full_name, 0, strpos($request->full_name, " "));
+        $user->name = $name;
+        $user->full_name = $request->full_name;
         $user->email = $request->email;
         $user->cpf = $request->cpf;
         $user->role = $request->role;
-        if (isset($request->password)) {
+        if (isset($request->password) && !empty($request->password)) {
             $user->password = password_hash($request->password, PASSWORD_DEFAULT);
         }
-        if (isset($request->accesses)) {
-            $accesses = json_encode($request->accesses);
-            $user->accesses = $accesses;
+        if (isset($request->accesses) && !empty($request->accesses)) {
+            $user->accesses = json_encode($request->accesses);
         }
 
         $user->save();
-        return response()->json($request);
+        $user->accesses = json_decode($user->accesses);
+        return response()->json($user);
     }
 
     public function deleteUser (User $user, Request $request) {

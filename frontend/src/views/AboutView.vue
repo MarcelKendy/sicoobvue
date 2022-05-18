@@ -1,17 +1,15 @@
 <template>
-
-<about-component />
-
+  <about-component />
 </template>
 
 <script>
-  import AboutComponent from '../components/AboutComponent'
+import AboutComponent from "../components/AboutComponent";
 
-  export default {
-    name: 'AboutView',
+export default {
+  name: "AboutView",
 
-    components: {
-      AboutComponent,
-    },
-  }
+  components: {
+    AboutComponent,
+  },
+};
 </script>

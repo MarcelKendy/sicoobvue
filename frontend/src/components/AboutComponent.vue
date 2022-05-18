@@ -1,16 +1,11 @@
 <template>
-<div>
-
-
-</div>
+  <div></div>
 </template>
 
 <script>
-  export default {
-    name: 'AboutComponent',
+export default {
+  name: "AboutComponent",
 
-    data: () => ({
-      
-    }),
-  }
+  data: () => ({}),
+};
 </script>

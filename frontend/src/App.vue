@@ -1,55 +1,53 @@
 <template>
   <v-app id="inspire" v-if="login_check">
-   <v-navigation-drawer v-model="drawer" v-if="$route.name != 'Login'" app>
-     <v-img height="236px" src="./assets/images/bg1.png" gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)" dark class="pt-5 text-center">
-      <v-avatar
-        size="80px">
-                  <img
-                    alt="Avatar"
-                    src="./assets/images/logo.png"
-                    
-                  >
-        </v-avatar>
-      <v-list-item>
-        
-        <v-list-item-content style="padding-top:40px">
-          <v-list-item-title style="font-family: 'Quicksand', sans-serif; font-size:24px">
-            <strong>Sicoob Credisg</strong>
-          </v-list-item-title>
-          <v-list-item-subtitle  style="font-family: 'Patrick Hand', cursive;font-size:18px">
-            Software
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-     </v-img>
-    <v-divider></v-divider>
-
-      <v-list
-        dense
-        nav
+    <v-navigation-drawer v-model="drawer" v-if="$route.name != 'Login'" app>
+      <v-img
+        height="236px"
+        src="./assets/images/bg1.png"
+        gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)"
+        dark
+        class="pt-5 text-center"
       >
-        <v-list-item
-          v-for="item in items"
-          :key="item.title"
-          :to="item.to"
-        >
-          
-         
-          <v-list-item-icon >
-            <v-img v-if="item.img" width="10" :src="require('./assets/icons/' + item.img)"></v-img>
+        <v-avatar size="80px">
+          <img alt="Avatar" src="./assets/images/logo.png" />
+        </v-avatar>
+        <v-list-item>
+          <v-list-item-content style="padding-top: 40px">
+            <v-list-item-title
+              style="font-family: 'Quicksand', sans-serif; font-size: 24px"
+            >
+              <strong>Sicoob Credisg</strong>
+            </v-list-item-title>
+            <v-list-item-subtitle
+              style="font-family: 'Patrick Hand', cursive; font-size: 18px"
+            >
+              Software
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-img>
+      <v-divider></v-divider>
+
+      <v-list dense nav>
+        <v-list-item v-for="item in items" :key="item.title" :to="item.to">
+          <v-list-item-icon>
+            <v-img
+              v-if="item.img"
+              width="10"
+              :src="require('./assets/icons/' + item.img)"
+            ></v-img>
             <v-icon v-else color="rgb(18,150,145)">{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
-
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
-
-    <v-app-bar v-if="$route.name != 'Login'"
+    <v-app-bar
+      v-if="$route.name != 'Login'"
       shrink-on-scroll
       app
       color="rgba(18,210,175,.9)"
@@ -67,20 +65,25 @@
 
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      
-      <strong style="padding-left: 20px;padding-top: 3px;font-family: 'Quicksand', sans-serif;font-size: 24px;">Bem Vindo</strong>
-      
-      
+      <strong
+        style="
+          padding-left: 20px;
+          padding-top: 3px;
+          font-family: 'Quicksand', sans-serif;
+          font-size: 24px;
+        "
+        >Bem Vindo</strong
+      >
 
       <v-spacer></v-spacer>
 
-      
-      <user-card/>
+      <user-card />
     </v-app-bar>
-  
 
-    <v-main  style="font-family: 'Quicksand', sans-serif;">
-      <bread-crumb-component :activeRoute="this.$route.name"></bread-crumb-component>
+    <v-main style="font-family: 'Quicksand', sans-serif">
+      <bread-crumb-component
+        :activeRoute="this.$route.name"
+      ></bread-crumb-component>
       <router-view></router-view>
     </v-main>
     <footer-component v-if="$route.name != 'Login'"></footer-component>
@@ -88,55 +91,74 @@
 </template>
 
 <script>
-import db from '../src/services/localbase'
-import FooterComponent from './components/FooterComponent.vue'
-import UserCard from './components/UserCard.vue'
-import BreadCrumbComponent from './components/BreadCrumbComponent.vue'
-  export default {
+import db from "../src/services/localbase";
+import FooterComponent from "./components/FooterComponent.vue";
+import UserCard from "./components/UserCard.vue";
+import BreadCrumbComponent from "./components/BreadCrumbComponent.vue";
+export default {
   components: { FooterComponent, UserCard, BreadCrumbComponent },
-    data: () => 
-    ({ 
-      drawer: false,
-      items: [
-          { title: 'Home', icon: 'mdi-view-dashboard', img: 'landing-page.png', to: '/'},
-          { title: 'Dashboard', icon: 'mdi-view-dashboard', img: 'dashboard-4.png', to: '/dashboard'},
-          { title: 'Checklist', icon: 'mdi-list-status', img: 'checklist.png', to: '/checklist'},
-          { title: 'Comissões', icon: 'mdi-view-list', img: 'comissao.png', to: '/comissoes'},
-          { title: 'Sobre', icon: 'mdi-help', img: 'about.png', to: '/about' }
-      ],
-      login_check: false,
-      store_ready: false
-    }),
-    watch: {
-      $route: {
-        immediate: true,
-        handler(to) {
-          document.title = 'Sicoob Credisg - ' + to.name || 'Sicoob Credisg';
-        },
-        
+  data: () => ({
+    drawer: false,
+    items: [
+      {
+        title: "Home",
+        icon: "mdi-view-dashboard",
+        img: "landing-page.png",
+        to: "/",
       },
-      
+      {
+        title: "Dashboard",
+        icon: "mdi-view-dashboard",
+        img: "dashboard-4.png",
+        to: "/dashboard",
+      },
+      {
+        title: "Checklist",
+        icon: "mdi-list-status",
+        img: "checklist.png",
+        to: "/checklist",
+      },
+      {
+        title: "Comissões",
+        icon: "mdi-view-list",
+        img: "comissao.png",
+        to: "/comissoes",
+      },
+      { title: "Sobre", icon: "mdi-help", img: "about.png", to: "/about" },
+    ],
+    login_check: false,
+    store_ready: false,
+  }),
+  watch: {
+    $route: {
+      immediate: true,
+      handler(to) {
+        document.title = "Sicoob Credisg - " + to.name || "Sicoob Credisg";
+      },
     },
-    mounted () {
-      this.verifyLoggedUser()
+  },
+  mounted() {
+    this.verifyLoggedUser();
+  },
+  methods: {
+    verifyLoggedUser() {
+      db.collection("user")
+        .limit(1)
+        .get()
+        .then((user) => {
+          if (!user.length && this.$route.name != "Login") {
+            this.$router.push("/login");
+          }
+          this.$store.state.user = {};
+          Object.assign(this.$store.state.user, user[0]);
+          this.login_check = true;
+        });
     },
-    methods: {
-       verifyLoggedUser () {
-         db.collection('user').limit(1).get().then(user => {
-          if (!user.length && this.$route.name != 'Login') {
-            this.$router.push('/login')
-          } 
-          this.$store.state.user = {}
-          Object.assign(this.$store.state.user, (user[0]))
-          this.login_check = true
-        })  
-       }
-    },
-  }
+  },
+};
 </script>
 
 <style>
-
 /*
 font-family: 'Asap Condensed', sans-serif;
 font-family: 'Bebas Neue', cursive;

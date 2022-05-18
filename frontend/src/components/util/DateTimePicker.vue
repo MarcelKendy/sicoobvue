@@ -25,16 +25,23 @@
           <v-tabs v-model="tabs" fixed-tabs>
             <v-tabs-slider color="black"></v-tabs-slider>
             <v-tab href="#pick-date" class="primary--text">
-              <v-icon :color="tabs == 'pick-date' ? color : 'gray'">mdi-calendar</v-icon>
+              <v-icon :color="tabs == 'pick-date' ? color : 'gray'"
+                >mdi-calendar</v-icon
+              >
             </v-tab>
 
             <v-tab href="#pick-time" class="primary--text">
-              <v-icon :color="tabs == 'pick-time' ? color : 'gray'">mdi-clock</v-icon>
+              <v-icon :color="tabs == 'pick-time' ? color : 'gray'"
+                >mdi-clock</v-icon
+              >
             </v-tab>
           </v-tabs>
           <v-tabs-items v-model="tabs">
             <v-tab-item value="pick-date">
-              <v-date-picker :color="color" v-model="datePicker"></v-date-picker>
+              <v-date-picker
+                :color="color"
+                v-model="datePicker"
+              ></v-date-picker>
             </v-tab-item>
             <v-tab-item value="pick-time">
               <v-time-picker
@@ -47,7 +54,9 @@
           </v-tabs-items>
           <v-card-text> </v-card-text>
           <v-card-actions class="justify-end">
-            <v-btn text :color="color" @click="clear()" v-if="clearable">Limpar</v-btn>
+            <v-btn text :color="color" @click="clear()" v-if="clearable"
+              >Limpar</v-btn
+            >
             <v-btn text :color="color" @click="dialog.value = false">OK</v-btn>
           </v-card-actions>
         </v-card>
@@ -63,11 +72,10 @@ export default {
   data() {
     return {
       dialog: false,
-      datePicker: '',
-      timePicker: '',
-      tabs: 'pick-date',
-      value_mutable: this.value
-    
+      datePicker: "",
+      timePicker: "",
+      tabs: "pick-date",
+      value_mutable: this.value,
     };
   },
   props: {
@@ -78,8 +86,8 @@ export default {
     rules: {
       required: false,
       default: function () {
-         return [v => !!v || "Essa informação é obrigatória"]
-      } ,
+        return [(v) => !!v || "Essa informação é obrigatória"];
+      },
     },
     required: {
       required: false,
@@ -100,12 +108,12 @@ export default {
     color: {
       required: false,
       type: [String],
-      default: 'blue'
+      default: "blue",
     },
     prependIcon: {
       required: false,
       type: [String],
-      default: 'mdi-calendar-clock'
+      default: "mdi-calendar-clock",
     },
     updateComponent: {
       required: false,
@@ -115,48 +123,48 @@ export default {
   watch: {
     datePicker: function () {
       if (this.timePicker) {
-        this.$emit('input', this.datePicker + ' ' + this.timePicker)
-        this.value_mutable = this.datePicker + ' ' + this.timePicker
+        this.$emit("input", this.datePicker + " " + this.timePicker);
+        this.value_mutable = this.datePicker + " " + this.timePicker;
       } else {
-        this.$set(this, "tabs", "pick-time")
+        this.$set(this, "tabs", "pick-time");
       }
     },
     timePicker: function () {
       if (this.datePicker) {
-        this.$emit('input', this.datePicker + ' ' + this.timePicker)
-        this.value_mutable = this.datePicker + ' ' + this.timePicker
+        this.$emit("input", this.datePicker + " " + this.timePicker);
+        this.value_mutable = this.datePicker + " " + this.timePicker;
       } else {
         this.$set(this, "tabs", "pick-date");
       }
     },
     updateComponent: function () {
       if (this.updateComponent) {
-        this.value_mutable = this.value
+        this.value_mutable = this.value;
         if (this.value_mutable) {
-          this.updateValue()
+          this.updateValue();
         }
       } else {
-        this.clear()
-      } 
-    }
+        this.clear();
+      }
+    },
   },
   methods: {
-    updateValue () {
-      let date = this.value_mutable.slice(0,10)
-      let time = this.value_mutable.slice(11,17)
-      this.datePicker = date
-      this.timePicker = time
+    updateValue() {
+      let date = this.value_mutable.slice(0, 10);
+      let time = this.value_mutable.slice(11, 17);
+      this.datePicker = date;
+      this.timePicker = time;
       this.$set(this, "datePicker", date);
       this.$set(this, "timePicker", time);
     },
     clear() {
-      this.value_mutable = ''
-      this.$emit('resetValidation')
-      this.datePicker = '';
-      this.timePicker = '';
-      this.$set(this, 'datePicker', null);
-      this.$set(this, 'timePicker', null);
-      this.$emit('input', null);
+      this.value_mutable = "";
+      this.$emit("resetValidation");
+      this.datePicker = "";
+      this.timePicker = "";
+      this.$set(this, "datePicker", null);
+      this.$set(this, "timePicker", null);
+      this.$emit("input", null);
     },
   },
   mounted() {
@@ -171,7 +179,6 @@ export default {
       this.$set(this, "timePicker", time);
       this.$emit("input", date + " " + time);
     }
-  }
-  
+  },
 };
 </script>

@@ -58,6 +58,7 @@ export default {
                 name: data.name,
                 role: data.role,  
                 full_name: data.full_name,
+                last_name: data.full_name.slice(data.full_name.indexOf(' ') + 1),
                 cpf: data.cpf, 
                 email: data.email,
                 accesses: data.accesses
@@ -65,5 +66,5 @@ export default {
                 commit('getUser')
               })
         }
-      }
+      } 
 }

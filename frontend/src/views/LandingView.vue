@@ -1,8 +1,5 @@
 <template>
   <div>
-
- 
-    
     <v-main class="pt-0">
       <home />
       <about />
@@ -25,7 +22,7 @@
         <v-icon>mdi-arrow-up</v-icon>
       </v-btn>
     </v-scale-transition>
-   </div>
+  </div>
 </template>
 
 <style scoped>
@@ -38,8 +35,6 @@
 </style>
 
 <script>
-
-
 import home from "../components/Landing/HomeSection";
 import about from "../components/Landing/AboutSection";
 import download from "../components/Landing/DownloadSection";
@@ -50,7 +45,6 @@ export default {
   name: "App",
 
   components: {
-    
     home,
     about,
     download,
