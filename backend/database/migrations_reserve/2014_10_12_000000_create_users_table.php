@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('cpf')->unique();
             $table->string('email')->unique();
             $table->string('photo')->nullable();
+            $table->smallInteger('active');
             $table->string('password');
             $table->string('accesses');
             $table->timestamps();

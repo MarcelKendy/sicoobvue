@@ -143,6 +143,7 @@
                   @resetValidation="resetValidation"
                   v-model="item.date_indicator"
                   :color="color"
+                  clearable
                 ></DateTimePicker>
               </v-col>
             </v-row>
@@ -205,6 +206,7 @@
                     :rules="requiredSellerRule"
                     v-model="item.date_seller"
                     :color="color"
+                    clearable
                   ></DateTimePicker>
                 </v-col>
               </v-row>
@@ -318,6 +320,7 @@
                     :rules="requiredOperatorRule"
                     v-model="item.date_operator"
                     :color="color"
+                    clearable
                   ></DateTimePicker>
                 </v-col>
               </v-row>

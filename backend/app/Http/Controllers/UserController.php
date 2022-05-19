@@ -52,6 +52,7 @@ class UserController extends Controller
 
     public function addUser (Request $request) {
         $newUser = new User();
+        $newUser->active = $request->active;
         $newUser->name = $request->firstName;
         $newUser->full_name = $request->firstName.' '.$request->lastName;
         $newUser->email = $request->email;
@@ -65,6 +66,7 @@ class UserController extends Controller
     }
 
     public function editUser (User $user, Request $request) {
+        $user->active = $request->active;
         $name = substr($request->full_name, 0, strpos($request->full_name, " "));
         $user->name = $name;
         $user->full_name = $request->full_name;

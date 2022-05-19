@@ -82,34 +82,63 @@
         </template>
         <template v-slot:expanded-item="{ headers, item }">
           <td :colspan="headers.length" v-if="item.status == 'Aprovado UPS'">
-            <span
-              ><strong class="blue--text"
-                >Comissões dos empregados referentes ao produto "{{
-                  item.product
-                }}": </strong
-              ><span style="font-size: 13px; padding-left: 10px">
-                (Comissão da <span class="green--text">cooperativa</span>:
-                {{ item.commission_percentage }}%)</span
-              ></span
-            >
-            <br v-if="item.custom_value" />
-            <span v-if="item.custom_value"
-              ><span class="blue--text">Valor comissionado:</span
-              ><span> R$ {{ item.custom_value }}</span></span
-            >
-            <br />
-            <span>{{ commissionPrint(item) }}</span>
+            <v-card class="ma-3">
+              <v-card-text>
+                <strong>
+                  <span class="ma-2">
+                    <strong class="blue--text text--darken-3">
+                      Comissões dos empregados referentes ao produto "
+                      {{ item.product }}":
+                    </strong>
+                    <span style="font-size: 13px; padding-left: 10px">
+                      (Comissão da <span class="green--text">cooperativa </span>
+                      <v-img
+                        style="display: inline-block"
+                        max-width="15px"
+                        alt="Sicoob"
+                        src="../assets/images/sicoobicon.png"
+                      ></v-img>
+                      :
+                      <span class="text-decoration-underline"
+                        >{{ item.commission_percentage }}%)
+                      </span>
+                    </span>
+                    <v-tooltip left >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn v-bind="attrs" v-on="on" icon @click="show_math = true" style="position:absolute;top:0; right:0">
+                          <v-icon>mdi-calculator</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Mostrar Cálculo</span>
+                    </v-tooltip>
+                  </span>
+                  <br v-if="item.custom_value" />
+                  <span v-if="item.custom_value" class="ma-2">
+                    <span class="blue--text">Valor comissionado:</span>
+                    <span> R$ {{ item.custom_value }}</span>
+                  </span>
+                  <br />
+                  <span v-html="commissionPrint(item)"></span>
+                </strong>
+              </v-card-text>
+            </v-card>
           </td>
           <td :colspan="headers.length" v-else>
-            <span class="yellow--text text--darken-2"
-              >A UPS ainda não aprovou a venda</span
-            >
+            <v-card class="ma-3 text-center">
+              <v-card-text>
+                <strong>
+                  <span class="yellow--text text--darken-2">
+                    <span>{{item.status == 'Recusado UPS' ? 'A UPS REPROVOU esta venda' : item.status == 'Aguardando UPS' ? 'A UPS ainda não aprovou a venda' : 'Esse produto ainda não foi vendido'}}</span>
+                  </span>
+                </strong>
+              </v-card-text>
+            </v-card>
           </td>
         </template>
 
         <template v-slot:[`item.date_indicator`]="{ item }">
           <v-chip color="blue-grey lighten-2" small>
-            <v-tooltip left>
+            <v-tooltip left v-if="!item.date_seller && !item.date_operator">
               <template v-slot:activator="{ on, attrs }">
                 <span v-bind="attrs" v-on="on">
                   {{ formatDate(item.date_indicator, "d_m") }}
@@ -117,7 +146,40 @@
               </template>
               <span>{{ formatDate(item.date_indicator, "y") }}</span>
             </v-tooltip>
+            <v-tooltip left v-else-if="!item.date_operator">
+              <template v-slot:activator="{ on, attrs }">
+                <span v-bind="attrs" v-on="on">
+                  {{ formatDate(item.date_seller, "d_m") }}
+                </span>
+              </template>
+              <span>{{ formatDate(item.date_seller, "y") }}</span>
+            </v-tooltip>
+            <v-tooltip left v-else>
+              <template v-slot:activator="{ on, attrs }">
+                <span v-bind="attrs" v-on="on">
+                  {{ formatDate(item.date_operator, "d_m") }}
+                </span>
+              </template>
+              <span>{{ formatDate(item.date_operator, "y") }}</span>
+            </v-tooltip>
           </v-chip>
+        </template>
+        <template v-slot:[`item.product`]="{ item }">
+          <v-tooltip right>
+            <template v-slot:activator="{ on, attrs }">
+              <v-avatar
+                v-bind="attrs"
+                v-on="on"
+                size="33"
+                :color="productStyle(item.product, 'color')"
+              >
+                <span class="white--text text-h7">{{
+                  productStyle(item.product, "initials")
+                }}</span>
+              </v-avatar>
+            </template>
+            <span>{{ item.product }}</span>
+          </v-tooltip>
         </template>
         <template v-slot:[`item.value`]="{ item }">
           <v-chip
@@ -143,44 +205,83 @@
           </v-chip>
         </template>
         <template v-slot:[`item.indicator.full_name`]="{ item }">
-          <v-menu
-            v-model="menu"
-            bottom
-            right
-            transition="scale-transition"
-            origin="top left"
-          >
+          <v-menu bottom right transition="scale-transition" origin="top left">
             <template v-slot:activator="{ on }">
               <v-chip pill v-on="on">
                 <v-avatar left>
                   <v-img
+                    v-if="true"
                     src="https://cdn.vuetifyjs.com/images/john.png"
                   ></v-img>
+                  <v-icon v-else>mdi-account-circle</v-icon>
                 </v-avatar>
-                {{item.indicator.name}}
+                {{ item.indicator.name }}
               </v-chip>
             </template>
-            <v-card width="300">
-              <v-list dark>
-                <v-list-item>
-                  <v-list-item-avatar>
-                    <v-img
-                      src="https://cdn.vuetifyjs.com/images/john.png"
-                    ></v-img>
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title>{{item.indicator.full_name}}</v-list-item-title>
-                    <v-list-item-subtitle
-                      >{{item.indicator.role}}</v-list-item-subtitle
-                    >
-                  </v-list-item-content>
-                  <v-list-item-action>
-                    <v-btn icon @click="menu = false">
-                      <v-icon>mdi-close-circle</v-icon>
-                    </v-btn>
-                  </v-list-item-action>
-                </v-list-item>
+            <v-card width="300" class="style-title">
+              <v-list>
+                <v-img
+                  height="100px"
+                  src="./../assets/images/bg1.png"
+                  gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)"
+                  dark
+                  class="pt-5 text-center"
+                >
+                  <v-list-item>
+                    <v-list-item-avatar>
+                      <img
+                        v-if="true"
+                        alt="Foto"
+                        src="https://cdn.vuetifyjs.com/images/john.png"
+                      />
+                      <v-tooltip top v-else>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-icon large v-bind="attrs" v-on="on">
+                            mdi-account-circle
+                          </v-icon>
+                        </template>
+                        <span>Sem foto</span>
+                      </v-tooltip>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        {{ item.indicator.full_name }}
+                      </v-list-item-title>
+                      <v-list-item-subtitle>
+                        {{ item.indicator.role }}
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-action>
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-icon
+                            v-bind="attrs"
+                            v-on="on"
+                            v-if="item.indicator.active == 1"
+                            color="green"
+                            right
+                            >mdi-check-circle</v-icon
+                          >
+                          <v-icon
+                            v-bind="attrs"
+                            v-on="on"
+                            v-else
+                            color="red"
+                            right
+                            >mdi-close-circle</v-icon
+                          >
+                        </template>
+                        <span>{{
+                          item.indicator.active == 1
+                            ? "Usuário Ativo"
+                            : "Usuário Desativado"
+                        }}</span>
+                      </v-tooltip>
+                    </v-list-item-action>
+                  </v-list-item>
+                </v-img>
               </v-list>
+
               <v-list>
                 <v-list-item @click="() => {}">
                   <v-list-item-action>
@@ -191,6 +292,214 @@
               </v-list>
             </v-card>
           </v-menu>
+        </template>
+        <template v-slot:[`item.seller.full_name`]="{ item }">
+          <v-menu
+            bottom
+            right
+            transition="scale-transition"
+            origin="top left"
+            v-if="item.seller"
+          >
+            <template v-slot:activator="{ on }">
+              <v-chip pill v-on="on">
+                <v-avatar left>
+                  <v-img
+                    v-if="true"
+                    src="https://cdn.vuetifyjs.com/images/john.png"
+                  ></v-img>
+                  <v-icon v-else>mdi-account-circle</v-icon>
+                </v-avatar>
+                {{ item.seller.name }}
+              </v-chip>
+            </template>
+            <v-card width="300" class="style-title">
+              <v-list>
+                <v-img
+                  height="100px"
+                  src="./../assets/images/bg1.png"
+                  gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)"
+                  dark
+                  class="pt-5 text-center"
+                >
+                  <v-list-item>
+                    <v-list-item-avatar>
+                      <img
+                        v-if="true"
+                        alt="Foto"
+                        src="https://cdn.vuetifyjs.com/images/john.png"
+                      />
+                      <v-tooltip top v-else>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-icon large v-bind="attrs" v-on="on">
+                            mdi-account-circle
+                          </v-icon>
+                        </template>
+                        <span>Sem foto</span>
+                      </v-tooltip>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        {{ item.seller.full_name }}
+                      </v-list-item-title>
+                      <v-list-item-subtitle>
+                        {{ item.seller.role }}
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-action>
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-icon
+                            v-bind="attrs"
+                            v-on="on"
+                            v-if="item.seller.active == 1"
+                            color="green"
+                            right
+                            >mdi-check-circle</v-icon
+                          >
+                          <v-icon
+                            v-bind="attrs"
+                            v-on="on"
+                            v-else
+                            color="red"
+                            right
+                            >mdi-close-circle</v-icon
+                          >
+                        </template>
+                        <span>{{
+                          item.seller.active == 1
+                            ? "Usuário Ativo"
+                            : "Usuário Desativado"
+                        }}</span>
+                      </v-tooltip>
+                    </v-list-item-action>
+                  </v-list-item>
+                </v-img>
+              </v-list>
+
+              <v-list>
+                <v-list-item @click="() => {}">
+                  <v-list-item-action>
+                    <v-icon>mdi-arrow-left</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-title>Perfil</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-menu>
+          <v-tooltip top v-else>
+            <template v-slot:activator="{ on, attrs }">
+              <v-chip pill outlined v-bind="attrs" v-on="on">
+                <v-icon left>mdi-account-clock</v-icon>
+                <span style="font-size: 11px">Aguardando</span>
+              </v-chip>
+            </template>
+            <span>O produto ainda não foi vendido</span>
+          </v-tooltip>
+        </template>
+        <template v-slot:[`item.operator.full_name`]="{ item }">
+          <v-menu
+            bottom
+            right
+            transition="scale-transition"
+            origin="top left"
+            v-if="item.operator"
+          >
+            <template v-slot:activator="{ on }">
+              <v-chip pill v-on="on">
+                <v-avatar left>
+                  <v-img
+                    v-if="true"
+                    src="https://cdn.vuetifyjs.com/images/john.png"
+                  ></v-img>
+                  <v-icon v-else>mdi-account-circle</v-icon>
+                </v-avatar>
+                {{ item.operator.name }}
+              </v-chip>
+            </template>
+            <v-card width="300" class="style-title">
+              <v-list>
+                <v-img
+                  height="100px"
+                  src="./../assets/images/bg1.png"
+                  gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)"
+                  dark
+                  class="pt-5 text-center"
+                >
+                  <v-list-item>
+                    <v-list-item-avatar>
+                      <img
+                        v-if="true"
+                        alt="Foto"
+                        src="https://cdn.vuetifyjs.com/images/john.png"
+                      />
+                      <v-tooltip top v-else>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-icon large v-bind="attrs" v-on="on">
+                            mdi-account-circle
+                          </v-icon>
+                        </template>
+                        <span>Sem foto</span>
+                      </v-tooltip>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        {{ item.operator.full_name }}
+                      </v-list-item-title>
+                      <v-list-item-subtitle>
+                        {{ item.operator.role }}
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-action>
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-icon
+                            v-bind="attrs"
+                            v-on="on"
+                            v-if="item.operator.active == 1"
+                            color="green"
+                            right
+                            >mdi-check-circle</v-icon
+                          >
+                          <v-icon
+                            v-bind="attrs"
+                            v-on="on"
+                            v-else
+                            color="red"
+                            right
+                            >mdi-close-circle</v-icon
+                          >
+                        </template>
+                        <span>{{
+                          item.operator.active == 1
+                            ? "Usuário Ativo"
+                            : "Usuário Desativado"
+                        }}</span>
+                      </v-tooltip>
+                    </v-list-item-action>
+                  </v-list-item>
+                </v-img>
+              </v-list>
+
+              <v-list>
+                <v-list-item @click="() => {}">
+                  <v-list-item-action>
+                    <v-icon>mdi-arrow-left</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-title>Perfil</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-menu>
+          <v-tooltip top v-else>
+            <template v-slot:activator="{ on, attrs }">
+              <v-chip pill outlined v-bind="attrs" v-on="on">
+                <v-icon left>mdi-account-clock</v-icon>
+                <span style="font-size: 11px">Aguardando</span>
+              </v-chip>
+            </template>
+            <span>Aguardando confirmação da UPS</span>
+          </v-tooltip>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-speed-dial
@@ -324,6 +633,7 @@ export default {
       edited_item: {},
       deleted_item: {},
       loading_commissions: true,
+      menu_indicator: false,
       add_modal: false,
       edit_modal: false,
       delete_modal: false,
@@ -359,6 +669,63 @@ export default {
         },
         { status: "Aprovado UPS", color: "green", icon: "mdi-check-outline" },
         { status: "Recusado UPS", color: "red", icon: "mdi-close-outline" },
+      ],
+      product_style: [
+        {
+          product: "Seguro de Vida - Sicoob Seguradora",
+          color: "blue lighten-3",
+          initials: "SVS",
+        },
+        {
+          product: "Seguro de Vida",
+          color: "blue lighten-3",
+          initials: "SV",
+        },
+        {
+          product: "Seguro de Vida Coletivo",
+          color: "blue lighten-3",
+          initials: "SVC",
+        },
+        {
+          product: "Seguro Auto",
+          color: "blue lighten-3",
+          initials: "SA",
+        },
+        {
+          product: "Seguro Residencial e Empresarial",
+          color: "blue lighten-3",
+          initials: "SRE",
+        },
+        {
+          product: "Seguro Agrícola",
+          color: "blue lighten-3",
+          initials: "SAG",
+        },
+        {
+          product: "Seguro Animal de Elite",
+          color: "blue lighten-3",
+          initials: "SAE",
+        },
+        {
+          product: "Seguro Equipamentos",
+          color: "blue lighten-3",
+          initials: "SE",
+        },
+        {
+          product: "Seguro Prestamista",
+          color: "blue lighten-3",
+          initials: "SP",
+        },
+        {
+          product: "Crédito Consignado",
+          color: "green lighten-3",
+          initials: "CC",
+        },
+        {
+          product: "Consórcio",
+          color: "orange lighten-3",
+          initials: "C",
+        },
       ],
     };
   },
@@ -404,6 +771,19 @@ export default {
         }
       }
     },
+    productStyle(product, type) {
+      let value = "";
+      this.product_style.forEach((item) => {
+        if (item.product == product) {
+          if (type == "color") {
+            value = item.color;
+          } else {
+            value = item.initials;
+          }
+        }
+      });
+      return value;
+    },
     statusStyle(status, type) {
       let value = "";
       this.status_style.forEach((item) => {
@@ -431,36 +811,41 @@ export default {
     commissionPrint(item) {
       if (item.indicator_id == item.seller_id) {
         return (
+          "<span class='blue--text ma-2'>Indicador e Vendedor: </span>" +
           item.indicator.full_name +
-          ": R$ " +
+          ": <span class='green--text ma-2'>R$ " +
           (+item.indicator_commission + +item.seller_commission) +
-          " - " +
+          "</span><br><span class='blue--text ma-2'>Operador: </span>" +
           item.operator.full_name +
-          ": R$ " +
-          item.operator_commission
+          ": <span class='green--text ma-2'>R$ " +
+          item.operator_commission +
+          "</span>"
         );
       } else if (item.indicator_id == item.operator_id) {
         return (
+          "<span class='blue--text ma-2'>Indicador e Operador: </span>" +
           item.indicator.full_name +
-          ": R$ " +
+          ": <span class='green--text ma-2'>R$ " +
           (+item.indicator_commission + +item.operator_commission) +
-          " - " +
+          "</span><br><span class='blue--text ma-2'>Vendedor: </span>" +
           item.seller.full_name +
-          ": R$ " +
-          item.seller_commission
+          ": <span class='green--text ma-2'>R$ " +
+          item.seller_commission +
+          "</span>"
         );
       } else {
         return (
+          "<span class='blue--text ma-2'>Indicador: </span>" +
           item.indicator.full_name +
-          ": R$ " +
+          ": <span class='green--text ma-2'>R$ " +
           item.indicator_commission +
-          " - " +
+          "</span><br><span class='blue--text ma-2'>Vendedor: </span>" +
           item.seller.full_name +
-          ": R$ " +
+          ": <span class='green--text ma-2'>R$ " +
           item.seller_commission +
-          " - " +
+          "</span><br><span class='blue--text ma-2'>Operador: </span>" +
           item.operator.full_name +
-          ": R$ " +
+          ": <span class='green--text ma-2'>R$ " +
           item.operator_commission
         );
       }
@@ -540,6 +925,10 @@ export default {
   border-bottom: solid;
   border-width: 1px;
   border-color: rgba(18, 210, 175);
+}
+.style-title {
+  font-weight: bolder;
+  font-family: "Quicksand", sans-serif;
 }
 .title-card {
   font-weight: bolder;

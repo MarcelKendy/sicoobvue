@@ -214,6 +214,7 @@ export default {
         full_name: "",
         email: "",
         cpf: "",
+        active: "",
         role: "",
         password: "",
         verify: "",
@@ -291,6 +292,7 @@ export default {
       return {
         full_name: "",
         email: "",
+        active: "",
         cpf: "",
         role: "",
         password: "",

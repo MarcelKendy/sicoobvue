@@ -61,7 +61,8 @@ export default {
                 last_name: data.full_name.slice(data.full_name.indexOf(' ') + 1),
                 cpf: data.cpf, 
                 email: data.email,
-                accesses: data.accesses
+                accesses: data.accesses,
+                active: data.active
               }, 'logged_token').then(() => {
                 commit('getUser')
               })

@@ -39,6 +39,7 @@
           <v-tabs-items v-model="tabs">
             <v-tab-item value="pick-date">
               <v-date-picker
+                locale="pt-BR"
                 :color="color"
                 v-model="datePicker"
               ></v-date-picker>
@@ -54,7 +55,7 @@
           </v-tabs-items>
           <v-card-text> </v-card-text>
           <v-card-actions class="justify-end">
-            <v-btn text :color="color" @click="clear()" v-if="clearable"
+            <v-btn text :color="color" @click="clear(true)" v-if="clearable"
               >Limpar</v-btn
             >
             <v-btn text :color="color" @click="dialog.value = false">OK</v-btn>
@@ -157,7 +158,7 @@ export default {
       this.$set(this, "datePicker", date);
       this.$set(this, "timePicker", time);
     },
-    clear() {
+    clear(close = false) {
       this.value_mutable = "";
       this.$emit("resetValidation");
       this.datePicker = "";
@@ -165,6 +166,9 @@ export default {
       this.$set(this, "datePicker", null);
       this.$set(this, "timePicker", null);
       this.$emit("input", null);
+      if (close) {
+        this.dialog = false;
+      }
     },
   },
   mounted() {
