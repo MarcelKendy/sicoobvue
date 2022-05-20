@@ -63,7 +63,7 @@
                       block
                       :disabled="!validLogin"
                       :loading="loading_btn"
-                      class="white--text btn btn-3"
+                      class="white--text btn btn-gradient"
                       :color="color_default"
                       @click="validate('login')"
                       ><strong> Login </strong></v-btn
@@ -182,7 +182,7 @@
                       block
                       :disabled="!validRegister"
                       :loading="loading_btn"
-                      class="white--text btn btn-3"
+                      class="white--text btn btn-gradient"
                       :color="color_default"
                       @click="validate('register')"
                       ><strong>Salvar</strong></v-btn
@@ -427,7 +427,7 @@ export default {
 .btn:hover {
   background-position: right center; /* change the direction of the change here */
 }
-.btn-3 {
+.btn-gradient {
   background-image: linear-gradient(
     to right,
     #62fa9a 0%,

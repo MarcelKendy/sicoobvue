@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import HomeView from '../views/HomeView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import TasksView from '../views/TasksView.vue'
+import AccessView from '../views/AccessView.vue'
 import AboutView from '../views/AboutView.vue'
 import LandingView from '../views/LandingView.vue'
 import CommissionView from '../views/CommissionView.vue'
@@ -40,6 +41,11 @@ const routes = [
     path: '/comissoes',
     name: 'Comissões',
     component: CommissionView
+  },
+  {
+    path: '/acessos',
+    name: 'Acessos',
+    component: AccessView
   },
   {
     path: '/about',

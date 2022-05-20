@@ -40,6 +40,16 @@ export default {
   methods: {
     defineBreadCrumb() {
       switch (this.activeRoute) {
+        case "Home":
+          this.items = [
+            {
+              text: "Home",
+              icon: "mdi-view-dashboard",
+              disabled: true,
+              href: "/",
+            },
+          ];
+          break;
         case "Dashboard":
           this.items = [
             {
@@ -50,7 +60,7 @@ export default {
             },
             {
               text: "Dashboard",
-              icon: "mdi-view-dashboard",
+              icon: "mdi-monitor-dashboard",
               disabled: true,
               href: "/dashboard",
             },
@@ -88,6 +98,22 @@ export default {
             },
           ];
           break;
+        case "Acessos":
+          this.items = [
+            {
+              text: "Home",
+              icon: "mdi-view-dashboard",
+              disabled: false,
+              href: "/",
+            },
+            {
+              text: "Acessos",
+              icon: "mdi-lock",
+              disabled: true,
+              href: "/acessos",
+            },
+          ];
+          break;
         case "Sobre":
           this.items = [
             {
@@ -98,19 +124,9 @@ export default {
             },
             {
               text: "Sobre",
-              icon: "mdi-help",
+              icon: "mdi-information",
               disabled: true,
               href: "/about",
-            },
-          ];
-          break;
-        case "Home":
-          this.items = [
-            {
-              text: "Home",
-              icon: "mdi-view-dashboard",
-              disabled: true,
-              href: "/",
             },
           ];
           break;

@@ -62,7 +62,7 @@
                 dark
                 icon="mdi-delete-clock"
               >
-                <span>Espera só um pouquinho</span>
+                <span>Espera só um pouquinho, carregando...</span>
               </v-alert>
             </v-col>
           </v-row>

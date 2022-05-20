@@ -30,7 +30,7 @@
                 dark
                 icon="mdi-content-save"
               >
-                <span>Espera só um pouquinho</span>
+                <span>Espera só um pouquinho, carregando...</span>
               </v-alert>
             </v-col>
           </v-row>
@@ -64,26 +64,28 @@
                   prepend-icon="mdi-clock"
                 >
                   <template v-slot:selection="{ item }">
-                    <v-chip
-                      class="ma-0"
-                      :color="statusStyle(item, 'color')"
-                      text-color="white"
+                    <div
+                      :class="'chip gradient-' + statusStyle(item, 'gradient')"
                     >
-                      <v-icon>{{ statusStyle(item, "icon") }}</v-icon>
-
-                      <span class="item-select-badge">{{ item }}</span>
-                    </v-chip>
+                      <div class="chip__content">
+                        <v-icon :color="statusStyle(item, 'color')">{{
+                          statusStyle(item, "icon")
+                        }}</v-icon>
+                        <span class="item-select-badge">{{ item }}</span>
+                      </div>
+                    </div>
                   </template>
                   <template v-slot:item="{ item }">
-                    <v-chip
-                      class="ma-0"
-                      :color="statusStyle(item, 'color')"
-                      text-color="white"
+                    <div
+                      :class="'chip gradient-' + statusStyle(item, 'gradient')"
                     >
-                      <v-icon>{{ statusStyle(item, "icon") }}</v-icon>
-
-                      <span class="item-select-badge">{{ item }}</span>
-                    </v-chip>
+                      <div class="chip__content">
+                        <v-icon :color="statusStyle(item, 'color')">{{
+                          statusStyle(item, "icon")
+                        }}</v-icon>
+                        <span class="item-select-badge">{{ item }}</span>
+                      </div>
+                    </div>
                   </template>
                 </v-select>
               </v-col>
@@ -396,30 +398,43 @@ export default {
       ],
       status_style: [
         {
-          status: "Aguardando Venda",
-          color: "blue lighten-1",
+          status: "Aguard. Venda",
+          color: "#5b75dc",
           icon: "mdi-store-clock-outline",
+          gradient: "blue",
         },
         {
-          status: "Venda não Realizada",
-          color: "blue-grey darken-1",
+          status: "Não Vendido",
+          color: "#5f6e8b",
           icon: "mdi-store-remove-outline",
+          gradient: "gray",
         },
         {
-          status: "Aguardando UPS",
-          color: "orange darken-1",
+          status: "Aguard. UPS",
+          color: "orange darken-3",
           icon: "mdi-account-tie",
+          gradient: "orange",
         },
-        { status: "Aprovado UPS", color: "green", icon: "mdi-check-outline" },
-        { status: "Recusado UPS", color: "red", icon: "mdi-close-outline" },
+        {
+          status: "Aprovado UPS",
+          color: "blue darken-1",
+          icon: "mdi-check-outline",
+          gradient: "success",
+        },
+        {
+          status: "Recusado UPS",
+          color: "red lighten-5",
+          icon: "mdi-close-outline",
+          gradient: "error",
+        },
       ],
       /* RULES */
       requiredRule: [(v) => !!v || "Essa informação é obrigatória"],
       requiredSellerRule: [
         (v) =>
           !!v ||
-          this.item.status == "Aguardando Venda" ||
-          this.item.status == "Venda não Realizada" ||
+          this.item.status == "Aguard. Venda" ||
+          this.item.status == "Não Vendido" ||
           this.item.status == "" ||
           "O status selecionado indica que a venda ocorreu, então essa informação é obrigatória",
       ],
@@ -434,8 +449,8 @@ export default {
         (v) =>
           (!!v &&
             (parseFloat(this.item.value) > 0 || "O valor não pode ser 0")) ||
-          this.item.status == "Aguardando Venda" ||
-          this.item.status == "Venda não Realizada" ||
+          this.item.status == "Aguard. Venda" ||
+          this.item.status == "Não Vendido" ||
           this.item.status == "" ||
           "O status selecionado indica que a venda foi operada, então essa informação é obrigatória",
       ],
@@ -444,8 +459,8 @@ export default {
           (!!v &&
             (this.item.seller_id != this.item.operator_id ||
               "O vendedor e o operador devem ser distintos")) ||
-          this.item.status == "Aguardando Venda" ||
-          this.item.status == "Venda não Realizada" ||
+          this.item.status == "Aguard. Venda" ||
+          this.item.status == "Não Vendido" ||
           this.item.status == "" ||
           "O status selecionado indica que a venda foi operada, então essa informação é obrigatória",
       ],
@@ -491,15 +506,15 @@ export default {
     status() {
       switch (this.$store.state.user.accesses.commissions) {
         case "indicator":
-          this.item.status = "Aguardando Venda";
-          return ["Aguardando Venda"];
+          this.item.status = "Aguard. Venda";
+          return ["Aguard. Venda"];
         case "seller":
-          return ["Aguardando Venda", "Venda não Realizada", "Aguardando UPS"];
+          return ["Aguard. Venda", "Não Vendido", "Aguard. UPS"];
         case "operator":
           return [
-            "Aguardando Venda",
-            "Venda não Realizada",
-            "Aguardando UPS",
+            "Aguard. Venda",
+            "Não Vendido",
+            "Aguard. UPS",
             "Aprovado UPS",
             "Recusado UPS",
           ];
@@ -532,8 +547,10 @@ export default {
         if (item.status == status) {
           if (type == "color") {
             value = item.color;
-          } else {
+          } else if (type == "icon") {
             value = item.icon;
+          } else {
+            value = item.gradient;
           }
         }
       });
@@ -609,7 +626,46 @@ export default {
   color: rgb(0, 209, 94);
 }
 .item-select-badge {
-  font-weight: bold;
+  font-family: "Quicksand", sans-serif;
+  font-size: 13px;
   padding-left: 5px;
+}
+.chip {
+  max-width: 180px;
+  min-width: 150px;
+  max-height: 30px;
+  flex: 1 1 auto;
+  transition: 0.3s;
+  background-size: 200% auto;
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  background-color: black;
+  border-radius: 9999px;
+  padding: 4px 8px;
+}
+
+.gradient-blue {
+  background-image: linear-gradient(to right, #77caf3, #5b75dc, #77caf3);
+}
+.gradient-gray {
+  background-image: linear-gradient(to right, #a0b7c0, #5f6e8b, #a0b7c0);
+}
+.gradient-orange {
+  background-image: linear-gradient(to right, #fcc53b, #fa7618, #fcc53b);
+}
+.gradient-success {
+  background-image: linear-gradient(to right, #49f87d, #40bfff, #49f87d);
+}
+.gradient-error {
+  background-image: linear-gradient(to right, #ff648e, #ca0000, #ff648e);
+}
+
+.chip:hover {
+  background-position: right center; /* change the direction of the change here */
+}
+.chip__content {
+  color: white;
+  margin-right: 1px;
 }
 </style>

@@ -121,10 +121,21 @@ export default {
       {
         title: "Comissões",
         icon: "mdi-view-list",
-        img: "comissao.png",
+        img: "commission.png",
         to: "/comissoes",
       },
-      { title: "Sobre", icon: "mdi-help", img: "about.png", to: "/about" },
+      {
+        title: "Acessos",
+        icon: "mdi-eye",
+        img: "accesses1.png",
+        to: "/acessos",
+      },
+      { 
+        title: "Sobre", 
+        icon: "mdi-help", 
+        img: "about.png", 
+        to: "/about" 
+      },
     ],
     login_check: false,
     store_ready: false,

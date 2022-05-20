@@ -103,9 +103,15 @@
                         >{{ item.commission_percentage }}%)
                       </span>
                     </span>
-                    <v-tooltip left >
+                    <v-tooltip left>
                       <template v-slot:activator="{ on, attrs }">
-                        <v-btn v-bind="attrs" v-on="on" icon @click="show_math = true" style="position:absolute;top:0; right:0">
+                        <v-btn
+                          v-bind="attrs"
+                          v-on="on"
+                          icon
+                          @click="show_math = true"
+                          style="position: absolute; top: 0; right: 0"
+                        >
                           <v-icon>mdi-calculator</v-icon>
                         </v-btn>
                       </template>
@@ -128,7 +134,13 @@
               <v-card-text>
                 <strong>
                   <span class="yellow--text text--darken-2">
-                    <span>{{item.status == 'Recusado UPS' ? 'A UPS REPROVOU esta venda' : item.status == 'Aguardando UPS' ? 'A UPS ainda não aprovou a venda' : 'Esse produto ainda não foi vendido'}}</span>
+                    <span>{{
+                      item.status == "Recusado UPS"
+                        ? "A UPS REPROVOU esta venda"
+                        : item.status == "Aguard. UPS"
+                        ? "A UPS ainda não aprovou a venda"
+                        : "Esse produto ainda não foi vendido"
+                    }}</span>
                   </span>
                 </strong>
               </v-card-text>
@@ -195,14 +207,14 @@
           </v-chip>
         </template>
         <template v-slot:[`item.status`]="{ item }">
-          <v-chip
-            class="ma-0"
-            :color="statusStyle(item.status, 'color')"
-            text-color="white"
-          >
-            <v-icon>{{ statusStyle(item.status, "icon") }}</v-icon>
-            <span class="item-select-badge">{{ item.status }}</span>
-          </v-chip>
+          <div :class="'chip gradient-' + statusStyle(item.status, 'gradient')">
+            <div class="chip__content">
+              <v-icon :color="statusStyle(item.status, 'color')">{{
+                statusStyle(item.status, "icon")
+              }}</v-icon>
+              <span class="item-select-badge">{{ item.status }}</span>
+            </div>
+          </div>
         </template>
         <template v-slot:[`item.indicator.full_name`]="{ item }">
           <v-menu bottom right transition="scale-transition" origin="top left">
@@ -645,7 +657,7 @@ export default {
         { text: "Data", value: "date_indicator", align: "start" },
         { text: "Produto", value: "product" },
         { text: "Valor", value: "value" },
-        { text: "Status", value: "status" },
+        { text: "Status", value: "status", width: "19%" },
         { text: "Indicador", value: "indicator.full_name" },
         { text: "Vendedor", value: "seller.full_name" },
         { text: "Operador", value: "operator.full_name" },
@@ -653,22 +665,35 @@ export default {
       ],
       status_style: [
         {
-          status: "Aguardando Venda",
-          color: "blue lighten-1",
+          status: "Aguard. Venda",
+          color: "#5b75dc",
           icon: "mdi-store-clock-outline",
+          gradient: "blue",
         },
         {
-          status: "Venda não Realizada",
-          color: "blue-grey darken-1",
+          status: "Não Vendido",
+          color: "#5f6e8b",
           icon: "mdi-store-remove-outline",
+          gradient: "gray",
         },
         {
-          status: "Aguardando UPS",
-          color: "orange darken-1",
+          status: "Aguard. UPS",
+          color: "orange darken-3",
           icon: "mdi-account-tie",
+          gradient: "orange",
         },
-        { status: "Aprovado UPS", color: "green", icon: "mdi-check-outline" },
-        { status: "Recusado UPS", color: "red", icon: "mdi-close-outline" },
+        {
+          status: "Aprovado UPS",
+          color: "blue darken-1",
+          icon: "mdi-check-outline",
+          gradient: "success",
+        },
+        {
+          status: "Recusado UPS",
+          color: "red lighten-5",
+          icon: "mdi-close-outline",
+          gradient: "error",
+        },
       ],
       product_style: [
         {
@@ -757,7 +782,7 @@ export default {
         switch (logged_user_access) {
           case "indicator":
             return !(
-              item.status != "Aguardando Venda" ||
+              item.status != "Aguard. Venda" ||
               item.user_id != logged_user_id
             );
           case "seller":
@@ -790,8 +815,10 @@ export default {
         if (item.status == status) {
           if (type == "color") {
             value = item.color;
-          } else {
+          } else if (type == "icon") {
             value = item.icon;
+          } else {
+            value = item.gradient;
           }
         }
       });
@@ -900,8 +927,10 @@ export default {
 </script>
 <style scoped>
 .item-select-badge {
+  font-size: 13px;
   padding-left: 5px;
 }
+
 .fixing {
   position: absolute;
   top: 30vw;
@@ -993,4 +1022,46 @@ export default {
 .second_font {
   font-family: "Varela Round", sans-serif;
 }
+.v-tooltip__content {
+  background-color: rgb(36, 33, 33) !important;
+}
+.chip {
+  max-width: 180px;
+  min-width: 150px;
+  max-height: 30px;
+  flex: 1 1 auto;
+  transition: 0.3s;
+  background-size: 200% auto;
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  background-color: black;
+  border-radius: 9999px;
+  padding: 4px 8px;
+}
+
+.gradient-blue {
+  background-image: linear-gradient(to right, #77caf3, #5b75dc, #77caf3);
+}
+.gradient-gray {
+  background-image: linear-gradient(to right, #a0b7c0, #5f6e8b, #a0b7c0);
+}
+.gradient-orange {
+  background-image: linear-gradient(to right, #fcc53b, #fa7618, #fcc53b);
+}
+.gradient-success {
+  background-image: linear-gradient(to right, #49f87d, #40bfff, #49f87d);
+}
+.gradient-error {
+  background-image: linear-gradient(to right, #ff648e, #ca0000, #ff648e);
+}
+
+.chip:hover {
+  background-position: right center; /* change the direction of the change here */
+}
+.chip__content {
+  color: white;
+  margin-right: 1px;
+}
+
 </style>
