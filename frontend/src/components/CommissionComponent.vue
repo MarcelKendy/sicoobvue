@@ -1,7 +1,6 @@
-
 <template>
   <div>
-    <div class="tooltip" style="padding-bottom: 15px; font-weight: 700">
+    <div class="tooltip" style="padding-bottom: 15px; font-weight: bold">
       <v-btn
         rounded
         elevation="9"
@@ -56,10 +55,12 @@
         ></v-text-field>
       </v-card-title>
       <v-data-table
-        style="font-weight: bolder"
+        ref="vDataTable"
+        style="font-weight: bold"
         :dark="dark_theme"
         class="data-table-commission"
         :loading="loading_commissions"
+        item-key="id"
         :headers="headers"
         :items="items"
         :search="search"
@@ -80,7 +81,7 @@
           {{ items.pageStart }} até {{ items.pageStop }} - Total:
           <strong>{{ items.itemsLength }}</strong>
         </template>
-        <template v-slot:expanded-item="{ headers, item }">
+        <!--<template v-slot:expanded-item="{ headers, item }">
           <td :colspan="headers.length" v-if="item.status == 'Aprovado UPS'">
             <v-card class="ma-3">
               <v-card-text>
@@ -147,9 +148,101 @@
             </v-card>
           </td>
         </template>
+-->
 
+ <template v-slot:expanded-item="{headers, item}">
+        <!-- remove padding, margins and min-height from td -->
+        <td
+          :colspan="headers.length"
+          :class="{'ma-0 pa-0': true, 'expanded-closing': !transitioned[getItemId(item)]}"
+          style="height: auto;"
+        >
+          <v-expand-transition>
+           <!-- Container transition -->
+            <div v-show="transitioned[getItemId(item)]">
+                    <v-card class="ma-3" v-if="item.status == 'Aprovado UPS'">
+                      <v-card-text>
+                        <strong>
+                          <span class="ma-2">
+                            <strong class="blue--text text--darken-3">
+                              Comissões dos empregados referentes ao produto "
+                              {{ item.product }}":
+                            </strong>
+                            <span style="font-size: 13px; padding-left: 10px">
+                              (Comissão da <span class="green--text">cooperativa </span>
+                              <v-img
+                                style="display: inline-block"
+                                max-width="15px"
+                                alt="Sicoob"
+                                src="../assets/images/sicoobicon.png"
+                              ></v-img>
+                              :
+                              <span class="text-decoration-underline"
+                                >{{ item.commission_percentage }}%)
+                              </span>
+                            </span>
+                            <v-tooltip left>
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                  v-bind="attrs"
+                                  v-on="on"
+                                  icon
+                                  @click="show_math = true"
+                                  style="position: absolute; top: 0; right: 0"
+                                >
+                                  <v-icon>mdi-calculator</v-icon>
+                                </v-btn>
+                              </template>
+                              <span>Mostrar Cálculo</span>
+                            </v-tooltip>
+                          </span>
+                          <br v-if="item.custom_value" />
+                          <span v-if="item.custom_value" class="ma-2">
+                            <span class="blue--text">Valor comissionado:</span>
+                            <span> R$ {{ item.custom_value }}</span>
+                          </span>
+                          <br />
+                          <span v-html="commissionPrint(item)"></span>
+                        </strong>
+                      </v-card-text>
+                    </v-card>
+          
+                 
+                    <v-card class="ma-3 text-center" v-else>
+                      <v-card-text>
+                        <strong>
+                          <span class="yellow--text text--darken-2">
+                            <span>{{
+                              item.status == "Recusado UPS"
+                                ? "A UPS REPROVOU esta venda"
+                                : item.status == "Aguard. UPS"
+                                ? "A UPS ainda não aprovou a venda"
+                                : "Esse produto ainda não foi vendido"
+                            }}</span>
+                          </span>
+                        </strong>
+                      </v-card-text>
+                    </v-card>
+                 
+                
+             </div>
+          </v-expand-transition>
+        </td>
+      </template>
+      
+      <template v-slot:[`item.data-table-expand`]="props">
+        <v-icon
+          :class="{
+                  'v-data-table__expand-icon': true,
+                  'v-data-table__expand-icon--active': props.isExpanded && transitioned[getItemId(props.item)]
+                  }"
+          @click="toggleExpand(props)"
+        >
+          mdi-chevron-down
+        </v-icon>
+      </template>
         <template v-slot:[`item.date_indicator`]="{ item }">
-          <v-chip color="blue-grey lighten-2" small>
+          <v-chip color="blue-grey lighten-2" small style="min-width:58px">
             <v-tooltip left v-if="!item.date_seller && !item.date_operator">
               <template v-slot:activator="{ on, attrs }">
                 <span v-bind="attrs" v-on="on">
@@ -179,7 +272,8 @@
         <template v-slot:[`item.product`]="{ item }">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
-              <v-avatar
+              <!--<v-avatar
+                class="avatar-class"
                 v-bind="attrs"
                 v-on="on"
                 size="33"
@@ -188,7 +282,12 @@
                 <span class="white--text text-h7">{{
                   productStyle(item.product, "initials")
                 }}</span>
-              </v-avatar>
+              </v-avatar> -->
+            <div :class="'avatar-class avatar-' + productStyle(item.product, 'type')" v-bind="attrs" v-on="on">
+              <span class="white--text text-h7">{{
+                  productStyle(item.product, "initials")
+                }}</span>
+            </div>
             </template>
             <span>{{ item.product }}</span>
           </v-tooltip>
@@ -406,7 +505,7 @@
                 <span style="font-size: 11px">Aguardando</span>
               </v-chip>
             </template>
-            <span>O produto ainda não foi vendido</span>
+            <span>Aguardando Vendedor</span>
           </v-tooltip>
         </template>
         <template v-slot:[`item.operator.full_name`]="{ item }">
@@ -641,6 +740,9 @@ export default {
     return {
       items: [],
       expanded: [],
+      transitioned: [],
+      singleExpand: false,
+      closeTimeouts: {},
       search: "",
       edited_item: {},
       deleted_item: {},
@@ -700,56 +802,67 @@ export default {
           product: "Seguro de Vida - Sicoob Seguradora",
           color: "blue lighten-3",
           initials: "SVS",
+          type: "seg",
         },
         {
           product: "Seguro de Vida",
           color: "blue lighten-3",
           initials: "SV",
+          type: "seg",
         },
         {
           product: "Seguro de Vida Coletivo",
           color: "blue lighten-3",
           initials: "SVC",
+          type: "seg",
         },
         {
           product: "Seguro Auto",
           color: "blue lighten-3",
           initials: "SA",
+          type: "seg",
         },
         {
           product: "Seguro Residencial e Empresarial",
           color: "blue lighten-3",
           initials: "SRE",
+          type: "seg",
         },
         {
           product: "Seguro Agrícola",
           color: "blue lighten-3",
           initials: "SAG",
+          type: "seg",
         },
         {
           product: "Seguro Animal de Elite",
           color: "blue lighten-3",
           initials: "SAE",
+          type: "seg",
         },
         {
           product: "Seguro Equipamentos",
           color: "blue lighten-3",
           initials: "SE",
+          type: "seg",
         },
         {
           product: "Seguro Prestamista",
           color: "blue lighten-3",
           initials: "SP",
+          type: "seg",
         },
         {
           product: "Crédito Consignado",
           color: "green lighten-3",
           initials: "CC",
+          type: "cc",
         },
         {
           product: "Consórcio",
           color: "orange lighten-3",
           initials: "C",
+          type: "c",
         },
       ],
     };
@@ -770,13 +883,50 @@ export default {
         }
       }
     },*/
+  watch: {
+    singleExpand (v) {
+      if (!v) return
+      // Single expand enabled. Hide all but the first expanded item
+      this.expanded.forEach((item, i) => {
+        if (i > 0) this.closeExpand(item)
+      })
+    }
+  },
   methods: {
+    getItemId (item) {
+      return item.id // Must be uid of record (would be nice if v-data-table exposed a "getItemKey" method)
+    },
+    toggleExpand (props) {
+      const item = props.item
+      const id = this.getItemId(item)
+      if (props.isExpanded && this.transitioned[id]) {
+        // If we're expanded and not in the process of closing, close
+        this.closeExpand(item)
+      } else {
+        // If we're closed or in the process of closing, expand
+        // Stop us from closing if a close transition was started
+        clearTimeout(this.closeTimeouts[id])
+        // Tell v-data-table to add the expansion content for the item
+        props.expand(true)
+        // Show expansion content with transition animation after it's had time to get added to the DOM
+        this.$nextTick(() => this.$set(this.transitioned, id, true))
+        // Hide all other expanded items if single-expand
+        if (this.singleExpand) this.$nextTick(() => this.expanded.forEach(i => i !== item && this.closeExpand(i)))
+      }
+    },
+    closeExpand (item) {
+      const id = this.getItemId(item)
+      // Mark that this item is in the process of closing
+      this.$set(this.transitioned, id, false)
+      // Remove expansion content from DOM after transition animation has had enough time to finish
+      this.closeTimeouts[id] = setTimeout(() => this.$refs.vDataTable.expand(item, false), 600)
+    },
     disableBtns(type, item) {
       let logged_user_id = this.$store.state.user.id;
       let logged_user_access = this.$store.state.user.accesses.commissions;
       if (type == "edit") {
         return !(
-          logged_user_access == "indicator" && item.user_id != logged_user_id
+          (logged_user_access == "indicator" && (item.user_id != logged_user_id || item.status != 'Aguard. Venda')) || (logged_user_access == "seller" && (item.status == "Aprovado UPS" || item.status == "Recusado UPS"))
         );
       } else {
         switch (logged_user_access) {
@@ -802,6 +952,8 @@ export default {
         if (item.product == product) {
           if (type == "color") {
             value = item.color;
+          } else if (type == "type") {
+            value = item.type;
           } else {
             value = item.initials;
           }
@@ -926,11 +1078,42 @@ export default {
 };
 </script>
 <style scoped>
+.expanded-closing {
+  border-bottom: none !important;
+}
+.avatar-class {
+  height: 35px;
+  width: 35px;
+  border-style: inset solid;
+  border-color:black;
+  border-width: 1px;
+  border-radius: 50%;
+  text-align: center;
+  display: table-cell;
+  vertical-align:middle;
+  background-size: 200% auto;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  transition: box-shadow 0.3s;
+}
+.avatar-seg {
+  background-image: linear-gradient(to bottom right, rgba(137,92,233,0.8), rgba(80,150,228,0.7));
+}
+.avatar-cc {
+  background-image: linear-gradient(to bottom right, rgba(50,228,100,0.7), rgba(0,50,200,0.7));
+}
+.avatar-c {
+  background-image: linear-gradient(to bottom right, rgba(255,213,0,0.77), rgba(255,100,7,0.8));
+}
+.avatar-class:hover {
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    border-width: 2px;
+}
 .item-select-badge {
   font-size: 13px;
   padding-left: 5px;
 }
-
 .fixing {
   position: absolute;
   top: 30vw;
@@ -947,7 +1130,7 @@ export default {
 }
 .title-card-dark {
   color: white;
-  font-weight: bolder;
+  font-weight: bold;
   font-family: "Quicksand", sans-serif;
   transition: 0.8s;
   background-color: rgb(24, 25, 26);
@@ -956,16 +1139,17 @@ export default {
   border-color: rgba(18, 210, 175);
 }
 .style-title {
-  font-weight: bolder;
+  transition: 0s;
+  font-weight: bold;
   font-family: "Quicksand", sans-serif;
 }
 .title-card {
-  font-weight: bolder;
+  font-weight: bold;
   font-family: "Quicksand", sans-serif;
   transition: 0.8s;
   border-bottom: solid;
-  border-width: 2px;
-  border-color: rgba(18, 210, 175);
+  border-width: 1px;
+  border-color: black;
 }
 .hover-card:hover .title-card,
 .hover-card:hover .title-card-dark {
@@ -973,10 +1157,9 @@ export default {
   color: rgba(18, 210, 175);
 }
 .data-table-commission {
-  font-weight: 600;
+  font-weight: bold;
   transition: 0.8s;
 }
-
 .tooltip {
   position: relative;
   display: inline-block;
@@ -1017,7 +1200,7 @@ export default {
 }
 .second_font-bold {
   font-family: "Varela Round", sans-serif;
-  font-weight: 700;
+  font-weight: bold;
 }
 .second_font {
   font-family: "Varela Round", sans-serif;
@@ -1039,7 +1222,6 @@ export default {
   border-radius: 9999px;
   padding: 4px 8px;
 }
-
 .gradient-blue {
   background-image: linear-gradient(to right, #77caf3, #5b75dc, #77caf3);
 }
@@ -1055,7 +1237,6 @@ export default {
 .gradient-error {
   background-image: linear-gradient(to right, #ff648e, #ca0000, #ff648e);
 }
-
 .chip:hover {
   background-position: right center; /* change the direction of the change here */
 }
@@ -1063,5 +1244,4 @@ export default {
   color: white;
   margin-right: 1px;
 }
-
 </style>

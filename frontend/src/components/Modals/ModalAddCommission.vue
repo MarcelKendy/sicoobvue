@@ -158,6 +158,7 @@
                     class="px-3"
                     label="Vendedor"
                     :color="color"
+                    :disabled="accesses('disableSeller')"
                     prepend-icon="mdi-account-tie-voice"
                     :rules="sellerRule"
                     placeholder="Enter para confirmar"
@@ -203,10 +204,11 @@
                 <v-col cols="12" md="6">
                   <DateTimePicker
                     label="Data/Hora da Venda"
-                    :updateComponent="update_datetime_picker"
+                    :updateComponent="update_datetime_picker_seller"
                     @resetValidation="resetValidation"
                     :rules="requiredSellerRule"
                     v-model="item.date_seller"
+                    :disabled="accesses('disableSeller')"
                     :color="color"
                     clearable
                   ></DateTimePicker>
@@ -221,6 +223,7 @@
                       color: color,
                       class: 'px-3',
                       rules: valueRule,
+                      disabled: accesses('disableSeller'),
                       placeholder: 'Valor efetivo do produto',
                       outlined: true,
                       suffix: 'R$',
@@ -237,6 +240,7 @@
                       item.product == 'Seguro de Vida - Sicoob Seguradora' ||
                       item.product == 'Consórcio'
                     "
+                    v-bind:disabled="accesses('disableSeller')"
                     v-bind:outlined="true"
                     v-bind:rules="requiredSellerRule"
                     v-bind:color="color"
@@ -253,6 +257,7 @@
                       prependIcon: 'mdi-cash',
                       color: color,
                       class: 'px-3',
+                      disabled: accesses('disableSeller'),
                       rules: valueRule,
                       placeholder: 'Valor a ser comissionado',
                       outlined: true,
@@ -272,6 +277,7 @@
                     class="px-3"
                     label="Operador"
                     :color="color"
+                    :disabled="accesses('disableOperator')"
                     prepend-icon="mdi-account-tie"
                     :rules="operatorRule"
                     placeholder="Enter para confirmar"
@@ -317,10 +323,11 @@
                 <v-col cols="12" md="6">
                   <DateTimePicker
                     label="Data/Hora da Operação"
-                    :updateComponent="update_datetime_picker"
+                    :updateComponent="update_datetime_picker_operator"
                     @resetValidation="resetValidation"
                     :rules="requiredOperatorRule"
                     v-model="item.date_operator"
+                    :disabled="accesses('disableOperator')"
                     :color="color"
                     clearable
                   ></DateTimePicker>
@@ -354,6 +361,8 @@ export default {
       valid: true,
       dialog: false,
       update_datetime_picker: false,
+      update_datetime_picker_seller: false,
+      update_datetime_picker_operator: false,
       loading: false,
       loading_users: false,
       users: [],
@@ -443,7 +452,7 @@ export default {
           !!v ||
           (this.item.status != "Recusado UPS" &&
             this.item.status != "Aprovado UPS") ||
-          "O status selecionado indica que a venda foi operada, então essa informação é obrigatória",
+          "O status selecionado indica que a UPS avaliou a venda, então essa informação é obrigatória",
       ],
       valueRule: [
         (v) =>
@@ -452,7 +461,7 @@ export default {
           this.item.status == "Aguard. Venda" ||
           this.item.status == "Não Vendido" ||
           this.item.status == "" ||
-          "O status selecionado indica que a venda foi operada, então essa informação é obrigatória",
+          "O status selecionado indica que a venda foi feita, então essa informação é obrigatória",
       ],
       sellerRule: [
         (v) =>
@@ -460,9 +469,8 @@ export default {
             (this.item.seller_id != this.item.operator_id ||
               "O vendedor e o operador devem ser distintos")) ||
           this.item.status == "Aguard. Venda" ||
-          this.item.status == "Não Vendido" ||
           this.item.status == "" ||
-          "O status selecionado indica que a venda foi operada, então essa informação é obrigatória",
+          "O status selecionado indica que a venda foi feita ou houve contato com o cliente, então essa informação é obrigatória",
       ],
       operatorRule: [
         (v) =>
@@ -471,7 +479,7 @@ export default {
               "O operador e o vendedor devem ser distintos")) ||
           (this.item.status != "Recusado UPS" &&
             this.item.status != "Aprovado UPS") ||
-          "O status selecionado indica que a venda foi operada, então essa informação é obrigatória",
+          "O status selecionado indica que a UPS avaliou a venda, então essa informação é obrigatória",
       ],
     };
   },
@@ -479,6 +487,8 @@ export default {
     open: function () {
       this.dialog = this.open;
       this.update_datetime_picker = this.dialog;
+      this.update_datetime_picker_seller = this.dialog;
+      this.update_datetime_picker_operator = this.dialog;
       if (this.$refs.form) {
         this.$refs.form.resetValidation();
       }
@@ -527,16 +537,20 @@ export default {
             this.$store.state.user.accesses.commissions == "operator" ||
             this.item.user_id == this.$store.state.user.id
           );
-
         case "seller":
           return (
             this.$store.state.user.accesses.commissions == "operator" ||
             this.$store.state.user.accesses.commissions == "seller"
           );
-
         case "operator":
           return this.$store.state.user.accesses.commissions == "operator";
-
+        case "disableSeller":
+          return this.item.status == "Aguard. Venda" || this.item.status == "";
+        case "disableOperator":
+          return (
+            this.item.status != "Aprovado UPS" &&
+            this.item.status != "Recusado UPS"
+          );
         default:
           return false;
       }
@@ -557,8 +571,71 @@ export default {
       return value;
     },
     changeStatus() {
+      if (
+        this.item.status != "Aprovado UPS" &&
+        this.item.status != "Recusado UPS"
+      ) {
+        this.update_datetime_picker_seller = true;
+        this.update_datetime_picker_operator = false;
+        this.item.operator_id = this.item.date_operator = "";
+        if (this.item.status == "Aguard. Venda") {
+          this.update_datetime_picker_seller = false;
+          this.update_datetime_picker_operator = false;
+          this.item.seller_id = this.item.custom_value = this.item.date_seller = this.item.value = "";
+          if (
+            this.item.product !== "Seguro Prestamista" &&
+            this.item.product !== "Seguro de Vida - Sicoob Seguradora" &&
+            this.item.product !== "Consórcio"
+          ) {
+            this.item.commission_percentage = "";
+          }
+        } else if (this.item.status == "Não Vendido") { 
+          this.item.custom_value = this.item.value = "";
+          if (
+            this.item.product !== "Seguro Prestamista" &&
+            this.item.product !== "Seguro de Vida - Sicoob Seguradora" &&
+            this.item.product !== "Consórcio"
+          ) {
+            this.item.commission_percentage = "";
+          }
+        }
+      } else {
+        this.update_datetime_picker_seller = true;
+        this.update_datetime_picker_operator = true;
+      }
+     
       this.$refs.form.resetValidation();
     },
+    /*changeStatus() {
+      if (this.item.status == "Aguard. Venda") {
+        this.update_datetime_picker_seller = false;
+        this.update_datetime_picker_operator = false;
+        this.item.seller_id =
+          this.item.custom_value =
+          this.item.date_seller =
+          this.item.value =
+            "";
+        if (
+          this.item.product !== "Seguro Prestamista" &&
+          this.item.product !== "Seguro de Vida - Sicoob Seguradora" &&
+          this.item.product !== "Consórcio"
+        ) {
+          this.item.commission_percentage = "";
+        }
+      } else if (
+        this.item.status != "Aprovado UPS" &&
+        this.item.status != "Recusado UPS"
+      ) {
+        this.update_datetime_picker_seller = true;
+        this.update_datetime_picker_operator = false;
+        this.item.operator_id = "";
+        this.item.date_operator = "";
+      } else {
+        this.update_datetime_picker_seller = true;
+        this.update_datetime_picker_operator = true;
+      }
+      this.$refs.form.resetValidation();
+    },*/
     changeProduct(item) {
       switch (item) {
         case "Seguro Prestamista":
@@ -644,7 +721,6 @@ export default {
   border-radius: 9999px;
   padding: 4px 8px;
 }
-
 .gradient-blue {
   background-image: linear-gradient(to right, #77caf3, #5b75dc, #77caf3);
 }
@@ -660,7 +736,6 @@ export default {
 .gradient-error {
   background-image: linear-gradient(to right, #ff648e, #ca0000, #ff648e);
 }
-
 .chip:hover {
   background-position: right center; /* change the direction of the change here */
 }

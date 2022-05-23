@@ -44,6 +44,7 @@
                   :rules="requiredRule"
                   :color="color"
                   label="Produto"
+                  :disabled="!accesses('product')"
                   @change="changeProduct"
                   v-model="item.product"
                   prepend-icon="mdi-storefront"
@@ -54,7 +55,8 @@
                 <v-select
                   :menu-props="{ offsetY: true }"
                   solo
-                  :items="status"
+                  :disabled="!accesses('status')"
+                  :items="status()"
                   :color="color"
                   :rules="requiredRule"
                   label="Status"
@@ -154,6 +156,7 @@
               <v-row align="center">
                 <v-col cols="12" md="6">
                   <v-autocomplete
+                    :disabled="accesses('disableSeller')"
                     class="px-3"
                     label="Vendedor"
                     :color="color"
@@ -198,7 +201,8 @@
                 <v-col cols="12" md="6">
                   <DateTimePicker
                     label="Data/Hora da Venda"
-                    :updateComponent="update_datetime_picker"
+                    :disabled="accesses('disableSeller')"
+                    :updateComponent="update_datetime_picker_seller"
                     @resetValidation="resetValidation"
                     :rules="requiredSellerRule"
                     v-model="item.date_seller"
@@ -215,6 +219,7 @@
                       prependIcon: 'mdi-cash',
                       color: color,
                       class: 'px-3',
+                      disabled: accesses('disableSeller'),
                       rules: valueRule,
                       placeholder: 'Valor efetivo do produto',
                       outlined: true,
@@ -232,6 +237,7 @@
                       item.product == 'Seguro de Vida - Sicoob Seguradora' ||
                       item.product == 'Consórcio'
                     "
+                    v-bind:disabled="accesses('disableSeller')"
                     v-bind:outlined="true"
                     v-bind:rules="requiredSellerRule"
                     v-bind:color="color"
@@ -248,6 +254,7 @@
                       prependIcon: 'mdi-cash',
                       color: color,
                       class: 'px-3',
+                      disabled: accesses('disableSeller'),
                       rules: valueRule,
                       placeholder: 'Valor efetivo a ser comissionado',
                       outlined: true,
@@ -272,6 +279,7 @@
                     placeholder="Enter para confirmar"
                     v-model="item.operator_id"
                     :items="users"
+                    :disabled="accesses('disableOperator')"
                     :loading="loading_users"
                     auto-select-first
                     item-text="full_name"
@@ -308,9 +316,10 @@
                 <v-col cols="12" md="6">
                   <DateTimePicker
                     label="Data/Hora da Operação"
-                    :updateComponent="update_datetime_picker"
+                    :updateComponent="update_datetime_picker_operator"
                     @resetValidation="resetValidation"
                     v-model="item.date_operator"
+                    :disabled="accesses('disableOperator')"
                     :rules="requiredOperatorRule"
                     :color="color"
                     clearable
@@ -346,6 +355,8 @@ export default {
       loading: false,
       loading_users: false,
       update_datetime_picker: false,
+      update_datetime_picker_operator: false,
+      update_datetime_picker_seller: false,
       users: [],
       no_users:
         "Se existem usuários cadastrados (considerando o filtro), houve um erro de rede. Certifique-se de sua conexão e atualize a página",
@@ -387,13 +398,6 @@ export default {
         "Seguro Prestamista",
         "Crédito Consignado",
         "Consórcio",
-      ],
-      status: [
-        "Aguard. Venda",
-        "Não Vendido",
-        "Aguard. UPS",
-        "Aprovado UPS",
-        "Recusado UPS",
       ],
       status_style: [
         {
@@ -442,7 +446,7 @@ export default {
           !!v ||
           (this.item.status != "Recusado UPS" &&
             this.item.status != "Aprovado UPS") ||
-          "O status selecionado indica que a venda foi operada, então essa informação é obrigatória",
+          "O status selecionado indica que a UPS avaliou esta venda, então essa informação é obrigatória",
       ],
       valueRule: [
         (v) =>
@@ -451,7 +455,7 @@ export default {
           this.item.status == "Aguard. Venda" ||
           this.item.status == "Não Vendido" ||
           this.item.status == "" ||
-          "O status selecionado indica que a venda foi operada, então essa informação é obrigatória",
+          "O status selecionado indica que a venda foi feita, então essa informação é obrigatória",
       ],
       sellerRule: [
         (v) =>
@@ -459,9 +463,8 @@ export default {
             (this.item.seller_id != this.item.operator_id ||
               "O vendedor e o operador devem ser distintos")) ||
           this.item.status == "Aguard. Venda" ||
-          this.item.status == "Não Vendido" ||
           this.item.status == "" ||
-          "O status selecionado indica que a venda foi operada, então essa informação é obrigatória",
+          "O status selecionado indica que a venda foi feita ou houve contato com o cliente, então essa informação é obrigatória",
       ],
       operatorRule: [
         (v) =>
@@ -470,7 +473,7 @@ export default {
               "O operador e o vendedor devem ser distintos")) ||
           (this.item.status != "Recusado UPS" &&
             this.item.status != "Aprovado UPS") ||
-          "O status selecionado indica que a venda foi operada, então essa informação é obrigatória",
+          "O status selecionado indica que a UPS avaliou esta venda, então essa informação é obrigatória",
       ],
     };
   },
@@ -478,6 +481,8 @@ export default {
     open: function () {
       this.dialog = this.open;
       this.update_datetime_picker = this.dialog;
+      this.update_datetime_picker_seller = this.dialog;
+      this.update_datetime_picker_operator = this.dialog;
       this.loading = false;
       this.resetValidation();
       if (this.dialog) {
@@ -511,28 +516,137 @@ export default {
     },
     accesses(type) {
       switch (type) {
+        case "product":
+          if (this.$store.state.user.accesses.commissions == "indicator") {
+            return (
+              this.item.user_id == this.$store.state.user.id &&
+              this.item.status == "Aguard. Venda"
+            );
+          } else if (this.$store.state.user.accesses.commissions == "seller") {
+            return (
+              this.item.status != "Recusado UPS" &&
+              this.item.status != "Aceito UPS"
+            );
+          } else {
+            return true;
+          }
+        case "status":
+          if (this.$store.state.user.accesses.commissions == "indicator") {
+            return false;
+          } else if (this.$store.state.user.accesses.commissions == "seller") {
+            return (
+              this.item.status != "Recusado UPS" &&
+              this.item.status != "Aceito UPS"
+            );
+          } else {
+            return true;
+          }
+        case "disableSeller":
+          return this.item.status == "Aguard. Venda";
+        case "disableOperator":
+          return (
+            this.item.status != "Aprovado UPS" &&
+            this.item.status != "Recusado UPS"
+          );
         case "indicator":
           return (
             this.$store.state.user.accesses.commissions == "operator" ||
             this.item.user_id == this.$store.state.user.id
           );
-
         case "seller":
           return (
             this.$store.state.user.accesses.commissions == "operator" ||
             (this.$store.state.user.accesses.commissions == "seller" &&
-              (this.item.user_id == this.$store.state.user.id ||
-                this.item.full_name == this.$store.state.user.full_name))
+              this.item.status != "Recusado UPS" &&
+              this.item.status != "Aprovado UPS")
           );
-
         case "operator":
           return this.$store.state.user.accesses.commissions == "operator";
-
         default:
           return false;
       }
     },
+    /*
+    accesses(type) {
+      switch (type) {
+        case "product":
+          if (this.$store.state.user.accesses.commissions == "indicator") {
+            return (
+              this.item.user_id == this.$store.state.user.id &&
+              this.item.status == "Aguard. Venda"
+            );
+          } else if (this.$store.state.user.accesses.commissions == "seller") {
+            return (
+              this.item.user_id == this.$store.state.user.id &&
+              this.item.status != "Recusado UPS" &&
+              this.item.status != "Aceito UPS"
+            );
+          } else {
+            return true;
+          }
+        case "status":
+          if (this.$store.state.user.accesses.commissions == "indicator") {
+            return false;
+          } else if (this.$store.state.user.accesses.commissions == "seller") {
+            return (
+              !this.item.seller_id ||
+              ((this.item.user_id == this.$store.state.user.id ||
+                this.item.seller_id == this.$store.state.user.id) &&
+                this.item.status != "Recusado UPS" &&
+                this.item.status != "Aceito UPS")
+            );
+          } else {
+            return true;
+          }
+        case "indicator":
+          return (
+            this.$store.state.user.accesses.commissions == "operator" ||
+            this.item.user_id == this.$store.state.user.id
+          );
+        case "seller":
+          return (
+            this.$store.state.user.accesses.commissions == "operator" ||
+            (this.$store.state.user.accesses.commissions == "seller" &&
+              (!this.item.seller_id ||
+                this.item.seller_id == this.$store.state.user.id ||
+                this.item.user_id == this.$store.state.user.id) &&
+              this.item.status != "Recusado UPS" &&
+              this.item.status != "Aprovado UPS")
+          );
+        case "operator":
+          return this.$store.state.user.accesses.commissions == "operator";
+        default:
+          return false;
+      }
+    },
+    */
     changeStatus() {
+      if (this.item.status == "Aguard. Venda") {
+        this.update_datetime_picker_seller = false;
+        this.update_datetime_picker_operator = false;
+        this.item.seller_id =
+          this.item.custom_value =
+          this.item.date_seller =
+          this.item.value =
+            "";
+        if (
+          this.item.product !== "Seguro Prestamista" &&
+          this.item.product !== "Seguro de Vida - Sicoob Seguradora" &&
+          this.item.product !== "Consórcio"
+        ) {
+          this.item.commission_percentage = "";
+        }
+      } else if (
+        this.item.status != "Aprovado UPS" &&
+        this.item.status != "Recusado UPS"
+      ) {
+        this.update_datetime_picker_seller = true;
+        this.update_datetime_picker_operator = false;
+        this.item.operator_id = this.item.date_operator = "";
+      } else {
+        this.update_datetime_picker_seller = true;
+        this.update_datetime_picker_operator = true;
+      }
       this.$refs.form.resetValidation();
     },
     changeProduct(item) {
@@ -553,6 +667,23 @@ export default {
           this.item.custom_value = "";
           this.item.commission_percentage = "";
           break;
+      }
+    },
+    status() {
+      switch (this.$store.state.user.accesses.commissions) {
+        case "indicator":
+          this.item.status = "Aguard. Venda";
+          return ["Aguard. Venda"];
+        case "seller":
+          return ["Aguard. Venda", "Não Vendido", "Aguard. UPS"];
+        case "operator":
+          return [
+            "Aguard. Venda",
+            "Não Vendido",
+            "Aguard. UPS",
+            "Aprovado UPS",
+            "Recusado UPS",
+          ];
       }
     },
     statusStyle(status, type) {
@@ -632,10 +763,10 @@ export default {
 }
 .v-select__selection {
   display: flex !important;
-    width: 100% !important;
-    align-content: center !important;
-    align-items: center !important;
-    justify-content: center !important;
+  width: 100% !important;
+  align-content: center !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 .gradient-blue {
   background-image: linear-gradient(to right, #77caf3, #5b75dc, #77caf3);
@@ -652,7 +783,6 @@ export default {
 .gradient-error {
   background-image: linear-gradient(to right, #ff648e, #ca0000, #ff648e);
 }
-
 .chip:hover {
   background-position: right center; /* change the direction of the change here */
 }

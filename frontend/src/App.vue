@@ -2,7 +2,7 @@
   <v-app id="inspire" v-if="login_check">
     <v-navigation-drawer v-model="drawer" v-if="$route.name != 'Login'" app>
       <v-img
-        height="236px"
+        height="216px"
         src="./assets/images/bg1.png"
         gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)"
         dark
@@ -26,10 +26,11 @@
           </v-list-item-content>
         </v-list-item>
       </v-img>
-      <v-divider></v-divider>
+      
+       <v-divider color="black"></v-divider>
 
-      <v-list dense nav>
-        <v-list-item v-for="item in items" :key="item.title" :to="item.to">
+      <v-list dense nav active-class="bg-active">
+        <v-list-item v-for="item in items" :key="item.title" :to="item.to" class="item-nav">
           <v-list-item-icon>
             <v-img
               v-if="item.img"
@@ -169,7 +170,25 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.item-nav {
+  transition: 0.3s; 
+ 
+}
+.item-nav:hover {
+  color: white !important;
+  background-size: 200% auto;
+  background-image: linear-gradient(to right, #49def8, #49f8cf, #a449f8);
+  background-position: right center;
+ 
+}
+
+.v-list-item--active {
+  background-size: 200% auto;
+  background-image: linear-gradient(to right, #49def8, #49f8cf, #a449f8);
+  background-position: right center;
+  color : white !important;
+}
 /*
 font-family: 'Asap Condensed', sans-serif;
 font-family: 'Bebas Neue', cursive;

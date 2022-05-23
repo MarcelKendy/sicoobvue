@@ -14,6 +14,7 @@
           :label="label"
           v-bind="$attrs"
           v-on="on"
+          :disabled="disabled"
           :rules="rules"
           readonly
           :prepend-icon="prependIcon"
@@ -117,6 +118,10 @@ export default {
       default: "mdi-calendar-clock",
     },
     updateComponent: {
+      required: false,
+      type: [Boolean],
+    },
+    disabled: {
       required: false,
       type: [Boolean],
     },

@@ -52,27 +52,29 @@ class UserController extends Controller
 
     public function addUser (Request $request) {
         $newUser = new User();
-        $newUser->active = $request->active;
+        $newUser->active = 1;
         $newUser->name = $request->firstName;
         $newUser->full_name = $request->firstName.' '.$request->lastName;
         $newUser->email = $request->email;
         $newUser->cpf = $request->cpf;
         $newUser->role = $request->role;
         $newUser->password = password_hash($request->password, PASSWORD_DEFAULT);
-        $accesses = json_encode(array('commissions' => 'basic'));
+        $accesses = json_encode(array('commissions' => 'indicator'));
         $newUser->accesses = $accesses;
         $newUser->save();
         return response()->json($newUser);
     }
 
     public function editUser (User $user, Request $request) {
-        $user->active = $request->active;
         $name = substr($request->full_name, 0, strpos($request->full_name, " "));
         $user->name = $name;
         $user->full_name = $request->full_name;
         $user->email = $request->email;
         $user->cpf = $request->cpf;
         $user->role = $request->role;
+        if (isset($request->active)) {
+            $user->active = $request->active;
+        }
         if (isset($request->password) && !empty($request->password)) {
             $user->password = password_hash($request->password, PASSWORD_DEFAULT);
         }

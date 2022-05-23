@@ -13,8 +13,14 @@
         </v-btn>
       </template>
 
-      <v-card color="#26c6da" dark class="mx-auto" max-width="300">
+      <v-card color="#26c6da" dark class="mx-auto title-class" max-width="300" >
+       
         <v-list>
+           <v-img
+           max-height="60px"
+        src="../assets/images/bg1.png"
+        gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)"
+        >
           <v-list-item>
             <v-list-item-avatar>
               <v-avatar size="36px">
@@ -38,22 +44,22 @@
               ></v-img>
             </v-list-item-action>
           </v-list-item>
+          </v-img>
         </v-list>
 
         <v-divider></v-divider>
 
         <v-list>
-          <v-list-item v-for="item in items" :key="item.title">
+          <v-list-item v-for="item in items" :key="item.title" @click="actions(item.title)">
             <v-list-item-action>
-              <v-btn @click="actions(item.title)" icon
-                ><v-icon>{{ item.icon }}</v-icon></v-btn
-              >
+              <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
-            <v-list-item-title class="title-class">{{
+            <v-list-item-title>{{
               item.title
             }}</v-list-item-title>
           </v-list-item>
         </v-list>
+        
       </v-card>
     </v-menu>
     <modal-logout
