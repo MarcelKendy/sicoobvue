@@ -59,7 +59,7 @@ class UserController extends Controller
         $newUser->cpf = $request->cpf;
         $newUser->role = $request->role;
         $newUser->password = password_hash($request->password, PASSWORD_DEFAULT);
-        $accesses = json_encode(array('commissions' => 'indicator'));
+        $accesses = json_encode(array('commissions' => 'indicator', 'accesses' => 0));
         $newUser->accesses = $accesses;
         $newUser->save();
         return response()->json($newUser);

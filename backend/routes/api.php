@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AccessController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,6 +50,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::put('/edit_user/{user}', [UserController::class, 'editUser']);
     Route::delete('/delete_user/{user}', [UserController::class, 'deleteUser']);
 // USER ROUTES
+
+
+// ACCESS ROUTES
+    Route::get('/get_accesses', [AccessController::class, 'getAccesses']);
+    Route::post('/get_access', [AccessController::class, 'getAccess']);
+    Route::post('/add_access', [AccessController::class, 'addAccess']);
+    Route::put('/edit_access/{access}', [AccessController::class, 'editAccess']);
+    Route::delete('/delete_access/{access}', [AccessController::class, 'deleteAccess']);
+// ACCESS ROUTES
 
 
 //Route::get('/get_xml/{xml}', [TaskController::class, 'getXml']);

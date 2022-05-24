@@ -26,11 +26,16 @@
           </v-list-item-content>
         </v-list-item>
       </v-img>
-      
-       <v-divider color="black"></v-divider>
+
+      <v-divider color="black"></v-divider>
 
       <v-list dense nav active-class="bg-active">
-        <v-list-item v-for="item in items" :key="item.title" :to="item.to" class="item-nav">
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          :to="item.to"
+          class="item-nav"
+        >
           <v-list-item-icon>
             <v-img
               v-if="item.img"
@@ -131,11 +136,11 @@ export default {
         img: "accesses1.png",
         to: "/acessos",
       },
-      { 
-        title: "Sobre", 
-        icon: "mdi-help", 
-        img: "about.png", 
-        to: "/about" 
+      {
+        title: "Sobre",
+        icon: "mdi-help",
+        img: "about.png",
+        to: "/about",
       },
     ],
     login_check: false,
@@ -169,25 +174,33 @@ export default {
   },
 };
 </script>
-
+<style>
+.font-quicksand {
+  font-family: "Quicksand", sans-serif;
+}
+.bold {
+  font-weight: bold;
+}
+.bolder {
+  font-weight: bolder;
+}
+</style>
 <style scoped>
 .item-nav {
-  transition: 0.3s; 
- 
+  transition: 0.3s;
 }
 .item-nav:hover {
   color: white !important;
   background-size: 200% auto;
   background-image: linear-gradient(to right, #49def8, #49f8cf, #a449f8);
   background-position: right center;
- 
 }
 
 .v-list-item--active {
   background-size: 200% auto;
   background-image: linear-gradient(to right, #49def8, #49f8cf, #a449f8);
   background-position: right center;
-  color : white !important;
+  color: white !important;
 }
 /*
 font-family: 'Asap Condensed', sans-serif;

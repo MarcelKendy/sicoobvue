@@ -244,6 +244,7 @@ export default {
     open: function () {
       this.dialog = this.open;
       if (this.dialog) {
+        this.loading = false;
         this.assignUser();
       }
     },
@@ -262,12 +263,10 @@ export default {
       if (this.$refs.form.validate()) {
         this.loading = true;
         this.change_password = false;
-        console.log(typeof this.item.accesses)
+        console.log(typeof this.item.accesses);
         this.$http
           .put(`edit_user/${this.item.id}`, this.item)
           .then((response) => {
-            this.loading = false;
-            console.log(response.data.accesses, 1)
             this.$store
               .dispatch("login", response.data)
               .then(this.$emit("closeModal"));

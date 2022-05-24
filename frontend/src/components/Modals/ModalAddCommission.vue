@@ -581,7 +581,11 @@ export default {
         if (this.item.status == "Aguard. Venda") {
           this.update_datetime_picker_seller = false;
           this.update_datetime_picker_operator = false;
-          this.item.seller_id = this.item.custom_value = this.item.date_seller = this.item.value = "";
+          this.item.seller_id =
+            this.item.custom_value =
+            this.item.date_seller =
+            this.item.value =
+              "";
           if (
             this.item.product !== "Seguro Prestamista" &&
             this.item.product !== "Seguro de Vida - Sicoob Seguradora" &&
@@ -589,7 +593,7 @@ export default {
           ) {
             this.item.commission_percentage = "";
           }
-        } else if (this.item.status == "Não Vendido") { 
+        } else if (this.item.status == "Não Vendido") {
           this.item.custom_value = this.item.value = "";
           if (
             this.item.product !== "Seguro Prestamista" &&
@@ -603,7 +607,7 @@ export default {
         this.update_datetime_picker_seller = true;
         this.update_datetime_picker_operator = true;
       }
-     
+
       this.$refs.form.resetValidation();
     },
     /*changeStatus() {

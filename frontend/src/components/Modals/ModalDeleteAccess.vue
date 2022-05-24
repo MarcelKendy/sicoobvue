@@ -10,7 +10,7 @@
           ></v-progress-linear>
         </template>
         <v-card-title class="title-modal" v-if="!loading">
-          <strong>Deletar Comissão</strong>
+          <strong>Deletar Acesso</strong>
           <v-spacer></v-spacer>
           <img width="30" src="../../assets/images/sicoobicon.png" />
         </v-card-title>
@@ -40,15 +40,13 @@
             dark
             prominent
           >
+            <strong>Acesso: </strong> {{ item.name }}
+            <v-spacer></v-spacer>
             <strong>Inserido em: </strong>{{ created_at_date()
-            }}<strong> Às </strong>{{ created_at_time() }}<br /><strong
-              >Por: </strong
-            ><span v-if="loading_user">Carregando...</span
-            ><span v-else>{{ user_name }}</span
-            ><br /><strong>Produto: </strong> {{ item.product
-            }}<span v-if="item.value"
-              ><br /><strong>Valor:</strong> R$ {{ item.value }}</span
-            >
+            }}<strong> Às </strong>
+            {{ created_at_time() }}
+            <v-spacer></v-spacer>
+            <strong>Por: </strong><span>{{ item.user["full_name"] }}</span>
           </v-alert>
         </v-card-text>
         <v-card-text class="mt-7" v-else>
@@ -72,7 +70,7 @@
           <v-btn color="blue darken-1" text @click="closeModal">
             Cancelar
           </v-btn>
-          <v-btn color="red darken-1" text @click="deleteCommission">
+          <v-btn color="red darken-1" text @click="deleteAccess">
             Deletar
           </v-btn>
         </v-card-actions>
@@ -83,14 +81,12 @@
 
 <script>
 export default {
-  props: ["open", "commission"],
+  props: ["open", "access"],
   data() {
     return {
       dialog: false,
-      loading_user: false,
       loading: false,
-      user_name: "",
-      item: {},
+      item: { user: {} },
     };
   },
   watch: {
@@ -98,27 +94,17 @@ export default {
       this.loading = false;
       this.dialog = this.open;
     },
-    commission: function () {
-      Object.assign(this.item, this.commission);
-      this.get_info();
+    access: function () {
+      Object.assign(this.item, this.access);
     },
   },
   methods: {
-    get_info() {
-      this.loading_user = true;
-      this.$http
-        .post("get_users", { where: "id = " + this.item.user_id })
-        .then((response) => {
-          this.user_name = response.data[0].full_name;
-          this.loading_user = false;
-        });
-    },
     closeModal() {
       this.$emit("closeDeleteModal");
     },
-    deleteCommission() {
+    deleteAccess() {
       this.loading = true;
-      this.$emit("deleteCommission", this.item.id);
+      this.$emit("deleteAccess", this.item.id);
     },
     created_at_date() {
       let br_date = "";
