@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "AboutComponent",
+  name: 'AboutComponent',
 
   data: () => ({}),
 };

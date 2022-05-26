@@ -11,7 +11,7 @@
       >
         <span class="second_font-bold">Tema</span>
         <v-icon dark right>
-          {{ !dark_theme ? "mdi-weather-night" : "mdi-white-balance-sunny" }}
+          {{ !dark_theme ? 'mdi-weather-night' : 'mdi-white-balance-sunny' }}
         </v-icon>
       </v-btn>
       <span class="tooltiptext">{{
@@ -148,11 +148,11 @@
                     <strong>
                       <span class="yellow--text text--darken-2">
                         <span>{{
-                          item.status == "Recusado UPS"
-                            ? "A UPS REPROVOU esta venda"
-                            : item.status == "Aguard. UPS"
-                            ? "A UPS ainda não aprovou a venda"
-                            : "Esse produto ainda não foi vendido"
+                          item.status == 'Recusado UPS'
+                            ? 'A UPS REPROVOU esta venda'
+                            : item.status == 'Aguard. UPS'
+                            ? 'A UPS ainda não aprovou a venda'
+                            : 'Esse produto ainda não foi vendido'
                         }}</span>
                       </span>
                     </strong>
@@ -180,26 +180,26 @@
             <v-tooltip left v-if="!item.date_seller && !item.date_operator">
               <template v-slot:activator="{ on, attrs }">
                 <span v-bind="attrs" v-on="on">
-                  {{ formatDate(item.date_indicator, "d_m") }}
+                  {{ formatDate(item.date_indicator, 'd_m') }}
                 </span>
               </template>
-              <span>{{ formatDate(item.date_indicator, "y") }}</span>
+              <span>{{ formatDate(item.date_indicator, 'y') }}</span>
             </v-tooltip>
             <v-tooltip left v-else-if="!item.date_operator">
               <template v-slot:activator="{ on, attrs }">
                 <span v-bind="attrs" v-on="on">
-                  {{ formatDate(item.date_seller, "d_m") }}
+                  {{ formatDate(item.date_seller, 'd_m') }}
                 </span>
               </template>
-              <span>{{ formatDate(item.date_seller, "y") }}</span>
+              <span>{{ formatDate(item.date_seller, 'y') }}</span>
             </v-tooltip>
             <v-tooltip left v-else>
               <template v-slot:activator="{ on, attrs }">
                 <span v-bind="attrs" v-on="on">
-                  {{ formatDate(item.date_operator, "d_m") }}
+                  {{ formatDate(item.date_operator, 'd_m') }}
                 </span>
               </template>
-              <span>{{ formatDate(item.date_operator, "y") }}</span>
+              <span>{{ formatDate(item.date_operator, 'y') }}</span>
             </v-tooltip>
           </v-chip>
         </template>
@@ -225,7 +225,7 @@
                 v-on="on"
               >
                 <span class="white--text text-h7">{{
-                  productStyle(item.product, "initials")
+                  productStyle(item.product, 'initials')
                 }}</span>
               </div>
             </template>
@@ -240,7 +240,7 @@
             :outlined="!dark_theme"
           >
             <span v-if="item.value" class="second_font-bold">{{
-              "R$ " + (+item.value).toFixed(2)
+              'R$ ' + (+item.value).toFixed(2)
             }}</span>
             <span v-else class="second_font">Aguardando</span>
           </v-chip>
@@ -249,7 +249,7 @@
           <div :class="'chip gradient-' + statusStyle(item.status, 'gradient')">
             <div class="chip__content">
               <v-icon :color="statusStyle(item.status, 'color')">{{
-                statusStyle(item.status, "icon")
+                statusStyle(item.status, 'icon')
               }}</v-icon>
               <span class="item-select-badge">{{ item.status }}</span>
             </div>
@@ -324,8 +324,8 @@
                         </template>
                         <span>{{
                           item.indicator.active == 1
-                            ? "Usuário Ativo"
-                            : "Usuário Desativado"
+                            ? 'Usuário Ativo'
+                            : 'Usuário Desativado'
                         }}</span>
                       </v-tooltip>
                     </v-list-item-action>
@@ -419,8 +419,8 @@
                         </template>
                         <span>{{
                           item.seller.active == 1
-                            ? "Usuário Ativo"
-                            : "Usuário Desativado"
+                            ? 'Usuário Ativo'
+                            : 'Usuário Desativado'
                         }}</span>
                       </v-tooltip>
                     </v-list-item-action>
@@ -523,8 +523,8 @@
                         </template>
                         <span>{{
                           item.operator.active == 1
-                            ? "Usuário Ativo"
-                            : "Usuário Desativado"
+                            ? 'Usuário Ativo'
+                            : 'Usuário Desativado'
                         }}</span>
                       </v-tooltip>
                     </v-list-item-action>
@@ -670,11 +670,11 @@
 </template>
 
 <script>
-import ModalAdd from "./Modals/ModalAddCommission.vue";
-import ModalEdit from "./Modals/ModalEditCommission.vue";
-import ModalDelete from "./Modals/ModalDeleteCommission.vue";
+import ModalAdd from './Modals/ModalAddCommission.vue';
+import ModalEdit from './Modals/ModalEditCommission.vue';
+import ModalDelete from './Modals/ModalDeleteCommission.vue';
 export default {
-  name: "CommissionComponent",
+  name: 'CommissionComponent',
   components: { ModalAdd, ModalEdit, ModalDelete },
   data() {
     return {
@@ -683,7 +683,7 @@ export default {
       transitioned: [],
       singleExpand: false,
       closeTimeouts: {},
-      search: "",
+      search: '',
       edited_item: {},
       deleted_item: {},
       loading_commissions: true,
@@ -696,113 +696,113 @@ export default {
       snackbar_delete: false,
       dark_theme: false,
       headers: [
-        { text: "Data", value: "date_indicator", align: "start" },
-        { text: "Produto", value: "product" },
-        { text: "Valor", value: "value" },
-        { text: "Status", value: "status", width: "19%" },
-        { text: "Indicador", value: "indicator.full_name" },
-        { text: "Vendedor", value: "seller.full_name" },
-        { text: "Operador", value: "operator.full_name" },
-        { text: "Ações", value: "actions", sortable: false },
+        { text: 'Data', value: 'date_indicator', align: 'start' },
+        { text: 'Produto', value: 'product' },
+        { text: 'Valor', value: 'value' },
+        { text: 'Status', value: 'status', width: '19%' },
+        { text: 'Indicador', value: 'indicator.full_name' },
+        { text: 'Vendedor', value: 'seller.full_name' },
+        { text: 'Operador', value: 'operator.full_name' },
+        { text: 'Ações', value: 'actions', sortable: false },
       ],
       status_style: [
         {
-          status: "Aguard. Venda",
-          color: "#5b75dc",
-          icon: "mdi-store-clock-outline",
-          gradient: "blue",
+          status: 'Aguard. Venda',
+          color: '#5b75dc',
+          icon: 'mdi-store-clock-outline',
+          gradient: 'blue',
         },
         {
-          status: "Não Vendido",
-          color: "#5f6e8b",
-          icon: "mdi-store-remove-outline",
-          gradient: "gray",
+          status: 'Não Vendido',
+          color: '#5f6e8b',
+          icon: 'mdi-store-remove-outline',
+          gradient: 'gray',
         },
         {
-          status: "Aguard. UPS",
-          color: "orange darken-3",
-          icon: "mdi-account-tie",
-          gradient: "orange",
+          status: 'Aguard. UPS',
+          color: 'orange darken-3',
+          icon: 'mdi-account-tie',
+          gradient: 'orange',
         },
         {
-          status: "Aprovado UPS",
-          color: "blue darken-1",
-          icon: "mdi-check-outline",
-          gradient: "success",
+          status: 'Aprovado UPS',
+          color: 'blue darken-1',
+          icon: 'mdi-check-outline',
+          gradient: 'success',
         },
         {
-          status: "Recusado UPS",
-          color: "red lighten-5",
-          icon: "mdi-close-outline",
-          gradient: "error",
+          status: 'Recusado UPS',
+          color: 'red lighten-5',
+          icon: 'mdi-close-outline',
+          gradient: 'error',
         },
       ],
       product_style: [
         {
-          product: "Seguro de Vida - Sicoob Seguradora",
-          color: "blue lighten-3",
-          initials: "SVS",
-          type: "seg",
+          product: 'Seguro de Vida - Sicoob Seguradora',
+          color: 'blue lighten-3',
+          initials: 'SVS',
+          type: 'seg',
         },
         {
-          product: "Seguro de Vida",
-          color: "blue lighten-3",
-          initials: "SV",
-          type: "seg",
+          product: 'Seguro de Vida',
+          color: 'blue lighten-3',
+          initials: 'SV',
+          type: 'seg',
         },
         {
-          product: "Seguro de Vida Coletivo",
-          color: "blue lighten-3",
-          initials: "SVC",
-          type: "seg",
+          product: 'Seguro de Vida Coletivo',
+          color: 'blue lighten-3',
+          initials: 'SVC',
+          type: 'seg',
         },
         {
-          product: "Seguro Auto",
-          color: "blue lighten-3",
-          initials: "SA",
-          type: "seg",
+          product: 'Seguro Auto',
+          color: 'blue lighten-3',
+          initials: 'SA',
+          type: 'seg',
         },
         {
-          product: "Seguro Residencial e Empresarial",
-          color: "blue lighten-3",
-          initials: "SRE",
-          type: "seg",
+          product: 'Seguro Residencial e Empresarial',
+          color: 'blue lighten-3',
+          initials: 'SRE',
+          type: 'seg',
         },
         {
-          product: "Seguro Agrícola",
-          color: "blue lighten-3",
-          initials: "SAG",
-          type: "seg",
+          product: 'Seguro Agrícola',
+          color: 'blue lighten-3',
+          initials: 'SAG',
+          type: 'seg',
         },
         {
-          product: "Seguro Animal de Elite",
-          color: "blue lighten-3",
-          initials: "SAE",
-          type: "seg",
+          product: 'Seguro Animal de Elite',
+          color: 'blue lighten-3',
+          initials: 'SAE',
+          type: 'seg',
         },
         {
-          product: "Seguro Equipamentos",
-          color: "blue lighten-3",
-          initials: "SE",
-          type: "seg",
+          product: 'Seguro Equipamentos',
+          color: 'blue lighten-3',
+          initials: 'SE',
+          type: 'seg',
         },
         {
-          product: "Seguro Prestamista",
-          color: "blue lighten-3",
-          initials: "SP",
-          type: "seg",
+          product: 'Seguro Prestamista',
+          color: 'blue lighten-3',
+          initials: 'SP',
+          type: 'seg',
         },
         {
-          product: "Crédito Consignado",
-          color: "green lighten-3",
-          initials: "CC",
-          type: "cc",
+          product: 'Crédito Consignado',
+          color: 'green lighten-3',
+          initials: 'CC',
+          type: 'cc',
         },
         {
-          product: "Consórcio",
-          color: "orange lighten-3",
-          initials: "C",
-          type: "c",
+          product: 'Consórcio',
+          color: 'orange lighten-3',
+          initials: 'C',
+          type: 'c',
         },
       ],
     };
@@ -870,38 +870,38 @@ export default {
     disableBtns(type, item) {
       let logged_user_id = this.$store.state.user.id;
       let logged_user_access = this.$store.state.user.accesses.commissions;
-      if (type == "edit") {
+      if (type == 'edit') {
         return !(
-          (logged_user_access == "indicator" &&
+          (logged_user_access == 'indicator' &&
             (item.user_id != logged_user_id ||
-              item.status != "Aguard. Venda")) ||
-          (logged_user_access == "seller" &&
-            (item.status == "Aprovado UPS" || item.status == "Recusado UPS"))
+              item.status != 'Aguard. Venda')) ||
+          (logged_user_access == 'seller' &&
+            (item.status == 'Aprovado UPS' || item.status == 'Recusado UPS'))
         );
       } else {
         switch (logged_user_access) {
-          case "indicator":
+          case 'indicator':
             return !(
-              item.status != "Aguard. Venda" || item.user_id != logged_user_id
+              item.status != 'Aguard. Venda' || item.user_id != logged_user_id
             );
-          case "seller":
+          case 'seller':
             return !(
-              item.status == "Aprovado UPS" ||
-              item.status == "Recusado UPS" ||
+              item.status == 'Aprovado UPS' ||
+              item.status == 'Recusado UPS' ||
               item.user_id != logged_user_id
             );
-          case "operator":
+          case 'operator':
             return true;
         }
       }
     },
     productStyle(product, type) {
-      let value = "";
+      let value = '';
       this.product_style.forEach((item) => {
         if (item.product == product) {
-          if (type == "color") {
+          if (type == 'color') {
             value = item.color;
-          } else if (type == "type") {
+          } else if (type == 'type') {
             value = item.type;
           } else {
             value = item.initials;
@@ -911,12 +911,12 @@ export default {
       return value;
     },
     statusStyle(status, type) {
-      let value = "";
+      let value = '';
       this.status_style.forEach((item) => {
         if (item.status == status) {
-          if (type == "color") {
+          if (type == 'color') {
             value = item.color;
-          } else if (type == "icon") {
+          } else if (type == 'icon') {
             value = item.icon;
           } else {
             value = item.gradient;
@@ -926,13 +926,13 @@ export default {
       return value;
     },
     formatDate(date, type) {
-      if (type == "d_m") {
+      if (type == 'd_m') {
         let day_month = date.slice(5, 10);
         let day = day_month.slice(3);
         let month = day_month.slice(0, 2);
-        return day + "/" + month;
+        return day + '/' + month;
       }
-      if (type == "y") {
+      if (type == 'y') {
         return date.slice(0, 4);
       }
     },
@@ -947,7 +947,7 @@ export default {
           item.operator.full_name +
           ": <span class='green--text ma-2'>R$ " +
           item.operator_commission +
-          "</span>"
+          '</span>'
         );
       } else if (item.indicator_id == item.operator_id) {
         return (
@@ -959,7 +959,7 @@ export default {
           item.seller.full_name +
           ": <span class='green--text ma-2'>R$ " +
           item.seller_commission +
-          "</span>"
+          '</span>'
         );
       } else {
         return (
@@ -979,7 +979,7 @@ export default {
       }
     },
     getCommissions() {
-      this.$http.get("get_commissions").then((response) => {
+      this.$http.get('get_commissions').then((response) => {
         this.items = response.data;
         this.loading_commissions = false;
       });
@@ -999,7 +999,7 @@ export default {
     },
     addCommission(item) {
       item.user_id = this.$store.state.user.id;
-      this.$http.post("add_commission", item).then((response) => {
+      this.$http.post('add_commission', item).then((response) => {
         this.items.push(response.data);
         this.addModal();
         this.snackbar_add = true;
@@ -1092,7 +1092,7 @@ export default {
 .title-card-dark {
   color: white;
   font-weight: bold;
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   transition: 0.8s;
   background-color: rgb(24, 25, 26);
   border-bottom: solid;
@@ -1102,11 +1102,11 @@ export default {
 .style-title {
   transition: 0s;
   font-weight: bold;
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
 }
 .title-card {
   font-weight: bold;
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   transition: 0.8s;
   border-bottom: solid;
   border-width: 1px;
@@ -1142,7 +1142,7 @@ export default {
   transition: 0.3s;
 }
 .tooltip .tooltiptext::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 30%;
   left: -2%;
@@ -1160,11 +1160,11 @@ export default {
   left: 105%;
 }
 .second_font-bold {
-  font-family: "Varela Round", sans-serif;
+  font-family: 'Varela Round', sans-serif;
   font-weight: bold;
 }
 .second_font {
-  font-family: "Varela Round", sans-serif;
+  font-family: 'Varela Round', sans-serif;
 }
 .v-tooltip__content {
   background-color: rgb(36, 33, 33) !important;

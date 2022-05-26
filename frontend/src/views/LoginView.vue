@@ -30,13 +30,13 @@
 
 
 <script>
-import LoginComponent from "../components/LoginComponent";
-import CardWelcomeComponent from "../components/CardWelcomeComponent";
+import LoginComponent from '../components/LoginComponent';
+import CardWelcomeComponent from '../components/CardWelcomeComponent';
 
 export default {
-  name: "LoginView",
+  name: 'LoginView',
   data: () => ({
-    datetime_reactive: "",
+    datetime_reactive: '',
   }),
   components: {
     LoginComponent,
@@ -64,11 +64,11 @@ export default {
       //let tz      = data.getTimezoneOffset(); // em minutos
 
       // Formata a data e a hora (note o mês + 1)
-      let str_data = dia + "/" + (mes + 1) + "/" + ano4;
-      let str_hora = hora + ":" + min + ":" + seg;
+      let str_data = dia + '/' + (mes + 1) + '/' + ano4;
+      let str_hora = hora + ':' + min + ':' + seg;
 
       // Mostra o resultado
-      return str_data + " às " + str_hora;
+      return str_data + ' às ' + str_hora;
     },
   },
 };
@@ -85,7 +85,7 @@ export default {
   top: 0;
   left: 0;
   /*background: url( 'https://picsum.photos/1920/1080?random=1') no-repeat center center;*/
-  background: url("https://random.imagecdn.app/1920/1080") no-repeat center
+  background: url('https://random.imagecdn.app/1920/1080') no-repeat center
     center;
   background-size: cover;
   transform: scale(1.1);
@@ -108,7 +108,7 @@ export default {
   position: absolute;
   bottom: 20px;
   right: 25px;
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   color: white;
 }
 .date-time {

@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import AboutComponent from "../components/AboutComponent";
+import AboutComponent from '../components/AboutComponent';
 
 export default {
-  name: "AboutView",
+  name: 'AboutView',
 
   components: {
     AboutComponent,

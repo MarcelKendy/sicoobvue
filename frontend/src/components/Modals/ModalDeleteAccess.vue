@@ -46,7 +46,7 @@
             }}<strong> Às </strong>
             {{ created_at_time() }}
             <v-spacer></v-spacer>
-            <strong>Por: </strong><span>{{ item.user["full_name"] }}</span>
+            <strong>Por: </strong><span>{{ item.user['full_name'] }}</span>
           </v-alert>
         </v-card-text>
         <v-card-text class="mt-7" v-else>
@@ -81,7 +81,7 @@
 
 <script>
 export default {
-  props: ["open", "access"],
+  props: ['open', 'access'],
   data() {
     return {
       dialog: false,
@@ -100,30 +100,30 @@ export default {
   },
   methods: {
     closeModal() {
-      this.$emit("closeDeleteModal");
+      this.$emit('closeDeleteModal');
     },
     deleteAccess() {
       this.loading = true;
-      this.$emit("deleteAccess", this.item.id);
+      this.$emit('deleteAccess', this.item.id);
     },
     created_at_date() {
-      let br_date = "";
+      let br_date = '';
       if (this.item.created_at) {
         let us_date = this.item.created_at.slice(0, 10);
         let year = us_date.slice(0, 4);
         let month = us_date.slice(5, 7);
         let day = us_date.slice(8);
-        br_date = day + "/" + month + "/" + year;
+        br_date = day + '/' + month + '/' + year;
       }
       return br_date;
     },
     created_at_time() {
-      let time_formatted = "";
+      let time_formatted = '';
       if (this.item.created_at) {
         let time_raw = this.item.created_at.slice(11);
         let hour = parseInt(time_raw.slice(0, 2)) - 3;
         let minute = time_raw.slice(3, 5);
-        time_formatted = hour + ":" + minute;
+        time_formatted = hour + ':' + minute;
       }
       return time_formatted;
     },
@@ -133,7 +133,7 @@ export default {
 
 <style scoped>
 .title-modal {
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   color: red;
 }
 </style>

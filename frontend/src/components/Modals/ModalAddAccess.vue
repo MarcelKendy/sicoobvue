@@ -73,7 +73,7 @@
                     >
                       <div class="chip__content">
                         <v-icon color="white">{{
-                          accessStyle(item.value, "icon")
+                          accessStyle(item.value, 'icon')
                         }}</v-icon>
                         <span class="item-select-badge">{{ item.name }}</span>
                       </div>
@@ -87,7 +87,7 @@
                     >
                       <div class="chip__content">
                         <v-icon color="white">{{
-                          accessStyle(item.value, "icon")
+                          accessStyle(item.value, 'icon')
                         }}</v-icon>
                         <span class="item-select-badge">{{ item.name }}</span>
                       </div>
@@ -119,7 +119,7 @@
                     >
                       <div class="chip__content">
                         <v-icon :color="commissionStyle(item.value, 'color')">{{
-                          commissionStyle(item.value, "icon")
+                          commissionStyle(item.value, 'icon')
                         }}</v-icon>
                         <span class="item-select-badge">{{ item.name }}</span>
                       </div>
@@ -134,7 +134,7 @@
                     >
                       <div class="chip__content">
                         <v-icon :color="commissionStyle(item.value, 'color')">{{
-                          commissionStyle(item.value, "icon")
+                          commissionStyle(item.value, 'icon')
                         }}</v-icon>
                         <span class="item-select-badge">{{ item.name }}</span>
                       </div>
@@ -160,67 +160,67 @@
 
 <script>
 export default {
-  props: ["open"],
+  props: ['open'],
   data() {
     return {
-      color: "rgb(0, 209, 94)",
+      color: 'rgb(0, 209, 94)',
       valid: true,
       dialog: false,
       loading: false,
       users: [],
       item: {
         user_id: this.$store.state.user.id,
-        name: "",
-        accesses: { accesses: "", commissions: "" },
-        access: "",
-        commission: "",
+        name: '',
+        accesses: { accesses: '', commissions: '' },
+        access: '',
+        commission: '',
       },
       accesses_accesses: [
-        { value: 1, name: "Permitido" },
-        { value: 0, name: "Bloqueado" },
+        { value: 1, name: 'Permitido' },
+        { value: 0, name: 'Bloqueado' },
       ],
       commissions_accesses: [
-        { value: "indicator", name: "Indicador" },
-        { value: "seller", name: "Vendedor" },
-        { value: "operator", name: "Operador" },
+        { value: 'indicator', name: 'Indicador' },
+        { value: 'seller', name: 'Vendedor' },
+        { value: 'operator', name: 'Operador' },
       ],
       access_style: [
         {
           name: 1,
-          color: "green",
-          icon: "mdi-lock-open-check",
-          gradient: "success",
+          color: 'green',
+          icon: 'mdi-lock-open-check',
+          gradient: 'success',
         },
         {
           name: 0,
-          color: "red",
-          icon: "mdi-lock",
-          gradient: "error",
+          color: 'red',
+          icon: 'mdi-lock',
+          gradient: 'error',
         },
       ],
       commission_style: [
         {
-          name: "indicator",
-          color: "#5b75dc",
-          icon: "mdi-bullhorn-outline",
-          gradient: "blue",
+          name: 'indicator',
+          color: '#5b75dc',
+          icon: 'mdi-bullhorn-outline',
+          gradient: 'blue',
         },
         {
-          name: "seller",
-          color: "#5f6e8b",
-          icon: "mdi-account-tie-voice",
-          gradient: "gray",
+          name: 'seller',
+          color: '#5f6e8b',
+          icon: 'mdi-account-tie-voice',
+          gradient: 'gray',
         },
         {
-          name: "operator",
-          color: "orange darken-3",
-          icon: "mdi-account-tie",
-          gradient: "orange",
+          name: 'operator',
+          color: 'orange darken-3',
+          icon: 'mdi-account-tie',
+          gradient: 'orange',
         },
       ],
 
       /* RULES */
-      requiredRule: [(v) => !!v || "Essa informação é obrigatória"],
+      requiredRule: [(v) => !!v || 'Essa informação é obrigatória'],
     };
   },
   watch: {
@@ -239,12 +239,12 @@ export default {
       }
     },
     commissionStyle(name, type) {
-      let value = "";
+      let value = '';
       this.commission_style.forEach((item) => {
         if (item.name == name) {
-          if (type == "color") {
+          if (type == 'color') {
             value = item.color;
-          } else if (type == "icon") {
+          } else if (type == 'icon') {
             value = item.icon;
           } else {
             value = item.gradient;
@@ -254,12 +254,12 @@ export default {
       return value;
     },
     accessStyle(name, type) {
-      let value = "";
+      let value = '';
       this.access_style.forEach((item) => {
         if (item.name == name) {
-          if (type == "color") {
+          if (type == 'color') {
             value = item.color;
-          } else if (type == "icon") {
+          } else if (type == 'icon') {
             value = item.icon;
           } else {
             value = item.gradient;
@@ -273,13 +273,13 @@ export default {
         this.loading = true;
         this.item.accesses.accesses = this.item.access;
         this.item.accesses.commissions = this.item.commission;
-        this.$emit("addAccess", this.item);
+        this.$emit('addAccess', this.item);
         this.$refs.form.resetValidation();
         Object.assign(this.item, this.defaultItem);
       }
     },
     closeModal() {
-      this.$emit("closeAddModal");
+      this.$emit('closeAddModal');
       this.$refs.form.resetValidation();
       Object.assign(this.item, this.defaultItem);
     },
@@ -288,10 +288,10 @@ export default {
     defaultItem() {
       return {
         user_id: this.$store.state.user.id,
-        name: "",
-        accesses: { accesses: "", commissions: "" },
-        access: "",
-        commission: "",
+        name: '',
+        accesses: { accesses: '', commissions: '' },
+        access: '',
+        commission: '',
       };
     },
   },
@@ -300,11 +300,11 @@ export default {
 
 <style scoped>
 .title-modal {
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   color: rgb(0, 209, 94);
 }
 .item-select-badge {
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-size: 13px;
   padding-left: 5px;
 }

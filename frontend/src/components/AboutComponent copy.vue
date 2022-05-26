@@ -73,7 +73,7 @@
 
 <script>
 export default {
-  name: "About1Component",
+  name: 'About1Component',
 
   data: () => ({}),
 };

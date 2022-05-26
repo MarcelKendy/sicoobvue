@@ -27,7 +27,7 @@
 
 <style scoped>
 .v-main {
-  background-image: url("~@/assets/img/bgMain.png");
+  background-image: url('~@/assets/img/bgMain.png');
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
@@ -35,14 +35,14 @@
 </style>
 
 <script>
-import home from "../components/Landing/HomeSection";
-import about from "../components/Landing/AboutSection";
-import download from "../components/Landing/DownloadSection";
-import pricing from "../components/Landing/PricingSection";
-import contact from "../components/Landing/ContactSection";
+import home from '../components/Landing/HomeSection';
+import about from '../components/Landing/AboutSection';
+import download from '../components/Landing/DownloadSection';
+import pricing from '../components/Landing/PricingSection';
+import contact from '../components/Landing/ContactSection';
 
 export default {
-  name: "App",
+  name: 'App',
 
   components: {
     home,
@@ -54,14 +54,14 @@ export default {
 
   data: () => ({
     fab: null,
-    color: "",
+    color: '',
     flat: null,
   }),
 
   created() {
     const top = window.pageYOffset || 0;
     if (top <= 60) {
-      this.color = "transparent";
+      this.color = 'transparent';
       this.flat = true;
     }
   },
@@ -69,10 +69,10 @@ export default {
   watch: {
     fab(value) {
       if (value) {
-        this.color = "secondary";
+        this.color = 'secondary';
         this.flat = false;
       } else {
-        this.color = "transparent";
+        this.color = 'transparent';
         this.flat = true;
       }
     },
@@ -80,7 +80,7 @@ export default {
 
   methods: {
     onScroll(e) {
-      if (typeof window === "undefined") return;
+      if (typeof window === 'undefined') return;
       const top = window.pageYOffset || e.target.scrollTop || 0;
       this.fab = top > 60;
     },

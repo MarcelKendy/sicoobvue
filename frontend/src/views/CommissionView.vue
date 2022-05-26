@@ -7,10 +7,10 @@
 </template>
 
 <script>
-import CommissionComponent from "../components/CommissionComponent.vue";
+import CommissionComponent from '../components/CommissionComponent.vue';
 
 export default {
-  name: "CommissionView",
+  name: 'CommissionView',
 
   components: {
     CommissionComponent,

@@ -88,15 +88,15 @@
 
 <script>
 export default {
-  props: ["task"],
+  props: ['task'],
   data() {
     return {
       dialog: true,
       valid: true,
       loading: false,
-      color: "orange",
+      color: 'orange',
       item: {},
-      requiredRule: [(v) => !!v || "Essa informação é obrigatória"],
+      requiredRule: [(v) => !!v || 'Essa informação é obrigatória'],
     };
   },
   created() {
@@ -109,8 +109,8 @@ export default {
         this.$http
           .put(`edit_task/${this.item.id}`, this.item)
           .then((response) => {
-            this.$emit("taskEdited", response.data);
-            this.$emit("closeModalEdit");
+            this.$emit('taskEdited', response.data);
+            this.$emit('closeModalEdit');
             this.loading = false;
           });
       }
@@ -121,7 +121,7 @@ export default {
 
 <style>
 .title-modal {
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   color: orange;
 }
 .item-select-badge {

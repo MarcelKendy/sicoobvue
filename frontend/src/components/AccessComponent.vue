@@ -21,7 +21,13 @@
       <v-card-text>
         <v-tooltip right v-if="!loading">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn v-bind="attrs" v-on="on" @click="addModal()" color="rgb(0, 209, 94)" dark>
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              @click="addModal()"
+              color="rgb(0, 209, 94)"
+              dark
+            >
               <v-icon>mdi-plus</v-icon>
             </v-btn>
           </template>
@@ -85,7 +91,7 @@
                 <span class="name-accesses bold">Módulo Acessos:</span>
                 <v-row class="mt-2">
                   <v-col cols="12" md="3">
-                    {{typeof item.accesses}}
+                    {{ typeof item.accesses }}
                     <v-select
                       :loading="changing_accesses_access"
                       :disabled="changing_accesses_access"
@@ -109,7 +115,7 @@
                         >
                           <div class="chip__content">
                             <v-icon color="white">{{
-                              accessStyle(item.value, "icon")
+                              accessStyle(item.value, 'icon')
                             }}</v-icon>
                             <span class="item-select-badge">{{
                               item.name
@@ -126,7 +132,7 @@
                         >
                           <div class="chip__content">
                             <v-icon color="white">{{
-                              accessStyle(item.value, "icon")
+                              accessStyle(item.value, 'icon')
                             }}</v-icon>
                             <span class="item-select-badge">{{
                               item.name
@@ -166,7 +172,7 @@
                           <div class="chip__content">
                             <v-icon
                               :color="commissionStyle(item.value, 'color')"
-                              >{{ commissionStyle(item.value, "icon") }}</v-icon
+                              >{{ commissionStyle(item.value, 'icon') }}</v-icon
                             >
                             <span class="item-select-badge">{{
                               item.name
@@ -184,7 +190,7 @@
                           <div class="chip__content">
                             <v-icon
                               :color="commissionStyle(item.value, 'color')"
-                              >{{ commissionStyle(item.value, "icon") }}</v-icon
+                              >{{ commissionStyle(item.value, 'icon') }}</v-icon
                             >
                             <span class="item-select-badge">{{
                               item.name
@@ -201,7 +207,7 @@
         </v-expansion-panels>
       </v-card-text>
     </v-card>
-     <modal-add
+    <modal-add
       :open="add_modal"
       @closeAddModal="addModal"
       @addAccess="addAccess"
@@ -240,10 +246,10 @@
 </template>
 
 <script>
-import ModalDelete from "./Modals/ModalDeleteAccess.vue";
-import ModalAdd from "./Modals/ModalAddAccess.vue";
+import ModalDelete from './Modals/ModalDeleteAccess.vue';
+import ModalAdd from './Modals/ModalAddAccess.vue';
 export default {
-  name: "AccessComponent",
+  name: 'AccessComponent',
   components: { ModalAdd, ModalDelete },
   data: () => ({
     items: [],
@@ -256,48 +262,48 @@ export default {
     changing_accesses_access: false,
     changing_commissions_access: false,
     loading: false,
-    color: "blue",
+    color: 'blue',
     accesses_accesses: [
-      { value: 1, name: "Permitido" },
-      { value: 0, name: "Bloqueado" },
+      { value: 1, name: 'Permitido' },
+      { value: 0, name: 'Bloqueado' },
     ],
     commissions_accesses: [
-      { value: "indicator", name: "Indicador" },
-      { value: "seller", name: "Vendedor" },
-      { value: "operator", name: "Operador" },
+      { value: 'indicator', name: 'Indicador' },
+      { value: 'seller', name: 'Vendedor' },
+      { value: 'operator', name: 'Operador' },
     ],
     access_style: [
       {
         name: 1,
-        color: "green",
-        icon: "mdi-lock-open-check",
-        gradient: "success",
+        color: 'green',
+        icon: 'mdi-lock-open-check',
+        gradient: 'success',
       },
       {
         name: 0,
-        color: "red",
-        icon: "mdi-lock",
-        gradient: "error",
+        color: 'red',
+        icon: 'mdi-lock',
+        gradient: 'error',
       },
     ],
     commission_style: [
       {
-        name: "indicator",
-        color: "#5b75dc",
-        icon: "mdi-bullhorn-outline",
-        gradient: "blue",
+        name: 'indicator',
+        color: '#5b75dc',
+        icon: 'mdi-bullhorn-outline',
+        gradient: 'blue',
       },
       {
-        name: "seller",
-        color: "#5f6e8b",
-        icon: "mdi-account-tie-voice",
-        gradient: "gray",
+        name: 'seller',
+        color: '#5f6e8b',
+        icon: 'mdi-account-tie-voice',
+        gradient: 'gray',
       },
       {
-        name: "operator",
-        color: "orange darken-3",
-        icon: "mdi-account-tie",
-        gradient: "orange",
+        name: 'operator',
+        color: 'orange darken-3',
+        icon: 'mdi-account-tie',
+        gradient: 'orange',
       },
     ],
   }),
@@ -329,13 +335,13 @@ export default {
     },
     getAccesses() {
       this.loading = true;
-      this.$http.get("get_accesses").then((response) => {
+      this.$http.get('get_accesses').then((response) => {
         this.items = response.data;
         this.loading = false;
       });
     },
-     addAccess(item) {
-      this.$http.post("add_access", item).then((response) => {
+    addAccess(item) {
+      this.$http.post('add_access', item).then((response) => {
         this.items.push(response.data);
         this.addModal();
         this.snackbar_add = true;
@@ -351,12 +357,12 @@ export default {
       });
     },
     commissionStyle(name, type) {
-      let value = "";
+      let value = '';
       this.commission_style.forEach((item) => {
         if (item.name == name) {
-          if (type == "color") {
+          if (type == 'color') {
             value = item.color;
-          } else if (type == "icon") {
+          } else if (type == 'icon') {
             value = item.icon;
           } else {
             value = item.gradient;
@@ -366,12 +372,12 @@ export default {
       return value;
     },
     accessStyle(name, type) {
-      let value = "";
+      let value = '';
       this.access_style.forEach((item) => {
         if (item.name == name) {
-          if (type == "color") {
+          if (type == 'color') {
             value = item.color;
-          } else if (type == "icon") {
+          } else if (type == 'icon') {
             value = item.icon;
           } else {
             value = item.gradient;
@@ -410,7 +416,7 @@ export default {
 }
 
 .item-select-badge {
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-size: 13px;
   padding-left: 5px;
 }

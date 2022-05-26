@@ -39,20 +39,20 @@ export default {
   data: () => ({
     icons: [
       {
-        text: "mdi-facebook",
-        link: "",
+        text: 'mdi-facebook',
+        link: '',
       },
       {
-        text: "mdi-twitter",
-        link: "",
+        text: 'mdi-twitter',
+        link: '',
       },
       {
-        text: "mdi-linkedin",
-        link: "",
+        text: 'mdi-linkedin',
+        link: '',
       },
       {
-        text: "mdi-instagram",
-        link: "https://instagram.com/joabson_arley/",
+        text: 'mdi-instagram',
+        link: 'https://instagram.com/joabson_arley/',
       },
     ],
   }),

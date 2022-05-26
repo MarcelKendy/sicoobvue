@@ -97,50 +97,50 @@
 </template>
 
 <script>
-import db from "../src/services/localbase";
-import FooterComponent from "./components/FooterComponent.vue";
-import UserCard from "./components/UserCard.vue";
-import BreadCrumbComponent from "./components/BreadCrumbComponent.vue";
+import db from '../src/services/localbase';
+import FooterComponent from './components/FooterComponent.vue';
+import UserCard from './components/UserCard.vue';
+import BreadCrumbComponent from './components/BreadCrumbComponent.vue';
 export default {
   components: { FooterComponent, UserCard, BreadCrumbComponent },
   data: () => ({
     drawer: false,
     items: [
       {
-        title: "Home",
-        icon: "mdi-view-dashboard",
-        img: "landing-page.png",
-        to: "/",
+        title: 'Home',
+        icon: 'mdi-view-dashboard',
+        img: 'landing-page.png',
+        to: '/',
       },
       {
-        title: "Dashboard",
-        icon: "mdi-view-dashboard",
-        img: "dashboard-4.png",
-        to: "/dashboard",
+        title: 'Dashboard',
+        icon: 'mdi-view-dashboard',
+        img: 'dashboard-4.png',
+        to: '/dashboard',
       },
       {
-        title: "Checklist",
-        icon: "mdi-list-status",
-        img: "checklist.png",
-        to: "/checklist",
+        title: 'Checklist',
+        icon: 'mdi-list-status',
+        img: 'checklist.png',
+        to: '/checklist',
       },
       {
-        title: "Comissões",
-        icon: "mdi-view-list",
-        img: "commission.png",
-        to: "/comissoes",
+        title: 'Comissões',
+        icon: 'mdi-view-list',
+        img: 'commission.png',
+        to: '/comissoes',
       },
       {
-        title: "Acessos",
-        icon: "mdi-eye",
-        img: "accesses1.png",
-        to: "/acessos",
+        title: 'Acessos',
+        icon: 'mdi-eye',
+        img: 'accesses1.png',
+        to: '/acessos',
       },
       {
-        title: "Sobre",
-        icon: "mdi-help",
-        img: "about.png",
-        to: "/about",
+        title: 'Sobre',
+        icon: 'mdi-help',
+        img: 'about.png',
+        to: '/about',
       },
     ],
     login_check: false,
@@ -150,7 +150,7 @@ export default {
     $route: {
       immediate: true,
       handler(to) {
-        document.title = "Sicoob Credisg - " + to.name || "Sicoob Credisg";
+        document.title = 'Sicoob Credisg - ' + to.name || 'Sicoob Credisg';
       },
     },
   },
@@ -159,12 +159,12 @@ export default {
   },
   methods: {
     verifyLoggedUser() {
-      db.collection("user")
+      db.collection('user')
         .limit(1)
         .get()
         .then((user) => {
-          if (!user.length && this.$route.name != "Login") {
-            this.$router.push("/login");
+          if (!user.length && this.$route.name != 'Login') {
+            this.$router.push('/login');
           }
           this.$store.state.user = {};
           Object.assign(this.$store.state.user, user[0]);
@@ -176,7 +176,7 @@ export default {
 </script>
 <style>
 .font-quicksand {
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
 }
 .bold {
   font-weight: bold;

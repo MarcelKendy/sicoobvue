@@ -13,53 +13,53 @@
         </v-btn>
       </template>
 
-      <v-card color="#26c6da" dark class="mx-auto title-class" max-width="300" >
-       
+      <v-card color="#26c6da" dark class="mx-auto title-class" max-width="300">
         <v-list>
-           <v-img
-           max-height="60px"
-        src="../assets/images/bg1.png"
-        gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)"
-        >
-          <v-list-item>
-            <v-list-item-avatar>
-              <v-avatar size="36px">
-                <img v-if="false" alt="Foto" src="" />
-                <v-icon v-else>mdi-account</v-icon>
-              </v-avatar>
-            </v-list-item-avatar>
+          <v-img
+            max-height="60px"
+            src="../assets/images/bg1.png"
+            gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)"
+          >
+            <v-list-item>
+              <v-list-item-avatar>
+                <v-avatar size="36px">
+                  <img v-if="false" alt="Foto" src="" />
+                  <v-icon v-else>mdi-account</v-icon>
+                </v-avatar>
+              </v-list-item-avatar>
 
-            <v-list-item-content>
-              <v-list-item-title :title="user_name">{{
-                user_name
-              }}</v-list-item-title>
-              <v-list-item-subtitle>{{ user_role }}</v-list-item-subtitle>
-            </v-list-item-content>
+              <v-list-item-content>
+                <v-list-item-title :title="user_name">{{
+                  user_name
+                }}</v-list-item-title>
+                <v-list-item-subtitle>{{ user_role }}</v-list-item-subtitle>
+              </v-list-item-content>
 
-            <v-list-item-action>
-              <v-img
-                max-width="35px"
-                alt="Sicoob"
-                src="../assets/images/sicoobicon.png"
-              ></v-img>
-            </v-list-item-action>
-          </v-list-item>
+              <v-list-item-action>
+                <v-img
+                  max-width="35px"
+                  alt="Sicoob"
+                  src="../assets/images/sicoobicon.png"
+                ></v-img>
+              </v-list-item-action>
+            </v-list-item>
           </v-img>
         </v-list>
 
         <v-divider></v-divider>
 
         <v-list>
-          <v-list-item v-for="item in items" :key="item.title" @click="actions(item.title)">
+          <v-list-item
+            v-for="item in items"
+            :key="item.title"
+            @click="actions(item.title)"
+          >
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
-            <v-list-item-title>{{
-              item.title
-            }}</v-list-item-title>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
         </v-list>
-        
       </v-card>
     </v-menu>
     <modal-logout
@@ -76,33 +76,33 @@
 </template>
 
 <script>
-import db from "../../src/services/localbase";
-import ModalLogout from "./Modals/ModalLogout.vue";
-import ModalEdit from "./Modals/ModalEditProfile.vue";
+import db from '../../src/services/localbase';
+import ModalLogout from './Modals/ModalLogout.vue';
+import ModalEdit from './Modals/ModalEditProfile.vue';
 export default {
-  props: ["user"],
+  props: ['user'],
   components: { ModalLogout, ModalEdit },
-  name: "UserCard",
+  name: 'UserCard',
 
   data: () => ({
     items: [
-      { title: "Informações Pessoais", icon: "mdi-account-edit" },
-      { title: "Sair", icon: "mdi-logout" },
+      { title: 'Informações Pessoais', icon: 'mdi-account-edit' },
+      { title: 'Sair', icon: 'mdi-logout' },
     ],
     confirmation_logout: false,
     menu: false,
-    name: "",
+    name: '',
     edit_profile: false,
-    cpf: "",
+    cpf: '',
     user_info: {},
   }),
   methods: {
     actions(item) {
       switch (item) {
-        case "Sair":
+        case 'Sair':
           this.openModalLogout();
           break;
-        case "Informações Pessoais":
+        case 'Informações Pessoais':
           this.openModalEdit();
           break;
         default:
@@ -110,11 +110,11 @@ export default {
       }
     },
     logout() {
-      db.collection("user")
-        .doc("logged_token")
+      db.collection('user')
+        .doc('logged_token')
         .delete()
         .then(() => {
-          this.$router.push("/login");
+          this.$router.push('/login');
           this.$store.state.user = {};
         });
     },
@@ -145,7 +145,7 @@ export default {
 </script>
 <style scoped>
 .title-class {
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: bolder;
 }
 </style>

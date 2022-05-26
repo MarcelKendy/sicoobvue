@@ -240,17 +240,17 @@
 </template>
 
 <script>
-import ForgotPassword from "./mail/ForgotPassword.vue";
+import ForgotPassword from './mail/ForgotPassword.vue';
 export default {
   components: { ForgotPassword },
-  name: "LoginComponent",
+  name: 'LoginComponent',
   data: () => ({
     tab: 0,
     tabs: [
-      { name: "Login", icon: "mdi-account" },
-      { name: "Cadastro", icon: "mdi-account-outline" },
+      { name: 'Login', icon: 'mdi-account' },
+      { name: 'Cadastro', icon: 'mdi-account-outline' },
     ],
-    error_login: "",
+    error_login: '',
     validLogin: true,
     validRegister: true,
     show1: false,
@@ -259,33 +259,33 @@ export default {
     modal_mail: false,
     invalid_credentials: false,
     register_succeeded: false,
-    color_default: "rgba(18,210,175)",
+    color_default: 'rgba(18,210,175)',
     loading_btn: false,
     formLogin: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
     formRegister: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      cpf: "",
-      role: "",
-      password: "",
-      verify: "",
+      firstName: '',
+      lastName: '',
+      email: '',
+      cpf: '',
+      role: '',
+      password: '',
+      verify: '',
     },
 
     emailRule: [
-      (v) => !!v || "Digite o seu E-mail",
-      (v) => /.+@.+\..+/.test(v) || "E-mail inválido",
+      (v) => !!v || 'Digite o seu E-mail',
+      (v) => /.+@.+\..+/.test(v) || 'E-mail inválido',
     ],
     passwordRule: [
-      (v) => !!v || "Digite sua senha",
-      (v) => (v && v.length >= 5) || "No mínimo 5 caracteres",
-      (v) => /[0-9]/.test(v) || "É necessário ao menos um número",
-      (v) => /\W|_/.test(v) || "É necessário ao menos um caracter especial",
+      (v) => !!v || 'Digite sua senha',
+      (v) => (v && v.length >= 5) || 'No mínimo 5 caracteres',
+      (v) => /[0-9]/.test(v) || 'É necessário ao menos um número',
+      (v) => /\W|_/.test(v) || 'É necessário ao menos um caracter especial',
     ],
-    requiredRule: [(v) => !!v || "Essa informação é obrigatória"],
+    requiredRule: [(v) => !!v || 'Essa informação é obrigatória'],
     /*cpfcnpjRule: [
         v => !!v || "Digite o seu CPF",
         v => /(^\d{3}\.\d{3}\.\d{3}\-\d{2}$)|(^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$)/.test(v) || "CPF inválido"
@@ -295,19 +295,19 @@ export default {
         v => /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(v) || "CPF inválido"
       ],*/
     cpfRule: [
-      (v) => !!v || "Digite o seu CPF",
-      (v) => /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(v) || "CPF inválido",
+      (v) => !!v || 'Digite o seu CPF',
+      (v) => /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(v) || 'CPF inválido',
     ],
 
     rules: {
-      verifyPasswordRule: (value) => !!value || "Confirme a sua senha",
+      verifyPasswordRule: (value) => !!value || 'Confirme a sua senha',
     },
   }),
   computed: {
     matchPasswords() {
       return (
         this.formRegister.password === this.formRegister.verify ||
-        "As senhas não coincidem"
+        'As senhas não coincidem'
       );
     },
     logged_user() {
@@ -316,26 +316,26 @@ export default {
   },
   methods: {
     validate(form) {
-      if (form == "login") {
+      if (form == 'login') {
         if (this.$refs.loginForm.validate()) {
           this.validLogin = false;
           this.loading_btn = true;
-          this.$http.post("get_user", this.formLogin).then((response) => {
+          this.$http.post('get_user', this.formLogin).then((response) => {
             if (response.data == 404) {
-              this.error_login = "Esse Email não está cadastrado";
+              this.error_login = 'Esse Email não está cadastrado';
               this.loading_btn = false;
               this.invalid_credentials = true;
               this.validLogin = true;
             } else {
               if (response.data == 505) {
-                this.error_login = "Senha incorreta";
+                this.error_login = 'Senha incorreta';
                 this.loading_btn = false;
                 this.invalid_credentials = true;
                 this.validLogin = true;
               } else {
                 this.$store
-                  .dispatch("login", response.data[0])
-                  .then(this.$router.push("/"));
+                  .dispatch('login', response.data[0])
+                  .then(this.$router.push('/'));
               }
             }
           });
@@ -344,18 +344,18 @@ export default {
         if (this.$refs.registerForm.validate()) {
           this.validRegister = false;
           this.loading_btn = true;
-          this.$http.post("add_user", this.formRegister).then(() => {
+          this.$http.post('add_user', this.formRegister).then(() => {
             this.loading_btn = false;
-            this.tab = "1";
+            this.tab = '1';
             this.register_succeeded = true;
             this.formRegister = {
-              firstName: "",
-              lastName: "",
-              role: "",
-              email: "",
-              cpf: "",
-              password: "",
-              verify: "",
+              firstName: '',
+              lastName: '',
+              role: '',
+              email: '',
+              cpf: '',
+              password: '',
+              verify: '',
             };
             this.$refs.registerForm.reset();
           });
@@ -384,7 +384,7 @@ export default {
   padding-top: 40px;
   color: #40bfff;
   font-weight: bold;
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
 }
 
 .center {
@@ -460,7 +460,7 @@ export default {
 }
 
 @property --angle {
-  syntax: "<angle>";
+  syntax: '<angle>';
   initial-value: 0deg;
   inherits: false;
 }

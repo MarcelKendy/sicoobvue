@@ -69,7 +69,7 @@
                     >
                       <div class="chip__content">
                         <v-icon :color="statusStyle(item, 'color')">{{
-                          statusStyle(item, "icon")
+                          statusStyle(item, 'icon')
                         }}</v-icon>
                         <span class="item-select-badge">{{ item }}</span>
                       </div>
@@ -81,7 +81,7 @@
                     >
                       <div class="chip__content">
                         <v-icon :color="statusStyle(item, 'color')">{{
-                          statusStyle(item, "icon")
+                          statusStyle(item, 'icon')
                         }}</v-icon>
                         <span class="item-select-badge">{{ item }}</span>
                       </div>
@@ -351,13 +351,13 @@
 </template>
 
 <script>
-import DateTimePicker from "../util/DateTimePicker.vue";
+import DateTimePicker from '../util/DateTimePicker.vue';
 export default {
-  props: ["open"],
+  props: ['open'],
   components: { DateTimePicker },
   data() {
     return {
-      color: "rgb(0, 209, 94)",
+      color: 'rgb(0, 209, 94)',
       valid: true,
       dialog: false,
       update_datetime_picker: false,
@@ -367,119 +367,119 @@ export default {
       loading_users: false,
       users: [],
       item: {
-        user_id: "",
-        date_indicator: "",
-        date_seller: "",
-        date_operator: "",
-        product: "",
-        value: "",
-        custom_value: "",
-        commission_percentage: "",
-        indicator_id: "",
-        seller_id: "",
-        operator_id: "",
-        status: "",
-        indicator_commission: "",
-        seller_commission: "",
-        operator_commission: "",
+        user_id: '',
+        date_indicator: '',
+        date_seller: '',
+        date_operator: '',
+        product: '',
+        value: '',
+        custom_value: '',
+        commission_percentage: '',
+        indicator_id: '',
+        seller_id: '',
+        operator_id: '',
+        status: '',
+        indicator_commission: '',
+        seller_commission: '',
+        operator_commission: '',
       },
       options: {
-        locale: "pt-BR",
-        prefix: "",
-        suffix: "%",
+        locale: 'pt-BR',
+        prefix: '',
+        suffix: '%',
         length: 4,
         precision: 2,
-        prepend_icon: "mdi-cash-100",
+        prepend_icon: 'mdi-cash-100',
         color: this.color,
       },
       products: [
-        "Seguro de Vida - Sicoob Seguradora",
-        "Seguro de Vida",
-        "Seguro de Vida Coletivo",
-        "Seguro Auto",
-        "Seguro Residencial e Empresarial",
-        "Seguro Agrícola",
-        "Seguro Animal de Elite",
-        "Seguro Equipamentos",
-        "Seguro Prestamista",
-        "Crédito Consignado",
-        "Consórcio",
+        'Seguro de Vida - Sicoob Seguradora',
+        'Seguro de Vida',
+        'Seguro de Vida Coletivo',
+        'Seguro Auto',
+        'Seguro Residencial e Empresarial',
+        'Seguro Agrícola',
+        'Seguro Animal de Elite',
+        'Seguro Equipamentos',
+        'Seguro Prestamista',
+        'Crédito Consignado',
+        'Consórcio',
       ],
       status_style: [
         {
-          status: "Aguard. Venda",
-          color: "#5b75dc",
-          icon: "mdi-store-clock-outline",
-          gradient: "blue",
+          status: 'Aguard. Venda',
+          color: '#5b75dc',
+          icon: 'mdi-store-clock-outline',
+          gradient: 'blue',
         },
         {
-          status: "Não Vendido",
-          color: "#5f6e8b",
-          icon: "mdi-store-remove-outline",
-          gradient: "gray",
+          status: 'Não Vendido',
+          color: '#5f6e8b',
+          icon: 'mdi-store-remove-outline',
+          gradient: 'gray',
         },
         {
-          status: "Aguard. UPS",
-          color: "orange darken-3",
-          icon: "mdi-account-tie",
-          gradient: "orange",
+          status: 'Aguard. UPS',
+          color: 'orange darken-3',
+          icon: 'mdi-account-tie',
+          gradient: 'orange',
         },
         {
-          status: "Aprovado UPS",
-          color: "blue darken-1",
-          icon: "mdi-check-outline",
-          gradient: "success",
+          status: 'Aprovado UPS',
+          color: 'blue darken-1',
+          icon: 'mdi-check-outline',
+          gradient: 'success',
         },
         {
-          status: "Recusado UPS",
-          color: "red lighten-5",
-          icon: "mdi-close-outline",
-          gradient: "error",
+          status: 'Recusado UPS',
+          color: 'red lighten-5',
+          icon: 'mdi-close-outline',
+          gradient: 'error',
         },
       ],
       /* RULES */
-      requiredRule: [(v) => !!v || "Essa informação é obrigatória"],
+      requiredRule: [(v) => !!v || 'Essa informação é obrigatória'],
       requiredSellerRule: [
         (v) =>
           !!v ||
-          this.item.status == "Aguard. Venda" ||
-          this.item.status == "Não Vendido" ||
-          this.item.status == "" ||
-          "O status selecionado indica que a venda ocorreu, então essa informação é obrigatória",
+          this.item.status == 'Aguard. Venda' ||
+          this.item.status == 'Não Vendido' ||
+          this.item.status == '' ||
+          'O status selecionado indica que a venda ocorreu, então essa informação é obrigatória',
       ],
       requiredOperatorRule: [
         (v) =>
           !!v ||
-          (this.item.status != "Recusado UPS" &&
-            this.item.status != "Aprovado UPS") ||
-          "O status selecionado indica que a UPS avaliou a venda, então essa informação é obrigatória",
+          (this.item.status != 'Recusado UPS' &&
+            this.item.status != 'Aprovado UPS') ||
+          'O status selecionado indica que a UPS avaliou a venda, então essa informação é obrigatória',
       ],
       valueRule: [
         (v) =>
           (!!v &&
-            (parseFloat(this.item.value) > 0 || "O valor não pode ser 0")) ||
-          this.item.status == "Aguard. Venda" ||
-          this.item.status == "Não Vendido" ||
-          this.item.status == "" ||
-          "O status selecionado indica que a venda foi feita, então essa informação é obrigatória",
+            (parseFloat(this.item.value) > 0 || 'O valor não pode ser 0')) ||
+          this.item.status == 'Aguard. Venda' ||
+          this.item.status == 'Não Vendido' ||
+          this.item.status == '' ||
+          'O status selecionado indica que a venda foi feita, então essa informação é obrigatória',
       ],
       sellerRule: [
         (v) =>
           (!!v &&
             (this.item.seller_id != this.item.operator_id ||
-              "O vendedor e o operador devem ser distintos")) ||
-          this.item.status == "Aguard. Venda" ||
-          this.item.status == "" ||
-          "O status selecionado indica que a venda foi feita ou houve contato com o cliente, então essa informação é obrigatória",
+              'O vendedor e o operador devem ser distintos')) ||
+          this.item.status == 'Aguard. Venda' ||
+          this.item.status == '' ||
+          'O status selecionado indica que a venda foi feita ou houve contato com o cliente, então essa informação é obrigatória',
       ],
       operatorRule: [
         (v) =>
           (!!v &&
             (this.item.operator_id != this.item.seller_id ||
-              "O operador e o vendedor devem ser distintos")) ||
-          (this.item.status != "Recusado UPS" &&
-            this.item.status != "Aprovado UPS") ||
-          "O status selecionado indica que a UPS avaliou a venda, então essa informação é obrigatória",
+              'O operador e o vendedor devem ser distintos')) ||
+          (this.item.status != 'Recusado UPS' &&
+            this.item.status != 'Aprovado UPS') ||
+          'O status selecionado indica que a UPS avaliou a venda, então essa informação é obrigatória',
       ],
     };
   },
@@ -502,7 +502,7 @@ export default {
     get_users() {
       this.loading_users = true;
       this.$http
-        .post("get_users", { select: ["id", "full_name"] })
+        .post('get_users', { select: ['id', 'full_name'] })
         .then((response) => {
           this.users = response.data;
           this.loading_users = false;
@@ -515,53 +515,53 @@ export default {
     },
     status() {
       switch (this.$store.state.user.accesses.commissions) {
-        case "indicator":
-          this.item.status = "Aguard. Venda";
-          return ["Aguard. Venda"];
-        case "seller":
-          return ["Aguard. Venda", "Não Vendido", "Aguard. UPS"];
-        case "operator":
+        case 'indicator':
+          this.item.status = 'Aguard. Venda';
+          return ['Aguard. Venda'];
+        case 'seller':
+          return ['Aguard. Venda', 'Não Vendido', 'Aguard. UPS'];
+        case 'operator':
           return [
-            "Aguard. Venda",
-            "Não Vendido",
-            "Aguard. UPS",
-            "Aprovado UPS",
-            "Recusado UPS",
+            'Aguard. Venda',
+            'Não Vendido',
+            'Aguard. UPS',
+            'Aprovado UPS',
+            'Recusado UPS',
           ];
       }
     },
     accesses(type) {
       switch (type) {
-        case "indicator":
+        case 'indicator':
           return (
-            this.$store.state.user.accesses.commissions == "operator" ||
+            this.$store.state.user.accesses.commissions == 'operator' ||
             this.item.user_id == this.$store.state.user.id
           );
-        case "seller":
+        case 'seller':
           return (
-            this.$store.state.user.accesses.commissions == "operator" ||
-            this.$store.state.user.accesses.commissions == "seller"
+            this.$store.state.user.accesses.commissions == 'operator' ||
+            this.$store.state.user.accesses.commissions == 'seller'
           );
-        case "operator":
-          return this.$store.state.user.accesses.commissions == "operator";
-        case "disableSeller":
-          return this.item.status == "Aguard. Venda" || this.item.status == "";
-        case "disableOperator":
+        case 'operator':
+          return this.$store.state.user.accesses.commissions == 'operator';
+        case 'disableSeller':
+          return this.item.status == 'Aguard. Venda' || this.item.status == '';
+        case 'disableOperator':
           return (
-            this.item.status != "Aprovado UPS" &&
-            this.item.status != "Recusado UPS"
+            this.item.status != 'Aprovado UPS' &&
+            this.item.status != 'Recusado UPS'
           );
         default:
           return false;
       }
     },
     statusStyle(status, type) {
-      let value = "";
+      let value = '';
       this.status_style.forEach((item) => {
         if (item.status == status) {
-          if (type == "color") {
+          if (type == 'color') {
             value = item.color;
-          } else if (type == "icon") {
+          } else if (type == 'icon') {
             value = item.icon;
           } else {
             value = item.gradient;
@@ -572,35 +572,35 @@ export default {
     },
     changeStatus() {
       if (
-        this.item.status != "Aprovado UPS" &&
-        this.item.status != "Recusado UPS"
+        this.item.status != 'Aprovado UPS' &&
+        this.item.status != 'Recusado UPS'
       ) {
         this.update_datetime_picker_seller = true;
         this.update_datetime_picker_operator = false;
-        this.item.operator_id = this.item.date_operator = "";
-        if (this.item.status == "Aguard. Venda") {
+        this.item.operator_id = this.item.date_operator = '';
+        if (this.item.status == 'Aguard. Venda') {
           this.update_datetime_picker_seller = false;
           this.update_datetime_picker_operator = false;
           this.item.seller_id =
             this.item.custom_value =
             this.item.date_seller =
             this.item.value =
-              "";
+              '';
           if (
-            this.item.product !== "Seguro Prestamista" &&
-            this.item.product !== "Seguro de Vida - Sicoob Seguradora" &&
-            this.item.product !== "Consórcio"
+            this.item.product !== 'Seguro Prestamista' &&
+            this.item.product !== 'Seguro de Vida - Sicoob Seguradora' &&
+            this.item.product !== 'Consórcio'
           ) {
-            this.item.commission_percentage = "";
+            this.item.commission_percentage = '';
           }
-        } else if (this.item.status == "Não Vendido") {
-          this.item.custom_value = this.item.value = "";
+        } else if (this.item.status == 'Não Vendido') {
+          this.item.custom_value = this.item.value = '';
           if (
-            this.item.product !== "Seguro Prestamista" &&
-            this.item.product !== "Seguro de Vida - Sicoob Seguradora" &&
-            this.item.product !== "Consórcio"
+            this.item.product !== 'Seguro Prestamista' &&
+            this.item.product !== 'Seguro de Vida - Sicoob Seguradora' &&
+            this.item.product !== 'Consórcio'
           ) {
-            this.item.commission_percentage = "";
+            this.item.commission_percentage = '';
           }
         }
       } else {
@@ -642,34 +642,34 @@ export default {
     },*/
     changeProduct(item) {
       switch (item) {
-        case "Seguro Prestamista":
-          this.item.custom_value = "";
-          this.item.commission_percentage = "40.00";
+        case 'Seguro Prestamista':
+          this.item.custom_value = '';
+          this.item.commission_percentage = '40.00';
           break;
-        case "Seguro de Vida - Sicoob Seguradora":
-          this.item.custom_value = "";
-          this.item.commission_percentage = "30.00";
+        case 'Seguro de Vida - Sicoob Seguradora':
+          this.item.custom_value = '';
+          this.item.commission_percentage = '30.00';
           break;
-        case "Consórcio":
-          this.item.custom_value = "";
-          this.item.commission_percentage = "3.00";
+        case 'Consórcio':
+          this.item.custom_value = '';
+          this.item.commission_percentage = '3.00';
           break;
         default:
-          this.item.custom_value = "";
-          this.item.commission_percentage = "";
+          this.item.custom_value = '';
+          this.item.commission_percentage = '';
           break;
       }
     },
     addCommission() {
       if (this.$refs.form.validate()) {
         this.loading = true;
-        this.$emit("addCommission", this.item);
+        this.$emit('addCommission', this.item);
         this.$refs.form.resetValidation();
         Object.assign(this.item, this.defaultItem);
       }
     },
     closeModal() {
-      this.$emit("closeAddModal");
+      this.$emit('closeAddModal');
       this.$refs.form.resetValidation();
       Object.assign(this.item, this.defaultItem);
     },
@@ -677,21 +677,21 @@ export default {
   computed: {
     defaultItem() {
       return {
-        user_id: "",
-        date_indicator: "",
-        date_seller: "",
-        date_operator: "",
-        product: "",
-        value: "",
-        custom_value: "",
-        commission_percentage: "",
-        indicator_id: "",
-        seller_id: "",
-        operator_id: "",
-        status: "",
-        indicator_commission: "",
-        seller_commission: "",
-        operator_commission: "",
+        user_id: '',
+        date_indicator: '',
+        date_seller: '',
+        date_operator: '',
+        product: '',
+        value: '',
+        custom_value: '',
+        commission_percentage: '',
+        indicator_id: '',
+        seller_id: '',
+        operator_id: '',
+        status: '',
+        indicator_commission: '',
+        seller_commission: '',
+        operator_commission: '',
       };
     },
     status_computed() {
@@ -703,11 +703,11 @@ export default {
 
 <style scoped>
 .title-modal {
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   color: rgb(0, 209, 94);
 }
 .item-select-badge {
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-size: 13px;
   padding-left: 5px;
 }

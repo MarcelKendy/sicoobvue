@@ -21,11 +21,11 @@
 
 <script>
 export default {
-  name: "BreadCrumbComponent",
-  props: ["activeRoute"],
+  name: 'BreadCrumbComponent',
+  props: ['activeRoute'],
   data: () => ({
     items: [],
-    route: "",
+    route: '',
   }),
   watch: {
     activeRoute: function () {
@@ -40,93 +40,93 @@ export default {
   methods: {
     defineBreadCrumb() {
       switch (this.activeRoute) {
-        case "Home":
+        case 'Home':
           this.items = [
             {
-              text: "Home",
-              icon: "mdi-view-dashboard",
+              text: 'Home',
+              icon: 'mdi-view-dashboard',
               disabled: true,
-              href: "/",
+              href: '/',
             },
           ];
           break;
-        case "Dashboard":
+        case 'Dashboard':
           this.items = [
             {
-              text: "Home",
-              icon: "mdi-view-dashboard",
+              text: 'Home',
+              icon: 'mdi-view-dashboard',
               disabled: false,
-              href: "/",
+              href: '/',
             },
             {
-              text: "Dashboard",
-              icon: "mdi-monitor-dashboard",
+              text: 'Dashboard',
+              icon: 'mdi-monitor-dashboard',
               disabled: true,
-              href: "/dashboard",
+              href: '/dashboard',
             },
           ];
           break;
-        case "Comissões":
+        case 'Comissões':
           this.items = [
             {
-              text: "Home",
-              icon: "mdi-view-dashboard",
+              text: 'Home',
+              icon: 'mdi-view-dashboard',
               disabled: false,
-              href: "/",
+              href: '/',
             },
             {
-              text: "Comissões",
-              icon: "mdi-view-list",
+              text: 'Comissões',
+              icon: 'mdi-view-list',
               disabled: true,
-              href: "",
+              href: '',
             },
           ];
           break;
-        case "Checklist":
+        case 'Checklist':
           this.items = [
             {
-              text: "Home",
-              icon: "mdi-view-dashboard",
+              text: 'Home',
+              icon: 'mdi-view-dashboard',
               disabled: false,
-              href: "/",
+              href: '/',
             },
             {
-              text: "Checklist",
-              icon: "mdi-view-list",
+              text: 'Checklist',
+              icon: 'mdi-view-list',
               disabled: true,
-              href: "/checklist",
+              href: '/checklist',
             },
           ];
           break;
-        case "Acessos":
+        case 'Acessos':
           this.items = [
             {
-              text: "Home",
-              icon: "mdi-view-dashboard",
+              text: 'Home',
+              icon: 'mdi-view-dashboard',
               disabled: false,
-              href: "/",
+              href: '/',
             },
             {
-              text: "Acessos",
-              icon: "mdi-lock",
+              text: 'Acessos',
+              icon: 'mdi-lock',
               disabled: true,
-              href: "/acessos",
+              href: '/acessos',
             },
           ];
           break;
-        case "Sobre":
+        case 'Sobre':
           this.items = [
             {
-              text: "Home",
-              icon: "mdi-view-dashboard",
+              text: 'Home',
+              icon: 'mdi-view-dashboard',
               disabled: false,
-              href: "/",
+              href: '/',
             },
             {
-              text: "Sobre",
-              icon: "mdi-information",
+              text: 'Sobre',
+              icon: 'mdi-information',
               disabled: true,
-              href: "/about",
+              href: '/about',
             },
           ];
           break;
@@ -138,7 +138,7 @@ export default {
 
 <style>
 .breadcrumb-text {
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 700;
 }
 </style>

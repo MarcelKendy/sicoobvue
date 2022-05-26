@@ -18,10 +18,10 @@
               small
               @click="addCard()"
             >
-              <v-icon>{{ this.card_active ? "mdi-close" : "mdi-plus" }}</v-icon>
+              <v-icon>{{ this.card_active ? 'mdi-close' : 'mdi-plus' }}</v-icon>
             </v-btn> </v-fab-transition
           ><span class="tooltiptext_plus">{{
-            this.card_active ? "Fechar" : "Nova Tarefa"
+            this.card_active ? 'Fechar' : 'Nova Tarefa'
           }}</span>
         </div>
 
@@ -65,24 +65,24 @@
               font-weight: bold;
             "
             >{{
-              this.done_filter ? "Tarefas Concluídas " : "Todas as tarefas "
+              this.done_filter ? 'Tarefas Concluídas ' : 'Todas as tarefas '
             }}</span
           >
           <v-btn :loading="done_filter_loading" icon>
             <v-icon>{{
               this.done_filter
-                ? "mdi-checkbox-marked-circle"
-                : "mdi-checkbox-marked-circle-outline"
+                ? 'mdi-checkbox-marked-circle'
+                : 'mdi-checkbox-marked-circle-outline'
             }}</v-icon> </v-btn
           ><span class="tooltiptext">{{
-            this.done_filter ? "Mostrar tudo" : "Mostrar concluídas"
+            this.done_filter ? 'Mostrar tudo' : 'Mostrar concluídas'
           }}</span>
         </div>
         <v-btn v-else :loading="done_filter_loading" icon @click="filterDone">
           <v-icon>{{
             this.done_filter
-              ? "mdi-checkbox-marked-circle"
-              : "mdi-checkbox-marked-circle-outline"
+              ? 'mdi-checkbox-marked-circle'
+              : 'mdi-checkbox-marked-circle-outline'
           }}</v-icon>
         </v-btn>
       </v-toolbar>
@@ -154,17 +154,17 @@
 </template>
 
 <script>
-import { Drag, DropList } from "vue-easy-dnd";
-import TasksComponent from "./TasksComponent.vue";
+import { Drag, DropList } from 'vue-easy-dnd';
+import TasksComponent from './TasksComponent.vue';
 export default {
   components: { Drag, DropList, TasksComponent },
-  props: ["tasks", "loading"],
+  props: ['tasks', 'loading'],
   data() {
     return {
       snackbar_delete_activate: false,
       items: [],
       tasksMutable: [],
-      search: "",
+      search: '',
       done_filter: false,
       done_filter_loading: false,
       no_tasks: false,
@@ -177,7 +177,7 @@ export default {
   },
   methods: {
     edited_task(task) {
-      this.$emit("taskEdited", task);
+      this.$emit('taskEdited', task);
       this.filterEdited(task);
     },
     edited_done(id) {
@@ -188,7 +188,7 @@ export default {
       }
     },
     deleted_task(id) {
-      this.$emit("taskDeleted", id);
+      this.$emit('taskDeleted', id);
       this.filterDeleted(id);
       this.snackbar_delete_activate = true;
     },
@@ -211,7 +211,7 @@ export default {
           return (
             this.search
               .toLowerCase()
-              .split(" ")
+              .split(' ')
               .every(
                 (search_char) =>
                   task.title.toLowerCase().includes(search_char) ||
@@ -223,7 +223,7 @@ export default {
         this.items = this.tasksMutable.filter((task) => {
           return this.search
             .toLowerCase()
-            .split(" ")
+            .split(' ')
             .every(
               (search_char) =>
                 task.title.toLowerCase().includes(search_char) ||
@@ -270,7 +270,7 @@ export default {
     },
     addCard() {
       this.card_active = !this.card_active;
-      this.$emit("showCard", this.card_active);
+      this.$emit('showCard', this.card_active);
     },
   },
   watch: {
@@ -316,7 +316,7 @@ export default {
   transition: 0.3s;
 }
 .tooltip .tooltiptext::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 100%;
   left: 50%;
@@ -357,7 +357,7 @@ export default {
   transition: 0.4s;
 }
 .tooltip_plus .tooltiptext_plus::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 100%;
   left: 39.5%;

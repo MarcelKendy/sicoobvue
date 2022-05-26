@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  props: ["task"],
+  props: ['task'],
   data() {
     return {
       dialog: true,
@@ -35,8 +35,8 @@ export default {
   methods: {
     deleteTask() {
       this.$http.delete(`delete_task/${this.item.id}`).then(() => {
-        this.$emit("taskDeleted", this.item.id);
-        this.$emit("closeModalDelete");
+        this.$emit('taskDeleted', this.item.id);
+        this.$emit('closeModalDelete');
       });
     },
   },

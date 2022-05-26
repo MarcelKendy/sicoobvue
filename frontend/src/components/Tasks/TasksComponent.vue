@@ -32,10 +32,10 @@
 </template>
 
 <script>
-import TasksMenu from "../Tasks/TasksMenu.vue";
+import TasksMenu from '../Tasks/TasksMenu.vue';
 export default {
   components: { TasksMenu },
-  props: ["task"],
+  props: ['task'],
   data() {
     return {
       item: {},
@@ -48,17 +48,17 @@ export default {
   },
   methods: {
     edited_task(task) {
-      this.$emit("taskEdited", task);
+      this.$emit('taskEdited', task);
       this.item = task;
     },
     deleted_task(id) {
       this.activeItem = false;
-      this.$emit("taskDeleted", id);
+      this.$emit('taskDeleted', id);
     },
     doneTask() {
       this.item.done = !this.item.done;
       this.$http.put(`done_task/${this.item.id}`, this.item).then(() => {
-        this.$emit("doneEdited", this.item.id);
+        this.$emit('doneEdited', this.item.id);
       });
     },
   },

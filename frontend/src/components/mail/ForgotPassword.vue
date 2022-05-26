@@ -93,9 +93,9 @@
 </template>
 
 <script>
-import emailjs from "emailjs-com";
+import emailjs from 'emailjs-com';
 export default {
-  props: ["activate"],
+  props: ['activate'],
   data() {
     return {
       dialog: false,
@@ -103,15 +103,15 @@ export default {
       error: false,
       loading: false,
       not_exists: false,
-      name: "",
-      email: "",
-      message: "",
-      software_name: "Sicoob Credisg Software",
+      name: '',
+      email: '',
+      message: '',
+      software_name: 'Sicoob Credisg Software',
       emailRule: [
-        (v) => !!v || "Digite o seu E-mail",
-        (v) => /.+@.+\..+/.test(v) || "E-mail inválido",
+        (v) => !!v || 'Digite o seu E-mail',
+        (v) => /.+@.+\..+/.test(v) || 'E-mail inválido',
       ],
-      requiredRule: [(v) => !!v || "Essa informação é obrigatória"],
+      requiredRule: [(v) => !!v || 'Essa informação é obrigatória'],
     };
   },
   watch: {
@@ -124,15 +124,15 @@ export default {
       try {
         emailjs
           .send(
-            "service_gacoq7w",
-            "template_x6ehuag",
+            'service_gacoq7w',
+            'template_x6ehuag',
             {
               to_name: this.name,
               to_email: this.email,
               message: this.message,
               from_name: this.software_name,
             },
-            "FRJFFdpcsV5eietF6"
+            'FRJFFdpcsV5eietF6'
           )
           .then(this.success());
       } catch (error) {
@@ -143,22 +143,22 @@ export default {
     },
     success() {
       this.error = this.not_exists = this.loading = false;
-      this.name = this.email = this.message = "";
+      this.name = this.email = this.message = '';
       this.$refs.form.reset();
-      this.$emit("success");
+      this.$emit('success');
     },
     closeModal() {
       this.error = this.not_exists = this.loading = false;
-      this.name = this.email = this.message = "";
+      this.name = this.email = this.message = '';
       this.$refs.form.reset();
-      this.$emit("closeModalMail");
+      this.$emit('closeModalMail');
     },
     getPassword() {
       if (this.$refs.form.validate()) {
         this.error = this.not_exists = false;
         this.loading = true;
         this.$http
-          .post("get_user_password", { email: this.email })
+          .post('get_user_password', { email: this.email })
           .then((response) => {
             if (response.data.length) {
               this.message =
@@ -179,6 +179,6 @@ export default {
 .forgot-title {
   color: #40bfff;
   font-weight: bolder;
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
 }
 </style>

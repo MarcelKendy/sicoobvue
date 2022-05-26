@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "CardWelcomeComponent",
+  name: 'CardWelcomeComponent',
   computed: {},
   methods: {},
   data: () => ({}),
@@ -69,7 +69,7 @@ export default {
 }
 
 @property --angle {
-  syntax: "<angle>";
+  syntax: '<angle>';
   initial-value: 0deg;
   inherits: false;
 }

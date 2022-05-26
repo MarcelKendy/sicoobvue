@@ -70,15 +70,15 @@
 </template>
 
 <script>
-import TasksList from "../components/Tasks/TasksList.vue";
+import TasksList from '../components/Tasks/TasksList.vue';
 export default {
-  name: "TasksView",
+  name: 'TasksView',
   components: {
     TasksList,
   },
   data() {
     return {
-      new_task: { title: "", subtitle: "" },
+      new_task: { title: '', subtitle: '' },
       items: [],
       snackbarActivate: false,
       show_card: false,
@@ -88,15 +88,15 @@ export default {
   methods: {
     addTask() {
       //this.$store.dispatch('addTask', this.new_task)
-      this.$http.post("add_task", this.new_task).then((response) => {
+      this.$http.post('add_task', this.new_task).then((response) => {
         this.items.push(response.data);
         this.snackbarActivate = true;
       });
-      this.new_task.title = "";
-      this.new_task.subtitle = "";
+      this.new_task.title = '';
+      this.new_task.subtitle = '';
     },
     getTasks() {
-      this.$http.get("get_tasks").then((response) => {
+      this.$http.get('get_tasks').then((response) => {
         this.items = response.data;
         this.loading_tasks = false;
       });

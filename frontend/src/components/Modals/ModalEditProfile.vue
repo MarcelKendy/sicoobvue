@@ -111,14 +111,14 @@
                     >
                       <strong>Senha</strong>
                       <v-icon>{{
-                        change_password ? "mdi-lock-minus" : "mdi-lock-plus"
+                        change_password ? 'mdi-lock-minus' : 'mdi-lock-plus'
                       }}</v-icon>
                     </v-btn>
                   </template>
                   <span>{{
                     change_password
-                      ? "Fechar Cartão de Senha"
-                      : "Abrir Cartão de Senha"
+                      ? 'Fechar Cartão de Senha'
+                      : 'Abrir Cartão de Senha'
                   }}</span>
                 </v-tooltip>
               </v-col>
@@ -200,43 +200,43 @@
 
 <script>
 export default {
-  props: ["open", "user"],
+  props: ['open', 'user'],
   components: {},
   data() {
     return {
-      color: "blue",
+      color: 'blue',
       valid: true,
       dialog: false,
       change_password: false,
       loading: false,
       show: false,
       item: {
-        full_name: "",
-        email: "",
-        cpf: "",
-        active: "",
-        role: "",
-        password: "",
-        verify: "",
+        full_name: '',
+        email: '',
+        cpf: '',
+        active: '',
+        role: '',
+        password: '',
+        verify: '',
       },
       /* RULES */
-      requiredRule: [(v) => !!v || "Essa informação é obrigatória"],
+      requiredRule: [(v) => !!v || 'Essa informação é obrigatória'],
       cpfRule: [
-        (v) => !!v || "Digite o seu CPF",
-        (v) => /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(v) || "CPF inválido",
+        (v) => !!v || 'Digite o seu CPF',
+        (v) => /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(v) || 'CPF inválido',
       ],
       emailRule: [
-        (v) => !!v || "Digite o seu E-mail",
-        (v) => /.+@.+\..+/.test(v) || "E-mail inválido",
+        (v) => !!v || 'Digite o seu E-mail',
+        (v) => /.+@.+\..+/.test(v) || 'E-mail inválido',
       ],
       passwordRule: [
-        (v) => !!v || "Digite sua senha",
-        (v) => (v && v.length >= 5) || "No mínimo 5 caracteres",
-        (v) => /[0-9]/.test(v) || "É necessário ao menos um número",
-        (v) => /\W|_/.test(v) || "É necessário ao menos um caracter especial",
+        (v) => !!v || 'Digite sua senha',
+        (v) => (v && v.length >= 5) || 'No mínimo 5 caracteres',
+        (v) => /[0-9]/.test(v) || 'É necessário ao menos um número',
+        (v) => /\W|_/.test(v) || 'É necessário ao menos um caracter especial',
       ],
       rules: {
-        verifyPasswordRule: (value) => !!value || "Confirme a sua senha",
+        verifyPasswordRule: (value) => !!value || 'Confirme a sua senha',
       },
     };
   },
@@ -249,7 +249,7 @@ export default {
       }
     },
     change_password: function () {
-      this.item.verify = this.item.password = "";
+      this.item.verify = this.item.password = '';
     },
   },
   methods: {
@@ -268,8 +268,8 @@ export default {
           .put(`edit_user/${this.item.id}`, this.item)
           .then((response) => {
             this.$store
-              .dispatch("login", response.data)
-              .then(this.$emit("closeModal"));
+              .dispatch('login', response.data)
+              .then(this.$emit('closeModal'));
             if (this.$refs.form) {
               this.$refs.form.reset();
             }
@@ -278,24 +278,24 @@ export default {
     },
     closeModal() {
       this.change_password = false;
-      this.$emit("closeModal");
+      this.$emit('closeModal');
     },
   },
   computed: {
     matchPasswords() {
       return (
-        this.item.password === this.item.verify || "As senhas não coincidem"
+        this.item.password === this.item.verify || 'As senhas não coincidem'
       );
     },
     defaultItem() {
       return {
-        full_name: "",
-        email: "",
-        active: "",
-        cpf: "",
-        role: "",
-        password: "",
-        verify: "",
+        full_name: '',
+        email: '',
+        active: '',
+        cpf: '',
+        role: '',
+        password: '',
+        verify: '',
       };
     },
     state_user() {
@@ -307,7 +307,7 @@ export default {
 
 <style scoped>
 .title-modal {
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   color: rgb(80, 150, 240);
 }
 .item-select-badge {

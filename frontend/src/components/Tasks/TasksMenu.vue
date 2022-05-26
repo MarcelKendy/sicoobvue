@@ -48,28 +48,28 @@
 </template>
 
 <script>
-import ModalEdit from "../Modals/ModalEdit.vue";
-import ModalDelete from "../Modals/ModalDelete.vue";
+import ModalEdit from '../Modals/ModalEdit.vue';
+import ModalDelete from '../Modals/ModalDelete.vue';
 export default {
-  props: ["task"],
+  props: ['task'],
   components: { ModalEdit, ModalDelete },
   data: () => ({
     snackbar_edit_activate: false,
     snackbar_delete_activate: false,
     items: [
       {
-        icon: "mdi-pencil",
-        color: "orange",
-        title: "Editar",
+        icon: 'mdi-pencil',
+        color: 'orange',
+        title: 'Editar',
         modal: false,
         click() {
           this.modal = true;
         },
       },
       {
-        icon: "mdi-trash-can",
-        color: "red",
-        title: "Deletar",
+        icon: 'mdi-trash-can',
+        color: 'red',
+        title: 'Deletar',
         modal: false,
         click() {
           this.modal = true;
@@ -80,10 +80,10 @@ export default {
   methods: {
     edited_task(task) {
       this.snackbar_edit_activate = true;
-      this.$emit("taskEdited", task);
+      this.$emit('taskEdited', task);
     },
     deleted_task(id) {
-      this.$emit("taskDeleted", id);
+      this.$emit('taskDeleted', id);
     },
   },
 };

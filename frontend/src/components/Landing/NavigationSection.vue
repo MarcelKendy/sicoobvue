@@ -95,11 +95,11 @@ export default {
     drawer: null,
     isXs: false,
     items: [
-      ["mdi-home-outline", "Home", "#hero"],
-      ["mdi-information-outline", "Sobre", "#features"],
-      ["mdi-download-box-outline", "Download", "#download"],
-      ["mdi-currency-usd", "Preços", "#pricing"],
-      ["mdi-email-outline", "Contatos", "#contact"],
+      ['mdi-home-outline', 'Home', '#hero'],
+      ['mdi-information-outline', 'Sobre', '#features'],
+      ['mdi-download-box-outline', 'Download', '#download'],
+      ['mdi-currency-usd', 'Preços', '#pricing'],
+      ['mdi-email-outline', 'Contatos', '#contact'],
     ],
   }),
   props: {
@@ -123,7 +123,7 @@ export default {
   },
   mounted() {
     this.onResize();
-    window.addEventListener("resize", this.onResize, { passive: true });
+    window.addEventListener('resize', this.onResize, { passive: true });
   },
 };
 </script>

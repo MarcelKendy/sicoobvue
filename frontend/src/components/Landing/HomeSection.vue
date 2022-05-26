@@ -134,22 +134,22 @@ export default {
   data() {
     return {
       dialog: false,
-      videoId: "i8IvvHJssWE",
+      videoId: 'i8IvvHJssWE',
       features: [
         {
-          img: require("@/assets/img/icon2.png"),
-          title: "Design Limpo",
-          text: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+          img: require('@/assets/img/icon2.png'),
+          title: 'Design Limpo',
+          text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
         },
         {
-          img: require("@/assets/img/icon1.png"),
-          title: "Dados Seguros",
-          text: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+          img: require('@/assets/img/icon1.png'),
+          title: 'Dados Seguros',
+          text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
         },
         {
-          img: require("@/assets/img/icon3.png"),
-          title: "Código Aberto",
-          text: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+          img: require('@/assets/img/icon3.png'),
+          title: 'Código Aberto',
+          text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
         },
       ],
     };
@@ -173,7 +173,7 @@ export default {
       // If you would like to change `playerVars`, please change it before you change `videoId`.
       // If `playerVars.autoplay` is 1, `loadVideoById` will be called.
       // If `playerVars.autoplay` is 0, `cueVideoById` will be called.
-      this.videoId = "another video id";
+      this.videoId = 'another video id';
     },
     stop() {
       this.player.stopVideo();

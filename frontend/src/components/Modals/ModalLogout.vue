@@ -41,7 +41,7 @@
 
 <script>
 export default {
-  props: ["activate"],
+  props: ['activate'],
   data() {
     return {
       dialog: false,
@@ -54,10 +54,10 @@ export default {
   },
   methods: {
     closeModal() {
-      this.$emit("closeLogoutModal");
+      this.$emit('closeLogoutModal');
     },
     logout() {
-      this.$emit("logout");
+      this.$emit('logout');
     },
   },
 };
@@ -65,7 +65,7 @@ export default {
 
 <style scoped>
 .title-modal {
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Quicksand', sans-serif;
   color: red;
 }
 </style>

@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import AccessComponent from "../components/AccessComponent";
+import AccessComponent from '../components/AccessComponent';
 
 export default {
-  name: "AccessView",
+  name: 'AccessView',
 
   components: {
     AccessComponent,

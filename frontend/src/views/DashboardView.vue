@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import DashboardComponent from "../components/DashboardComponent";
+import DashboardComponent from '../components/DashboardComponent';
 
 export default {
-  name: "DashboardView",
+  name: 'DashboardView',
 
   components: {
     DashboardComponent,
