@@ -1,12 +1,13 @@
 <template>
   <div>
     <v-card
-      class="font-quicksand my-10 mx-10 hover-card"
+      class="font-quicksand hover-card"
+      elevation="7"
       outlined
       shaped
       :loading="loading"
     >
-      <v-card-title class="bold title-card">
+      <v-card-title class="bold">
         Acessos
         <img
           v-if="loading"
@@ -15,7 +16,7 @@
           src="../assets/images/loading.gif"
         />
       </v-card-title>
-      <v-card-subtitle class="bold">
+      <v-card-subtitle class="bold title-card">
         Acessos definidos no sistema
       </v-card-subtitle>
       <v-card-text>
@@ -91,7 +92,6 @@
                 <span class="name-accesses bold">Módulo Acessos:</span>
                 <v-row class="mt-2">
                   <v-col cols="12" md="3">
-                    {{ typeof item.accesses }}
                     <v-select
                       :loading="changing_accesses_access"
                       :disabled="changing_accesses_access"
@@ -206,6 +206,29 @@
           </v-expansion-panel>
         </v-expansion-panels>
       </v-card-text>
+      <v-card-actions>
+        <span class="bold page-items-text mx-3">Itens por página:</span>
+        <v-col cols="1">
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <vuetify-number
+              class="page-items-textfield"
+              v-model="page_total_items"
+              v-bind:rules="requiredRule"
+              v-bind:color="color"
+              v-bind:options="options"
+            />
+          </v-form>
+        </v-col>
+
+        <v-spacer></v-spacer>
+        <v-pagination
+          v-model="page"
+          style="font-weight: bold"
+          circle
+          :length="total_pages"
+          :total-visible="7"
+        ></v-pagination>
+      </v-card-actions>
     </v-card>
     <modal-add
       :open="add_modal"
@@ -253,8 +276,13 @@ export default {
   components: { ModalAdd, ModalDelete },
   data: () => ({
     items: [],
+    total_items: [],
     deleted_item: {},
+    valid: true,
     add_modal: false,
+    page: 1,
+    total_pages: 1,
+    page_total_items: 5,
     delete_modal: false,
     snackbar_add: false,
     snackbar_delete: false,
@@ -263,6 +291,14 @@ export default {
     changing_commissions_access: false,
     loading: false,
     color: 'blue',
+    requiredRule: [(v) => v > 0 || 'x > 0'],
+    options: {
+      locale: 'pt-BR',
+      prefix: '',
+      suffix: '',
+      length: 2,
+      precision: 0,
+    },
     accesses_accesses: [
       { value: 1, name: 'Permitido' },
       { value: 0, name: 'Bloqueado' },
@@ -310,6 +346,19 @@ export default {
   created() {
     this.getAccesses();
   },
+  watch: {
+    page: function () {
+      this.pagination(false);
+    },
+    page_total_items: function () {
+      if (this.$refs.form.validate()) {
+        this.pagination();
+      } else {
+        this.page_total_items = 5;
+        this.pagination();
+      }
+    },
+  },
   methods: {
     loaderAccess(module, on = true) {
       switch (module) {
@@ -327,31 +376,46 @@ export default {
     changeAccess(item, module) {
       this.loaderAccess(module);
       this.$http.put(`edit_access/${item.id}`, item).then((response) => {
-        this.items = this.items.map((access) =>
+        this.total_items = this.total_items.map((access) =>
           access.id !== item.id ? access : response.data
         );
+        this.pagination(false);
         this.loaderAccess(module, false);
       });
     },
     getAccesses() {
       this.loading = true;
       this.$http.get('get_accesses').then((response) => {
-        this.items = response.data;
+        this.total_items = response.data;
+        this.pagination();
         this.loading = false;
       });
     },
+    pagination(reload_total_pages = true) {
+      if (reload_total_pages) {
+        this.total_pages = Math.ceil(
+          this.total_items.length / this.page_total_items
+        );
+      }
+      this.page_total_items = parseInt(this.page_total_items);
+      let begin = (this.page - 1) * this.page_total_items;
+      let end = begin + this.page_total_items;
+      this.items = this.total_items.slice(begin, end);
+    },
     addAccess(item) {
       this.$http.post('add_access', item).then((response) => {
-        this.items.push(response.data);
+        this.total_items.push(response.data);
+        this.pagination();
         this.addModal();
         this.snackbar_add = true;
       });
     },
     deleteAccess(id) {
       this.$http.delete(`delete_access/${id}`).then(() => {
-        this.items = this.items.filter((access) => {
+        this.total_items = this.total_items.filter((access) => {
           return access.id !== id;
         });
+        this.pagination();
         this.deleteModal();
         this.snackbar_delete = true;
       });
@@ -398,6 +462,16 @@ export default {
 };
 </script>
 <style scoped>
+.page-items-textfield {
+  width: 30px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.page-items-text {
+  font-size: 13px;
+  color: black;
+  transition: 0.3s;
+}
 .loading-gif {
   display: block;
   margin-left: auto;
@@ -458,17 +532,9 @@ export default {
 .title-card {
   transition: 0.5s;
 }
-.hover-card:hover .title-card {
-  color: rgb(0, 2, 125);
+.hover-card:hover .title-card,
+.hover-card:hover .page-items-text {
+  color: rgb(0, 84, 181);
 }
-.hover-card {
-  transition: 0.5s;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-  transition: box-shadow 0.3s;
-}
-.hover-card:hover {
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
-    rgba(0, 0, 0, 0.22) 0px 15px 12px;
-}
+
 </style>

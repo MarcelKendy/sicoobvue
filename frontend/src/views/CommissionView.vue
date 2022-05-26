@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <v-container>
-      <commission-component></commission-component>
-    </v-container>
+  <div class="ma-10">
+    <commission-component></commission-component>
   </div>
 </template>
 

@@ -1,5 +1,7 @@
 <template>
-  <home-component />
+  <div class="ma-10">
+    <home-component />
+  </div>
 </template>
 
 <script>

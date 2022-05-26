@@ -40,7 +40,7 @@
       <span>Adicionar</span>
     </v-tooltip>
 
-    <v-card class="hover-card" outlined shaped>
+    <v-card class="hover-card" elevation="7" outlined shaped>
       <v-card-title :class="dark_theme ? 'title-card-dark' : 'title-card'">
         <span>Produtos e Comissões</span>
 
@@ -1080,15 +1080,7 @@ export default {
   top: 30vw;
   left: 93vw;
 }
-.hover-card {
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-  transition: box-shadow 0.3s;
-}
-.hover-card:hover {
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
-    rgba(0, 0, 0, 0.22) 0px 15px 12px;
-}
+
 .title-card-dark {
   color: white;
   font-weight: bold;

@@ -29,6 +29,7 @@ class AccessController extends Controller
         $newAccess->accesses = json_encode($request->accesses);
         $newAccess->user_id = $request->user_id;
         $newAccess->save();
+        $newAccess->accesses = json_decode($newAccess->accesses);
         return response()->json($newAccess);
     }
 

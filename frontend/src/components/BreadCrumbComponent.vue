@@ -98,6 +98,22 @@ export default {
             },
           ];
           break;
+        case 'Usuários':
+          this.items = [
+            {
+              text: 'Home',
+              icon: 'mdi-view-dashboard',
+              disabled: false,
+              href: '/',
+            },
+            {
+              text: 'Usuários',
+              icon: 'mdi-account-group',
+              disabled: true,
+              href: '/usuarios',
+            },
+          ];
+          break;
         case 'Acessos':
           this.items = [
             {
@@ -127,6 +143,25 @@ export default {
               icon: 'mdi-information',
               disabled: true,
               href: '/about',
+            },
+          ];
+          break;
+          case 'Login':
+            
+          break
+          default:
+          this.items = [
+            {
+              text: 'Home',
+              icon: 'mdi-view-dashboard',
+              disabled: false,
+              href: '/',
+            },
+            {
+              text: 'Página não encontrada',
+              icon: 'mdi-close',
+              disabled: true,
+              href: '/',
             },
           ];
           break;

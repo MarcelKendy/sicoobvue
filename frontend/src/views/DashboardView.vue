@@ -1,5 +1,7 @@
 <template>
-  <dashboard-component />
+  <div class="ma-10">
+    <dashboard-component />
+  </div>
 </template>
 
 <script>

@@ -22,16 +22,15 @@ class UserController extends Controller
             $where = 'true';
         }
 
-        $allUsers = User::select($select)->whereRaw($where)->get();
+        $allUsers = User::with('access')->select($select)->whereRaw($where)->get();
         return response()->json($allUsers);
     }
 
     public function getUser (Request $request) {
         $match = ['email' => $request->email];
-        $user = User::where($match)->get();
+        $user = User::with('access')->where($match)->get();
         if (isset($user[0]['password'])) {
             if (password_verify($request->password, $user[0]['password'])) {
-                $user[0]['accesses'] = json_decode($user[0]['accesses']);
                 $log_login = new LogLogin();
                 $log_login->user_id = $user[0]['id'];
                 $log_login->save();
@@ -46,7 +45,7 @@ class UserController extends Controller
 
     public function getUserPassword (Request $request) {
         $match = ['email' => $request->email];
-        $user = User::where($match)->get();
+        $user = User::with('access')->where($match)->get();
         return response()->json($user);
     }
 
@@ -59,10 +58,9 @@ class UserController extends Controller
         $newUser->cpf = $request->cpf;
         $newUser->role = $request->role;
         $newUser->password = password_hash($request->password, PASSWORD_DEFAULT);
-        $accesses = json_encode(array('commissions' => 'indicator', 'accesses' => 0));
-        $newUser->accesses = $accesses;
+        $newUser->access_id = 1;
         $newUser->save();
-        return response()->json($newUser);
+        return response()->json($newUser->load('access'));
     }
 
     public function editUser (User $user, Request $request) {
@@ -78,13 +76,12 @@ class UserController extends Controller
         if (isset($request->password) && !empty($request->password)) {
             $user->password = password_hash($request->password, PASSWORD_DEFAULT);
         }
-        if (isset($request->accesses) && !empty($request->accesses)) {
-            $user->accesses = json_encode($request->accesses);
+        if (isset($request->access_id) && !empty($request->access_id)) {
+            $user->access_id = $request->access_id;
         }
 
         $user->save();
-        $user->accesses = json_decode($user->accesses);
-        return response()->json($user);
+        return response()->json($user->load('access'));
     }
 
     public function deleteUser (User $user, Request $request) {

@@ -131,6 +131,12 @@ export default {
         to: '/comissoes',
       },
       {
+        title: 'Usuários',
+        icon: 'mdi-account-group',
+        img: 'users.png',
+        to: '/usuarios',
+      },
+      {
         title: 'Acessos',
         icon: 'mdi-eye',
         img: 'accesses1.png',
@@ -219,4 +225,19 @@ font-family: 'Satisfy', cursive;
 font-family: 'Shadows Into Light', cursive;
 font-family: 'Yanone Kaffeesatz', sans-serif;
 */
+</style>
+<style>
+li::before{
+   opacity: 0;
+}
+.hover-card {
+  transition: 0.3s !important;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px !important;
+  transition: box-shadow 0.3s !important;
+}
+.hover-card:hover {
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 0px 15px 12px !important;
+}
 </style>

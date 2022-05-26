@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mx-5">
     <v-container>
       <v-slide-y-transition>
         <v-card v-if="show_card" outlined shaped class="hover-card">
@@ -130,15 +130,7 @@ export default {
 .changeColor {
   color: aqua;
 }
-.hover-card {
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-  transition: box-shadow 0.3s;
-}
-.hover-card:hover {
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
-    rgba(0, 0, 0, 0.22) 0px 15px 12px;
-}
+
 .title-card {
   transition: 0.4s;
 }

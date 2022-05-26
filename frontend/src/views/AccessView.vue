@@ -1,5 +1,7 @@
 <template>
-  <access-component />
+  <div class="ma-10">
+    <access-component />
+  </div>
 </template>
 
 <script>

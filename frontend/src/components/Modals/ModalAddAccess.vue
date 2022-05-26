@@ -220,7 +220,7 @@ export default {
       ],
 
       /* RULES */
-      requiredRule: [(v) => !!v || 'Essa informação é obrigatória'],
+      requiredRule: [(v) => v.length != 0 || 'Essa informação é obrigatória'],
     };
   },
   watch: {
