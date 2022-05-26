@@ -70,7 +70,12 @@
                   <div style="order: 3; display: inline-flex">
                     <v-tooltip left>
                       <template v-slot:activator="{ on, attrs }">
+                        <v-btn @click.stop v-bind="attrs"
+                          v-on="on" v-if="item.id == 1" icon>
+                          <v-icon>mdi-information</v-icon>
+                        </v-btn>
                         <v-btn
+                          v-else
                           icon
                           v-bind="attrs"
                           v-on="on"
@@ -79,7 +84,8 @@
                           <v-icon color="red">mdi-delete</v-icon>
                         </v-btn>
                       </template>
-                      <span>Deletar Acesso</span>
+                      <span v-if="item.id == 1">Esse é o acesso base do sistema. Quando um usuário novo se cadastrar, ele o receberá por padrão.</span>
+                       <span v-else>Deletar Acesso</span>
                     </v-tooltip>
                   </div>
                 </div>
@@ -462,16 +468,6 @@ export default {
 };
 </script>
 <style scoped>
-.page-items-textfield {
-  width: 30px;
-  font-weight: bold;
-  transition: 0.3s;
-}
-.page-items-text {
-  font-size: 13px;
-  color: black;
-  transition: 0.3s;
-}
 .loading-gif {
   display: block;
   margin-left: auto;
@@ -536,5 +532,4 @@ export default {
 .hover-card:hover .page-items-text {
   color: rgb(0, 84, 181);
 }
-
 </style>
