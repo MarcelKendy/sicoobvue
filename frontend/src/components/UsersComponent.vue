@@ -271,10 +271,13 @@ export default {
 <style scoped>
 .list-item {
   transition: 0.3s;
-  
-box-shadow: 0px 0px 6px -1px #000000;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 5px 7px -3px, rgba(0, 0, 0, 0.2) 0px -1px 0px inset;
+
 }
 .list-item:hover {
-  box-shadow: rgba(0, 0, 0, 0.32) 0px 9px 12px, rgba(0, 0, 0, 0.46) 0px 9px 12px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 14px, rgba(0, 0, 0, 0.3) 10px 15px 17px -5px, rgba(0, 0, 0, 0.7) 4px -1px 0px inset;
 }
+/*.list-item:hover {
+  box-shadow: rgba(0, 0, 0, 0.32) 0px 9px 12px, rgba(0, 0, 0, 0.46) 0px 9px 12px;
+}*/
 </style>
