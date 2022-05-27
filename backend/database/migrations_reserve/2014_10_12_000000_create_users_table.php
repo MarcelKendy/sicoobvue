@@ -22,8 +22,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('photo')->nullable();
             $table->smallInteger('active');
+            $table->smallInteger('gender');
             $table->string('password');
-            $table->string('accesses');
+            $table->foreignId('access_id')->references('id')->on('accesses')->constrained();
             $table->timestamps();
         });
     }

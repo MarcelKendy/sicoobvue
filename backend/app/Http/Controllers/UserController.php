@@ -52,6 +52,7 @@ class UserController extends Controller
     public function addUser (Request $request) {
         $newUser = new User();
         $newUser->active = 1;
+        $newUser->gender = $request->gender;
         $newUser->name = $request->firstName;
         $newUser->full_name = $request->firstName.' '.$request->lastName;
         $newUser->email = $request->email;
@@ -79,7 +80,25 @@ class UserController extends Controller
         if (isset($request->access_id) && !empty($request->access_id)) {
             $user->access_id = $request->access_id;
         }
+        if (isset($request->gender) && !empty($request->gender)) {
+            $user->gender = $request->gender;
+        }
 
+        $user->save();
+        return response()->json($user->load('access'));
+    }
+
+     public function editUserAccess (User $user, Request $request) {
+        if (isset($request->access_id) && !empty($request->access_id)) {
+            $user->access_id = $request->access_id;
+        }
+        if (isset($request->active) && $request->active != -1) {
+            if ($request->active == 1) {
+                $user->active = 0;
+            } else {
+                $user->active = 1;
+            }
+        }
         $user->save();
         return response()->json($user->load('access'));
     }

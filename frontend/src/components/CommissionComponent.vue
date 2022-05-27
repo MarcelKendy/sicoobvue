@@ -54,6 +54,13 @@
           color="rgba(18,210,175)"
         ></v-text-field>
       </v-card-title>
+      <v-card-subtitle v-if="!mobile">
+        <span
+          :class="dark_theme ? 'subtitle-card-dark' : 'subtitle-card'"
+          style="position: absolute; top: 70px"
+          >Produtos vendidos e suas comissões</span
+        >
+      </v-card-subtitle>
       <v-data-table
         ref="vDataTable"
         style="font-weight: bold"
@@ -688,6 +695,7 @@ export default {
       deleted_item: {},
       loading_commissions: true,
       menu_indicator: false,
+      mobile: false,
       add_modal: false,
       edit_modal: false,
       delete_modal: false,
@@ -807,6 +815,10 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.onResize();
+    window.addEventListener('resize', this.onResize, { passive: true });
+  },
   created() {
     this.getCommissions();
   },
@@ -833,6 +845,9 @@ export default {
     },
   },
   methods: {
+    onResize() {
+      this.mobile = window.innerWidth < 900;
+    },
     getItemId(item) {
       return item.id; // Must be uid of record (would be nice if v-data-table exposed a "getItemKey" method)
     },
@@ -1082,32 +1097,15 @@ export default {
 }
 
 .title-card-dark {
-  color: white;
-  font-weight: bold;
-  font-family: 'Quicksand', sans-serif;
-  transition: 0.8s;
-  background-color: rgb(24, 25, 26);
   border-bottom: solid;
   border-width: 1px;
   border-color: rgba(18, 210, 175);
 }
-.style-title {
-  transition: 0s;
-  font-weight: bold;
-  font-family: 'Quicksand', sans-serif;
-}
+
 .title-card {
-  font-weight: bold;
-  font-family: 'Quicksand', sans-serif;
-  transition: 0.8s;
   border-bottom: solid;
   border-width: 1px;
   border-color: black;
-}
-.hover-card:hover .title-card,
-.hover-card:hover .title-card-dark {
-  transition: 0.4s;
-  color: rgba(18, 210, 175);
 }
 .data-table-commission {
   font-weight: bold;
@@ -1157,9 +1155,6 @@ export default {
 }
 .second_font {
   font-family: 'Varela Round', sans-serif;
-}
-.v-tooltip__content {
-  background-color: rgb(36, 33, 33) !important;
 }
 .chip {
   max-width: 180px;

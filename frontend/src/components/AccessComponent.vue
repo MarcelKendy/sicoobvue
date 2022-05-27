@@ -214,8 +214,8 @@
       </v-card-text>
       <v-card-actions>
         <span class="bold page-items-text mx-3">Itens por página:</span>
-        <v-col cols="1">
-          <v-form ref="form" v-model="valid" lazy-validation>
+       <div style="max-width: 37px">
+          <v-form ref="form_page_items" v-model="valid" lazy-validation>
             <vuetify-number
               class="page-items-textfield"
               v-model="page_total_items"
@@ -224,7 +224,7 @@
               v-bind:options="options"
             />
           </v-form>
-        </v-col>
+        </div>
 
         <v-spacer></v-spacer>
         <v-pagination

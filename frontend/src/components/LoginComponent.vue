@@ -135,7 +135,7 @@
                       }"
                     />
                   </v-col>
-                  <v-col cols="12">
+                  <v-col cols="12" md="8">
                     <v-text-field
                       v-model="formRegister.role"
                       :rules="requiredRule"
@@ -145,6 +145,52 @@
                       maxlength="50"
                       required
                     ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-select
+                      :menu-props="{ offsetY: true }"
+                      solo
+                      :items="genders"
+                      item-text="text"
+                      item-value="value"
+                      :color="color_default"
+                      :rules="requiredRule"
+                      label="Gênero"
+                      v-model="formRegister.gender"
+                      prepend-icon="mdi-user"
+                    >
+                      <template v-slot:selection="{ item }">
+                        <div
+                          :class="
+                            'chip gradient-' +
+                            genderStyle(item.value, 'gradient')
+                          "
+                        >
+                          <div class="chip__content">
+                            <v-icon dark>{{
+                              genderStyle(item.value, 'icon')
+                            }}</v-icon>
+                          </div>
+                        </div>
+                      </template>
+                      <template v-slot:item="{ item }">
+                        <div
+                          :class="
+                            'chip gradient-' +
+                            genderStyle(item.value, 'gradient')
+                          "
+                        >
+                          <div class="chip__content">
+                            <v-icon small dark>{{
+                              genderStyle(item.value, 'icon')
+                            }}</v-icon>
+                            <span class="item-select-badge">{{
+                              item.text
+                            }}</span>
+                          </div>
+                        </div>
+                      </template>
+                    </v-select>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field
@@ -261,6 +307,10 @@ export default {
     register_succeeded: false,
     color_default: 'rgba(18,210,175)',
     loading_btn: false,
+    genders: [
+      { text: 'Masc.', value: 1 },
+      { text: 'Fem.', value: 2 },
+    ],
     formLogin: {
       email: '',
       password: '',
@@ -271,10 +321,24 @@ export default {
       email: '',
       cpf: '',
       role: '',
+      gender: '',
       password: '',
       verify: '',
     },
-
+    gender_style: [
+      {
+        gender: 1,
+        color: 'white',
+        icon: 'mdi-face-man-shimmer',
+        gradient: 'blue',
+      },
+      {
+        gender: 2,
+        color: 'white',
+        icon: 'mdi-face-woman-shimmer',
+        gradient: 'pink',
+      },
+    ],
     emailRule: [
       (v) => !!v || 'Digite o seu E-mail',
       (v) => /.+@.+\..+/.test(v) || 'E-mail inválido',
@@ -375,6 +439,21 @@ export default {
     closeModalMail() {
       this.modal_mail = false;
     },
+    genderStyle(gender, type) {
+      let value = '';
+      this.gender_style.forEach((item) => {
+        if (item.gender == gender) {
+          if (type == 'color') {
+            value = item.color;
+          } else if (type == 'icon') {
+            value = item.icon;
+          } else {
+            value = item.gradient;
+          }
+        }
+      });
+      return value;
+    },
   },
 };
 </script>
@@ -465,6 +544,20 @@ export default {
   inherits: false;
 }
 
+.chip {
+  max-width: 180px;
+  min-width: 100px;
+  max-height: 30px;
+  flex: 1 1 auto;
+  transition: 0.3s;
+  background-size: 200% auto;
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  background-color: black;
+  border-radius: 9999px;
+  padding: 4px 8px;
+}
 /*.gradient-border {
   --border-width: 0.01px;
 

@@ -139,7 +139,7 @@ export default {
       {
         title: 'Acessos',
         icon: 'mdi-eye',
-        img: 'accesses1.png',
+        img: 'access-1.png',
         to: '/acessos',
       },
       {
@@ -180,17 +180,6 @@ export default {
   },
 };
 </script>
-<style>
-.font-quicksand {
-  font-family: 'Quicksand', sans-serif;
-}
-.bold {
-  font-weight: bold;
-}
-.bolder {
-  font-weight: bolder;
-}
-</style>
 <style scoped>
 .item-nav {
   transition: 0.3s;
@@ -227,8 +216,20 @@ font-family: 'Yanone Kaffeesatz', sans-serif;
 */
 </style>
 <style>
-li::before{
-   opacity: 0;
+.v-tooltip__content {
+  background-color: rgb(36, 33, 33) !important;
+}
+.font-quicksand {
+  font-family: 'Quicksand', sans-serif;
+}
+.bold {
+  font-weight: bold;
+}
+.bolder {
+  font-weight: bolder;
+}
+li::before {
+  opacity: 0;
 }
 .hover-card {
   transition: 0.3s !important;
@@ -240,8 +241,8 @@ li::before{
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
     rgba(0, 0, 0, 0.22) 0px 15px 12px !important;
 }
-.page-items-textfield {
-  width: 30px;
+.page-items-textfield input{
+  text-align: center;
   font-weight: bold;
   transition: 0.3s;
 }
@@ -249,5 +250,88 @@ li::before{
   font-size: 13px;
   color: black;
   transition: 0.3s;
+}
+.title-card-dark {
+  color: white;
+  font-weight: bold;
+  font-family: 'Quicksand', sans-serif;
+  transition: 0.3s;
+  background-color: rgb(24, 25, 26);
+}
+.subtitle-card-dark {
+  color: rgb(143, 143, 143);
+  font-weight: bold;
+  font-family: 'Quicksand', sans-serif;
+  transition: 0.3s;
+  background-color: rgb(24, 25, 26);
+}
+
+.title-card {
+  font-weight: bold;
+  font-family: 'Quicksand', sans-serif;
+  transition: 0.3s;
+}
+.subtitle-card {
+  font-weight: bold;
+  font-family: 'Quicksand', sans-serif;
+  transition: 0.3s;
+}
+.hover-card:hover .subtitle-card {
+  transition: 0.3s;
+  color: black;
+}
+.hover-card:hover .subtitle-card-dark {
+  color: white;
+  transition: 0.3s;
+}
+.hover-card:hover .title-card,
+.hover-card:hover .title-card-dark {
+  transition: 0.3s;
+  color: rgba(18, 210, 175);
+}
+
+.item-select-badge {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 13px;
+  padding-left: 5px;
+}
+.chip {
+  max-width: 180px;
+  min-width: 150px;
+  max-height: 30px;
+  flex: 1 1 auto;
+  transition: 0.3s;
+  background-size: 200% auto;
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  background-color: black;
+  border-radius: 9999px;
+  padding: 4px 8px;
+}
+.gradient-blue {
+  background-image: linear-gradient(to right, #77caf3, #5b75dc, #77caf3);
+}
+.gradient-gray {
+  background-image: linear-gradient(to right, #a0b7c0, #5f6e8b, #a0b7c0);
+}
+.gradient-orange {
+  background-image: linear-gradient(to right, #fcc53b, #fa7618, #fcc53b);
+}
+.gradient-success {
+  background-image: linear-gradient(to right, #49f87d, #40bfff, #49f87d);
+}
+.gradient-error {
+  background-image: linear-gradient(to right, #ff648e, #ca0000, #ff648e);
+}
+.gradient-pink {
+  background-image: linear-gradient(to right, #ff648e, #db6767, #ff64ed);
+}
+.chip:hover {
+  background-position: right center; /* change the direction of the change here */
+}
+.chip__content {
+  color: white;
+  margin-right: 1px;
 }
 </style>

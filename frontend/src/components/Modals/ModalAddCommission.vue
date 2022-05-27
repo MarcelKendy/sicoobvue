@@ -494,12 +494,12 @@ export default {
       }
       this.loading = false;
       if (this.dialog) {
-        this.get_users();
+        this.getUsers();
       }
     },
   },
   methods: {
-    get_users() {
+    getUsers() {
       this.loading_users = true;
       this.$http
         .post('get_users', { select: ['id', 'full_name'] })
@@ -706,45 +706,5 @@ export default {
   font-family: 'Quicksand', sans-serif;
   color: rgb(0, 209, 94);
 }
-.item-select-badge {
-  font-family: 'Quicksand', sans-serif;
-  font-size: 13px;
-  padding-left: 5px;
-}
-.chip {
-  max-width: 180px;
-  min-width: 150px;
-  max-height: 30px;
-  flex: 1 1 auto;
-  transition: 0.3s;
-  background-size: 200% auto;
-  align-items: center;
-  display: inline-flex;
-  justify-content: center;
-  background-color: black;
-  border-radius: 9999px;
-  padding: 4px 8px;
-}
-.gradient-blue {
-  background-image: linear-gradient(to right, #77caf3, #5b75dc, #77caf3);
-}
-.gradient-gray {
-  background-image: linear-gradient(to right, #a0b7c0, #5f6e8b, #a0b7c0);
-}
-.gradient-orange {
-  background-image: linear-gradient(to right, #fcc53b, #fa7618, #fcc53b);
-}
-.gradient-success {
-  background-image: linear-gradient(to right, #49f87d, #40bfff, #49f87d);
-}
-.gradient-error {
-  background-image: linear-gradient(to right, #ff648e, #ca0000, #ff648e);
-}
-.chip:hover {
-  background-position: right center; /* change the direction of the change here */
-}
-.chip__content {
-  color: white;
-  margin-right: 1px;
-}
+
 </style>

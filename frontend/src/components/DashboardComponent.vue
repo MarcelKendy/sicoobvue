@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12" align="center" class="mg-auto">
-        <v-img :src="require('../assets/icons/dashboard-1.png')" width="200" />
+        <v-img :src="require('../assets/images/dashboard-1.png')" width="200" />
       </v-col>
     </v-row>
     <v-row class="text-center" justify="center" align="center">

@@ -60,6 +60,7 @@ export default {
                 full_name: data.full_name,
                 last_name: data.full_name.slice(data.full_name.indexOf(' ') + 1),
                 cpf: data.cpf, 
+                gender: data.gender,
                 email: data.email,
                 accesses: JSON.parse(data.access.accesses),
                 active: data.active
