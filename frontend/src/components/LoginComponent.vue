@@ -25,6 +25,7 @@
                 <v-row>
                   <v-col cols="12">
                     <v-text-field
+                      placeholder="email@dominio.com"
                       v-model="formLogin.email"
                       :rules="emailRule"
                       name="login_email"
@@ -87,7 +88,8 @@
                     <v-text-field
                       v-model="formRegister.firstName"
                       :rules="requiredRule"
-                      label="Nome"
+                      label="Primeiro Nome"
+                      placeholder="Fulano"
                       :color="color_default"
                       name="register_first_name"
                       maxlength="20"
@@ -99,9 +101,10 @@
                       v-model="formRegister.lastName"
                       :rules="requiredRule"
                       label="Sobrenome"
+                      placeholder="Ciclano da Silva"
                       :color="color_default"
                       name="register_last_name"
-                      maxlength="20"
+                      maxlength="50"
                       required
                     ></v-text-field>
                   </v-col>
@@ -110,6 +113,7 @@
                       v-model="formRegister.email"
                       :rules="emailRule"
                       label="E-mail"
+                      placeholder="email@dominio.com"
                       :color="color_default"
                       name="register_email"
                       required
@@ -123,6 +127,7 @@
                         color: color_default,
                         rules: cpfRule,
                         name: 'register_cpf',
+                        placeholder: '000.000.000-00',
                         required: true,
                       }"
                       v-bind:options="{
@@ -141,6 +146,7 @@
                       :rules="requiredRule"
                       label="Cargo na Cooperativa"
                       :color="color_default"
+                      placeholder="Função exercida"
                       name="register_role"
                       maxlength="50"
                       required
@@ -397,9 +403,16 @@ export default {
                 this.invalid_credentials = true;
                 this.validLogin = true;
               } else {
-                this.$store
-                  .dispatch('login', response.data[0])
-                  .then(this.$router.push('/'));
+                if (response.data == 606) {
+                  this.error_login = 'Sua conta foi desativada';
+                  this.loading_btn = false;
+                  this.invalid_credentials = true;
+                  this.validLogin = true;
+                } else {
+                  this.$store
+                    .dispatch('login', response.data[0])
+                    .then(this.$router.push('/'));
+                }
               }
             }
           });

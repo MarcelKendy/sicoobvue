@@ -30,6 +30,9 @@ class UserController extends Controller
         $match = ['email' => $request->email];
         $user = User::with('access')->where($match)->get();
         if (isset($user[0]['password'])) {
+            if ($user[0]['active'] != 1) {
+                return 606;
+            }
             if (password_verify($request->password, $user[0]['password'])) {
                 $log_login = new LogLogin();
                 $log_login->user_id = $user[0]['id'];

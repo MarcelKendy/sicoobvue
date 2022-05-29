@@ -68,7 +68,7 @@
                       :color="color"
                       append-icon="mdi-key"
                       :rules="requiredAccessRule"
-                      placeholder="Enter para confirmar"
+                      placeholder="Informe o acesso"
                       v-model="item.access_id"
                       :items="accesses"
                       :loading="loading_access_computed(item.id)"
@@ -220,6 +220,10 @@ export default {
       return this.loading_access[id] || this.loading_all_accesses;
     },
     changeAccess(user_id, access_id, active = -1) {
+      if (!access_id && active == -1) {
+        this.loading_access[user_id] = false;
+        return 505
+      }
       this.$http
         .put(`edit_user_access/${user_id}`, {
           access_id: access_id,
@@ -258,7 +262,6 @@ export default {
     getUsers() {
       this.loading = true;
       this.$http.post('get_users').then((response) => {
-        console.log(response.data);
         this.total_items = response.data;
         this.pagination();
         this.loading = false;
