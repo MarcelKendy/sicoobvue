@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Access;
+use App\Models\User;
 
 
 class AccessController extends Controller
@@ -41,6 +42,7 @@ class AccessController extends Controller
     }
 
     public function deleteAccess (Access $access, Request $request) {
+        User::where('access_id', $access->id)->update(['access_id' => 1]);
         $access->delete();
         return response()->json($access);
     }
