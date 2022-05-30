@@ -19,9 +19,9 @@
               <strong>Sicoob Credisg</strong>
             </v-list-item-title>
             <v-list-item-subtitle
-              style="font-family: 'Patrick Hand', cursive; font-size: 18px"
+              
             >
-              Software
+              v1.0.0
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>

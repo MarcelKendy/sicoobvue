@@ -252,11 +252,15 @@
         elevation="24"
         rounded="pill"
         color="red"
+        dark
       >
-        <v-icon class="pr-3" dark>mdi-alert</v-icon>
-        <strong style="padding-left: 35px" class="white--text">{{
+        <div style="text-align:center;">
+         <v-icon class="pr-3" dark>mdi-alert</v-icon>
+        <strong>{{
           error_login
         }}</strong>
+        </div>
+       
       </v-snackbar>
       <v-snackbar
         v-model="register_succeeded"
