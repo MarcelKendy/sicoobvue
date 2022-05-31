@@ -19,10 +19,10 @@
             <v-list-item-avatar class="mt-6">
               <v-img v-if="item.photo" :src="item.photo"></v-img>
               <v-img
-                v-else-if="item.gender == 1"
-                src="./../assets/icons/man.png"
+                v-else
+                :src="require(`./../assets/icons/${item.gender == 1 ? 'man.png' : 'woman.png'}`)"
               ></v-img>
-              <v-img v-else src="./../assets/icons/woman.png"></v-img>
+              
             </v-list-item-avatar>
             <v-list-item-content class="bold">
               <span>{{ item.full_name }}</span>
@@ -163,7 +163,7 @@
           style="font-weight: bold"
           circle
           :length="total_pages"
-          :total-visible="4"
+          :total-visible="5"
         ></v-pagination>
       </v-card-actions>
     </v-card>
@@ -179,7 +179,7 @@ export default {
     items: [],
     accesses: [],
     total_pages: 1,
-    page_total_items: 4,
+    page_total_items: 6,
     page: 1,
     i: -1,
     loading: false,
@@ -208,10 +208,10 @@ export default {
     },
     page_total_items: function () {
       if (this.$refs.form_page_items.validate()) {
-        this.pagination();
+        this.pagination(true, 1);
       } else {
-        this.page_total_items = 4;
-        this.pagination();
+        this.page_total_items = 6;
+        this.pagination(true, 1);
       }
     },
   },
@@ -241,14 +241,14 @@ export default {
           this.pagination(false);
         });
     },
-    pagination(reload_total_pages = true) {
+    pagination(reload_total_pages = true, page = this.page) {
       if (reload_total_pages) {
         this.total_pages = Math.ceil(
           this.total_items.length / this.page_total_items
         );
       }
       this.page_total_items = parseInt(this.page_total_items);
-      let begin = (this.page - 1) * this.page_total_items;
+      let begin = (page - 1) * this.page_total_items;
       let end = begin + this.page_total_items;
       this.items = this.total_items.slice(begin, end);
     },

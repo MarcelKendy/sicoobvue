@@ -10,7 +10,9 @@ import "./plugins/vuetify-mask.js"
 import db from '../src/services/localbase'
 import VueParticles from 'vue-particles'
 import "./plugins/vuetify-number.js"
-
+import JsonExcel from "vue-json-excel";
+ 
+Vue.component("downloadExcel", JsonExcel);
 Vue.use(VueParticles)
 
 //import VueSpinners from 'vue-spinners'

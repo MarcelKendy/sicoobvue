@@ -1,26 +1,30 @@
 <template>
   <div>
-    <div class="tooltip" style="padding-bottom: 15px; font-weight: bold">
-      <v-btn
-        rounded
-        elevation="9"
-        :color="!dark_theme ? 'rgb(36, 0, 121)' : 'yellow lighten-2'"
-        :dark="!dark_theme"
-        @click="dark_theme = !dark_theme"
-        small
-      >
-        <span class="second_font-bold">Tema</span>
-        <v-icon dark right>
-          {{ !dark_theme ? 'mdi-weather-night' : 'mdi-white-balance-sunny' }}
-        </v-icon>
-      </v-btn>
-      <span class="tooltiptext">{{
-        !this.dark_theme
-          ? 'Mudar o tema de cores para "dark"'
-          : 'Mudar o tema de cores para "light"'
-      }}</span>
+    <div class="pb-5 px-5" id="reports">
+      <v-tooltip top>
+        <template v-slot:activator="{ attrs, on }">
+          <v-btn icon @click="menu_reports = true" v-bind="attrs" v-on="on"
+            ><v-icon color="blue">mdi-file-document-multiple</v-icon></v-btn
+          >
+        </template>
+        <span>Relatórios</span>
+      </v-tooltip>
     </div>
 
+    <!--
+
+
+   <download-excel 
+        :data="items"
+        name="Relatório_Comissões.xls"
+        header="Relatório das Comissões"
+        :footer="['Requisitado em: ' + new Date().toLocaleString(), 'Sicoob Credisg Software - v.1.0.0']"
+        default-value="Não existem dados referentes"
+        worksheet="Relatório das Comissões"
+      >
+    
+      </download-excel>
+ -->
     <v-tooltip left>
       <template v-slot:activator="{ on, attrs }">
         <v-btn
@@ -43,7 +47,28 @@
     <v-card class="hover-card" elevation="7" outlined shaped>
       <v-card-title :class="dark_theme ? 'title-card-dark' : 'title-card'">
         <span>Produtos e Comissões</span>
-
+        <div class="tooltip bold pa-5 pt-3" style="">
+          <v-btn
+            rounded
+            elevation="9"
+            :color="!dark_theme ? 'rgb(36, 0, 121)' : 'yellow lighten-2'"
+            :dark="!dark_theme"
+            @click="dark_theme = !dark_theme"
+            small
+          >
+            <span class="second_font-bold">Tema</span>
+            <v-icon dark right>
+              {{
+                !dark_theme ? 'mdi-weather-night' : 'mdi-white-balance-sunny'
+              }}
+            </v-icon>
+          </v-btn>
+          <span class="tooltiptext">{{
+            !this.dark_theme
+              ? 'Mudar o tema de cores para "dark"'
+              : 'Mudar o tema de cores para "light"'
+          }}</span>
+        </div>
         <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
@@ -618,7 +643,7 @@
         </template>
       </v-data-table>
     </v-card>
-
+    <modal-report :open="menu_reports" :commissions="items" @closeModal="menu_reports = false"></modal-report>
     <modal-add
       :open="add_modal"
       @closeAddModal="addModal"
@@ -677,18 +702,20 @@
 </template>
 
 <script>
+import ModalReport from './Modals/ModalReportsCommission.vue';
 import ModalAdd from './Modals/ModalAddCommission.vue';
 import ModalEdit from './Modals/ModalEditCommission.vue';
 import ModalDelete from './Modals/ModalDeleteCommission.vue';
 export default {
   name: 'CommissionComponent',
-  components: { ModalAdd, ModalEdit, ModalDelete },
+  components: { ModalReport, ModalAdd, ModalEdit, ModalDelete },
   data() {
     return {
       items: [],
       expanded: [],
       transitioned: [],
       singleExpand: false,
+      menu_reports: false,
       closeTimeouts: {},
       search: '',
       edited_item: {},

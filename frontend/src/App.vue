@@ -18,11 +18,7 @@
             >
               <strong>Sicoob Credisg</strong>
             </v-list-item-title>
-            <v-list-item-subtitle
-              
-            >
-              v1.0.0
-            </v-list-item-subtitle>
+            <v-list-item-subtitle> v1.0.0 </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-img>
@@ -47,6 +43,57 @@
 
           <v-list-item-content>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-group
+          v-show="verifyUserAccess()"
+          v-for="item in items_adm"
+          :key="item.title"
+        >
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-img
+                v-if="item.img"
+                width="10"
+                :src="require('./assets/icons/' + item.img)"
+              ></v-img>
+              <v-icon v-else color="rgb(18,150,145)">{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item
+            v-for="child in item.items"
+            :key="child.title"
+            :to="child.to"
+            class="item-nav"
+          >
+            <v-list-item-icon>
+              <v-img
+                v-if="child.img"
+                width="10"
+                :src="require('./assets/icons/' + child.img)"
+              ></v-img>
+              <v-icon v-else color="rgb(18,150,145)">{{ child.icon }}</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>{{ child.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+        <v-list-item class="item-nav" to="/about">
+          <v-list-item-icon>
+            <v-img
+              width="10"
+              :src="require('./assets/icons/about.png')"
+            ></v-img>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Sobre</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -130,23 +177,27 @@ export default {
         img: 'commission.png',
         to: '/comissoes',
       },
+    ],
+    items_adm: [
       {
-        title: 'Usuários',
-        icon: 'mdi-account-group',
-        img: 'users.png',
-        to: '/usuarios',
-      },
-      {
-        title: 'Acessos',
-        icon: 'mdi-eye',
-        img: 'access-1.png',
-        to: '/acessos',
-      },
-      {
-        title: 'Sobre',
-        icon: 'mdi-help',
-        img: 'about.png',
-        to: '/about',
+        title: 'Gestão',
+        icon: 'mdi-account-tie',
+        img: 'adm.png',
+        to: '',
+        items: [
+          {
+            title: 'Usuários',
+            icon: 'mdi-account-group',
+            img: 'users.png',
+            to: '/usuarios',
+          },
+          {
+            title: 'Acessos',
+            icon: 'mdi-eye',
+            img: 'access-1.png',
+            to: '/acessos',
+          },
+        ],
       },
     ],
     login_check: false,
@@ -176,6 +227,11 @@ export default {
           Object.assign(this.$store.state.user, user[0]);
           this.login_check = true;
         });
+    },
+    verifyUserAccess() {
+      if (this.$store.state.user.accesses) {
+        return this.$store.state.user.accesses.accesses == 1;
+      }
     },
   },
 };
