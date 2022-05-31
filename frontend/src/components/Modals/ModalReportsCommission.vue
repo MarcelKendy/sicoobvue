@@ -198,13 +198,22 @@
             :color="color"
             :disabled="!valid"
             text
-            @click="loadReportData()"
+            @click="loadReportData(1)"
           >
-            Gerar Relatório
+            Excel
+          </v-btn>
+          <v-btn
+            :color="color"
+            :disabled="!valid"
+            text
+            @click="loadReportData(2)"
+          >
+            PDF
           </v-btn>
         </v-card-actions>
       </v-card>
       <download-excel
+        v-show="false"
         id="report_commission_excel"
         :data="items_computed"
         name="Relatório_Comissões.xls"
@@ -273,6 +282,7 @@ export default {
         if (this.$refs.form) {
           this.$refs.form.resetValidation();
         }
+        this.loading = false
       }
     },
   },
@@ -308,16 +318,14 @@ export default {
           this.loading_users = false;
         });
     },
-    loadReportData() {
+    loadReportData(type) {
       if (this.$refs.form.validate()) {
+        this.loading = true
         let filter_user = true;
         let filter_product = true;
-        if (this.item.users.length == 0) {
-          filter_user = false;
-        }
-        if (this.item.products.length == 0) {
-          filter_product = false;
-        }
+        filter_user = this.item.users.length != 0;
+        filter_product = this.item.products.length != 0;
+
         if (filter_user && filter_product) {
           this.items = this.items.filter((commission) => {
             return (
@@ -335,16 +343,20 @@ export default {
               this.item.users.includes(commission.operator_id)
             );
           });
-        } else if (filter_product){
+        } else if (filter_product) {
           this.items = this.items.filter((commission) => {
             return this.item.products.includes(commission.product);
           });
-        } 
+        }
 
         Object.assign(this.items_computed, this.items);
-        console.log(this.items_computed)
-        let excel_button = document.getElementById('report_commission_excel');
-        excel_button.click();
+        if (type == 1) {
+          let excel_button = document.getElementById('report_commission_excel');
+          excel_button.click();
+        } else {
+          console.log(1)
+        }
+       
         this.closeModal();
       }
     },
