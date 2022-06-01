@@ -8,6 +8,10 @@ use App\Models\User;
 class Commission extends Model
 {
     use HasFactory;
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
     public function indicator()
     {
         return $this->belongsTo(User::class, 'indicator_id', 'id');

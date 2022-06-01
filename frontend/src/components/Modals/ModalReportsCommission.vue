@@ -185,6 +185,9 @@
                   </template>
                 </v-autocomplete>
               </v-col>
+              <v-col cols="12">
+
+              </v-col>
             </v-row>
           </v-form>
         </v-card-text>
@@ -218,9 +221,12 @@
         :data="items_computed"
         name="Relatório_Comissões.xls"
         header="Relatório das Comissões"
+        :fields="fields_excel_report"
         :footer="[
-          'Filtro de usuários: ' + users_name,
-          'Filtro de produtos: ' + products_name,
+          '--Fim dos Registros--',
+          'Filtro Aplicado:',
+          'Usuários: ' + users_name,
+          'Produtos: ' + products_name,
           'Requisitado em: ' + new Date().toLocaleString(),
           'Sicoob Credisg Software - v.1.0.0',
         ]"
@@ -262,6 +268,57 @@ export default {
         'Seguro Prestamista',
         'Crédito Consignado',
         'Consórcio',
+      ],
+      fields_excel_report: {
+        'Produto': 'product',
+        'Valor' : 'value',
+        'Status' : 'status',
+        'Indicador' : 'indicator.full_name',
+        'Vendedor' : 'seller.full_name',  
+        'Operador' : 'operator.full_name',
+        'Valor Prestamista': 'custom_value',
+        'Comissão Cooperativa' : 'commission_percentage',
+        'Comissão Indicador' : 'indicator_commission',
+        'Comissão Vendedor' : 'seller_commission',
+        'Comissão Operador' : 'operator_commission',
+        'Data da Indicação': 'date_indicator',
+        'Data da Venda': 'date_seller',
+        'Data da Operação': 'date_operator',
+        'Inserido por:': 'user.full_name',
+        'Às:': 'created_at',
+        'Última edição:': 'updated_at'
+      },
+      status_style: [
+        {
+          status: 'Aguard. Venda',
+          color: '#5b75dc',
+          icon: 'mdi-store-clock-outline',
+          gradient: 'blue',
+        },
+        {
+          status: 'Não Vendido',
+          color: '#5f6e8b',
+          icon: 'mdi-store-remove-outline',
+          gradient: 'gray',
+        },
+        {
+          status: 'Aguard. UPS',
+          color: 'orange darken-3',
+          icon: 'mdi-account-tie',
+          gradient: 'orange',
+        },
+        {
+          status: 'Aprovado UPS',
+          color: 'blue darken-1',
+          icon: 'mdi-check-outline',
+          gradient: 'success',
+        },
+        {
+          status: 'Recusado UPS',
+          color: 'red lighten-5',
+          icon: 'mdi-close-outline',
+          gradient: 'error',
+        },
       ],
       /* RULES */
     };
@@ -369,14 +426,24 @@ export default {
       let users = this.users.filter((user) => {
         return this.item.users.includes(user.id);
       });
-      return users.map((user) => {
+      users = users.map((user) => {
         return user.full_name;
       });
+      if (users.length == 0) {
+        return 'TODOS'
+      } else {
+        return users
+      }
     },
     products_name() {
-      return this.products.filter((product) => {
+      let products =  this.products.filter((product) => {
         return this.item.products.includes(product);
       });
+       if (products.length == 0) {
+        return 'TODOS'
+      } else {
+        return products
+      }
     },
     defaultItem() {
       return {

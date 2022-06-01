@@ -11,7 +11,7 @@ class CommissionController extends Controller
 
     public function getCommissions(Request $request)
     {
-        $allCommissions = Commission::with('indicator', 'seller', 'operator')->get();
+        $allCommissions = Commission::with('user', 'indicator', 'seller', 'operator')->get();
         return response()->json($allCommissions);
     }
 
