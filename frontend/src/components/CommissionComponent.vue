@@ -643,7 +643,11 @@
         </template>
       </v-data-table>
     </v-card>
-    <modal-report :open="menu_reports" :commissions="items" @closeModal="menu_reports = false"></modal-report>
+    <modal-report
+      :open="menu_reports"
+      :commissions="items"
+      @closeModal="menu_reports = false"
+    ></modal-report>
     <modal-add
       :open="add_modal"
       @closeAddModal="addModal"

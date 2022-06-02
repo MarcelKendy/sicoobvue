@@ -365,6 +365,21 @@ li::before {
   border-radius: 9999px;
   padding: 4px 8px;
 }
+.small-chip {
+  margin-inline: 10px;
+  max-width: 80px;
+  min-width: 50px;
+  max-height: 30px;
+  flex: 1 1 auto;
+  transition: 0.3s;
+  background-size: 200% auto;
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  background-color: black;
+  border-radius: 9999px;
+  padding: 4px 8px;
+}
 .gradient-blue {
   background-image: linear-gradient(to right, #77caf3, #5b75dc, #77caf3);
 }
@@ -384,6 +399,9 @@ li::before {
   background-image: linear-gradient(to right, #ff648e, #db6767, #ff64ed);
 }
 .chip:hover {
+  background-position: right center; /* change the direction of the change here */
+}
+.small-chip:hover {
   background-position: right center; /* change the direction of the change here */
 }
 .chip__content {
