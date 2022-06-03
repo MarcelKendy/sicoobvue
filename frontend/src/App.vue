@@ -281,6 +281,13 @@ font-family: 'Yanone Kaffeesatz', sans-serif;
 .bold {
   font-weight: bold;
 }
+.second_font-bold {
+  font-family: 'Varela Round', sans-serif;
+  font-weight: bold;
+}
+.second_font {
+  font-family: 'Varela Round', sans-serif;
+}
 .bolder {
   font-weight: bolder;
 }

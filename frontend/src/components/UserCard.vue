@@ -58,6 +58,26 @@
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
+            
+              <v-btn
+              v-if="item.button"
+                rounded
+                elevation="9"
+                :color="theme == 1 ? 'rgb(36, 0, 121)' : 'yellow lighten-1'"
+                :dark="theme == 1"
+                @click="theme == 1 ? (theme = 0) : (theme = 1)"
+                small
+              >
+                <span class="second_font-bold" :style="theme == 1 ? 'color:white' : 'color:black'">{{
+                  theme == 1 ? 'Dark' : 'Light'
+                }}</span>
+                <v-icon :style="theme == 1 ? 'color:white' : 'color:black'" right>
+                  {{
+                    theme == 1 ? 'mdi-weather-night' : 'mdi-white-balance-sunny'
+                  }}
+                </v-icon>
+              </v-btn>
+         
           </v-list-item>
         </v-list>
       </v-card>
@@ -87,6 +107,7 @@ export default {
   data: () => ({
     items: [
       { title: 'Informações Pessoais', icon: 'mdi-account-edit' },
+      { title: 'Tema', icon: 'mdi-palette', button: true},
       { title: 'Sair', icon: 'mdi-logout' },
     ],
     confirmation_logout: false,
@@ -95,7 +116,17 @@ export default {
     edit_profile: false,
     cpf: '',
     user_info: {},
+    theme: 0,
   }),
+  watch: {
+    theme: function () {
+      this.loading_theme = true;
+      this.$store.state.user.configs.theme = this.theme
+      this.$store
+        .dispatch('configs', this.$store.state.user)
+        .then((this.loading_theme = false));
+    },
+  },
   methods: {
     actions(item) {
       switch (item) {

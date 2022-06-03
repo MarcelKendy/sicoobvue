@@ -263,7 +263,6 @@ export default {
       if (this.$refs.form.validate()) {
         this.loading = true;
         this.change_password = false;
-        console.log(typeof this.item.accesses);
         this.$http
           .put(`edit_user/${this.item.id}`, this.item)
           .then((response) => {

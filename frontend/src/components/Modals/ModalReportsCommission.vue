@@ -207,7 +207,8 @@
                       v-model="dateRangeText"
                       v-bind="$attrs"
                       v-on="on"
-                      label="Filtre por um dia ou por um período"
+                      label="Dia ou Período da Aprovação"
+                      placeholder="Filtre por um dia ou por um período"
                       append-icon="mdi-close"
                       prepend-icon="mdi-calendar"
                       readonly
@@ -235,6 +236,7 @@
                   :items="status"
                   :color="color"
                   label="Status"
+                  :disabled="disable_status"
                   v-model="item.status"
                   placeholder="Enter para confirmar (Deixe vazio para pegar todos os status)"
                   prepend-icon="mdi-clock"
@@ -305,23 +307,47 @@
             Cancelar
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn
-            :color="color"
-            :disabled="!valid"
-            icon
-            @click="loadReportData(1)"
-          >
-            <v-img width="40" src="./../../assets/icons/xls.png"></v-img>
-          </v-btn>
-          <v-btn
-            :color="color"
-            :disabled="!valid"
-            icon
-            @click="loadReportData(2)"
-          >
-            <v-img width="40" src="./../../assets/icons/pdf.png"></v-img>
-          </v-btn>
+          <v-tooltip top>
+            <template v-slot:activator="{ attrs, on }">
+              <v-img
+                style="cursor: pointer"
+                v-bind="attrs"
+                v-on="on"
+                :disabled="!valid"
+                @click="loadReportData(1)"
+                max-width="40px"
+                src="./../../assets/icons/xls.png"
+              ></v-img>
+            </template>
+            <span> Gerar EXCEL </span>
+          </v-tooltip>
+          <v-tooltip top>
+            <template v-slot:activator="{ attrs, on }">
+              <v-img
+                style="cursor: pointer"
+                v-bind="attrs"
+                v-on="on"
+                :disabled="!valid"
+                @click="loadReportData(2)"
+                max-width="40px"
+                src="./../../assets/icons/pdf.png"
+              ></v-img>
+            </template>
+            <span> Gerar PDF </span>
+          </v-tooltip>
         </v-card-actions>
+        <overlay-component
+          :model="overlay"
+          color="orange"
+          title="Ops! Não achei nada aqui..."
+          sub_title="Detectei que o relatório seria vazio"
+          text="Não existem dados referentes ao filtro selecionado"
+          description="Se você tem certeza de que deveriam haver registros, cheque novamente sua filtragem. Se persistir sem resultados, contate o desenvolvedor."
+          footer="Ramal: 1506"
+          width="650"
+          image="empty-box.png"
+          @closeOverlay="modalOverlay"
+        ></overlay-component>
       </v-card>
       <download-excel
         v-show="false"
@@ -335,6 +361,8 @@
           'Filtro Aplicado:',
           'Usuários: ' + (item.users.length > 0 ? users_name : 'TODOS'),
           'Produtos: ' + (item.products.length > 0 ? item.products : 'TODOS'),
+          'Data/Período: ' +
+            (item.products.dates > 0 ? item.dates : 'SEM FILTRO'),
           'Status: ' + (item.status.length > 0 ? item.status : 'TODOS'),
           'Requisitado em: ' + new Date().toLocaleString(),
           'Sicoob Credisg Software - v.1.0.0',
@@ -348,9 +376,10 @@
 </template>
 
 <script>
+import OverlayComponent from './../util/OverlayComponent.vue';
 export default {
   props: ['open', 'commissions'],
-  components: {},
+  components: { OverlayComponent },
   data() {
     return {
       color: 'blue',
@@ -359,6 +388,8 @@ export default {
       dialog_date: false,
       loading: false,
       loading_users: false,
+      disable_status: false,
+      overlay: false,
       users: [],
       item: {
         products: [],
@@ -483,9 +514,6 @@ export default {
     };
   },
   watch: {
-    item: function () {
-      console.log(this.item);
-    },
     open: function () {
       this.dialog = this.open;
       if (this.dialog) {
@@ -501,8 +529,19 @@ export default {
         this.loading = false;
       }
     },
+    dateFilter: function () {
+      if (this.item.dates.length > 0) {
+        this.item.status = this.defaultItem.status;
+        this.disable_status = true;
+      } else {
+        this.disable_status = false;
+      }
+    },
   },
   methods: {
+    modalOverlay() {
+      this.overlay = !this.overlay;
+    },
     formatDate(date, y = true) {
       let day_month = date.slice(5, 10);
       let day = day_month.slice(3);
@@ -577,26 +616,34 @@ export default {
     },
     loadReportData(type) {
       if (this.$refs.form.validate()) {
-        this.loading = true;
-        let filter_user = true;
-        let filter_product = true;
-        let filter_status = true;
-        filter_user = this.item.users.length != 0;
-        filter_product = this.item.products.length != 0;
-        filter_status = this.item.status.length != 0;
-        this.filterReportData(filter_product, filter_user, filter_status);
-        Object.assign(this.items_computed, this.items);
-        if (type == 1) {
-          let excel_button = document.getElementById('report_commission_excel');
-          excel_button.click();
+        let filter_user = this.item.users.length != 0;
+        let filter_product = this.item.products.length != 0;
+        let filter_dates = this.item.dates.length != 0;
+        let filter_status = this.item.status.length != 0;
+        if (
+          this.filterReportData(
+            filter_product,
+            filter_user,
+            filter_dates,
+            filter_status
+          )
+        ) {
+          Object.assign(this.items_computed, this.items);
+          if (type == 1) {
+            let excel_button = document.getElementById(
+              'report_commission_excel'
+            );
+            excel_button.click();
+          } else {
+            console.log(1);
+          }
+          this.closeModal();
         } else {
-          console.log(1);
+          this.modalOverlay();
         }
-
-        this.closeModal();
       }
     },
-    filterReportData(filter_product, filter_user, filter_status) {
+    filterReportData(filter_product, filter_user, filter_dates, filter_status) {
       if (filter_user) {
         this.items = this.items.filter((commission) => {
           return (
@@ -611,17 +658,51 @@ export default {
           return this.item.products.includes(commission.product);
         });
       }
-      if (filter_status) {
+      if (filter_dates) {
+        let first_date = new Date(this.item.dates[0]).getTime();
+        if (this.item.dates.length == 2) {
+          let second_date = new Date(this.item.dates[1]).getTime();
+          if (first_date > second_date) {
+            let temp = first_date;
+            first_date = second_date;
+            second_date = temp;
+          }
+
+          this.items = this.items.filter((commission) => {
+            if (!commission.date_operator) {
+              return false;
+            }
+            let operator_date = new Date(
+              commission.date_operator.slice(0, 10)
+            ).getTime();
+            return operator_date >= first_date && operator_date <= second_date;
+          });
+        } else {
+          this.items = this.items.filter((commission) => {
+            if (!commission.date_operator) {
+              return false;
+            }
+            let operator_date = new Date(
+              commission.date_operator.slice(0, 10)
+            ).getTime();
+            return operator_date == first_date;
+          });
+        }
+      } else if (filter_status) {
         this.items = this.items.filter((commission) => {
           return this.item.status.includes(commission.status);
         });
       }
+      return this.items.length > 0;
     },
     closeModal() {
       this.$emit('closeModal');
     },
   },
   computed: {
+    dateFilter() {
+      return this.item.dates;
+    },
     getTitleDateFormat(isoDate) {
       let date = '';
       if (this.item.dates.length > 1) {

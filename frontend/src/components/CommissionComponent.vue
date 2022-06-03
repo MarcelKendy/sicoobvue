@@ -1,30 +1,20 @@
 <template>
   <div>
     <div class="pb-5 px-5" id="reports">
-      <v-tooltip top>
+      <v-tooltip right>
         <template v-slot:activator="{ attrs, on }">
-          <v-btn icon @click="menu_reports = true" v-bind="attrs" v-on="on"
-            ><v-icon color="blue">mdi-file-document-multiple</v-icon></v-btn
-          >
+          <v-img
+            width="32"
+            style="cursor: pointer"
+            v-bind="attrs"
+            v-on="on"
+            @click="menu_reports = true"
+            src="./../assets/icons/download-report.png"
+          ></v-img>
         </template>
         <span>Relatórios</span>
       </v-tooltip>
     </div>
-
-    <!--
-
-
-   <download-excel 
-        :data="items"
-        name="Relatório_Comissões.xls"
-        header="Relatório das Comissões"
-        :footer="['Requisitado em: ' + new Date().toLocaleString(), 'Sicoob Credisg Software - v.1.0.0']"
-        default-value="Não existem dados referentes"
-        worksheet="Relatório das Comissões"
-      >
-    
-      </download-excel>
- -->
     <v-tooltip left>
       <template v-slot:activator="{ on, attrs }">
         <v-btn
@@ -1180,13 +1170,7 @@ export default {
   top: 5%;
   left: 105%;
 }
-.second_font-bold {
-  font-family: 'Varela Round', sans-serif;
-  font-weight: bold;
-}
-.second_font {
-  font-family: 'Varela Round', sans-serif;
-}
+
 .chip {
   max-width: 180px;
   min-width: 150px;

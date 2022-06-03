@@ -63,10 +63,41 @@ export default {
                 gender: data.gender,
                 email: data.email,
                 accesses: JSON.parse(data.access.accesses),
+                configs: JSON.parse(data.configs),
                 active: data.active
               }, 'logged_token').then(() => {
                 commit('getUser')
               })
         }
-      } 
+      },
+      configs_update({commit}, data) {
+        console.log(data)
+        if (data) { 
+              db.collection('user').update(
+                { id: data.id },
+                { $set: { configs: data.configs } }
+              , 'logged_token').then(() => {
+                commit('getUser')
+              })
+        }
+      },
+      configs({commit}, data) {
+       if (data) { 
+              db.collection('user').add({
+                id: data.id, 
+                name: data.name,
+                role: data.role,  
+                full_name: data.full_name,
+                last_name: data.last_name,
+                cpf: data.cpf, 
+                gender: data.gender,
+                email: data.email,
+                accesses: data.accesses,
+                configs: data.configs,
+                active: data.active
+              }, 'logged_token').then(() => {
+                commit('getUser')
+              })
+        }
+      }  
 }
