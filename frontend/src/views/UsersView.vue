@@ -23,9 +23,9 @@ export default {
         case 'md':
           return 'ma-7';
         case 'lg':
-          return 'ma-16';
+          return 'ma-14';
         case 'xl':
-          return 'ma-20';
+          return 'ma-16';
         default:
           return 'ma-10';
       }

@@ -116,7 +116,7 @@
                         "
                         >Nenhum usuário encontrado</span
                       >
-                      <v-tooltip top>
+                      <v-tooltip id="tooltip" top>
                         <template v-slot:activator="{ on, attrs }">
                           <v-icon
                             style="padding-left: 5px"
@@ -179,7 +179,7 @@
                           "
                           >Nenhum usuário encontrado</span
                         >
-                        <v-tooltip top>
+                        <v-tooltip id="tooltip" top>
                           <template v-slot:activator="{ on, attrs }">
                             <v-icon
                               style="padding-left: 5px"
@@ -298,7 +298,7 @@
                           "
                           >Nenhum usuário encontrado</span
                         >
-                        <v-tooltip top>
+                        <v-tooltip id="tooltip" top>
                           <template v-slot:activator="{ on, attrs }">
                             <v-icon
                               style="padding-left: 5px"

@@ -68,6 +68,15 @@ class UserController extends Controller
     }
 
     public function editUser (User $user, Request $request) {
+        if (isset($request->configs) && $request->configs == 'change') {
+            $configs = json_decode($user->configs);
+            if (isset($request->theme)) {
+                $configs->theme = $request->theme;
+            }
+            $user->configs = json_encode($configs);
+            $user->save();
+            return response()->json($user->load('access'));
+        }
         $name = substr($request->full_name, 0, strpos($request->full_name, " "));
         $user->name = $name;
         $user->full_name = $request->full_name;

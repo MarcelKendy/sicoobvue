@@ -133,7 +133,7 @@
       <user-card />
     </v-app-bar>
 
-    <v-main style="font-family: 'Quicksand', sans-serif">
+    <v-main :class="this.theme ? 'main-dark' : 'main-light'">
       <bread-crumb-component
         :activeRoute="this.$route.name"
       ></bread-crumb-component>
@@ -234,9 +234,22 @@ export default {
       }
     },
   },
+  computed: {
+    theme () {
+      return this.$store.state.user.configs.theme == 0
+    }
+  }
 };
 </script>
 <style scoped>
+.main-dark {
+  font-family: 'Quicksand', sans-serif;
+  background-color: #191a1b
+}
+.main-light {
+  font-family: 'Quicksand', sans-serif;
+  background-color:#eeeeee
+}
 .item-nav {
   transition: 0.3s;
 }
@@ -274,6 +287,10 @@ font-family: 'Yanone Kaffeesatz', sans-serif;
 <style>
 .v-tooltip__content {
   background-color: rgb(36, 33, 33) !important;
+}
+.bg-black {
+  background-color: rgb(211, 210, 210) !important;
+  color: #27282b !important
 }
 .font-quicksand {
   font-family: 'Quicksand', sans-serif;
@@ -314,19 +331,29 @@ li::before {
   color: black;
   transition: 0.3s;
 }
+.data-table-dark {
+  background-color: rgb(30, 30, 31) !important;
+  font-weight: bold;
+  transition: 0.8s;
+}
+.data-table-light {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  font-weight: bold;
+  transition: 0.8s;
+}
 .title-card-dark {
   color: white;
   font-weight: bold;
   font-family: 'Quicksand', sans-serif;
   transition: 0.3s;
-  background-color: rgb(24, 25, 26);
+  background-color: rgb(30, 30, 31);
 }
 .subtitle-card-dark {
   color: rgb(143, 143, 143);
   font-weight: bold;
   font-family: 'Quicksand', sans-serif;
   transition: 0.3s;
-  background-color: rgb(24, 25, 26);
+  background-color: rgb(30, 30, 31);
 }
 
 .title-card {
@@ -352,7 +379,36 @@ li::before {
   transition: 0.3s;
   color: rgba(18, 210, 175);
 }
-
+.list-item {
+  transition: 0.3s;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 5px 7px -3px, rgba(0, 0, 0, 0.2) 0px -1px 0px inset;
+}
+.list-item:hover {
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 14px, rgba(0, 0, 0, 0.3) 10px 15px 17px -5px, rgba(0, 0, 0, 0.7) 4px -1px 0px inset;
+}
+.list-item-dark {
+  background-color: rgba(82, 82, 82, 0.4);
+  transition: 0.3s;
+  box-shadow: rgb(0, 0, 0) 0px 2px 4px, rgba(116, 116, 116, 0.3) 0px 5px 7px -3px, rgba(92, 92, 92, 0.2) 0px 0px 0px inset;
+}
+.list-item-dark:hover {
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 14px, rgb(0, 0, 0) 10px 15px 17px -5px, rgb(255, 255, 255) 4px 0px 0px  inset;
+}
+.expansion-item {
+  transition: 0.3s;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 0px 0px, rgba(0, 0, 0, 0.3) 0px 1px 3px -3px, rgba(0, 0, 0, 0.2) 0px 0px 0px inset;
+}
+.expansion-item:hover {
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 0px 0px, rgba(0, 0, 0, 0.3) 3px 3px 15px -3px, rgba(0, 0, 0, 0.7) 4px 0px 0px inset;
+}
+.expansion-item-dark {
+  background-color: rgba(83, 83, 83, 0.4) !important;
+  transition: 0.3s;
+  box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.459) 3px 5px 5px -3px, rgb(0, 0, 0) 0px 0px inset;
+}
+.expansion-item-dark:hover {
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 0px 1px, rgb(0, 0, 0) 2px 0px 0px 0px , rgba(15, 62, 163, 0.74) 4px 0px inset;
+}
 .item-select-badge {
   font-family: 'Quicksand', sans-serif;
   font-size: 13px;

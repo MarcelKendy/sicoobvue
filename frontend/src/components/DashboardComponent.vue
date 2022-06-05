@@ -1,75 +1,80 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="12" align="center" class="mg-auto">
-        <v-img :src="require('../assets/images/dashboard-1.png')" width="200" />
-      </v-col>
-    </v-row>
-    <v-row class="text-center" justify="center" align="center">
-      <v-col class="mb-4">
-        <h1 class="display-2 font-weight-bold mb-3">Bem Vindo</h1>
+    <div :class="dark_theme ? 'white--text' : ''">
+      <v-row>
+        <v-col cols="12" align="center" class="mg-auto">
+          <v-img
+            :src="require('../assets/images/dashboard-1.png')"
+            width="200"
+          />
+        </v-col>
+      </v-row>
+      <v-row class="text-center" justify="center" align="center">
+        <v-col class="mb-4">
+          <h1 class="display-2 font-weight-bold mb-3">Bem Vindo</h1>
 
-        <p class="subheading font-weight-regular"></p>
-      </v-col>
+          <p class="subheading font-weight-regular"></p>
+        </v-col>
 
-      <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">
-          Aqui será a tela de Dashboard
-        </h2>
-      </v-col>
-      <v-col class="mb-5" cols="12">
-        <span class="font-weight-bold mb-3">
-          Os textos a seguir são para testes de scroll de página, favor
-          desconsiderar.
-        </span>
-      </v-col>
-      <v-divider></v-divider>
-      <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">texto texto</h2>
-      </v-col>
-      <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">
-          texto texto texto texto texto texto texto texto texto texto texto
-          texto
-        </h2>
-      </v-col>
-      <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">texto texto</h2>
-      </v-col>
-      <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">
-          texto texto texto texto texto texto texto texto texto texto texto
-          texto
-        </h2>
-      </v-col>
-      <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">texto texto</h2>
-      </v-col>
-      <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">
-          texto texto texto texto texto texto texto texto texto texto texto
-          texto
-        </h2>
-      </v-col>
-      <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">texto texto</h2>
-      </v-col>
-      <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">
-          texto texto texto texto texto texto texto texto texto texto texto
-          texto
-        </h2>
-      </v-col>
-      <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">texto texto</h2>
-      </v-col>
-      <v-col class="mb-5" cols="12">
-        <h2 class="headline font-weight-bold mb-3">
-          texto texto texto texto texto texto texto texto texto texto texto
-          texto
-        </h2>
-      </v-col>
-    </v-row>
+        <v-col class="mb-5" cols="12">
+          <h2 class="headline font-weight-bold mb-3">
+            Aqui será a tela de Dashboard
+          </h2>
+        </v-col>
+        <v-col class="mb-5" cols="12">
+          <span class="font-weight-bold mb-3">
+            Os textos a seguir são para testes de scroll de página, favor
+            desconsiderar.
+          </span>
+        </v-col>
+        <v-divider></v-divider>
+        <v-col class="mb-5" cols="12">
+          <h2 class="headline font-weight-bold mb-3">texto texto</h2>
+        </v-col>
+        <v-col class="mb-5" cols="12">
+          <h2 class="headline font-weight-bold mb-3">
+            texto texto texto texto texto texto texto texto texto texto texto
+            texto
+          </h2>
+        </v-col>
+        <v-col class="mb-5" cols="12">
+          <h2 class="headline font-weight-bold mb-3">texto texto</h2>
+        </v-col>
+        <v-col class="mb-5" cols="12">
+          <h2 class="headline font-weight-bold mb-3">
+            texto texto texto texto texto texto texto texto texto texto texto
+            texto
+          </h2>
+        </v-col>
+        <v-col class="mb-5" cols="12">
+          <h2 class="headline font-weight-bold mb-3">texto texto</h2>
+        </v-col>
+        <v-col class="mb-5" cols="12">
+          <h2 class="headline font-weight-bold mb-3">
+            texto texto texto texto texto texto texto texto texto texto texto
+            texto
+          </h2>
+        </v-col>
+        <v-col class="mb-5" cols="12">
+          <h2 class="headline font-weight-bold mb-3">texto texto</h2>
+        </v-col>
+        <v-col class="mb-5" cols="12">
+          <h2 class="headline font-weight-bold mb-3">
+            texto texto texto texto texto texto texto texto texto texto texto
+            texto
+          </h2>
+        </v-col>
+        <v-col class="mb-5" cols="12">
+          <h2 class="headline font-weight-bold mb-3">texto texto</h2>
+        </v-col>
+        <v-col class="mb-5" cols="12">
+          <h2 class="headline font-weight-bold mb-3">
+            texto texto texto texto texto texto texto texto texto texto texto
+            texto
+          </h2>
+        </v-col>
+      </v-row>
+    </div>
   </v-container>
 </template>
 
@@ -77,57 +82,11 @@
 export default {
   name: 'DashboardComponent',
 
-  data: () => ({
-    ecosystem: [
-      {
-        text: 'vuetify-loader',
-        href: 'https://github.com/vuetifyjs/vuetify-loader',
-      },
-      {
-        text: 'github',
-        href: 'https://github.com/vuetifyjs/vuetify',
-      },
-      {
-        text: 'awesome-vuetify',
-        href: 'https://github.com/vuetifyjs/awesome-vuetify',
-      },
-    ],
-    importantLinks: [
-      {
-        text: 'Documentation',
-        href: 'https://vuetifyjs.com',
-      },
-      {
-        text: 'Chat',
-        href: 'https://community.vuetifyjs.com',
-      },
-      {
-        text: 'Made with Vuetify',
-        href: 'https://madewithvuejs.com/vuetify',
-      },
-      {
-        text: 'Twitter',
-        href: 'https://twitter.com/vuetifyjs',
-      },
-      {
-        text: 'Articles',
-        href: 'https://medium.com/vuetify',
-      },
-    ],
-    whatsNext: [
-      {
-        text: 'Explore components',
-        href: 'https://vuetifyjs.com/components/api-explorer',
-      },
-      {
-        text: 'Select a layout',
-        href: 'https://vuetifyjs.com/getting-started/pre-made-layouts',
-      },
-      {
-        text: 'Frequently Asked Questions',
-        href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions',
-      },
-    ],
-  }),
+  data: () => ({}),
+  computed: {
+    dark_theme() {
+      return this.$store.state.user.configs.theme == 0;
+    },
+  },
 };
 </script>

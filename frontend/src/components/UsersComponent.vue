@@ -1,21 +1,22 @@
 <template>
   <div>
     <v-card
-      class="font-quicksand hover-card"
+      class="hover-card"
       shaped
-      elevation="4"
+      elevation="7"
       :loading="loading"
       outlined
+      :dark="dark_theme"
     >
       <v-card-title>
         <span class="bold title-card">Usuários do Sistema</span>
       </v-card-title>
       <v-card-subtitle>
-        <span class="bold subtitle-card">Controle de usuários</span>
+        <span :class="dark_theme ? 'bold subtitle-card-dark' : 'subtitle-card'">Controle de usuários</span>
       </v-card-subtitle>
       <v-card-text>
-        <v-list three-line v-for="(item, index) in items" :key="index"  >
-          <v-list-item :key="index + 0.1" class="list-item">
+        <v-list three-line v-for="(item, index) in items" :key="index">
+          <v-list-item :key="index + 0.1" :class="dark_theme ? 'list-item-dark' : 'list-item'">
             <v-list-item-avatar class="mt-6">
               <v-img v-if="item.photo" :src="item.photo"></v-img>
               <v-img
@@ -89,7 +90,7 @@
                             "
                             >Nenhum acesso encontrado</span
                           >
-                          <v-tooltip top>
+                          <v-tooltip id="tooltip" top>
                             <template v-slot:activator="{ on, attrs }">
                               <v-icon
                                 style="padding-left: 5px"
@@ -116,7 +117,7 @@
             </v-list-item-content>
 
             <v-list-item-action class="mt-6">
-              <v-tooltip left>
+              <v-tooltip id="tooltip" left>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     icon
@@ -144,15 +145,15 @@
         </v-list>
       </v-card-text>
       <v-card-actions>
-        <span class="bold page-items-text mx-3">Itens por página:</span>
+        <span :style="dark_theme ? 'color: white' : ''" class="bold page-items-text mx-3">Itens por página:</span>
         <div style="max-width: 37px">
           <v-form ref="form_page_items" v-model="valid_page" lazy-validation>
             <vuetify-number
               class="page-items-textfield"
               v-model="page_total_items"
               v-bind:rules="requiredRule"
-              v-bind:color="color"
               v-bind:options="options"
+              v-bind:backgroundColor="dark_theme ? 'rgb(30, 30, 31)' : ''"
             />
           </v-form>
         </div>
@@ -215,6 +216,11 @@ export default {
       }
     },
   },
+  computed: {
+    dark_theme () {
+      return this.$store.state.user.configs.theme == 0
+    }
+  },
   methods: {
     loading_access_computed(id) {
       return this.loading_access[id] || this.loading_all_accesses;
@@ -271,16 +277,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-.list-item {
-  transition: 0.3s;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 5px 7px -3px, rgba(0, 0, 0, 0.2) 0px -1px 0px inset;
 
-}
-.list-item:hover {
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 14px, rgba(0, 0, 0, 0.3) 10px 15px 17px -5px, rgba(0, 0, 0, 0.7) 4px -1px 0px inset;
-}
-/*.list-item:hover {
-  box-shadow: rgba(0, 0, 0, 0.32) 0px 9px 12px, rgba(0, 0, 0, 0.46) 0px 9px 12px;
-}*/
-</style>

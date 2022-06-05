@@ -13,8 +13,13 @@
         </v-btn>
       </template>
 
-      <v-card color="#26c6da" dark class="mx-auto title-class" max-width="300">
-        <v-list>
+      <v-card
+        color="#26c6da"
+        class="mx-auto font-quicksand bold"
+        max-width="300"
+        :dark="theme == 0"
+      >
+        <v-list class="pa-0" style="border: solid; border-color: white; border-width: 2px" dark>
           <v-img
             max-height="60px"
             src="../assets/images/bg1.png"
@@ -53,31 +58,33 @@
             v-for="item in items"
             :key="item.title"
             @click="actions(item.title)"
+            :disabled="item.title == 'Tema' ? loading_theme : false"
           >
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
-            
-              <v-btn
+
+            <v-btn
               v-if="item.button"
-                rounded
-                elevation="9"
-                :color="theme == 1 ? 'rgb(36, 0, 121)' : 'yellow lighten-1'"
-                :dark="theme == 1"
-                @click="theme == 1 ? (theme = 0) : (theme = 1)"
-                small
+              rounded
+              :loading="loading_theme"
+              elevation="9"
+              :color="theme == 0 ? 'rgb(36, 0, 121)' : 'yellow lighten-1'"
+              :dark="theme == 0"
+              small
+            >
+              <span
+                class="second_font-bold"
+                :style="theme == 0 ? 'color:white' : 'color:black'"
+                >{{ theme == 0 ? 'Dark' : 'Light' }}</span
               >
-                <span class="second_font-bold" :style="theme == 1 ? 'color:white' : 'color:black'">{{
-                  theme == 1 ? 'Dark' : 'Light'
-                }}</span>
-                <v-icon :style="theme == 1 ? 'color:white' : 'color:black'" right>
-                  {{
-                    theme == 1 ? 'mdi-weather-night' : 'mdi-white-balance-sunny'
-                  }}
-                </v-icon>
-              </v-btn>
-         
+              <v-icon :style="theme == 0 ? 'color:white' : 'color:black'" right>
+                {{
+                  theme == 0 ? 'mdi-weather-night' : 'mdi-white-balance-sunny'
+                }}
+              </v-icon>
+            </v-btn>
           </v-list-item>
         </v-list>
       </v-card>
@@ -107,25 +114,21 @@ export default {
   data: () => ({
     items: [
       { title: 'Informações Pessoais', icon: 'mdi-account-edit' },
-      { title: 'Tema', icon: 'mdi-palette', button: true},
+      { title: 'Tema', icon: 'mdi-palette', button: true },
       { title: 'Sair', icon: 'mdi-logout' },
     ],
     confirmation_logout: false,
     menu: false,
+    loading_theme: false,
     name: '',
     edit_profile: false,
     cpf: '',
     user_info: {},
     theme: 0,
   }),
-  watch: {
-    theme: function () {
-      this.loading_theme = true;
-      this.$store.state.user.configs.theme = this.theme
-      this.$store
-        .dispatch('configs', this.$store.state.user)
-        .then((this.loading_theme = false));
-    },
+  created() {
+    console.log(this.$store.state.user);
+    this.theme = this.$store.state.user.configs.theme;
   },
   methods: {
     actions(item) {
@@ -136,9 +139,26 @@ export default {
         case 'Informações Pessoais':
           this.openModalEdit();
           break;
+        case 'Tema':
+          this.changeTheme();
+          break;
         default:
           break;
       }
+    },
+    changeTheme() {
+      this.loading_theme = true;
+      this.theme == 1 ? (this.theme = 0) : (this.theme = 1);
+      this.$store.state.user.configs.theme = this.theme;
+      this.$store.dispatch('configs', this.$store.state.user);
+      this.$http
+        .put(`edit_user/${this.$store.state.user.id}`, {
+          configs: 'change',
+          theme: this.theme,
+        })
+        .then(() => {
+          this.loading_theme = false;
+        });
     },
     logout() {
       db.collection('user')
@@ -174,9 +194,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.title-class {
-  font-family: 'Quicksand', sans-serif;
-  font-weight: bolder;
-}
-</style>

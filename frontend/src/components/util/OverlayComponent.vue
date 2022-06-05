@@ -1,20 +1,23 @@
 <template>
   <div>
     <v-overlay :absolute="absolute" :value="model_mutable">
-      <v-card :width="width" class="font-quicksand">
-        <v-card-title>
-          <span> {{ title }} </span>
-          <v-spacer></v-spacer>
-          <img width="30" src="../../assets/images/sicoobicon.png" />
-        </v-card-title>
-        <v-card-subtitle>
-          <span> {{ sub_title }} </span>
-        </v-card-subtitle>
-        <v-divider></v-divider>
-        <v-card-text>
-          <v-slide-y-transition>
+      <v-slide-y-transition>
+        <v-card
+          :width="width"
+          class="font-quicksand"
+          v-show="model_mutable_delayed"
+        >
+          <v-card-title>
+            <span> {{ title }} </span>
+            <v-spacer></v-spacer>
+            <img width="30" src="../../assets/images/sicoobicon.png" />
+          </v-card-title>
+          <v-card-subtitle>
+            <span> {{ sub_title }} </span>
+          </v-card-subtitle>
+          <v-divider></v-divider>
+          <v-card-text>
             <v-alert
-             v-if="model_mutable_delayed" 
               :icon="icon"
               :color="color"
               border="left"
@@ -35,15 +38,15 @@
                 {{ footer }}
               </span>
             </v-alert>
-          </v-slide-y-transition>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn :color="color" @click="emitClose"
-            ><v-icon> mdi-thumb-up </v-icon>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn :color="color" @click="emitClose"
+              ><v-icon> mdi-thumb-up </v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-slide-y-transition>
     </v-overlay>
   </div>
 </template>
@@ -104,15 +107,20 @@ export default {
   },
   data: () => ({
     model_mutable: false,
+    model_mutable_delayed: false,
   }),
   watch: {
     model: function () {
       this.model_mutable = this.model;
+      setTimeout(this.activateTransition, 100);
     },
   },
   methods: {
     emitClose() {
       this.$emit('closeOverlay');
+    },
+    activateTransition() {
+      this.model_mutable_delayed = this.model_mutable;
     },
   },
 };

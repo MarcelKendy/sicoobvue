@@ -43,8 +43,7 @@
             <strong>Inserido em: </strong>{{ created_at_date()
             }}<strong> Às </strong>{{ created_at_time() }}<br /><strong
               >Por: </strong
-            ><span v-if="loading_user">Carregando...</span
-            ><span v-else>{{ user_name }}</span
+            ><span>{{ item.user.full_name }}</span
             ><br /><strong>Produto: </strong> {{ item.product
             }}<span v-if="item.value"
               ><br /><strong>Valor:</strong> R$ {{ item.value }}</span
@@ -87,9 +86,7 @@ export default {
   data() {
     return {
       dialog: false,
-      loading_user: false,
       loading: false,
-      user_name: '',
       item: {},
     };
   },
@@ -100,19 +97,9 @@ export default {
     },
     commission: function () {
       Object.assign(this.item, this.commission);
-      this.get_info();
     },
   },
   methods: {
-    get_info() {
-      this.loading_user = true;
-      this.$http
-        .post('get_users', { where: 'id = ' + this.item.user_id })
-        .then((response) => {
-          this.user_name = response.data[0].full_name;
-          this.loading_user = false;
-        });
-    },
     closeModal() {
       this.$emit('closeDeleteModal');
     },

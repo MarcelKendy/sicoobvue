@@ -99,7 +99,7 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-tooltip right>
+                <v-tooltip id="tooltip" right>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
                       v-bind="attrs"
@@ -132,7 +132,7 @@
                 >
                   <v-card-title color="orange" style="font-weight: bold">
                     Alterar Senha
-                    <v-tooltip right>
+                    <v-tooltip id="tooltip" right>
                       <template v-slot:activator="{ on, attrs }">
                         <v-icon
                           class="mx-2"

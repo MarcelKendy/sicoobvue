@@ -30,7 +30,7 @@
           ><strong>CheckList</strong></v-toolbar-title
         >
         <div style="padding-left: 40px">
-          <v-tooltip top color="rgb(44, 44, 44)">
+          <v-tooltip id="tooltip" top color="rgb(44, 44, 44)">
             <template v-slot:activator="{ on, attrs }">
               <v-icon v-bind="attrs" v-on="on">mdi-magnify</v-icon>
             </template>

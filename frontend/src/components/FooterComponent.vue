@@ -13,7 +13,7 @@
           :key="item.destination"
           style="width: 100px; display: inline"
         >
-          <v-tooltip top>
+          <v-tooltip id="tooltip" top>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 class="mx-10"

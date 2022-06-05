@@ -73,7 +73,7 @@
                         "
                         >Falha ao carregar produtos</span
                       >
-                      <v-tooltip top>
+                      <v-tooltip id="tooltip" top>
                         <template v-slot:activator="{ on, attrs }">
                           <v-icon
                             style="padding-left: 5px"
@@ -168,7 +168,7 @@
                         "
                         >Nenhum usuário encontrado</span
                       >
-                      <v-tooltip top>
+                      <v-tooltip id="tooltip" top>
                         <template v-slot:activator="{ on, attrs }">
                           <v-icon
                             style="padding-left: 5px"
@@ -255,7 +255,7 @@
                         "
                         >Falha ao carregar status</span
                       >
-                      <v-tooltip top>
+                      <v-tooltip id="tooltip" top>
                         <template v-slot:activator="{ on, attrs }">
                           <v-icon
                             style="padding-left: 5px"
@@ -307,7 +307,7 @@
             Cancelar
           </v-btn>
           <v-spacer></v-spacer>
-          <v-tooltip top>
+          <v-tooltip id="tooltip" top>
             <template v-slot:activator="{ attrs, on }">
               <v-img
                 style="cursor: pointer"
@@ -321,7 +321,7 @@
             </template>
             <span> Gerar EXCEL </span>
           </v-tooltip>
-          <v-tooltip top>
+          <v-tooltip id="tooltip" top>
             <template v-slot:activator="{ attrs, on }">
               <v-img
                 style="cursor: pointer"

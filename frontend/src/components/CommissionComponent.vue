@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="pb-5 px-5" id="reports">
-      <v-tooltip right>
+      <v-tooltip id="tooltip" right>
         <template v-slot:activator="{ attrs, on }">
           <v-img
             width="32"
@@ -15,7 +15,7 @@
         <span>Relatórios</span>
       </v-tooltip>
     </div>
-    <v-tooltip left>
+    <v-tooltip id="tooltip" left>
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           small
@@ -37,28 +37,6 @@
     <v-card class="hover-card" elevation="7" outlined shaped>
       <v-card-title :class="dark_theme ? 'title-card-dark' : 'title-card'">
         <span>Produtos e Comissões</span>
-        <div class="tooltip bold pa-5 pt-3" style="">
-          <v-btn
-            rounded
-            elevation="9"
-            :color="!dark_theme ? 'rgb(36, 0, 121)' : 'yellow lighten-2'"
-            :dark="!dark_theme"
-            @click="dark_theme = !dark_theme"
-            small
-          >
-            <span class="second_font-bold">Tema</span>
-            <v-icon dark right>
-              {{
-                !dark_theme ? 'mdi-weather-night' : 'mdi-white-balance-sunny'
-              }}
-            </v-icon>
-          </v-btn>
-          <span class="tooltiptext">{{
-            !this.dark_theme
-              ? 'Mudar o tema de cores para "dark"'
-              : 'Mudar o tema de cores para "light"'
-          }}</span>
-        </div>
         <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
@@ -80,7 +58,7 @@
         ref="vDataTable"
         style="font-weight: bold"
         :dark="dark_theme"
-        class="data-table-commission"
+        :class="dark_theme ? 'data-table-dark' : 'data-table-light'"
         :loading="loading_commissions"
         item-key="id"
         :headers="headers"
@@ -139,7 +117,7 @@
                             >{{ item.commission_percentage }}%)
                           </span>
                         </span>
-                        <v-tooltip left>
+                        <v-tooltip id="tooltip" left>
                           <template v-slot:activator="{ on, attrs }">
                             <v-btn
                               v-bind="attrs"
@@ -199,7 +177,7 @@
         </template>
         <template v-slot:[`item.date_indicator`]="{ item }">
           <v-chip color="blue-grey lighten-2" small style="min-width: 58px">
-            <v-tooltip left v-if="!item.date_seller && !item.date_operator">
+            <v-tooltip id="tooltip" left v-if="!item.date_seller && !item.date_operator">
               <template v-slot:activator="{ on, attrs }">
                 <span v-bind="attrs" v-on="on">
                   {{ formatDate(item.date_indicator, 'd_m') }}
@@ -207,7 +185,7 @@
               </template>
               <span>{{ formatDate(item.date_indicator, 'y') }}</span>
             </v-tooltip>
-            <v-tooltip left v-else-if="!item.date_operator">
+            <v-tooltip id="tooltip" left v-else-if="!item.date_operator">
               <template v-slot:activator="{ on, attrs }">
                 <span v-bind="attrs" v-on="on">
                   {{ formatDate(item.date_seller, 'd_m') }}
@@ -215,7 +193,7 @@
               </template>
               <span>{{ formatDate(item.date_seller, 'y') }}</span>
             </v-tooltip>
-            <v-tooltip left v-else>
+            <v-tooltip id="tooltip" left v-else>
               <template v-slot:activator="{ on, attrs }">
                 <span v-bind="attrs" v-on="on">
                   {{ formatDate(item.date_operator, 'd_m') }}
@@ -226,7 +204,7 @@
           </v-chip>
         </template>
         <template v-slot:[`item.product`]="{ item }">
-          <v-tooltip right>
+          <v-tooltip id="tooltip" right>
             <template v-slot:activator="{ on, attrs }">
               <!--<v-avatar
                 class="avatar-class"
@@ -283,15 +261,15 @@
               <v-chip pill v-on="on">
                 <v-avatar left>
                   <v-img
-                    v-if="true"
+                    v-if="item.indicator.photo"
                     src="https://cdn.vuetifyjs.com/images/john.png"
                   ></v-img>
-                  <v-icon v-else>mdi-account-circle</v-icon>
+                  <v-img v-else :src="require(item.indicator.gender == 1 ? './../assets/icons/man.png' : './../assets/icons/woman.png')"></v-img>
                 </v-avatar>
                 {{ item.indicator.name }}
               </v-chip>
             </template>
-            <v-card width="300" class="style-title">
+            <v-card width="300" class="style-title" :dark="dark_theme">
               <v-list>
                 <v-img
                   height="100px"
@@ -303,15 +281,13 @@
                   <v-list-item>
                     <v-list-item-avatar>
                       <img
-                        v-if="true"
+                        v-if="item.indicator.photo"
                         alt="Foto"
                         src="https://cdn.vuetifyjs.com/images/john.png"
                       />
-                      <v-tooltip top v-else>
+                      <v-tooltip id="tooltip" top v-else>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-icon large v-bind="attrs" v-on="on">
-                            mdi-account-circle
-                          </v-icon>
+                          <v-img v-bind="attrs" v-on="on" :src="require(item.indicator.gender == 1 ? './../assets/icons/man.png' : './../assets/icons/woman.png')"></v-img>
                         </template>
                         <span>Sem foto</span>
                       </v-tooltip>
@@ -325,7 +301,7 @@
                       </v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-action>
-                      <v-tooltip top>
+                      <v-tooltip id="tooltip" top>
                         <template v-slot:activator="{ on, attrs }">
                           <v-icon
                             v-bind="attrs"
@@ -378,15 +354,15 @@
               <v-chip pill v-on="on">
                 <v-avatar left>
                   <v-img
-                    v-if="true"
+                    v-if="item.seller.photo"
                     src="https://cdn.vuetifyjs.com/images/john.png"
                   ></v-img>
-                  <v-icon v-else>mdi-account-circle</v-icon>
+                  <v-img v-else :src="require(item.seller.gender == 1 ? './../assets/icons/man.png' : './../assets/icons/woman.png')"></v-img>
                 </v-avatar>
                 {{ item.seller.name }}
               </v-chip>
             </template>
-            <v-card width="300" class="style-title">
+            <v-card width="300" class="style-title" :dark="dark_theme">
               <v-list>
                 <v-img
                   height="100px"
@@ -398,15 +374,16 @@
                   <v-list-item>
                     <v-list-item-avatar>
                       <img
-                        v-if="true"
+                        v-if="item.seller.photo"
                         alt="Foto"
-                        src="https://cdn.vuetifyjs.com/images/john.png"
+                        :src="'./../assets/users/' + item.seller.photo"
                       />
-                      <v-tooltip top v-else>
+                      <v-tooltip id="tooltip" top v-else>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-icon large v-bind="attrs" v-on="on">
+                          <!--<v-icon large v-bind="attrs" v-on="on">
                             mdi-account-circle
-                          </v-icon>
+                          </v-icon>-->
+                          <v-img v-bind="attrs" v-on="on" :src="require(item.seller.gender == 1 ? './../assets/icons/man.png' : './../assets/icons/woman.png')"></v-img>
                         </template>
                         <span>Sem foto</span>
                       </v-tooltip>
@@ -420,7 +397,7 @@
                       </v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-action>
-                      <v-tooltip top>
+                      <v-tooltip id="tooltip" top>
                         <template v-slot:activator="{ on, attrs }">
                           <v-icon
                             v-bind="attrs"
@@ -460,7 +437,7 @@
               </v-list>
             </v-card>
           </v-menu>
-          <v-tooltip top v-else>
+          <v-tooltip id="tooltip" top v-else>
             <template v-slot:activator="{ on, attrs }">
               <v-chip pill outlined v-bind="attrs" v-on="on">
                 <v-icon left>mdi-account-clock</v-icon>
@@ -482,15 +459,15 @@
               <v-chip pill v-on="on">
                 <v-avatar left>
                   <v-img
-                    v-if="true"
-                    src="https://cdn.vuetifyjs.com/images/john.png"
+                    v-if="item.operator.photo"
+                    :src="'./../assets/users/' + item.operator.photo"
                   ></v-img>
-                  <v-icon v-else>mdi-account-circle</v-icon>
+                  <v-img v-else :src="require(item.operator.gender == 1 ? './../assets/icons/man.png' : './../assets/icons/woman.png')"></v-img>
                 </v-avatar>
                 {{ item.operator.name }}
               </v-chip>
             </template>
-            <v-card width="300" class="style-title">
+            <v-card width="300" class="style-title" :dark="dark_theme">
               <v-list>
                 <v-img
                   height="100px"
@@ -502,15 +479,13 @@
                   <v-list-item>
                     <v-list-item-avatar>
                       <img
-                        v-if="true"
+                        v-if="item.operator.photo"
                         alt="Foto"
                         src="https://cdn.vuetifyjs.com/images/john.png"
                       />
-                      <v-tooltip top v-else>
+                      <v-tooltip id="tooltip" top v-else>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-icon large v-bind="attrs" v-on="on">
-                            mdi-account-circle
-                          </v-icon>
+                          <v-img v-bind="attrs" v-on="on" :src="require(item.operator.gender == 1 ? './../assets/icons/man.png' : './../assets/icons/woman.png')"></v-img>
                         </template>
                         <span>Sem foto</span>
                       </v-tooltip>
@@ -524,7 +499,7 @@
                       </v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-action>
-                      <v-tooltip top>
+                      <v-tooltip id="tooltip" top>
                         <template v-slot:activator="{ on, attrs }">
                           <v-icon
                             v-bind="attrs"
@@ -564,7 +539,7 @@
               </v-list>
             </v-card>
           </v-menu>
-          <v-tooltip top v-else>
+          <v-tooltip id="tooltip" top v-else>
             <template v-slot:activator="{ on, attrs }">
               <v-chip pill outlined v-bind="attrs" v-on="on">
                 <v-icon left>mdi-account-clock</v-icon>
@@ -596,7 +571,7 @@
             >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
-            <v-tooltip top v-else>
+            <v-tooltip id="tooltip" top v-else>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   fab
@@ -621,7 +596,7 @@
             >
               <v-icon>mdi-delete</v-icon>
             </v-btn>
-            <v-tooltip top v-else>
+            <v-tooltip id="tooltip" top v-else>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn fab dark small color="red" v-bind="attrs" v-on="on">
                   <v-icon>mdi-delete-off</v-icon>
@@ -723,7 +698,6 @@ export default {
       snackbar_add: false,
       snackbar_edit: false,
       snackbar_delete: false,
-      dark_theme: false,
       headers: [
         { text: 'Data', value: 'date_indicator', align: 'start' },
         { text: 'Produto', value: 'product' },
@@ -1060,6 +1034,11 @@ export default {
       });
     },
   },
+  computed: {
+    dark_theme () {
+      return this.$store.state.user.configs.theme == 0 
+    }
+  }
 };
 </script>
 <style scoped>
@@ -1127,48 +1106,6 @@ export default {
   border-bottom: solid;
   border-width: 1px;
   border-color: black;
-}
-.data-table-commission {
-  font-weight: bold;
-  transition: 0.8s;
-}
-.tooltip {
-  position: relative;
-  display: inline-block;
-}
-.tooltip .tooltiptext {
-  font-size: 1px;
-  visibility: hidden;
-  width: 40px;
-  background-color: rgb(44, 44, 44);
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
-  position: absolute;
-  z-index: 1;
-  top: 20%;
-  left: 65%;
-  opacity: 0;
-  transition: 0.3s;
-}
-.tooltip .tooltiptext::after {
-  content: '';
-  position: absolute;
-  top: 30%;
-  left: -2%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent rgb(44, 44, 44) transparent transparent;
-}
-.tooltip:hover .tooltiptext {
-  font-size: 12px;
-  visibility: visible;
-  opacity: 0.9;
-  width: 240px;
-  top: 5%;
-  left: 105%;
 }
 
 .chip {

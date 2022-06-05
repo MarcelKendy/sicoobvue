@@ -1,13 +1,14 @@
 <template>
   <div>
     <v-card
-      class="font-quicksand hover-card"
+      class="hover-card"
       elevation="7"
       outlined
       shaped
       :loading="loading"
+      :dark="dark_theme"
     >
-      <v-card-title class="bold">
+      <v-card-title class="bold title-card">
         Acessos
         <img
           v-if="loading"
@@ -16,11 +17,11 @@
           src="../assets/images/loading.gif"
         />
       </v-card-title>
-      <v-card-subtitle class="bold title-card">
+      <v-card-subtitle :class="dark_theme ? 'bold subtitle-card-dark' : 'subtitle-card'">
         Acessos definidos no sistema
       </v-card-subtitle>
       <v-card-text>
-        <v-tooltip right v-if="!loading">
+        <v-tooltip id="tooltip" right v-if="!loading">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               v-bind="attrs"
@@ -36,7 +37,7 @@
         </v-tooltip>
 
         <v-expansion-panels v-if="!loading" class="mt-8">
-          <v-expansion-panel v-for="item in items" :key="item.id">
+          <v-expansion-panel v-for="item in items" :key="item.id" :class="dark_theme ? 'expansion-item-dark' : 'expansion-item'">
             <v-expansion-panel-header class="name-accesses-title bold">
               <template v-slot:actions>
                 <v-icon color="primary" style="order: 0"> $expand </v-icon>
@@ -47,7 +48,7 @@
                     item.name
                   }}</span>
                   <v-col sm="3" cols="12" v-else>
-                    <v-tooltip right>
+                    <v-tooltip id="tooltip" right>
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
                           dense
@@ -68,7 +69,7 @@
                   </v-col>
                   <v-spacer></v-spacer>
                   <div style="order: 3; display: inline-flex">
-                    <v-tooltip left>
+                    <v-tooltip id="tooltip" left>
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn @click.stop v-bind="attrs"
                           v-on="on" v-if="item.id == 1" icon>
@@ -101,7 +102,7 @@
                     <v-select
                       :loading="changing_accesses_access"
                       :disabled="changing_accesses_access"
-                      :menu-props="{ offsetY: true }"
+                      :menu-props="{ offsetY: true, dark: dark_theme }"
                       outlined
                       @change="changeAccess(item, 1)"
                       :items="accesses_accesses"
@@ -134,7 +135,7 @@
                           :class="
                             'chip gradient-' +
                             accessStyle(item.value, 'gradient')
-                          "
+                          " 
                         >
                           <div class="chip__content">
                             <v-icon color="white">{{
@@ -157,7 +158,7 @@
                     <v-select
                       :loading="changing_commissions_access"
                       :disabled="changing_commissions_access"
-                      :menu-props="{ offsetY: true }"
+                      :menu-props="{ offsetY: true, dark: dark_theme }"
                       outlined
                       @change="changeAccess(item, 2)"
                       :items="commissions_accesses"
@@ -213,7 +214,7 @@
         </v-expansion-panels>
       </v-card-text>
       <v-card-actions>
-        <span class="bold page-items-text mx-3">Itens por página:</span>
+        <span :style="dark_theme ? 'color: white' : ''" class="bold page-items-text mx-3">Itens por página:</span>
        <div style="max-width: 37px">
           <v-form ref="form_page_items" v-model="valid" lazy-validation>
             <vuetify-number
@@ -222,6 +223,7 @@
               v-bind:rules="requiredRule"
               v-bind:color="color"
               v-bind:options="options"
+              v-bind:backgroundColor="dark_theme ? 'rgb(30, 30, 31)' : ''"
             />
           </v-form>
         </div>
@@ -465,9 +467,17 @@ export default {
       this.delete_modal = !this.delete_modal;
     },
   },
+  computed: {
+    dark_theme () {
+      return this.$store.state.user.configs.theme == 0
+    }
+  },
 };
 </script>
 <style scoped>
+.v-menu__content {
+  color:black !important
+}
 .loading-gif {
   display: block;
   margin-left: auto;
