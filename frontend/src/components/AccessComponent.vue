@@ -17,7 +17,9 @@
           src="../assets/images/loading.gif"
         />
       </v-card-title>
-      <v-card-subtitle :class="dark_theme ? 'bold subtitle-card-dark' : 'subtitle-card'">
+      <v-card-subtitle
+        :class="dark_theme ? 'bold subtitle-card-dark' : 'subtitle-card'"
+      >
         Acessos definidos no sistema
       </v-card-subtitle>
       <v-card-text>
@@ -37,7 +39,11 @@
         </v-tooltip>
 
         <v-expansion-panels v-if="!loading" class="mt-8">
-          <v-expansion-panel v-for="item in items" :key="item.id" :class="dark_theme ? 'expansion-item-dark' : 'expansion-item'">
+          <v-expansion-panel
+            v-for="item in items"
+            :key="item.id"
+            :class="dark_theme ? 'expansion-item-dark' : 'expansion-item'"
+          >
             <v-expansion-panel-header class="name-accesses-title bold">
               <template v-slot:actions>
                 <v-icon color="primary" style="order: 0"> $expand </v-icon>
@@ -71,8 +77,13 @@
                   <div style="order: 3; display: inline-flex">
                     <v-tooltip id="tooltip" left>
                       <template v-slot:activator="{ on, attrs }">
-                        <v-btn @click.stop v-bind="attrs"
-                          v-on="on" v-if="item.id == 1" icon>
+                        <v-btn
+                          @click.stop
+                          v-bind="attrs"
+                          v-on="on"
+                          v-if="item.id == 1"
+                          icon
+                        >
                           <v-icon>mdi-information</v-icon>
                         </v-btn>
                         <v-btn
@@ -85,8 +96,11 @@
                           <v-icon color="red">mdi-delete</v-icon>
                         </v-btn>
                       </template>
-                      <span v-if="item.id == 1">Esse é o acesso base do sistema. Quando um usuário novo se cadastrar, ele o receberá por padrão.</span>
-                       <span v-else>Deletar Acesso</span>
+                      <span v-if="item.id == 1"
+                        >Esse é o acesso base do sistema. Quando um usuário novo
+                        se cadastrar, ele o receberá por padrão.</span
+                      >
+                      <span v-else>Deletar Acesso</span>
                     </v-tooltip>
                   </div>
                 </div>
@@ -95,7 +109,7 @@
 
             <v-expansion-panel-content>
               <v-divider></v-divider>
-              <v-card class="mt-5 pa-2" elevation="0" outlined>
+              <v-card class="mt-5 pa-2" elevation="2">
                 <span class="name-accesses bold">Módulo Acessos:</span>
                 <v-row class="mt-2">
                   <v-col cols="12" md="3">
@@ -105,7 +119,7 @@
                       :menu-props="{ offsetY: true, dark: dark_theme }"
                       outlined
                       @change="changeAccess(item, 1)"
-                      :items="accesses_accesses"
+                      :items="allowed_accesses"
                       item-text="name"
                       item-value="value"
                       color="rgb(18,210,175)"
@@ -117,12 +131,12 @@
                         <div
                           :class="
                             'chip gradient-' +
-                            accessStyle(item.value, 'gradient')
+                            allowedStyle(item.value, 'gradient')
                           "
                         >
                           <div class="chip__content">
                             <v-icon color="white">{{
-                              accessStyle(item.value, 'icon')
+                              allowedStyle(item.value, 'icon')
                             }}</v-icon>
                             <span class="item-select-badge">{{
                               item.name
@@ -134,12 +148,12 @@
                         <div
                           :class="
                             'chip gradient-' +
-                            accessStyle(item.value, 'gradient')
-                          " 
+                            allowedStyle(item.value, 'gradient')
+                          "
                         >
                           <div class="chip__content">
                             <v-icon color="white">{{
-                              accessStyle(item.value, 'icon')
+                              allowedStyle(item.value, 'icon')
                             }}</v-icon>
                             <span class="item-select-badge">{{
                               item.name
@@ -151,7 +165,63 @@
                   </v-col>
                 </v-row>
               </v-card>
-              <v-card class="mt-5 pa-2" elevation="0" outlined>
+              <v-card class="mt-5 pa-2" elevation="2">
+                <span class="name-users bold">Módulo Usuários:</span>
+                <v-row class="mt-2">
+                  <v-col cols="12" md="3">
+                    <v-select
+                      :loading="changing_users_access"
+                      :disabled="changing_users_access"
+                      :menu-props="{ offsetY: true, dark: dark_theme }"
+                      outlined
+                      @change="changeAccess(item, 2)"
+                      :items="allowed_accesses"
+                      item-text="name"
+                      item-value="value"
+                      color="rgb(18,210,175)"
+                      label="Tela de Usuários"
+                      v-model="item.accesses.users"
+                      prepend-icon="mdi-account-group"
+                    >
+                      <template v-slot:selection="{ item }">
+                        <div
+                          :class="
+                            'chip gradient-' +
+                            allowedStyle(item.value, 'gradient')
+                          "
+                        >
+                          <div class="chip__content">
+                            <v-icon color="white">{{
+                              allowedStyle(item.value, 'icon')
+                            }}</v-icon>
+                            <span class="item-select-badge">{{
+                              item.name
+                            }}</span>
+                          </div>
+                        </div>
+                      </template>
+                      <template v-slot:item="{ item }">
+                        <div
+                          :class="
+                            'chip gradient-' +
+                            allowedStyle(item.value, 'gradient')
+                          "
+                        >
+                          <div class="chip__content">
+                            <v-icon color="white">{{
+                              allowedStyle(item.value, 'icon')
+                            }}</v-icon>
+                            <span class="item-select-badge">{{
+                              item.name
+                            }}</span>
+                          </div>
+                        </div>
+                      </template>
+                    </v-select>
+                  </v-col>
+                </v-row>
+              </v-card>
+              <v-card class="mt-5 pa-2" elevation="2">
                 <span class="name-commissions bold">Módulo Comissões:</span>
                 <v-row class="mt-2">
                   <v-col cols="12" md="3">
@@ -160,7 +230,7 @@
                       :disabled="changing_commissions_access"
                       :menu-props="{ offsetY: true, dark: dark_theme }"
                       outlined
-                      @change="changeAccess(item, 2)"
+                      @change="changeAccess(item, 3)"
                       :items="commissions_accesses"
                       item-text="name"
                       item-value="value"
@@ -214,8 +284,12 @@
         </v-expansion-panels>
       </v-card-text>
       <v-card-actions>
-        <span :style="dark_theme ? 'color: white' : ''" class="bold page-items-text mx-3">Itens por página:</span>
-       <div style="max-width: 37px">
+        <span
+          :style="dark_theme ? 'color: white' : ''"
+          class="bold page-items-text mx-3"
+          >Itens por página:</span
+        >
+        <div style="max-width: 37px">
           <v-form ref="form_page_items" v-model="valid" lazy-validation>
             <vuetify-number
               class="page-items-textfield"
@@ -296,6 +370,7 @@ export default {
     snackbar_delete: false,
     changing_access_name: false,
     changing_accesses_access: false,
+    changing_users_access: false,
     changing_commissions_access: false,
     loading: false,
     color: 'blue',
@@ -307,7 +382,7 @@ export default {
       length: 2,
       precision: 0,
     },
-    accesses_accesses: [
+    allowed_accesses: [
       { value: 1, name: 'Permitido' },
       { value: 0, name: 'Bloqueado' },
     ],
@@ -316,7 +391,7 @@ export default {
       { value: 'seller', name: 'Vendedor' },
       { value: 'operator', name: 'Operador' },
     ],
-    access_style: [
+    allowed_style: [
       {
         name: 1,
         color: 'green',
@@ -377,6 +452,9 @@ export default {
           this.changing_accesses_access = on;
           break;
         case 2:
+          this.changing_users_access = on;
+          break;
+        case 3:
           this.changing_commissions_access = on;
           break;
       }
@@ -443,9 +521,9 @@ export default {
       });
       return value;
     },
-    accessStyle(name, type) {
+    allowedStyle(name, type) {
       let value = '';
-      this.access_style.forEach((item) => {
+      this.allowed_style.forEach((item) => {
         if (item.name == name) {
           if (type == 'color') {
             value = item.color;
@@ -468,15 +546,15 @@ export default {
     },
   },
   computed: {
-    dark_theme () {
-      return this.$store.state.user.configs.theme == 0
-    }
+    dark_theme() {
+      return this.$store.state.user.configs.theme == 0;
+    },
   },
 };
 </script>
 <style scoped>
 .v-menu__content {
-  color:black !important
+  color: black !important;
 }
 .loading-gif {
   display: block;
@@ -489,6 +567,10 @@ export default {
 .name-accesses {
   font-size: 16px;
   color: rgb(125, 188, 255);
+}
+.name-users {
+  font-size: 16px;
+  color: rgb(160, 125, 255);
 }
 .name-commissions {
   font-size: 16px;

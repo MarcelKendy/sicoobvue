@@ -25,7 +25,7 @@
 
       <v-divider color="black"></v-divider>
 
-      <v-list dense nav active-class="bg-active">
+      <v-list dense nav active-class="bg-active" v-if="state_user">
         <v-list-item
           v-for="item in items"
           :key="item.title"
@@ -46,7 +46,7 @@
           </v-list-item-content>
         </v-list-item>
         <v-list-group
-          v-show="verifyUserAccess()"
+          v-show="verifyScreenAccess('adm')"
           v-for="item in items_adm"
           :key="item.title"
         >
@@ -67,6 +67,7 @@
           <v-list-item
             v-for="child in item.items"
             :key="child.title"
+            v-show="verifyScreenAccess(child.title)"
             :to="child.to"
             class="item-nav"
           >
@@ -133,10 +134,16 @@
       <user-card />
     </v-app-bar>
 
-    <v-main :class="this.theme ? 'main-dark' : 'main-light'">
+    <v-main
+      :class="this.dark_theme ? 'main-dark' : 'main-light'"
+      v-if="$route.name != 'Login'"
+    >
       <bread-crumb-component
         :activeRoute="this.$route.name"
       ></bread-crumb-component>
+      <router-view></router-view>
+    </v-main>
+    <v-main class="font-quicksand" v-else>
       <router-view></router-view>
     </v-main>
     <footer-component v-if="$route.name != 'Login'"></footer-component>
@@ -210,6 +217,18 @@ export default {
         document.title = 'Sicoob Credisg - ' + to.name || 'Sicoob Credisg';
       },
     },
+    state_user: function () {
+      if (this.state_user) {
+        let verify_screen_access = this.verifyScreenAccess(this.$route.name);
+        if (verify_screen_access == 404) {
+          this.$route.name == 'Página Inválida' ? '' : this.$router.push('/404');
+        } else {
+          this.$route.name !== 'Home' && !verify_screen_access
+            ? this.$router.push('/')
+            : '';
+        }
+      }
+    },
   },
   mounted() {
     this.verifyLoggedUser();
@@ -228,27 +247,64 @@ export default {
           this.login_check = true;
         });
     },
-    verifyUserAccess() {
+    verifyScreenAccess(screen) {
       if (this.$store.state.user.accesses) {
-        return this.$store.state.user.accesses.accesses == 1;
+        switch (screen) {
+          case 'Acessos':
+            return this.$store.state.user.accesses.accesses == 1;
+          case 'Usuários':
+            return this.$store.state.user.accesses.users == 1;
+          case 'adm':
+            return (
+              this.$store.state.user.accesses.users == 1 ||
+              this.$store.state.user.accesses.accesses == 1
+            );
+          case 'Comissões':
+            return true;
+          case 'Dashboard':
+            return true;
+          case 'Home':
+            return true;
+          case 'Checklist':
+            return true;
+          case 'Sobre':
+            return true;
+          case 'Login':
+            return true;
+          default:
+            return 404;
+        }
+      } else {
+        return false;
       }
     },
   },
   computed: {
-    theme () {
-      return this.$store.state.user.configs.theme == 0
-    }
-  }
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
+    },
+    state_user() {
+      try {
+        return this.$store.state.user.accesses;
+      } catch (err) {
+        return false;
+      }
+    },
+  },
 };
 </script>
 <style scoped>
 .main-dark {
   font-family: 'Quicksand', sans-serif;
-  background-color: #191a1b
+  background-color: #191a1b;
 }
 .main-light {
   font-family: 'Quicksand', sans-serif;
-  background-color:#eeeeee
+  background-color: #eeeeee;
 }
 .item-nav {
   transition: 0.3s;
@@ -290,7 +346,7 @@ font-family: 'Yanone Kaffeesatz', sans-serif;
 }
 .bg-black {
   background-color: rgb(211, 210, 210) !important;
-  color: #27282b !important
+  color: #27282b !important;
 }
 .font-quicksand {
   font-family: 'Quicksand', sans-serif;
@@ -381,33 +437,43 @@ li::before {
 }
 .list-item {
   transition: 0.3s;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 5px 7px -3px, rgba(0, 0, 0, 0.2) 0px -1px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 5px 7px -3px, rgba(0, 0, 0, 0.2) 0px -1px 0px inset;
 }
 .list-item:hover {
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 14px, rgba(0, 0, 0, 0.3) 10px 15px 17px -5px, rgba(0, 0, 0, 0.7) 4px -1px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 14px,
+    rgba(0, 0, 0, 0.3) 10px 15px 17px -5px,
+    rgba(0, 0, 0, 0.7) 4px -1px 0px inset;
 }
 .list-item-dark {
   background-color: rgba(82, 82, 82, 0.4);
   transition: 0.3s;
-  box-shadow: rgb(0, 0, 0) 0px 2px 4px, rgba(116, 116, 116, 0.3) 0px 5px 7px -3px, rgba(92, 92, 92, 0.2) 0px 0px 0px inset;
+  box-shadow: rgb(0, 0, 0) 0px 2px 4px,
+    rgba(116, 116, 116, 0.3) 0px 5px 7px -3px,
+    rgba(92, 92, 92, 0.2) 0px 0px 0px inset;
 }
 .list-item-dark:hover {
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 14px, rgb(0, 0, 0) 10px 15px 17px -5px, rgb(255, 255, 255) 4px 0px 0px  inset;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 14px, rgb(0, 0, 0) 10px 15px 17px -5px,
+    rgb(255, 255, 255) 4px 0px 0px inset;
 }
 .expansion-item {
   transition: 0.3s;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 0px 0px, rgba(0, 0, 0, 0.3) 0px 1px 3px -3px, rgba(0, 0, 0, 0.2) 0px 0px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -3px, rgba(0, 0, 0, 0.2) 0px 0px 0px inset;
 }
 .expansion-item:hover {
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 0px 0px, rgba(0, 0, 0, 0.3) 3px 3px 15px -3px, rgba(0, 0, 0, 0.7) 4px 0px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0.3) 3px 3px 15px -3px, rgba(0, 0, 0, 0.7) 4px 0px 0px inset;
 }
 .expansion-item-dark {
   background-color: rgba(83, 83, 83, 0.4) !important;
   transition: 0.3s;
-  box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.459) 3px 5px 5px -3px, rgb(0, 0, 0) 0px 0px inset;
+  box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0.459) 3px 5px 5px -3px, rgb(0, 0, 0) 0px 0px inset;
 }
 .expansion-item-dark:hover {
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 0px 1px, rgb(0, 0, 0) 2px 0px 0px 0px , rgba(15, 62, 163, 0.74) 4px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 0px 1px, rgb(0, 0, 0) 2px 0px 0px 0px,
+    rgba(15, 62, 163, 0.74) 4px 0px inset;
 }
 .item-select-badge {
   font-family: 'Quicksand', sans-serif;

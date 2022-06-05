@@ -43,7 +43,7 @@
             <strong>Inserido em: </strong>{{ created_at_date()
             }}<strong> Às </strong>{{ created_at_time() }}<br /><strong
               >Por: </strong
-            ><span>{{ item.user.full_name }}</span
+            ><span v-if="item.user">{{ item.user.full_name }}</span
             ><br /><strong>Produto: </strong> {{ item.product
             }}<span v-if="item.value"
               ><br /><strong>Valor:</strong> R$ {{ item.value }}</span

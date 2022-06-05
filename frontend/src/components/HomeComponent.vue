@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <div :class="dark_theme ? 'white--text' : ''">
+  <v-container v-if="loaded_user">
+    <div :class="dark_theme ? 'white--text' : 'black--text'">
       <v-row class="text-center">
         <v-col cols="12" align="center" class="mg-auto">
           <v-img
@@ -84,7 +84,14 @@ export default {
   data: () => ({}),
   computed: {
     dark_theme() {
-      return this.$store.state.user.configs.theme == 0;
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false
+      }
+    },
+    loaded_user() {
+      return this.$store.state.user;
     },
   },
 };

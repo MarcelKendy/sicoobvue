@@ -19,7 +19,11 @@
         max-width="300"
         :dark="theme == 0"
       >
-        <v-list class="pa-0" style="border: solid; border-color: white; border-width: 2px" dark>
+        <v-list
+          class="pa-0"
+          style="border: solid; border-color: white; border-width: 2px"
+          dark
+        >
           <v-img
             max-height="60px"
             src="../assets/images/bg1.png"
@@ -124,11 +128,20 @@ export default {
     edit_profile: false,
     cpf: '',
     user_info: {},
-    theme: 0,
+    theme: '',
   }),
   created() {
-    console.log(this.$store.state.user);
-    this.theme = this.$store.state.user.configs.theme;
+    if (!this.$store.state.user.length > 0) {
+      db.collection('user')
+        .limit(1)
+        .get()
+        .then((user) => {
+          Object.assign(this.$store.state.user, user[0]);
+          this.theme = this.$store.state.user.configs.theme;
+        });
+    } else {
+      this.theme = this.$store.state.user.configs.theme;
+    }
   },
   methods: {
     actions(item) {

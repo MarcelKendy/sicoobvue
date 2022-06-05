@@ -9,6 +9,7 @@ import AccessView from '../views/AccessView.vue'
 import AboutView from '../views/AboutView.vue'
 import LandingView from '../views/LandingView.vue'
 import CommissionView from '../views/CommissionView.vue'
+import InvalidPageView from '../views/InvalidPageView.vue'
 
 Vue.use(VueRouter)
 
@@ -57,7 +58,12 @@ const routes = [
     path: '/about',
     name: 'Sobre',
     component: AboutView
-  }
+  },
+  {
+    path: '/404',
+    name: 'Página Inválida',
+    component: InvalidPageView
+  },
 ]
 
 const router = new VueRouter({
