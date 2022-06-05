@@ -95,7 +95,13 @@
             <v-expand-transition>
               <!-- Container transition -->
               <div v-show="transitioned[getItemId(item)]">
-                <v-card class="ma-3" v-if="item.status == 'Aprovado UPS'">
+                <v-card
+                  class="ma-3"
+                  v-if="item.status == 'Aprovado UPS'"
+                  :style="
+                    dark_theme ? 'background-color: rgba(82, 82, 82, 0.4)' : ''
+                  "
+                >
                   <v-card-text>
                     <strong>
                       <span class="ma-2">
@@ -143,17 +149,32 @@
                   </v-card-text>
                 </v-card>
 
-                <v-card class="ma-3 text-center" v-else>
+                <v-card
+                  class="ma-3 text-center"
+                  v-else
+                  :style="
+                    dark_theme ? 'background-color: rgba(82, 82, 82, 0.4)' : ''
+                  "
+                >
                   <v-card-text>
                     <strong>
-                      <span class="yellow--text text--darken-2">
-                        <span>{{
-                          item.status == 'Recusado UPS'
-                            ? 'A UPS REPROVOU esta venda'
-                            : item.status == 'Aguard. UPS'
-                            ? 'A UPS ainda não aprovou a venda'
-                            : 'Esse produto ainda não foi vendido'
-                        }}</span>
+                      <span>
+                        <span
+                          :class="
+                            item.status == 'Recusado UPS'
+                              ? 'red--text text--darken-2'
+                              : item.status == 'Aguard. UPS'
+                              ? 'yellow--text text--darken-2'
+                              : 'green--text text--darken-2'
+                          "
+                          >{{
+                            item.status == 'Recusado UPS'
+                              ? 'A UPS REPROVOU a venda'
+                              : item.status == 'Aguard. UPS'
+                              ? 'A UPS ainda não aprovou a venda'
+                              : 'Esse produto ainda não foi vendido'
+                          }}</span
+                        >
                       </span>
                     </strong>
                   </v-card-text>
@@ -177,7 +198,11 @@
         </template>
         <template v-slot:[`item.date_indicator`]="{ item }">
           <v-chip color="blue-grey lighten-2" small style="min-width: 58px">
-            <v-tooltip id="tooltip" left v-if="!item.date_seller && !item.date_operator">
+            <v-tooltip
+              id="tooltip"
+              left
+              v-if="!item.date_seller && !item.date_operator"
+            >
               <template v-slot:activator="{ on, attrs }">
                 <span v-bind="attrs" v-on="on">
                   {{ formatDate(item.date_indicator, 'd_m') }}
@@ -264,7 +289,14 @@
                     v-if="item.indicator.photo"
                     src="https://cdn.vuetifyjs.com/images/john.png"
                   ></v-img>
-                  <v-img v-else :src="require(item.indicator.gender == 1 ? './../assets/icons/man.png' : './../assets/icons/woman.png')"></v-img>
+                  <v-img
+                    v-else
+                    :src="
+                      require(item.indicator.gender == 1
+                        ? './../assets/icons/man.png'
+                        : './../assets/icons/woman.png')
+                    "
+                  ></v-img>
                 </v-avatar>
                 {{ item.indicator.name }}
               </v-chip>
@@ -287,7 +319,15 @@
                       />
                       <v-tooltip id="tooltip" top v-else>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-img v-bind="attrs" v-on="on" :src="require(item.indicator.gender == 1 ? './../assets/icons/man.png' : './../assets/icons/woman.png')"></v-img>
+                          <v-img
+                            v-bind="attrs"
+                            v-on="on"
+                            :src="
+                              require(item.indicator.gender == 1
+                                ? './../assets/icons/man.png'
+                                : './../assets/icons/woman.png')
+                            "
+                          ></v-img>
                         </template>
                         <span>Sem foto</span>
                       </v-tooltip>
@@ -357,7 +397,14 @@
                     v-if="item.seller.photo"
                     src="https://cdn.vuetifyjs.com/images/john.png"
                   ></v-img>
-                  <v-img v-else :src="require(item.seller.gender == 1 ? './../assets/icons/man.png' : './../assets/icons/woman.png')"></v-img>
+                  <v-img
+                    v-else
+                    :src="
+                      require(item.seller.gender == 1
+                        ? './../assets/icons/man.png'
+                        : './../assets/icons/woman.png')
+                    "
+                  ></v-img>
                 </v-avatar>
                 {{ item.seller.name }}
               </v-chip>
@@ -383,7 +430,15 @@
                           <!--<v-icon large v-bind="attrs" v-on="on">
                             mdi-account-circle
                           </v-icon>-->
-                          <v-img v-bind="attrs" v-on="on" :src="require(item.seller.gender == 1 ? './../assets/icons/man.png' : './../assets/icons/woman.png')"></v-img>
+                          <v-img
+                            v-bind="attrs"
+                            v-on="on"
+                            :src="
+                              require(item.seller.gender == 1
+                                ? './../assets/icons/man.png'
+                                : './../assets/icons/woman.png')
+                            "
+                          ></v-img>
                         </template>
                         <span>Sem foto</span>
                       </v-tooltip>
@@ -462,7 +517,14 @@
                     v-if="item.operator.photo"
                     :src="'./../assets/users/' + item.operator.photo"
                   ></v-img>
-                  <v-img v-else :src="require(item.operator.gender == 1 ? './../assets/icons/man.png' : './../assets/icons/woman.png')"></v-img>
+                  <v-img
+                    v-else
+                    :src="
+                      require(item.operator.gender == 1
+                        ? './../assets/icons/man.png'
+                        : './../assets/icons/woman.png')
+                    "
+                  ></v-img>
                 </v-avatar>
                 {{ item.operator.name }}
               </v-chip>
@@ -485,7 +547,15 @@
                       />
                       <v-tooltip id="tooltip" top v-else>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-img v-bind="attrs" v-on="on" :src="require(item.operator.gender == 1 ? './../assets/icons/man.png' : './../assets/icons/woman.png')"></v-img>
+                          <v-img
+                            v-bind="attrs"
+                            v-on="on"
+                            :src="
+                              require(item.operator.gender == 1
+                                ? './../assets/icons/man.png'
+                                : './../assets/icons/woman.png')
+                            "
+                          ></v-img>
                         </template>
                         <span>Sem foto</span>
                       </v-tooltip>
@@ -1035,10 +1105,10 @@ export default {
     },
   },
   computed: {
-    dark_theme () {
-      return this.$store.state.user.configs.theme == 0 
-    }
-  }
+    dark_theme() {
+      return this.$store.state.user.configs.theme == 0;
+    },
+  },
 };
 </script>
 <style scoped>
