@@ -1,7 +1,16 @@
 <template>
   <div style="font-weight: bold">
     <v-list-item
-      :class="item.done ? 'blue lighten-4 hover-list' : 'hover-list'"
+      :dark="dark_theme"
+      :class="
+        !dark_theme
+          ? item.done
+            ? 'blue lighten-4 hover-list'
+            : 'hover-list'
+          : item.done
+          ? 'blue hover-list'
+          : 'grey darken-3 hover-list'
+      "
       @click="doneTask"
     >
       <template v-slot:default="{}">
@@ -11,9 +20,13 @@
         <v-list-item-content>
           <v-list-item-title
             :class="
-              item.done
-                ? 'text-decoration-line-through title-done'
-                : 'black--text'
+              !dark_theme
+                ? item.done
+                  ? 'text-decoration-line-through title-done font-italic'
+                  : 'black--text'
+                : item.done
+                ? 'text-decoration-line-through font-italic'
+                : 'white--text'
             "
             >{{ item.title }}</v-list-item-title
           >
@@ -60,6 +73,15 @@ export default {
       this.$http.put(`done_task/${this.item.id}`, this.item).then(() => {
         this.$emit('doneEdited', this.item.id);
       });
+    },
+  },
+  computed: {
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
     },
   },
 };

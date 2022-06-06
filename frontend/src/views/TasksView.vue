@@ -1,8 +1,8 @@
 <template>
   <div class="mx-5">
-    <v-container>
-      <v-slide-y-transition>
-        <v-card v-if="show_card" outlined shaped class="hover-card">
+    <v-slide-y-transition>
+      <v-container v-if="show_card">
+        <v-card outlined :dark="dark_theme" shaped class="hover-card">
           <v-card-title
             class="title-card"
             style="font-family: 'Quicksand', sans-serif"
@@ -42,9 +42,8 @@
             </v-btn>
           </v-card-actions>
         </v-card>
-      </v-slide-y-transition>
-    </v-container>
-
+      </v-container>
+    </v-slide-y-transition>
     <tasks-list
       transition="slide-y-reverse-transition"
       @taskEdited="edited_task"
@@ -119,6 +118,15 @@ export default {
     this.getTasks();
     //this.$store.commit('getTasks')
   },
+  computed: {
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
+    },
+  },
 };
 //sm="6" md="4"
 </script>
@@ -132,10 +140,10 @@ export default {
 }
 
 .title-card {
-  transition: 0.4s;
+  transition: color 0.4s;
 }
 .hover-card:hover .title-card {
-  transition: 0.4s;
+  transition: box-shadow 0.4s;
   color: #4caf50;
 }
 </style>

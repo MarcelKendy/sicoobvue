@@ -6,6 +6,7 @@
       :shaped="no_tasks"
       class="mx-auto my-12"
       width="98%"
+      :dark="dark_theme"
     >
       <v-toolbar color="rgba(18,210,195)" dark>
         <div class="tooltip_plus">
@@ -284,6 +285,15 @@ export default {
       this.tasksMutable = [];
       this.tasksMutable = this.tasks;
       this.watchSearch();
+    },
+  },
+  computed: {
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
     },
   },
 };

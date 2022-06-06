@@ -1,10 +1,10 @@
 <template>
   <v-app id="inspire" v-if="login_check">
-    <v-navigation-drawer v-model="drawer" v-if="$route.name != 'Login'" app>
+    <v-navigation-drawer v-model="drawer" v-if="$route.name != 'Login'" app :dark="dark_theme">
       <v-img
         height="216px"
-        src="./assets/images/bg1.png"
-        gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)"
+        :src="require(dark_theme ? './assets/images/circuitsbg2.png' : './assets/images/circuitsbg2.png')"
+        :gradient="dark_theme ? 'to bottom left, rgba(3,0,24,.9), rgba(143,20,174,.4)' : 'to bottom left, rgba(23,152,185,.9), rgba(25,135,80,.5), rgba(100,255,45,.3)'"
         dark
         class="pt-5 text-center"
       >
@@ -104,28 +104,25 @@
       v-if="$route.name != 'Login'"
       shrink-on-scroll
       app
-      color="rgba(18,210,175,.9)"
+      :color="dark_theme ? 'rgba(8,140,105,.9)' : 'rgba(18,210,175,.9)'"
       dark
-      src="./assets/images/credisgbuilding.png"
+      src="./assets/images/credisgbuilding0.png"
       fade-img-on-scroll
       scroll-threshold="200"
     >
       <template v-slot:img="{ props }">
         <v-img
           v-bind="props"
-          gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)"
+          :gradient="dark_theme ? 'to bottom right, rgba(43,22,67,.6), rgba(40,90,85,.4)' : 'to bottom right, rgba(183,92,227,.4), rgba(80,200,145,.2)'"
         ></v-img>
       </template>
 
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
+      <v-img class="ma-2" max-width="32" src="./assets/icons/sicoobicon.png"></v-img>
       <strong
-        style="
-          padding-left: 20px;
-          padding-top: 3px;
-          font-family: 'Quicksand', sans-serif;
-          font-size: 24px;
-        "
+        style="font-size: 24px;"
+        class="font-quicksand mx-2 mt-1"
         >Bem Vindo</strong
       >
 
@@ -368,7 +365,6 @@ li::before {
   opacity: 0;
 }
 .hover-card {
-  transition: 0.3s !important;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px !important;
   transition: box-shadow 0.3s !important;

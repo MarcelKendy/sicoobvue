@@ -3,7 +3,7 @@
     <v-card class="flex" flat tile>
       <v-img
         src="../assets/images/credisgbuilding2.png"
-        gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)"
+        :gradient="dark_theme ? 'to bottom left, rgba(43,12,127,.6), rgba(0,180,85,.7)' : 'to bottom left, rgba(173,12,227,.6), rgba(0,260,145,.4)'"
         dark
         class="pt-5 text-center"
         max-height="82"
@@ -177,6 +177,15 @@ export default {
       },
     ],
   }),
+  computed: {
+     dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
+    },
+  }
 };
 </script>
 <style scoped>
