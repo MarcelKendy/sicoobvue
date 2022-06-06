@@ -19,7 +19,7 @@
               <v-img
                 max-width="64px"
                 class="mx-5 ml-2"
-                src="./../../assets/icons/bot/bot-bye.png"
+                src="./../../assets/icons/bots/bot1/bot-bye.png"
               ></v-img>
             </template>
             <h3>Até a próxima!</h3>

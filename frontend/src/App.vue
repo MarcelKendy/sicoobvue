@@ -221,7 +221,7 @@ export default {
           this.$route.name == 'Página Inválida' ? '' : this.$router.push('/404');
         } else {
           this.$route.name !== 'Home' && !verify_screen_access
-            ? this.$router.push('/')
+            ? this.$router.push('/505')
             : '';
         }
       }

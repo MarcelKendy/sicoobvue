@@ -10,6 +10,7 @@ import AboutView from '../views/AboutView.vue'
 import LandingView from '../views/LandingView.vue'
 import CommissionView from '../views/CommissionView.vue'
 import InvalidPageView from '../views/InvalidPageView.vue'
+import AccessDeniedView from '../views/AccessDeniedView.vue'
 
 Vue.use(VueRouter)
 
@@ -63,6 +64,11 @@ const routes = [
     path: '/404',
     name: 'Página Inválida',
     component: InvalidPageView
+  },
+  {
+    path: '/505',
+    name: 'Acesso Negado',
+    component: AccessDeniedView
   },
 ]
 

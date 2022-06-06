@@ -3,10 +3,10 @@
     <v-col align="center" cols="12">
       <v-card dark max-width="1200">
         <v-card-title class="justify-center">
-          <span>OPS... Tá perdido?</span><v-img max-width="32" class="mx-3 mb-2" src="./../assets/icons/bots/bot1/bot-question.png"></v-img>
+          <span>Epa epa... Aqui não pode!</span><v-img max-width="32" class="mx-3 mb-2" src="./../assets/icons/bots/bot1/bot-question.png"></v-img>
         </v-card-title>
         <v-card-subtitle class="justify-center">
-          <span>Página não encontrada</span>
+          <span class="red--text">Acesso Negado</span>
         </v-card-subtitle>
         <v-card-text>
           <v-alert :color="color" border="left" elevation="7" dark prominent>
@@ -16,8 +16,10 @@
                 src="./../assets/images/error-404.png"
               ></v-img>
             </template>
-            <h3>Caro usuário, a rota que você tentou acessar não existe!</h3>
-            <p class="mt-2">Verifique novamente o endereço que você inseriu.</p>
+            <h3>Caro usuário, a rota que você tentou acessar requer um acesso que você não possui.</h3>
+            <p class="mt-2">Caso tenha sido por acidente, verifique a rota e clique no botão abaixo.</p>
+            <p class="mt-1"> Caso queira esse acesso, contate um <strong>ADM</strong> do sistema.</p>
+            <p class="mt-1 bold">PS: Se já lhe foi concedido o acesso, é necessário relogar no sistema.</p>
             <p class="mt-2">Dessa vez eu te perdoo! <v-img max-width="32" src="./../assets/icons/bots/bot1/bot-happy.png"></v-img></p>
             <v-divider></v-divider>
             <span class="font-weight-bold mt-3 font-italic">Dúvidas? Ramal: 1506 </span>
@@ -38,10 +40,10 @@
 
 <script>
 export default {
-  name: 'NonexistentComponent',
+  name: 'AccessDeniedComponent',
 
   data: () => ({
-    color: 'orange',
+    color: 'red',
   }),
 };
 </script>
