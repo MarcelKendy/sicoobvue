@@ -1,6 +1,11 @@
 <template>
   <div>
-    <v-overlay :absolute="absolute" :value="model_mutable">
+    <v-overlay
+      :absolute="absolute"
+      :value="model_mutable"
+      :opacity="dark_theme ? '0.4' : '0.5'"
+      :color="dark_theme ? '#64418a' : 'black'"
+    >
       <v-slide-y-transition>
         <v-card
           :width="width"
@@ -121,6 +126,15 @@ export default {
     },
     activateTransition() {
       this.model_mutable_delayed = this.model_mutable;
+    },
+  },
+  computed: {
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
     },
   },
 };

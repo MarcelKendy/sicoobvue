@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog v-model="dialog" persistent max-width="700">
-      <v-card :loading="loading">
+      <v-card :dark="dark_theme" :loading="loading">
         <template slot="progress">
           <v-progress-linear
             :color="color"
@@ -113,6 +113,15 @@ export default {
             this.$emit('closeModalEdit');
             this.loading = false;
           });
+      }
+    },
+  },
+  computed: {
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
       }
     },
   },

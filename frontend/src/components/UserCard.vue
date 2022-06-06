@@ -14,16 +14,12 @@
       </template>
 
       <v-card
-        color="#26c6da"
+        :color="theme != 0 ? '#26c6da' : 'black'"
         class="mx-auto font-quicksand bold"
         max-width="300"
         :dark="theme == 0"
       >
-        <v-list
-          class="pa-0"
-          style="border: solid; border-color: white; border-width: 2px"
-          dark
-        >
+        <v-list :class="theme == 0 ? 'pa-0 user-card-header-dark' : 'pa-0 user-card-header'" dark>
           <v-img
             max-height="60px"
             src="../assets/images/bg1.png"
@@ -207,3 +203,15 @@ export default {
   },
 };
 </script>
+<style scoped>
+.user-card-header {
+  border: solid;
+  border-color: white;
+  border-width: 2px;
+}
+.user-card-header-dark {
+  border: solid;
+  border-color: rgb(23, 0, 78);
+  border-width: 2px;
+}
+</style>

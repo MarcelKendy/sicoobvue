@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog v-model="dialog" persistent max-width="350">
-      <v-card>
+      <v-card :dark="dark_theme">
         <v-card-title class="text-h5"> Deletar </v-card-title>
         <v-divider></v-divider>
         <v-card-text class="mt-4">
@@ -38,6 +38,15 @@ export default {
         this.$emit('taskDeleted', this.item.id);
         this.$emit('closeModalDelete');
       });
+    },
+  },
+  computed: {
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
     },
   },
 };

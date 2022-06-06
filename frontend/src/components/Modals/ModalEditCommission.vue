@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog v-model="dialog" persistent max-width="700">
-      <v-card :loading="loading">
+      <v-card :dark="dark_theme" :loading="loading">
         <template slot="progress">
           <v-progress-linear
             :color="color"
@@ -241,6 +241,7 @@
                     v-bind:outlined="true"
                     v-bind:rules="requiredSellerRule"
                     v-bind:color="color"
+                    v-bind:backgroundColor="dark_theme ? '#1E1E1E' : ''"
                     v-bind:valueWhenIsEmpty="null"
                     v-bind:options="options"
                   />
@@ -714,6 +715,13 @@ export default {
     },
   },
   computed: {
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
+    },
     defaultItem() {
       return {
         user_id: '',
@@ -750,5 +758,4 @@ export default {
   align-items: center !important;
   justify-content: center !important;
 }
-
 </style>

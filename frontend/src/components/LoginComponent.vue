@@ -62,6 +62,7 @@
                     <v-btn
                       x-large
                       block
+                      dark
                       :disabled="!validLogin"
                       :loading="loading_btn"
                       class="white--text btn btn-gradient"
@@ -232,6 +233,7 @@
                     <v-btn
                       x-large
                       block
+                      dark
                       :disabled="!validRegister"
                       :loading="loading_btn"
                       class="white--text btn btn-gradient"

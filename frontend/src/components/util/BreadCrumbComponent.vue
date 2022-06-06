@@ -3,7 +3,7 @@
     <v-btn-toggle v-model="route" borderless>
       <v-btn
         small
-        color="blue lighten-4"
+        :color="dark_theme ? 'blue darken-4 white--text' : 'blue lighten-4'"
         :disabled="item.disabled"
         :to="item.href"
         v-for="item in items"
@@ -13,7 +13,7 @@
         <v-icon left>
           {{ item.icon }}
         </v-icon>
-        <span class="breadcrumb-text">{{ item.text }}</span>
+        <strong>{{ item.text }}</strong>
       </v-btn>
     </v-btn-toggle>
   </div>
@@ -36,6 +36,15 @@ export default {
   created() {
     this.route = this.activeRoute;
     this.defineBreadCrumb();
+  },
+  computed: {
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
+    },
   },
   methods: {
     defineBreadCrumb() {
@@ -146,10 +155,9 @@ export default {
             },
           ];
           break;
-          case 'Login':
-            
-          break
-          default:
+        case 'Login':
+          break;
+        default:
           this.items = [
             {
               text: 'Home',
@@ -172,8 +180,5 @@ export default {
 </script>
 
 <style>
-.breadcrumb-text {
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 700;
-}
+
 </style>

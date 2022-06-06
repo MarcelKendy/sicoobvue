@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog v-model="dialog" persistent max-width="650">
-      <v-card :loading="loading">
+      <v-card :loading="loading" :dark="dark_theme">
         <template slot="progress">
           <v-progress-linear
             color="red"
@@ -22,7 +22,7 @@
         <v-divider></v-divider>
         <v-card-text class="mt-4" v-if="!loading">
           <p>
-            <strong class="black--text"
+            <strong :class="dark_theme ? 'white--text' : 'black--text'"
               >Você tem certeza que deseja
               <span class="red--text">DELETAR</span> o registro a seguir? </strong
             ><strong
@@ -126,6 +126,15 @@ export default {
         time_formatted = hour + ':' + minute;
       }
       return time_formatted;
+    },
+  },
+  computed: {
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
     },
   },
 };

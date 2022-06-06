@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog v-model="dialog" persistent max-width="700">
-      <v-card :loading="loading">
+      <v-card :loading="loading" :dark="dark_theme">
         <template slot="progress">
           <v-progress-linear
             :color="color"
@@ -244,6 +244,7 @@
                     v-bind:outlined="true"
                     v-bind:rules="requiredSellerRule"
                     v-bind:color="color"
+                    v-bind:backgroundColor="dark_theme ? '#1E1E1E' : ''"
                     v-bind:valueWhenIsEmpty="null"
                     v-bind:options="options"
                   />
@@ -259,7 +260,7 @@
                       class: 'px-3',
                       disabled: accesses('disableSeller'),
                       rules: valueRule,
-                      placeholder: 'Valor a ser comissionado',
+                      placeholder: 'Valor efetivo a ser comissionado',
                       outlined: true,
                       suffix: 'R$',
                     }"
@@ -675,6 +676,13 @@ export default {
     },
   },
   computed: {
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
+    },
     defaultItem() {
       return {
         user_id: '',
@@ -706,5 +714,4 @@ export default {
   font-family: 'Quicksand', sans-serif;
   color: rgb(0, 209, 94);
 }
-
 </style>

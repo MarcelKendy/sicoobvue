@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog v-model="dialog" persistent max-width="700">
-      <v-card :loading="loading">
+      <v-card :dark="dark_theme" :loading="loading">
         <template slot="progress">
           <v-progress-linear
             :color="color"
@@ -281,6 +281,13 @@ export default {
     },
   },
   computed: {
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
+    },
     matchPasswords() {
       return (
         this.item.password === this.item.verify || 'As senhas não coincidem'

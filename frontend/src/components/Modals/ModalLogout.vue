@@ -1,30 +1,30 @@
 <template>
   <div>
     <v-dialog v-model="dialog" persistent max-width="650">
-      <v-card>
+      <v-card :dark="dark_theme">
         <v-card-title class="title-modal">
           <strong>Logout</strong>
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text class="mt-4">
           <p>
-            <strong class="black--text"
+            <strong :class="dark_theme ? 'white--text' : 'black--text'"
               >Você tem certeza que deseja
               <span class="red--text">SAIR</span> do sistema?</strong
             >
           </p>
 
-          <v-banner
-            color="rgba(18,210,175)"
-            dark
-            elevation="7"
-            icon="mdi-robot-excited-outline"
-            rounded
-            single-line
-            sticky
-          >
-            <strong>Até a próxima!</strong>
-          </v-banner>
+          <v-alert color="blue" border="left" elevation="7" dark prominent>
+            <template slot="prepend">
+              <v-img
+                max-width="64px"
+                class="mx-5 ml-2"
+                src="./../../assets/icons/bot/bot-bye.png"
+              ></v-img>
+            </template>
+            <h3>Até a próxima!</h3>
+            <p class="mt-2">{{new Date().toLocaleString()}}</p>   
+          </v-alert>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -58,6 +58,15 @@ export default {
     },
     logout() {
       this.$emit('logout');
+    },
+  },
+  computed: {
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
     },
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog v-model="dialog" persistent max-width="700">
-      <v-card :loading="loading">
+      <v-card :loading="loading" :dark="dark_theme">
         <template slot="progress">
           <v-progress-linear
             :color="color"
@@ -285,6 +285,13 @@ export default {
     },
   },
   computed: {
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
+    },
     defaultItem() {
       return {
         user_id: this.$store.state.user.id,

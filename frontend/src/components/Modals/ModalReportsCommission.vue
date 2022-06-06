@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog v-model="dialog" persistent max-width="700">
-      <v-card :loading="loading">
+      <v-card :dark="dark_theme" :loading="loading">
         <div
           id="attachMenu"
           style="width: 290px; position: absolute; right: 60px; top: 95px"
@@ -73,7 +73,7 @@
                         "
                         >Falha ao carregar produtos</span
                       >
-                      <v-tooltip id="tooltip" top>
+                      <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">
                           <v-icon
                             style="padding-left: 5px"
@@ -126,7 +126,7 @@
                             }`)
                           "
                         ></v-img>
-                        <v-img v-else :src="require(item.item.photo)"></v-img>
+                        <!--<v-img v-else :src="require(item.item.photo)"></v-img>-->
                       </v-avatar>
                       {{
                         abreviateString(
@@ -148,7 +148,7 @@
                           }`)
                         "
                       ></v-img>
-                      <v-img v-else :src="require(item.item.photo)"></v-img>
+                      <!--<v-img v-else :src="require(item.item.photo)"></v-img>-->
                     </v-list-item-avatar>
                     <v-list-item-content>
                       <v-list-item-title
@@ -168,7 +168,7 @@
                         "
                         >Nenhum usuário encontrado</span
                       >
-                      <v-tooltip id="tooltip" top>
+                      <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">
                           <v-icon
                             style="padding-left: 5px"
@@ -255,7 +255,7 @@
                         "
                         >Falha ao carregar status</span
                       >
-                      <v-tooltip id="tooltip" top>
+                      <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">
                           <v-icon
                             style="padding-left: 5px"
@@ -307,7 +307,7 @@
             Cancelar
           </v-btn>
           <v-spacer></v-spacer>
-          <v-tooltip id="tooltip" top>
+          <v-tooltip top>
             <template v-slot:activator="{ attrs, on }">
               <v-img
                 style="cursor: pointer"
@@ -321,7 +321,7 @@
             </template>
             <span> Gerar EXCEL </span>
           </v-tooltip>
-          <v-tooltip id="tooltip" top>
+          <v-tooltip top>
             <template v-slot:activator="{ attrs, on }">
               <v-img
                 style="cursor: pointer"
@@ -700,6 +700,13 @@ export default {
     },
   },
   computed: {
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
+    },
     dateFilter() {
       return this.item.dates;
     },
