@@ -8,7 +8,7 @@
       width="98%"
       :dark="dark_theme"
     >
-      <v-toolbar color="rgba(18,210,195)" dark>
+      <v-toolbar :color="dark_theme ? 'rgba(18,110,95)' : 'rgba(18,210,195)'" dark>
         <div class="tooltip_plus">
           <v-fab-transition>
             <v-btn

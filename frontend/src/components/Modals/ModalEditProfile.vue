@@ -124,11 +124,11 @@
               </v-col>
               <v-slide-y-transition>
                 <v-card
-                  style="font-family: 'Quicksand', sans-serif"
+
                   v-if="change_password"
                   class="mx-auto pa-2"
                   elevation="10"
-                  color="yellow lighten-4"
+                  :color="dark_theme ? 'yellow darken-4' : 'yellow lighten-4'"
                 >
                   <v-card-title color="orange" style="font-weight: bold">
                     Alterar Senha
@@ -136,9 +136,10 @@
                       <template v-slot:activator="{ on, attrs }">
                         <v-icon
                           class="mx-2"
-                          color="orange"
+                          :color="dark_theme ? 'white' : 'orange'"
                           v-bind="attrs"
                           v-on="on"
+                          
                           >mdi-alert-octagon-outline</v-icon
                         >
                       </template>
@@ -148,7 +149,7 @@
                   <v-card-subtitle>
                     A sua nova senha entrará em vigor no seu próximo Login.
                   </v-card-subtitle>
-                  <v-card-text style="font-weight: bold">
+                  <v-card-text class="bold">
                     <v-row align="center" justify="center">
                       <v-col cols="12">
                         <v-text-field
@@ -159,7 +160,7 @@
                           name="register_password"
                           label="Nova senha"
                           counter
-                          color="orange"
+                          :color="dark_theme ? 'white' : 'orange'"
                           @click:append="show = !show"
                         ></v-text-field>
                       </v-col>
@@ -173,7 +174,7 @@
                           :type="show ? 'text' : 'password'"
                           name="verify_password"
                           label="Confirmar nova senha"
-                          color="orange"
+                          :color="dark_theme ? 'white' : 'orange'"
                           counter
                           @click:append="show = !show"
                         ></v-text-field>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="pb-5 px-5" id="reports">
+    <div class="pb-5 px-5" id="reports" v-if="!loading_commissions">
       <v-tooltip id="tooltip" right>
         <template v-slot:activator="{ attrs, on }">
           <v-img

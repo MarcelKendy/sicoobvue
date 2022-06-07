@@ -9,7 +9,7 @@
         <template slot="progress">
           <v-progress-linear
             :color="color"
-            height="10"
+            height="5"
             indeterminate
           ></v-progress-linear>
         </template>
@@ -39,6 +39,18 @@
               >
                 <span>Espera só um pouquinho, carregando...</span>
               </v-alert>
+            </v-col>
+            <v-col cols="12">
+              <v-progress-linear
+                color="light-blue"
+                height="16"
+                :value="progress"
+                striped
+                stream
+                buffer-value="0"
+              >
+                <strong>{{ progress }}%</strong>
+              </v-progress-linear>
             </v-col>
           </v-row>
         </v-card-text>
@@ -372,14 +384,35 @@
       >
       </download-excel>
     </v-dialog>
+
+    <pdf-generator-component
+      :generate="generate_pdf"
+      name="Relatório_Comissões"
+      type="table"
+      :info="[
+          '--Fim dos Registros--',
+          'Filtro Aplicado:',
+          'Usuários: ' + (item.users.length > 0 ? users_name : 'TODOS'),
+          'Produtos: ' + (item.products.length > 0 ? item.products : 'TODOS'),
+          'Data/Período: ' +
+            (item.products.dates > 0 ? item.dates : 'SEM FILTRO'),
+          'Status: ' + (item.status.length > 0 ? item.status : 'TODOS'),
+          'Requisitado em: ' + new Date().toLocaleString(),
+          'Sicoob Credisg Software - v.1.0.0',
+        ]"
+      :data="items_computed"
+      @progress="progressPDF"
+    ></pdf-generator-component>
   </div>
 </template>
 
 <script>
 import OverlayComponent from './../util/OverlayComponent.vue';
+import PdfGeneratorComponent from './../util/PdfGeneratorComponent.vue';
+
 export default {
   props: ['open', 'commissions'],
-  components: { OverlayComponent },
+  components: { OverlayComponent, PdfGeneratorComponent },
   data() {
     return {
       color: 'blue',
@@ -390,6 +423,8 @@ export default {
       loading_users: false,
       disable_status: false,
       overlay: false,
+      generate_pdf: false,
+      progress: 0,
       users: [],
       item: {
         products: [],
@@ -517,12 +552,13 @@ export default {
     open: function () {
       this.dialog = this.open;
       if (this.dialog) {
+        this.generate_pdf = false;
+        this.items = [];
+        this.items_computed = [];
         this.items = this.commissions;
         Object.assign(this.item, this.defaultItem);
         this.getUsers();
       } else {
-        this.items = [];
-        this.items_computed = [];
         if (this.$refs.form) {
           this.$refs.form.resetValidation();
         }
@@ -539,6 +575,12 @@ export default {
     },
   },
   methods: {
+    progressPDF(percentage) {
+      this.progress = percentage
+      if (percentage == 100) {
+        this.closeModal();
+      }
+    },
     modalOverlay() {
       this.overlay = !this.overlay;
     },
@@ -615,6 +657,7 @@ export default {
         });
     },
     loadReportData(type) {
+      this.loading = true;
       if (this.$refs.form.validate()) {
         let filter_user = this.item.users.length != 0;
         let filter_product = this.item.products.length != 0;
@@ -634,10 +677,10 @@ export default {
               'report_commission_excel'
             );
             excel_button.click();
+            this.closeModal();
           } else {
-            console.log(1);
+            this.generate_pdf = true;
           }
-          this.closeModal();
         } else {
           this.modalOverlay();
         }

@@ -19,6 +19,7 @@
     "register-service-worker": "^1.7.2",
     "vue": "^2.6.14",
     "vue-easy-dnd": "^1.22.0",
+    "vue-html2pdf": "^1.8.0",
     "vue-json-excel": "^0.3.0",
     "vue-router": "^3.5.1",
     "vue-youtube-embed": "^2.2.2",
