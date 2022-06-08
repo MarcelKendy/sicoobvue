@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" persistent max-width="700">
+    <v-dialog v-model="dialog" persistent max-width="800">
       <v-card :dark="dark_theme" :loading="loading">
         <template slot="progress">
           <v-progress-linear
@@ -40,6 +40,7 @@
             <v-row align="center">
               <v-col cols="12" sm="6">
                 <v-select
+                  :menu-props="{ dark: dark_theme, offsetY: true }"
                   :items="products"
                   :rules="requiredRule"
                   :color="color"
@@ -53,7 +54,7 @@
 
               <v-col cols="12" sm="6">
                 <v-select
-                  :menu-props="{ offsetY: true }"
+                  :menu-props="{ dark: dark_theme, offsetY: true }"
                   solo
                   :disabled="!accesses('status')"
                   :items="status()"
@@ -94,6 +95,7 @@
             <v-row align="center" v-if="accesses('indicator')">
               <v-col cols="12" sm="6">
                 <v-autocomplete
+                  :menu-props="{ dark: dark_theme }"
                   class="px-3"
                   label="Indicador"
                   :color="color"
@@ -108,6 +110,56 @@
                   item-value="id"
                   solo
                 >
+                  <template v-slot:selection="item">
+                    <v-chip
+                      close
+                      v-bind="item.attrs"
+                      :input-value="item.selected"
+                      @click="item.select"
+                      @click:close="deleteChip(1)"
+                    >
+                      <v-avatar left>
+                        <v-img
+                          v-if="!item.item.photo"
+                          :src="
+                            require(`./../../assets/icons/${
+                              item.item.gender == 1 ? 'man.png' : 'woman.png'
+                            }`)
+                          "
+                        ></v-img>
+                        <!--<v-img v-else :src="require(item.item.photo)"></v-img>-->
+                      </v-avatar>
+                      {{
+                        abreviateString(
+                          item.item.full_name,
+                          item.item.name,
+                          '',
+                          true
+                        )
+                      }}
+                    </v-chip>
+                  </template>
+                  <template v-slot:item="item">
+                    <v-list-item-avatar>
+                      <v-img
+                        v-if="!item.item.photo"
+                        :src="
+                          require(`./../../assets/icons/${
+                            item.item.gender == 1 ? 'man.png' : 'woman.png'
+                          }`)
+                        "
+                      ></v-img>
+                      <!--<v-img v-else :src="require(item.item.photo)"></v-img>-->
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-html="item.item.full_name"
+                      ></v-list-item-title>
+                      <v-list-item-subtitle
+                        v-html="item.item.role"
+                      ></v-list-item-subtitle>
+                    </v-list-item-content>
+                  </template>
                   <template v-slot:no-data>
                     <div class="px-4">
                       <span
@@ -141,6 +193,7 @@
               </v-col>
               <v-col cols="12" md="6">
                 <DateTimePicker
+                  :dark="dark_theme"
                   label="Data/Hora da Indicação"
                   :updateComponent="update_datetime_picker"
                   @resetValidation="resetValidation"
@@ -156,6 +209,7 @@
               <v-row align="center">
                 <v-col cols="12" md="6">
                   <v-autocomplete
+                    :menu-props="{ dark: dark_theme }"
                     :disabled="accesses('disableSeller')"
                     class="px-3"
                     label="Vendedor"
@@ -171,6 +225,56 @@
                     item-value="id"
                     solo
                   >
+                    <template v-slot:selection="item">
+                      <v-chip
+                        close
+                        @click:close="deleteChip(2)"
+                        v-bind="item.attrs"
+                        :input-value="item.selected"
+                        @click="item.select"
+                      >
+                        <v-avatar left>
+                          <v-img
+                            v-if="!item.item.photo"
+                            :src="
+                              require(`./../../assets/icons/${
+                                item.item.gender == 1 ? 'man.png' : 'woman.png'
+                              }`)
+                            "
+                          ></v-img>
+                          <!--<v-img v-else :src="require(item.item.photo)"></v-img>-->
+                        </v-avatar>
+                        {{
+                          abreviateString(
+                            item.item.full_name,
+                            item.item.name,
+                            '',
+                            true
+                          )
+                        }}
+                      </v-chip>
+                    </template>
+                    <template v-slot:item="item">
+                      <v-list-item-avatar>
+                        <v-img
+                          v-if="!item.item.photo"
+                          :src="
+                            require(`./../../assets/icons/${
+                              item.item.gender == 1 ? 'man.png' : 'woman.png'
+                            }`)
+                          "
+                        ></v-img>
+                        <!--<v-img v-else :src="require(item.item.photo)"></v-img>-->
+                      </v-list-item-avatar>
+                      <v-list-item-content>
+                        <v-list-item-title
+                          v-html="item.item.full_name"
+                        ></v-list-item-title>
+                        <v-list-item-subtitle
+                          v-html="item.item.role"
+                        ></v-list-item-subtitle>
+                      </v-list-item-content>
+                    </template>
                     <template v-slot:no-data>
                       <div class="px-4">
                         <span
@@ -200,6 +304,7 @@
                 </v-col>
                 <v-col cols="12" md="6">
                   <DateTimePicker
+                    :dark="dark_theme"
                     label="Data/Hora da Venda"
                     :disabled="accesses('disableSeller')"
                     :updateComponent="update_datetime_picker_seller"
@@ -272,6 +377,7 @@
               <v-row align="center">
                 <v-col cols="12" md="6">
                   <v-autocomplete
+                    :menu-props="{ dark: dark_theme }"
                     class="px-3"
                     label="Operador"
                     :color="color"
@@ -287,6 +393,56 @@
                     item-value="id"
                     solo
                   >
+                    <template v-slot:selection="item">
+                      <v-chip
+                        close
+                        @click:close="deleteChip(3)"
+                        v-bind="item.attrs"
+                        :input-value="item.selected"
+                        @click="item.select"
+                      >
+                        <v-avatar left>
+                          <v-img
+                            v-if="!item.item.photo"
+                            :src="
+                              require(`./../../assets/icons/${
+                                item.item.gender == 1 ? 'man.png' : 'woman.png'
+                              }`)
+                            "
+                          ></v-img>
+                          <!--<v-img v-else :src="require(item.item.photo)"></v-img>-->
+                        </v-avatar>
+                        {{
+                          abreviateString(
+                            item.item.full_name,
+                            item.item.name,
+                            '',
+                            true
+                          )
+                        }}
+                      </v-chip>
+                    </template>
+                    <template v-slot:item="item">
+                      <v-list-item-avatar>
+                        <v-img
+                          v-if="!item.item.photo"
+                          :src="
+                            require(`./../../assets/icons/${
+                              item.item.gender == 1 ? 'man.png' : 'woman.png'
+                            }`)
+                          "
+                        ></v-img>
+                        <!--<v-img v-else :src="require(item.item.photo)"></v-img>-->
+                      </v-list-item-avatar>
+                      <v-list-item-content>
+                        <v-list-item-title
+                          v-html="item.item.full_name"
+                        ></v-list-item-title>
+                        <v-list-item-subtitle
+                          v-html="item.item.role"
+                        ></v-list-item-subtitle>
+                      </v-list-item-content>
+                    </template>
                     <template v-slot:no-data>
                       <div class="px-4">
                         <span
@@ -316,6 +472,7 @@
                 </v-col>
                 <v-col cols="12" md="6">
                   <DateTimePicker
+                    :dark="dark_theme"
                     label="Data/Hora da Operação"
                     :updateComponent="update_datetime_picker_operator"
                     @resetValidation="resetValidation"
@@ -501,10 +658,44 @@ export default {
     },
   },
   methods: {
+    deleteChip(chip) {
+      switch (chip) {
+        case 1:
+          this.item.indicator_id = '';
+          break;
+        case 2:
+          this.item.seller_id = '';
+          break;
+        case 3:
+          this.item.operator_id = '';
+          break;
+        default:
+          console.log('chip unidentified');
+          break;
+      }
+    },
+    abreviateString(
+      str,
+      prefix = '',
+      suffix = '',
+      delete_first = false,
+      space_p = true,
+      space_s = true
+    ) {
+      let initials = str.match(/\b\w/g).join('. ') + '.';
+      if (delete_first) {
+        initials = initials.substr(initials.indexOf(' ') + 1);
+      }
+      return (
+        prefix + (space_p ? ' ' : '') + initials + (space_s ? ' ' : '') + suffix
+      );
+    },
     get_users() {
       this.loading_users = true;
       this.$http
-        .post('get_users', { select: ['id', 'full_name'] })
+        .post('get_users', {
+          select: ['id', 'name', 'full_name', 'photo', 'gender'],
+        })
         .then((response) => {
           this.users = response.data;
           this.loading_users = false;

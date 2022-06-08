@@ -49,6 +49,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('/add_user', [UserController::class, 'addUser']);
     Route::put('/edit_user/{user}', [UserController::class, 'editUser']);
     Route::put('/edit_user_access/{user}', [UserController::class, 'editUserAccess']);
+    Route::get('/add_avatar',[UserController::class,'addAvatar']);
+    Route::put('/store_avatar/{user}',[UserController::class,'storeAvatar']);
+    Route::get('/get_avatar',[UserController::class,'getAvatar']);
     Route::delete('/delete_user/{user}', [UserController::class, 'deleteUser']);
 // USER ROUTES
 

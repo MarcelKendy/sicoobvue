@@ -16,85 +16,7 @@
   >
     <section slot="pdf-content">
       <section class="pdf-item">
-        <div class="container">
-          <div class="font-quicksand">
-            <h2 style="color: green">Relatório de Comissões</h2>
-            <small class="bold">{{ info[1] }}</small>
-            <small>
-              [ {{ info[2] }}, {{ info[3] }}, {{ info[4] }},
-              {{ info[5] }} ]</small
-            >
-            <br />
-            <small>{{ info[6] }}</small>
-          </div>
-          <div
-            style="margin-top: 30px"
-            v-for="(page, index_page) in items_table"
-            :key="index_page"
-          >
-            <table id="table-data">
-              <tr>
-                <th>Produto</th>
-                <th>Valor</th>
-                <th>Status</th>
-                <th>Indicador</th>
-                <th>Vendedor</th>
-                <th>Operador</th>
-                <th>Com. Coop.</th>
-                <th>Com. Indicador</th>
-                <th>Com. Vendedor</th>
-                <th>Com. Operador</th>
-              </tr>
-              <tr v-for="item in page" :key="item.id">
-                <td>{{ item.product }}</td>
-                <td>{{ item.value ? 'R$ ' + item.value : '' }}</td>
-                <td>{{ item.status }}</td>
-                <td>{{ item.indicator_id ? item.indicator.full_name : '' }}</td>
-                <td>{{ item.seller_id ? item.seller.full_name : '' }}</td>
-                <td>{{ item.operator_id ? item.operator.full_name : '' }}</td>
-                <td>
-                  {{
-                    item.commission_percentage
-                      ? item.commission_percentage + '%'
-                      : ''
-                  }}
-                </td>
-                <td>
-                  {{
-                    item.indicator_commission
-                      ? 'R$ ' + item.indicator_commission
-                      : ''
-                  }}
-                </td>
-                <td>
-                  {{
-                    item.seller_commission ? 'R$ ' + item.seller_commission : ''
-                  }}
-                </td>
-                <td>
-                  {{
-                    item.operator_commission
-                      ? 'R$ ' + item.operator_commission
-                      : ''
-                  }}
-                </td>
-              </tr>
-            </table>
-            <div class="html2pdf__page-break" />
-          </div>
-        </div>
-        <div
-          class="font-quicksand bold"
-          style="margin-left: 30px; margin-y: 30px"
-        >
-          <span>{{ info[7] }}</span>
-          <br />
-          <span>Total de páginas: {{ items_table.length }}</span>
-          <br />
-          <span>Registros por página (máx): 10</span>
-          <br />
-          <span>Total de Registros: {{ data.length }}</span>
-        </div>
+       <commissions-pdf-report v-if="report == 'commissions'" :items_table="items_table" :info="info_table"></commissions-pdf-report>
       </section>
     </section>
   </vue-html2pdf>
@@ -102,20 +24,23 @@
 
 <script>
 import VueHtml2pdf from 'vue-html2pdf';
+import CommissionsPdfReport from './../reports/CommissionsPdfReport.vue';
 export default {
   name: 'PdfGeneratorComponent',
-  props: ['generate', 'type', 'data', 'name', 'info'],
-  components: { VueHtml2pdf },
+  props: ['generate', 'type', 'data', 'name', 'info', 'report'],
+  components: { VueHtml2pdf, CommissionsPdfReport },
   data: () => ({
     items_table: [],
+    info_table: []
   }),
   methods: {
     generatePDF() {
       if (this.type == 'table') {
         this.items_table = [];
         if (this.data.length > 0) {
+          this.info_table = this.info
+          this.info_table.push(this.data.length)
           this.items_table = this.chunkArray(this.data, 10);
-          console.log(this.items_table);
           this.$refs.html2Pdf.generatePdf();
         }
       }
@@ -169,7 +94,7 @@ export default {
   font-size: 15px;
 }
 #table-data tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #dfeff0;
 }
 
 #table-data th {

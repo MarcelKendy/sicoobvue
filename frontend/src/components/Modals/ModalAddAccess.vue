@@ -54,7 +54,7 @@
             <v-row align="center">
               <v-col cols="12">
                 <v-select
-                  :menu-props="{ offsetY: true }"
+                  :menu-props="{ offsetY: true, dark: dark_theme }"
                   outlined
                   :items="accesses_accesses"
                   item-text="name"
@@ -99,7 +99,7 @@
             <v-row align="center">
               <v-col cols="12">
                 <v-select
-                  :menu-props="{ offsetY: true }"
+                  :menu-props="{ offsetY: true, dark: dark_theme }"
                   outlined
                   :items="commissions_accesses"
                   item-text="name"

@@ -1,16 +1,18 @@
 <template>
   <div>
-    <v-btn-toggle v-model="route" borderless>
+    <v-btn-toggle v-model="route">
       <v-btn
+        
         small
-        :color="dark_theme ? 'blue darken-4 white--text' : 'blue lighten-4'"
+        :class="dark_theme ? 'white--text' : ''"
+        :color="dark_theme ? 'rgb(0,0,70)' : 'blue lighten-4'"
         :disabled="item.disabled"
         :to="item.href"
         v-for="item in items"
         :key="item.text"
         :value="item.text"
       >
-        <v-icon left>
+        <v-icon left :color="dark_theme ? 'white' : 'black'">
           {{ item.icon }}
         </v-icon>
         <strong>{{ item.text }}</strong>

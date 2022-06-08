@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\LogLogin;
+use Illuminate\Support\Facades\View;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -63,6 +65,7 @@ class UserController extends Controller
         $newUser->role = $request->role;
         $newUser->password = password_hash($request->password, PASSWORD_DEFAULT);
         $newUser->access_id = 1;
+        $newUser->configs = '{"theme":1}';
         $newUser->save();
         return response()->json($newUser->load('access'));
     }
@@ -83,6 +86,17 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->cpf = $request->cpf;
         $user->role = $request->role;
+
+
+        /*if (isset($request->photo) && $request->photo) {
+            $photo_name = time().'.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
+            \Image::make($request->photo)->save(public_path('img/profile/').$photo_name);
+            $request->merge(['photo' => $photo_name]);
+            $user->photo = $photo_name;
+        }*/
+
+
+
         if (isset($request->active)) {
             $user->active = $request->active;
         }
@@ -119,4 +133,19 @@ class UserController extends Controller
         $user->delete();
         return response()->json($user);
     }
+
+    public function addAvatar(){
+        return view('add_avatar');
+    }
+    //Store image
+    public function storeAvatar(User $user, Request $request){
+        $user->photo = $request->photo->name;
+        $user->save();
+        return response()->json($user);
+    }
+	//View image
+    public function getAvatar(){
+        return view('view_avatar');
+    }
+
 }

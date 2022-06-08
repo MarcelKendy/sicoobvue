@@ -63,6 +63,7 @@
             <v-row>
               <v-col cols="12">
                 <v-autocomplete
+                  :menu-props="{ dark: dark_theme }"
                   label="Produtos"
                   :color="color"
                   prepend-icon="mdi-storefront"
@@ -105,6 +106,7 @@
               </v-col>
               <v-col cols="12">
                 <v-autocomplete
+                  :menu-props="{ dark: dark_theme }"
                   label="Usuários"
                   :color="color"
                   prepend-icon="mdi-account"
@@ -232,6 +234,7 @@
                     <v-date-picker
                       locale="pt-BR"
                       :color="color"
+                      :dark="dark_theme"
                       elevation="9"
                       @change="changeDateFilter"
                       v-model="item.dates"
@@ -243,7 +246,7 @@
               </v-col>
               <v-col cols="12">
                 <v-autocomplete
-                  :menu-props="{ offsetY: true }"
+                  :menu-props="{ dark: dark_theme }"
                   solo
                   :items="status"
                   :color="color"
@@ -368,17 +371,7 @@
         name="Relatório_Comissões.xls"
         header="Relatório das Comissões"
         :fields="fields_excel_report"
-        :footer="[
-          '--Fim dos Registros--',
-          'Filtro Aplicado:',
-          'Usuários: ' + (item.users.length > 0 ? users_name : 'TODOS'),
-          'Produtos: ' + (item.products.length > 0 ? item.products : 'TODOS'),
-          'Data/Período: ' +
-            (item.products.dates > 0 ? item.dates : 'SEM FILTRO'),
-          'Status: ' + (item.status.length > 0 ? item.status : 'TODOS'),
-          'Requisitado em: ' + new Date().toLocaleString(),
-          'Sicoob Credisg Software - v.1.0.0',
-        ]"
+        :footer="excel_report_info"
         default-value="Não informado"
         worksheet="Relatório das Comissões"
       >
@@ -389,18 +382,9 @@
       :generate="generate_pdf"
       name="Relatório_Comissões"
       type="table"
-      :info="[
-          '--Fim dos Registros--',
-          'Filtro Aplicado:',
-          'Usuários: ' + (item.users.length > 0 ? users_name : 'TODOS'),
-          'Produtos: ' + (item.products.length > 0 ? item.products : 'TODOS'),
-          'Data/Período: ' +
-            (item.products.dates > 0 ? item.dates : 'SEM FILTRO'),
-          'Status: ' + (item.status.length > 0 ? item.status : 'TODOS'),
-          'Requisitado em: ' + new Date().toLocaleString(),
-          'Sicoob Credisg Software - v.1.0.0',
-        ]"
+      :info="pdf_report_info"
       :data="items_computed"
+      report="commissions"
       @progress="progressPDF"
     ></pdf-generator-component>
   </div>
@@ -576,7 +560,7 @@ export default {
   },
   methods: {
     progressPDF(percentage) {
-      this.progress = percentage
+      this.progress = percentage;
       if (percentage == 100) {
         this.closeModal();
       }
@@ -749,6 +733,30 @@ export default {
       } catch (err) {
         return false;
       }
+    },
+    pdf_report_info() {
+      return [
+        'Usuários: ' + (this.item.users.length > 0 ? this.users_name : 'TODOS'),
+        'Produtos: ' +
+          (this.item.products.length > 0 ? this.item.products : 'TODOS'),
+        'Data/Período: ' +
+          (this.item.products.dates > 0 ? this.item.dates : 'SEM FILTRO'),
+        'Status: ' + (this.item.status.length > 0 ? this.item.status : 'TODOS'),
+      ];
+    },
+    excel_report_info() {
+      return [
+        '--Fim dos Registros--',
+        'Filtro Aplicado:',
+        'Usuários: ' + (this.item.users.length > 0 ? this.users_name : 'TODOS'),
+        'Produtos: ' +
+          (this.item.products.length > 0 ? this.item.products : 'TODOS'),
+        'Data/Período: ' +
+          (this.item.products.dates > 0 ? this.item.dates : 'SEM FILTRO'),
+        'Status: ' + (this.item.status.length > 0 ? this.item.status : 'TODOS'),
+        'Requisitado em: ' + new Date().toLocaleString(),
+        'Sicoob Credisg Software - v.1.0.0',
+      ];
     },
     dateFilter() {
       return this.item.dates;

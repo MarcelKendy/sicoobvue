@@ -99,6 +99,19 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
+                <v-file-input
+                  v-model="item.photo"
+                  accept="image/*"
+                  label="Foto de Perfil"
+                  :color="color"
+                  placeholder="Escolha uma fotinha para facilitar a sua identificação e embelezar o nosso sistema!"
+                  prepend-icon="mdi-camera"
+                  show-size
+                  truncate-length="40"
+                  :rules="photoRule"
+                ></v-file-input>
+              </v-col>
+              <v-col cols="12">
                 <v-tooltip id="tooltip" right>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
@@ -124,7 +137,6 @@
               </v-col>
               <v-slide-y-transition>
                 <v-card
-
                   v-if="change_password"
                   class="mx-auto pa-2"
                   elevation="10"
@@ -139,7 +151,6 @@
                           :color="dark_theme ? 'white' : 'orange'"
                           v-bind="attrs"
                           v-on="on"
-                          
                           >mdi-alert-octagon-outline</v-icon
                         >
                       </template>
@@ -217,6 +228,7 @@ export default {
         cpf: '',
         active: '',
         role: '',
+        photo: null,
         password: '',
         verify: '',
       },
@@ -229,6 +241,12 @@ export default {
       emailRule: [
         (v) => !!v || 'Digite o seu E-mail',
         (v) => /.+@.+\..+/.test(v) || 'E-mail inválido',
+      ],
+      photoRule: [
+        (value) =>
+          !!value ||
+          true ||
+          'Isso não é uma imagem. Formatos aceitos: .png, .jpg, etc...',
       ],
       passwordRule: [
         (v) => !!v || 'Digite sua senha',
@@ -264,7 +282,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.loading = true;
         this.change_password = false;
-        this.$http
+        /*this.$http
           .put(`edit_user/${this.item.id}`, this.item)
           .then((response) => {
             this.$store
@@ -273,10 +291,22 @@ export default {
             if (this.$refs.form) {
               this.$refs.form.reset();
             }
+          });*/
+        let form = new FormData();
+        form.append('photo', this.item.photo);
+       
+
+        this.$http
+          .put(`store_avatar/${this.item.id}`, form, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          })
+          .then((response) => {
+            console.log(response);
           });
       }
     },
     closeModal() {
+      this.$refs.form.resetValidation();
       this.change_password = false;
       this.$emit('closeModal');
     },
@@ -301,6 +331,7 @@ export default {
         active: '',
         cpf: '',
         role: '',
+        photo: null,
         password: '',
         verify: '',
       };

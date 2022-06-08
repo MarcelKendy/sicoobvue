@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-menu
+      :dark="dark"
       v-model="dialog"
       :close-on-content-click="false"
       :nudge-width="200"
@@ -24,7 +25,9 @@
       <template v-slot:default="dialog">
         <v-card>
           <v-tabs v-model="tabs" fixed-tabs>
-            <v-tabs-slider color="black"></v-tabs-slider>
+            <v-tabs-slider
+              :color="dark ? 'white' : color"
+            ></v-tabs-slider>
             <v-tab href="#pick-date" class="primary--text">
               <v-icon :color="tabs == 'pick-date' ? color : 'gray'"
                 >mdi-calendar</v-icon
@@ -37,9 +40,13 @@
               >
             </v-tab>
           </v-tabs>
-          <v-tabs-items v-model="tabs">
+          <v-tabs-items
+            v-model="tabs"
+            :style="dark ? 'background-color: rgb(70,70,70);' : ''"
+          >
             <v-tab-item value="pick-date">
               <v-date-picker
+                :dark="dark"
                 locale="pt-BR"
                 :color="color"
                 v-model="datePicker"
@@ -47,6 +54,8 @@
             </v-tab-item>
             <v-tab-item value="pick-time">
               <v-time-picker
+                height="200"
+                :dark="dark"
                 :color="color"
                 format="ampm"
                 v-model="timePicker"
@@ -54,7 +63,6 @@
               ></v-time-picker>
             </v-tab-item>
           </v-tabs-items>
-          <v-card-text> </v-card-text>
           <v-card-actions class="justify-end">
             <v-btn text :color="color" @click="clear(true)" v-if="clearable"
               >Limpar</v-btn
@@ -98,6 +106,11 @@ export default {
     label: {
       required: false,
       type: [String],
+    },
+    dark: {
+      required: false,
+      type: [Boolean],
+      default: false,
     },
     clearable: {
       required: false,

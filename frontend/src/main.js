@@ -11,9 +11,10 @@ import db from '../src/services/localbase'
 import VueParticles from 'vue-particles'
 import "./plugins/vuetify-number.js"
 import JsonExcel from "vue-json-excel";
-
+import FormData from 'form-data'
 Vue.component("downloadExcel", JsonExcel);
 Vue.use(VueParticles)
+
 
 //import VueSpinners from 'vue-spinners'
 
@@ -25,5 +26,6 @@ new Vue({
   store,
   vuetify,
   db,
+  FormData,
   render: h => h(App)
 }).$mount('#app')

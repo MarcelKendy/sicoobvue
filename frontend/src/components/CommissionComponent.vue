@@ -106,8 +106,8 @@
                     <strong>
                       <span class="ma-2">
                         <strong class="blue--text text--darken-3">
-                          Comissões dos empregados referentes ao produto "
-                          {{ item.product }}":
+                          Comissões dos empregados referentes ao produto 
+                        "{{ item.product }}":
                         </strong>
                         <span style="font-size: 13px; padding-left: 10px">
                           (Comissão da
