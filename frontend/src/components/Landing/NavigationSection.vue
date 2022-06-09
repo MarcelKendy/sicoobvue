@@ -12,7 +12,7 @@
 
       <v-toolbar-title>
         <v-img src="@/assets/images/sicoobicon.png" class="mt-2" style="display:inline-block" max-width="30px" />
-        <strong class="mx-3" style="top:16px; position:absolute;">Credisg Software</strong>
+        <strong class="mx-3" style="top:16px; position:absolute;">Credisg Software <small style="font-weight:300">{{$store.state.version}}</small></strong>
   
       </v-toolbar-title>
       <v-spacer />
