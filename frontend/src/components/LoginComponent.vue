@@ -417,7 +417,7 @@ export default {
                 } else {
                   this.$store
                     .dispatch('login', response.data[0])
-                    .then(this.$router.push('/'));
+                    .then(this.$router.push('/home'));
                 }
               }
             }

@@ -62,6 +62,7 @@ export default {
                 cpf: data.cpf, 
                 gender: data.gender,
                 email: data.email,
+                photo: data.photo,
                 accesses: JSON.parse(data.access.accesses),
                 configs: JSON.parse(data.configs),
                 active: data.active
@@ -92,6 +93,7 @@ export default {
                 cpf: data.cpf, 
                 gender: data.gender,
                 email: data.email,
+                photo: data.photo,
                 accesses: data.accesses,
                 configs: data.configs,
                 active: data.active

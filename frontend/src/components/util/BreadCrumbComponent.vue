@@ -57,7 +57,7 @@ export default {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: true,
-              href: '/',
+              href: '/home',
             },
           ];
           break;
@@ -67,7 +67,7 @@ export default {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: false,
-              href: '/',
+              href: '/home',
             },
             {
               text: 'Dashboard',
@@ -83,7 +83,7 @@ export default {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: false,
-              href: '/',
+              href: '/home',
             },
             {
               text: 'Comissões',
@@ -99,7 +99,7 @@ export default {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: false,
-              href: '/',
+              href: '/home',
             },
             {
               text: 'Checklist',
@@ -115,7 +115,7 @@ export default {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: false,
-              href: '/',
+              href: '/home',
             },
             {
               text: 'Usuários',
@@ -131,7 +131,7 @@ export default {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: false,
-              href: '/',
+              href: '/home',
             },
             {
               text: 'Acessos',
@@ -147,7 +147,7 @@ export default {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: false,
-              href: '/',
+              href: '/home',
             },
             {
               text: 'Sobre',
@@ -157,15 +157,13 @@ export default {
             },
           ];
           break;
-        case 'Login':
-          break;
         default:
           this.items = [
             {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: false,
-              href: '/',
+              href: '/home',
             },
             {
               text: 'Página não encontrada',

@@ -1,15 +1,37 @@
 <template>
   <v-app id="inspire" v-if="login_check">
-    <v-navigation-drawer v-model="drawer" v-if="$route.name != 'Login'" app :dark="dark_theme">
+    <v-navigation-drawer
+      v-model="drawer"
+      v-if="$route.name != 'Login' && $route.name != 'Landing'"
+      app
+      :dark="dark_theme"
+    >
       <v-img
         height="216px"
-        :src="require(dark_theme ? './assets/images/circuitsbg2.png' : './assets/images/circuitsbg2.png')"
-        :gradient="dark_theme ? 'to bottom left, rgba(3,0,24,.9), rgba(143,20,174,.4)' : 'to bottom left, rgba(23,152,185,.9), rgba(25,135,80,.5), rgba(100,255,45,.3)'"
+        :src="
+          require(dark_theme
+            ? './assets/images/circuitsbg2.png'
+            : './assets/images/circuitsbg2.png')
+        "
+        :gradient="
+          dark_theme
+            ? 'to bottom left, rgba(3,0,24,.9), rgba(143,20,174,.4)'
+            : 'to bottom left, rgba(23,152,185,.9), rgba(25,135,80,.5), rgba(100,255,45,.3)'
+        "
         dark
         class="pt-5 text-center"
       >
         <v-avatar size="80px">
-          <img alt="Avatar" src="./assets/images/logo.png" />
+          <v-img
+            alt="Avatar"
+            :src="
+              state_user.photo
+                ? avatar_path(state_user.photo)
+                : require(state_user.gender == 1
+                    ? './assets/images/man.png'
+                    : './assets/images/woman.png')
+            "
+          ></v-img>
         </v-avatar>
         <v-list-item>
           <v-list-item-content style="padding-top: 40px">
@@ -25,7 +47,7 @@
 
       <v-divider color="black"></v-divider>
 
-      <v-list dense nav active-class="bg-active" v-if="state_user">
+      <v-list dense nav active-class="bg-active" v-if="state_user_access">
         <v-list-item
           v-for="item in items"
           :key="item.title"
@@ -101,7 +123,7 @@
     </v-navigation-drawer>
 
     <v-app-bar
-      v-if="$route.name != 'Login'"
+      v-if="$route.name != 'Login' && $route.name != 'Landing'"
       shrink-on-scroll
       app
       :color="dark_theme ? 'rgba(8,140,105,.9)' : 'rgba(18,210,175,.9)'"
@@ -113,18 +135,26 @@
       <template v-slot:img="{ props }">
         <v-img
           v-bind="props"
-          :gradient="dark_theme ? 'to bottom right, rgba(43,22,67,.6), rgba(40,90,85,.4)' : 'to bottom right, rgba(183,92,227,.4), rgba(80,200,145,.2)'"
+          :gradient="
+            dark_theme
+              ? 'to bottom right, rgba(43,22,67,.6), rgba(40,90,85,.4)'
+              : 'to bottom right, rgba(183,92,227,.4), rgba(80,200,145,.2)'
+          "
         ></v-img>
       </template>
 
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-img class="ma-2" max-width="32" src="./assets/icons/sicoobicon.png"></v-img>
-      <strong
-        style="font-size: 24px;"
-        class="font-quicksand mx-2 mt-1"
-        >Bem Vindo</strong
-      >
+      <v-img
+        class="ma-2"
+        max-width="32"
+        src="./assets/icons/sicoobicon.png"
+      ></v-img>
+      <strong style="font-size: 24px" class="font-quicksand mx-2 mt-1">{{
+        state_user.gender == 1
+          ? 'Bem-Vindo, ' + state_user.name
+          : 'Bem-Vinda, ' + state_user.name
+      }}</strong>
 
       <v-spacer></v-spacer>
 
@@ -136,6 +166,7 @@
       v-if="$route.name != 'Login'"
     >
       <bread-crumb-component
+        v-if="$route.name != 'Login' && $route.name != 'Landing'"
         :activeRoute="this.$route.name"
       ></bread-crumb-component>
       <router-view></router-view>
@@ -161,7 +192,7 @@ export default {
         title: 'Home',
         icon: 'mdi-view-dashboard',
         img: 'landing-page.png',
-        to: '/',
+        to: '/home',
       },
       {
         title: 'Dashboard',
@@ -214,11 +245,13 @@ export default {
         document.title = 'Sicoob Credisg - ' + to.name || 'Sicoob Credisg';
       },
     },
-    state_user: function () {
-      if (this.state_user) {
+    state_user_access: function () {
+      if (this.state_user_access) {
         let verify_screen_access = this.verifyScreenAccess(this.$route.name);
         if (verify_screen_access == 404) {
-          this.$route.name == 'Página Inválida' ? '' : this.$router.push('/404');
+          this.$route.name == 'Página Inválida'
+            ? ''
+            : this.$router.push('/404');
         } else {
           this.$route.name !== 'Home' && !verify_screen_access
             ? this.$router.push('/505')
@@ -236,7 +269,7 @@ export default {
         .limit(1)
         .get()
         .then((user) => {
-          if (!user.length && this.$route.name != 'Login') {
+          if (!user.length && this.$route.name != 'Login' && this.$route.name != 'Landing') {
             this.$router.push('/login');
           }
           this.$store.state.user = {};
@@ -262,6 +295,8 @@ export default {
             return true;
           case 'Home':
             return true;
+          case 'Landing':
+            return true;
           case 'Checklist':
             return true;
           case 'Sobre':
@@ -275,6 +310,13 @@ export default {
         return false;
       }
     },
+    avatar_path(photo_path) {
+      try {
+        return require('../../backend/storage/app/' + photo_path);
+      } catch {
+        return '';
+      }
+    },
   },
   computed: {
     dark_theme() {
@@ -284,9 +326,16 @@ export default {
         return false;
       }
     },
-    state_user() {
+    state_user_access() {
       try {
         return this.$store.state.user.accesses;
+      } catch (err) {
+        return false;
+      }
+    },
+    state_user() {
+      try {
+        return this.$store.state.user;
       } catch (err) {
         return false;
       }

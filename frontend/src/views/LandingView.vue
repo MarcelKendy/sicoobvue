@@ -1,11 +1,11 @@
 <template>
   <div>
     <v-main class="pt-0">
+      <navigation />
       <home />
       <about />
       <download />
       <pricing />
-      <contact />
     </v-main>
     <v-scale-transition>
       <v-btn
@@ -35,21 +35,20 @@
 </style>
 
 <script>
+import navigation from '../components/Landing/NavigationSection';
 import home from '../components/Landing/HomeSection';
 import about from '../components/Landing/AboutSection';
 import download from '../components/Landing/DownloadSection';
 import pricing from '../components/Landing/PricingSection';
-import contact from '../components/Landing/ContactSection';
-
 export default {
   name: 'App',
 
   components: {
+    navigation,
     home,
     about,
     download,
     pricing,
-    contact,
   },
 
   data: () => ({

@@ -126,7 +126,10 @@
                             }`)
                           "
                         ></v-img>
-                        <!--<v-img v-else :src="require(item.item.photo)"></v-img>-->
+                        <v-img
+                          v-else
+                          :src="avatar_path(item.item.photo)"
+                        ></v-img>
                       </v-avatar>
                       {{
                         abreviateString(
@@ -148,7 +151,7 @@
                           }`)
                         "
                       ></v-img>
-                      <!--<v-img v-else :src="require(item.item.photo)"></v-img>-->
+                      <v-img v-else :src="avatar_path(item.item.photo)"></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
                       <v-list-item-title
@@ -241,7 +244,10 @@
                               }`)
                             "
                           ></v-img>
-                          <!--<v-img v-else :src="require(item.item.photo)"></v-img>-->
+                          <v-img
+                            v-else
+                            :src="avatar_path(item.item.photo)"
+                          ></v-img>
                         </v-avatar>
                         {{
                           abreviateString(
@@ -263,7 +269,10 @@
                             }`)
                           "
                         ></v-img>
-                        <!--<v-img v-else :src="require(item.item.photo)"></v-img>-->
+                        <v-img
+                          v-else
+                          :src="avatar_path(item.item.photo)"
+                        ></v-img>
                       </v-list-item-avatar>
                       <v-list-item-content>
                         <v-list-item-title
@@ -413,7 +422,10 @@
                               }`)
                             "
                           ></v-img>
-                          <!--<v-img v-else :src="require(item.item.photo)"></v-img>-->
+                          <v-img
+                            v-else
+                            :src="avatar_path(item.item.photo)"
+                          ></v-img>
                         </v-avatar>
                         {{
                           abreviateString(
@@ -435,7 +447,10 @@
                             }`)
                           "
                         ></v-img>
-                        <!--<v-img v-else :src="require(item.item.photo)"></v-img>-->
+                        <v-img
+                          v-else
+                          :src="avatar_path(item.item.photo)"
+                        ></v-img>
                       </v-list-item-avatar>
                       <v-list-item-content>
                         <v-list-item-title
@@ -500,7 +515,14 @@
           <v-btn color="red darken-1" dark text @click="closeModal()">
             Cancelar
           </v-btn>
-          <v-btn :color="color" text @click="addCommission()"> Salvar </v-btn>
+          <v-btn
+            :color="color"
+            :disabled="!valid"
+            text
+            @click="addCommission()"
+          >
+            Salvar
+          </v-btn>
           <!--:disabled="!valid"-->
         </v-card-actions>
       </v-card>
@@ -864,6 +886,9 @@ export default {
       this.$emit('closeAddModal');
       this.$refs.form.resetValidation();
       Object.assign(this.item, this.defaultItem);
+    },
+    avatar_path(photo_path) {
+      return require('../../../../backend/storage/app/' + photo_path);
     },
   },
   computed: {

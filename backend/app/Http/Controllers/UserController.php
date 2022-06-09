@@ -138,10 +138,13 @@ class UserController extends Controller
         return view('add_avatar');
     }
     //Store image
-    public function storeAvatar(User $user, Request $request){
-        $user->photo = $request->photo->name;
+    public function storeAvatar(Request $request){
+
+        $user = User::find($request->user_id);
+        $user->photo = $request->file('photo')->store('uploads/avatars/'.$user->cpf);
         $user->save();
-        return response()->json($user);
+
+        return response()->json($user->load('access'));
     }
 	//View image
     public function getAvatar(){

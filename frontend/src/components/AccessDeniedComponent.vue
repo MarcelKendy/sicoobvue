@@ -12,8 +12,8 @@
           <v-alert :color="color" border="left" elevation="7" dark prominent>
             <template slot="prepend">
               <v-img
-                width="200px"
-                src="./../assets/images/error-404.png"
+                width="150px"
+                src="./../assets/images/access-denied.png"
               ></v-img>
             </template>
             <h3>Caro usuário, a rota que você tentou acessar requer um acesso que você não possui.</h3>
@@ -27,7 +27,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn to="/" class="gradient-success bold" 
+          <v-btn to="/home" class="gradient-success bold" 
             >Me levar pra casa<v-img
               src="./../assets/icons/landing-page.png"
             ></v-img

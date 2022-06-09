@@ -106,8 +106,9 @@
                     <strong>
                       <span class="ma-2">
                         <strong class="blue--text text--darken-3">
-                          Comissões dos empregados referentes ao produto 
-                        "{{ item.product }}":
+                          Comissões dos empregados referentes ao produto "{{
+                            item.product
+                          }}":
                         </strong>
                         <span style="font-size: 13px; padding-left: 10px">
                           (Comissão da
@@ -287,7 +288,7 @@
                 <v-avatar left>
                   <v-img
                     v-if="item.indicator.photo"
-                    src="https://cdn.vuetifyjs.com/images/john.png"
+                    :src="avatar_path(item.indicator.photo)"
                   ></v-img>
                   <v-img
                     v-else
@@ -301,7 +302,7 @@
                 {{ item.indicator.name }}
               </v-chip>
             </template>
-            <v-card width="300" class="style-title" :dark="dark_theme">
+            <v-card width="300" class="bold font-quicksand" :dark="dark_theme">
               <v-list>
                 <v-img
                   height="100px"
@@ -311,11 +312,11 @@
                   class="pt-5 text-center"
                 >
                   <v-list-item>
-                    <v-list-item-avatar>
+                    <v-list-item-avatar size="52">
                       <img
                         v-if="item.indicator.photo"
                         alt="Foto"
-                        src="https://cdn.vuetifyjs.com/images/john.png"
+                        :src="avatar_path(item.indicator.photo)"
                       />
                       <v-tooltip id="tooltip" top v-else>
                         <template v-slot:activator="{ on, attrs }">
@@ -395,7 +396,7 @@
                 <v-avatar left>
                   <v-img
                     v-if="item.seller.photo"
-                    src="https://cdn.vuetifyjs.com/images/john.png"
+                    :src="avatar_path(item.seller.photo)"
                   ></v-img>
                   <v-img
                     v-else
@@ -409,7 +410,7 @@
                 {{ item.seller.name }}
               </v-chip>
             </template>
-            <v-card width="300" class="style-title" :dark="dark_theme">
+            <v-card width="300" class="bold font-quicksand" :dark="dark_theme">
               <v-list>
                 <v-img
                   height="100px"
@@ -419,11 +420,11 @@
                   class="pt-5 text-center"
                 >
                   <v-list-item>
-                    <v-list-item-avatar>
+                    <v-list-item-avatar size="52">
                       <img
                         v-if="item.seller.photo"
                         alt="Foto"
-                        :src="'./../assets/users/' + item.seller.photo"
+                        :src="avatar_path(item.seller.photo)"
                       />
                       <v-tooltip id="tooltip" top v-else>
                         <template v-slot:activator="{ on, attrs }">
@@ -515,7 +516,7 @@
                 <v-avatar left>
                   <v-img
                     v-if="item.operator.photo"
-                    :src="'./../assets/users/' + item.operator.photo"
+                    :src="avatar_path(item.operator.photo)"
                   ></v-img>
                   <v-img
                     v-else
@@ -529,7 +530,7 @@
                 {{ item.operator.name }}
               </v-chip>
             </template>
-            <v-card width="300" class="style-title" :dark="dark_theme">
+            <v-card width="300" class="bold font-quicksand" :dark="dark_theme">
               <v-list>
                 <v-img
                   height="100px"
@@ -539,11 +540,11 @@
                   class="pt-5 text-center"
                 >
                   <v-list-item>
-                    <v-list-item-avatar>
+                    <v-list-item-avatar size="52">
                       <img
                         v-if="item.operator.photo"
                         alt="Foto"
-                        src="https://cdn.vuetifyjs.com/images/john.png"
+                        :src="avatar_path(item.operator.photo)"
                       />
                       <v-tooltip id="tooltip" top v-else>
                         <template v-slot:activator="{ on, attrs }">
@@ -1102,6 +1103,9 @@ export default {
         this.deleteModal();
         this.snackbar_delete = true;
       });
+    },
+    avatar_path(photo_path) {
+      return require('../../../backend/storage/app/' + photo_path);
     },
   },
   computed: {

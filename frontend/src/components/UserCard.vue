@@ -19,7 +19,12 @@
         max-width="300"
         :dark="theme == 0"
       >
-        <v-list :class="theme == 0 ? 'pa-0 user-card-header-dark' : 'pa-0 user-card-header'" dark>
+        <v-list
+          :class="
+            theme == 0 ? 'pa-0 user-card-header-dark' : 'pa-0 user-card-header'
+          "
+          dark
+        >
           <v-img
             max-height="60px"
             src="../assets/images/bg1.png"
@@ -27,9 +32,20 @@
           >
             <v-list-item>
               <v-list-item-avatar>
-                <v-avatar size="36px">
-                  <img v-if="false" alt="Foto" src="" />
-                  <v-icon v-else>mdi-account</v-icon>
+                <v-avatar size="42">
+                  <v-img
+                    v-if="user_photo"
+                    alt="Foto"
+                    :src="avatar_path(user_photo)"
+                  ></v-img>
+                   <v-img
+                    v-else
+                    :src="
+                      require(user_gender == 1
+                        ? './../assets/icons/man.png'
+                        : './../assets/icons/woman.png')
+                    "
+                  ></v-img>
                 </v-avatar>
               </v-list-item-avatar>
 
@@ -191,6 +207,13 @@ export default {
     closeModalLogout() {
       this.confirmation_logout = false;
     },
+    avatar_path(photo_path) {
+      try {
+        return require('../../../backend/storage/app/' + photo_path);
+      } catch {
+        return '';
+      }
+    },
   },
 
   computed: {
@@ -199,6 +222,12 @@ export default {
     },
     user_role() {
       return this.$store.state.user.role;
+    },
+    user_photo() {
+      return this.$store.state.user.photo;
+    },
+    user_gender() {
+      return this.$store.state.user.gender;
     },
   },
 };

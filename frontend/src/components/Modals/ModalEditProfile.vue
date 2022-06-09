@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-dialog v-model="dialog" persistent max-width="700">
+      <!--<v-img src="@/assets/uploads/avatars/about.png"></v-img>-->
       <v-card :dark="dark_theme" :loading="loading">
         <template slot="progress">
           <v-progress-linear
@@ -102,13 +103,13 @@
                 <v-file-input
                   v-model="item.photo"
                   accept="image/*"
-                  label="Foto de Perfil"
+                  label="Alterar Foto de Perfil"
                   :color="color"
-                  placeholder="Escolha uma fotinha para facilitar a sua identificação e embelezar o nosso sistema!"
+                  placeholder="Insira apenas imagens"
                   prepend-icon="mdi-camera"
                   show-size
                   truncate-length="40"
-                  :rules="photoRule"
+                  
                 ></v-file-input>
               </v-col>
               <v-col cols="12">
@@ -211,6 +212,7 @@
 </template>
 
 <script>
+import FormData from 'form-data';
 export default {
   props: ['open', 'user'],
   components: {},
@@ -245,7 +247,6 @@ export default {
       photoRule: [
         (value) =>
           !!value ||
-          true ||
           'Isso não é uma imagem. Formatos aceitos: .png, .jpg, etc...',
       ],
       passwordRule: [
@@ -277,31 +278,41 @@ export default {
         Object.assign(this.item, this.defaultItem),
         this.state_user
       );
+      this.item.photo = null
     },
     editProfile() {
       if (this.$refs.form.validate()) {
         this.loading = true;
         this.change_password = false;
-        /*this.$http
+        this.$http
           .put(`edit_user/${this.item.id}`, this.item)
           .then((response) => {
-            this.$store
-              .dispatch('login', response.data)
-              .then(this.$emit('closeModal'));
-            if (this.$refs.form) {
-              this.$refs.form.reset();
+            if (this.item.photo) {
+              let form_data = new FormData();
+              form_data.append('photo', this.item.photo);
+              form_data.append('name', this.item.photo.name);
+              form_data.append('user_id', this.item.id);
+              this.$http
+                .post('/store_avatar', form_data, {
+                  headers: { 'Content-Type': 'multipart/form-data' },
+                })
+                .then((response) => {
+                  console.log(response.data);
+                  this.$store
+                    .dispatch('login', response.data)
+                    .then(this.$emit('closeModal'));
+                  if (this.$refs.form) {
+                    this.$refs.form.reset();
+                  }
+                });
+            } else {
+              this.$store
+                .dispatch('login', response.data)
+                .then(this.$emit('closeModal'));
+              if (this.$refs.form) {
+                this.$refs.form.reset();
+              }
             }
-          });*/
-        let form = new FormData();
-        form.append('photo', this.item.photo);
-       
-
-        this.$http
-          .put(`store_avatar/${this.item.id}`, form, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-          })
-          .then((response) => {
-            console.log(response);
           });
       }
     },

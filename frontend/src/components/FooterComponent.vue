@@ -63,9 +63,9 @@
               </v-badge>
             </template>
 
-            <v-list style="">
+            <v-list :dark="dark_theme">
               <v-list-item
-                class="effect"
+                :class="dark_theme ? 'effect-dark' : 'effect'"
                 v-for="(item, i) in items_links"
                 :key="i"
                 link
@@ -195,5 +195,12 @@ export default {
 .effect:hover {
   background-color: aquamarine;
   box-shadow: 0px 2px 10px 1px rgb(39, 58, 59), 0px 0px 0px 0px;
+}
+.effect-dark {
+  transition: 0.2s;
+}
+.effect-dark:hover {
+  background-color: rgb(48, 89, 75);
+  box-shadow: 0px 2px 10px 1px rgb(36, 101, 106), 0px 0px 0px 0px;
 }
 </style>

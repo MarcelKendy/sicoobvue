@@ -12,18 +12,26 @@
         <span class="bold title-card">Usuários do Sistema</span>
       </v-card-title>
       <v-card-subtitle>
-        <span :class="dark_theme ? 'bold subtitle-card-dark' : 'subtitle-card'">Controle de usuários</span>
+        <span :class="dark_theme ? 'bold subtitle-card-dark' : 'subtitle-card'"
+          >Controle de usuários</span
+        >
       </v-card-subtitle>
       <v-card-text>
         <v-list three-line v-for="(item, index) in items" :key="index">
-          <v-list-item :key="index + 0.1" :class="dark_theme ? 'list-item-dark' : 'list-item'">
-            <v-list-item-avatar class="mt-6">
-              <v-img v-if="item.photo" :src="item.photo"></v-img>
+          <v-list-item
+            :key="index + 0.1"
+            :class="dark_theme ? 'list-item-dark' : 'list-item'"
+          >
+            <v-list-item-avatar class="mt-6" size="48">
+              <v-img v-if="item.photo" :src="avatar_path(item.photo)"></v-img>
               <v-img
                 v-else
-                :src="require(`./../assets/icons/${item.gender == 1 ? 'man.png' : 'woman.png'}`)"
+                :src="
+                  require(`./../assets/icons/${
+                    item.gender == 1 ? 'man.png' : 'woman.png'
+                  }`)
+                "
               ></v-img>
-              
             </v-list-item-avatar>
             <v-list-item-content class="bold">
               <span>{{ item.full_name }}</span>
@@ -145,7 +153,11 @@
         </v-list>
       </v-card-text>
       <v-card-actions>
-        <span :style="dark_theme ? 'color: white' : ''" class="bold page-items-text mx-3">Itens por página:</span>
+        <span
+          :style="dark_theme ? 'color: white' : ''"
+          class="bold page-items-text mx-3"
+          >Itens por página:</span
+        >
         <div style="max-width: 37px">
           <v-form ref="form_page_items" v-model="valid_page" lazy-validation>
             <vuetify-number
@@ -180,7 +192,7 @@ export default {
     items: [],
     accesses: [],
     total_pages: 1,
-    page_total_items: 6,
+    page_total_items: 10,
     page: 1,
     i: -1,
     loading: false,
@@ -211,15 +223,15 @@ export default {
       if (this.$refs.form_page_items.validate()) {
         this.pagination(true, 1);
       } else {
-        this.page_total_items = 6;
+        this.page_total_items = 10;
         this.pagination(true, 1);
       }
     },
   },
   computed: {
-    dark_theme () {
-      return this.$store.state.user.configs.theme == 0
-    }
+    dark_theme() {
+      return this.$store.state.user.configs.theme == 0;
+    },
   },
   methods: {
     loading_access_computed(id) {
@@ -228,7 +240,7 @@ export default {
     changeAccess(user_id, access_id, active = -1) {
       if (!access_id && active == -1) {
         this.loading_access[user_id] = false;
-        return 505
+        return 505;
       }
       this.$http
         .put(`edit_user_access/${user_id}`, {
@@ -273,6 +285,9 @@ export default {
         this.loading = false;
         this.getAccesses();
       });
+    },
+    avatar_path(photo_path) {
+      return require('../../../backend/storage/app/' + photo_path);
     },
   },
 };
