@@ -531,7 +531,7 @@
 </template>
 
 <script>
-import DateTimePicker from '../util/DateTimePicker.vue';
+import DateTimePicker from '../Util/DateTimePicker.vue';
 export default {
   props: ['open'],
   components: { DateTimePicker },

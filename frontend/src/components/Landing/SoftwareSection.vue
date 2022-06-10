@@ -1,5 +1,5 @@
 <template>
-  <section id="download">
+  <section id="software">
     <v-container fluid>
       <v-row align="center" justify="center">
         <v-col cols="10">
@@ -12,25 +12,22 @@
               />
             </v-col>
             <v-col cols="12" sm="8" class="white--text text-left">
-              <h1 class="font-weight-light display-2 mb-2">
-                Baixar Demonstração
+              <h1 class="mb-2" style="font-size:30px">
+                Começar
               </h1>
               <h1 class="font-weight-light">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste ex
-                animi quod laboriosam vel blanditiis labore alias, aliquid,
-                tempora repellendus non.
+                Clique aqui e acesse o sistema
               </h1>
               <v-btn
                 rounded
                 outlined
-                href="https://github.com/Joabsonlg/Landing-Page"
-                target="_blank"
+                to="/dashboard"
                 large
                 color="white"
                 class="mt-4"
               >
-                <v-icon class="mr-2"> mdi-github </v-icon>
-                Git Hub
+                <v-icon class="mr-2"> mdi-laptop </v-icon>
+                {{$store.state.software.name}}
               </v-btn>
             </v-col>
           </v-row>
@@ -41,7 +38,7 @@
 </template>
 
 <style scoped>
-#download {
+#software {
   background-image: url('~@/assets/img/bgDownload.jpg');
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -50,8 +47,8 @@
   height: 500px;
 }
 
-#download .container,
-#download .row {
+#software .container,
+#software .row {
   height: 100%;
 }
 </style>

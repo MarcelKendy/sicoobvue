@@ -57,7 +57,7 @@ export default {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: true,
-              href: '/home',
+              href: '/',
             },
           ];
           break;
@@ -67,7 +67,7 @@ export default {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: false,
-              href: '/home',
+              href: '/',
             },
             {
               text: 'Dashboard',
@@ -83,7 +83,7 @@ export default {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: false,
-              href: '/home',
+              href: '/',
             },
             {
               text: 'Comissões',
@@ -99,7 +99,7 @@ export default {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: false,
-              href: '/home',
+              href: '/',
             },
             {
               text: 'Checklist',
@@ -115,7 +115,7 @@ export default {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: false,
-              href: '/home',
+              href: '/',
             },
             {
               text: 'Usuários',
@@ -131,7 +131,7 @@ export default {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: false,
-              href: '/home',
+              href: '/',
             },
             {
               text: 'Acessos',
@@ -147,7 +147,7 @@ export default {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: false,
-              href: '/home',
+              href: '/',
             },
             {
               text: 'Sobre',
@@ -163,7 +163,7 @@ export default {
               text: 'Home',
               icon: 'mdi-view-dashboard',
               disabled: false,
-              href: '/home',
+              href: '/',
             },
             {
               text: 'Página não encontrada',

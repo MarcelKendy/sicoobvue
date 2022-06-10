@@ -391,8 +391,8 @@
 </template>
 
 <script>
-import OverlayComponent from './../util/OverlayComponent.vue';
-import PdfGeneratorComponent from './../util/PdfGeneratorComponent.vue';
+import OverlayComponent from './../Util/OverlayComponent.vue';
+import PdfGeneratorComponent from './../Util/PdfGeneratorComponent.vue';
 
 export default {
   props: ['open', 'commissions'],
@@ -758,7 +758,7 @@ export default {
           (this.item.products.dates > 0 ? this.item.dates : 'SEM FILTRO'),
         'Status: ' + (this.item.status.length > 0 ? this.item.status : 'TODOS'),
         'Requisitado em: ' + new Date().toLocaleString(),
-        'Sicoob Credisg Software - v.1.0.0',
+        this.$store.state.software.name + '-' + this.$store.state.software.version,
       ];
     },
     dateFilter() {

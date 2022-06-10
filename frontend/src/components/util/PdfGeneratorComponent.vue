@@ -24,7 +24,7 @@
 
 <script>
 import VueHtml2pdf from 'vue-html2pdf';
-import CommissionsPdfReport from './../reports/CommissionsPdfReport.vue';
+import CommissionsPdfReport from './../Reports/CommissionsPdfReport.vue';
 export default {
   name: 'PdfGeneratorComponent',
   props: ['generate', 'type', 'data', 'name', 'info', 'report'],

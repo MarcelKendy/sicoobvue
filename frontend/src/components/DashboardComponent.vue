@@ -85,7 +85,11 @@ export default {
   data: () => ({}),
   computed: {
     dark_theme() {
-      return this.$store.state.user.configs.theme == 0;
+       try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false
+      }
     },
   },
 };

@@ -38,9 +38,11 @@
             <v-list-item-title
               style="font-family: 'Quicksand', sans-serif; font-size: 24px"
             >
-              <strong>Sicoob Credisg</strong>
+              <strong>{{ $store.state.software.name }}</strong>
             </v-list-item-title>
-            <v-list-item-subtitle> v1.0.0 </v-list-item-subtitle>
+            <v-list-item-subtitle>
+              {{ $store.state.software.version }}
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-img>
@@ -126,9 +128,9 @@
       v-if="$route.name != 'Login' && $route.name != 'Landing'"
       shrink-on-scroll
       app
-      :color="dark_theme ? 'rgba(8,140,105,.9)' : 'rgba(18,210,175,.9)'"
+      :color="dark_theme ? 'rgba(8,140,105,.9)' : 'rgba(18,200,175,.9)'"
       dark
-      src="./assets/images/credisgbuilding0.png"
+      src="./assets/images/main-banner.png"
       fade-img-on-scroll
       scroll-threshold="200"
     >
@@ -137,8 +139,8 @@
           v-bind="props"
           :gradient="
             dark_theme
-              ? 'to bottom right, rgba(43,22,67,.6), rgba(40,90,85,.4)'
-              : 'to bottom right, rgba(183,92,227,.4), rgba(80,200,145,.2)'
+              ? 'to bottom right, rgba(143,22,167,.4), rgba(40,90,85,.1)'
+              : 'to bottom right, rgba(83,112,227,.4), rgba(80,200,145,.1)'
           "
         ></v-img>
       </template>
@@ -182,18 +184,18 @@
 import db from '../src/services/localbase';
 import FooterComponent from './components/FooterComponent.vue';
 import UserCard from './components/UserCard.vue';
-import BreadCrumbComponent from './components/util/BreadCrumbComponent.vue';
+import BreadCrumbComponent from './components/Util/BreadCrumbComponent.vue';
 export default {
   components: { FooterComponent, UserCard, BreadCrumbComponent },
   data: () => ({
     drawer: false,
     items: [
-      {
+      /*{
         title: 'Home',
         icon: 'mdi-view-dashboard',
         img: 'landing-page.png',
         to: '/home',
-      },
+      },*/
       {
         title: 'Dashboard',
         icon: 'mdi-view-dashboard',
@@ -243,6 +245,9 @@ export default {
       immediate: true,
       handler(to) {
         document.title = 'Sicoob Credisg - ' + to.name || 'Sicoob Credisg';
+        if (to.name == 'Dashboard') {
+          this.verifyLoggedUser();
+        }
       },
     },
     state_user_access: function () {
@@ -269,7 +274,11 @@ export default {
         .limit(1)
         .get()
         .then((user) => {
-          if (!user.length && this.$route.name != 'Login' && this.$route.name != 'Landing') {
+          if (
+            !user.length &&
+            this.$route.name != 'Login' &&
+            this.$route.name != 'Landing'
+          ) {
             this.$router.push('/login');
           }
           this.$store.state.user = {};

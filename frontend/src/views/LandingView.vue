@@ -4,8 +4,8 @@
       <navigation />
       <home />
       <about />
-      <download />
-      <pricing />
+      <software />
+      <updates />
     </v-main>
     <v-scale-transition>
       <v-btn
@@ -25,21 +25,12 @@
   </div>
 </template>
 
-<style scoped>
-.v-main {
-  background-image: url('~@/assets/img/bgMain.png');
-  background-attachment: fixed;
-  background-position: center;
-  background-size: cover;
-}
-</style>
-
 <script>
 import navigation from '../components/Landing/NavigationSection';
 import home from '../components/Landing/HomeSection';
 import about from '../components/Landing/AboutSection';
-import download from '../components/Landing/DownloadSection';
-import pricing from '../components/Landing/PricingSection';
+import software from '../components/Landing/SoftwareSection';
+import updates from '../components/Landing/UpdatesSection';
 export default {
   name: 'App',
 
@@ -47,8 +38,8 @@ export default {
     navigation,
     home,
     about,
-    download,
-    pricing,
+    software,
+    updates,
   },
 
   data: () => ({
@@ -89,3 +80,27 @@ export default {
   },
 };
 </script>
+<style scoped>
+.v-main {
+  background-image: url('~@/assets/img/bgMain.png');
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
+.font-quicksand {
+  font-family: 'Quicksand', sans-serif;
+}
+.bold {
+  font-weight: bold;
+}
+.second_font-bold {
+  font-family: 'Varela Round', sans-serif;
+  font-weight: bold;
+}
+.second_font {
+  font-family: 'Varela Round', sans-serif;
+}
+.bolder {
+  font-weight: bolder;
+}
+</style>

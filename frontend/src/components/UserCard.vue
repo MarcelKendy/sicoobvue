@@ -38,7 +38,7 @@
                     alt="Foto"
                     :src="avatar_path(user_photo)"
                   ></v-img>
-                   <v-img
+                  <v-img
                     v-else
                     :src="
                       require(user_gender == 1
@@ -149,7 +149,9 @@ export default {
         .get()
         .then((user) => {
           Object.assign(this.$store.state.user, user[0]);
-          this.theme = this.$store.state.user.configs.theme;
+          if (this.$store.state.user.length > 0) {
+            this.theme = this.$store.state.user.configs.theme;
+          }
         });
     } else {
       this.theme = this.$store.state.user.configs.theme;

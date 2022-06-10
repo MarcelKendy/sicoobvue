@@ -87,7 +87,7 @@
         </div>
       </v-img>
       <v-card-text class="py-2 white--text text-center">
-        {{ new Date().getFullYear() }} — <strong>Sicoob Credisg TI</strong> —
+        {{ new Date().getFullYear() }} — <strong>Sicoob Credisg TI - {{$store.state.software.name}}</strong> —
         São Gotardo/MG
       </v-card-text>
     </v-card>

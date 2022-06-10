@@ -298,7 +298,7 @@
 </template>
 
 <script>
-import ForgotPassword from './mail/ForgotPassword.vue';
+import ForgotPassword from './Mail/ForgotPassword.vue';
 export default {
   components: { ForgotPassword },
   name: 'LoginComponent',
@@ -417,7 +417,7 @@ export default {
                 } else {
                   this.$store
                     .dispatch('login', response.data[0])
-                    .then(this.$router.push('/home'));
+                    .then(this.$router.push('/dashboard'));
                 }
               }
             }

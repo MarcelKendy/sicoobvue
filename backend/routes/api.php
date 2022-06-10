@@ -5,6 +5,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AccessController;
+use App\Http\Controllers\UpdatesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,4 +66,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // ACCESS ROUTES
 
 
-//Route::get('/get_xml/{xml}', [TaskController::class, 'getXml']);
+// SOFTWARE UPDATES ROUTES
+    Route::get('/get_software_updates', [UpdatesController::class, 'getUpdates']);
+    Route::get('/get_software_updates_month', [UpdatesController::class, 'getUpdatesMonth']);
+    Route::post('/add_update', [UpdatesController::class, 'addUpdate']);
+    Route::put('/edit_update/{update}', [UpdatesController::class, 'editUpdate']);
+    Route::delete('/delete_update/{update}', [UpdatesController::class, 'deleteUpdate']);
+// SOFTWARE UPDATES ROUTES
+
+

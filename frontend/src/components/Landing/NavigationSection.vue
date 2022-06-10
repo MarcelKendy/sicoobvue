@@ -1,19 +1,28 @@
 <template>
   <div>
     <v-app-bar
-      class="app-class"
       app
-      :color="color"
+      :color="color ? color : 'rgba(8,110,95,.6)'"
       :flat="flat"
       dark
       src="@/assets/images/bg2.png"
-      :class="{ expand: flat }"
+      class="opacity-change"
+      fade-img-on-scroll
+      scroll-threshold="800"
     >
-
       <v-toolbar-title>
-        <v-img src="@/assets/images/sicoobicon.png" class="mt-2" style="display:inline-block" max-width="30px" />
-        <strong class="mx-3" style="top:16px; position:absolute;">Credisg Software <small style="font-weight:300">{{$store.state.version}}</small></strong>
-  
+        <v-img
+          src="@/assets/images/sicoobicon.png"
+          class="mt-2"
+          style="display: inline-block"
+          max-width="30px"
+        />
+        <strong class="mx-3" style="top: 16px; position: absolute"
+          >{{ $store.state.software.name }}
+          <small style="font-weight: 300">{{
+            $store.state.software.version
+          }}</small></strong
+        >
       </v-toolbar-title>
       <v-spacer />
       <v-app-bar-nav-icon
@@ -22,18 +31,26 @@
         v-if="isXs"
       />
       <div v-else>
-        <v-btn text @click="$vuetify.goTo('#hero')">
-          <span class="mr-2">Home</span>
-        </v-btn>
-        <v-btn text @click="$vuetify.goTo('#features')">
-          <span class="mr-2">Sobre</span>
-        </v-btn>
-        <v-btn text @click="$vuetify.goTo('#download')">
-          <span class="mr-2">Download</span>
-        </v-btn>
-        <v-btn text @click="$vuetify.goTo('#pricing')">
-          <span class="mr-2">Preços</span>
-        </v-btn>
+        <span
+          @click="$vuetify.goTo('#home')"
+          class="mx-6 hover-underline-animation"
+          >Home</span
+        >
+        <span
+          @click="$vuetify.goTo('#features')"
+          class="mx-6 hover-underline-animation"
+          >Sobre</span
+        >
+        <span
+          @click="$vuetify.goTo('#software')"
+          class="mx-6 hover-underline-animation"
+          >Sistema</span
+        >
+        <span
+          @click="$vuetify.goTo('#updates')"
+          class="mx-6 hover-underline-animation"
+          >Updates</span
+        >
       </div>
     </v-app-bar>
   </div>
@@ -87,8 +104,69 @@ export default {
 };
 </script>
 <style scoped>
-.app-class {
+.opacity-change:hover {
+  transition: 0.2s;
+  background-color: rgb(0, 61, 72) !important
+}
+.text-scale-1 {
+  font-size: 16px;
   transition: 0.3s;
-  opacity: 1;
+}
+.text-scale-1:hover {
+  font-size: 18px;
+  transition: 0.3s;
+}
+.text-scale-2 {
+  font-size: 16px;
+  transition: 0.3s;
+}
+.text-scale-2:hover {
+  font-size: 18px;
+  transition: 0.3s;
+}
+.text-scale-3 {
+  font-size: 16px;
+  transition: 0.3s;
+}
+.text-scale-3:hover {
+  font-size: 18px;
+  transition: 0.3s;
+}
+.text-scale-4 {
+  font-size: 16px;
+  transition: 0.3s;
+}
+.text-scale-4:hover {
+  font-size: 18px;
+  transition: 0.3s;
+}
+.hover-underline-animation {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  color: white;
+}
+.hover-underline-animation:hover {
+  display: inline-block;
+  position: relative;
+  color: rgb(0, 197, 111);
+}
+
+.hover-underline-animation:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #028700;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underline-animation:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 </style>

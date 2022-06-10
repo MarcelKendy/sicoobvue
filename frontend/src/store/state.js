@@ -1,5 +1,5 @@
 export default {
     tasks: [],
     user: {},
-    version: 'v1.0.0'
+    software: {name: 'Credisg Software', version: 'v1.0.0'} 
 }

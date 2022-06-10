@@ -25,7 +25,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn to="/home" class="gradient-success bold" 
+          <v-btn to="/" class="gradient-success bold" 
             >Me levar pra casa<v-img
               src="./../assets/icons/landing-page.png"
             ></v-img

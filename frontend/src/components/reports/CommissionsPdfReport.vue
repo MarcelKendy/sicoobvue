@@ -87,7 +87,7 @@
         <br />
         <span>Total de Registros: {{ info[4] }}</span>
         <br />
-        <span>Sicoob Credisg Software - v.1.0.0</span>
+        <span>{{$store.state.software.name}} - {{$store.state.software.version}}</span>
       </div>
       <br />
     </div>
