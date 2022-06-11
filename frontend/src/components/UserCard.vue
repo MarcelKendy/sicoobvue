@@ -14,14 +14,14 @@
       </template>
 
       <v-card
-        :color="theme != 0 ? '#26c6da' : 'black'"
+        :color="!dark_theme ? '#26c6da' : 'black'"
         class="mx-auto font-quicksand bold"
         max-width="300"
-        :dark="theme == 0"
+        :dark="dark_theme"
       >
         <v-list
           :class="
-            theme == 0 ? 'pa-0 user-card-header-dark' : 'pa-0 user-card-header'
+            dark_theme ? 'pa-0 user-card-header-dark' : 'pa-0 user-card-header'
           "
           dark
         >
@@ -86,18 +86,18 @@
               rounded
               :loading="loading_theme"
               elevation="9"
-              :color="theme == 0 ? 'rgb(36, 0, 121)' : 'yellow lighten-1'"
-              :dark="theme == 0"
+              :color="dark_theme ? 'rgb(36, 0, 121)' : 'yellow lighten-1'"
+              :dark="dark_theme"
               small
             >
               <span
                 class="second_font-bold"
-                :style="theme == 0 ? 'color:white' : 'color:black'"
-                >{{ theme == 0 ? 'Dark' : 'Light' }}</span
+                :style="dark_theme ? 'color:white' : 'color:black'"
+                >{{ dark_theme ? 'Dark' : 'Light' }}</span
               >
-              <v-icon :style="theme == 0 ? 'color:white' : 'color:black'" right>
+              <v-icon :style="dark_theme ? 'color:white' : 'color:black'" right>
                 {{
-                  theme == 0 ? 'mdi-weather-night' : 'mdi-white-balance-sunny'
+                  dark_theme ? 'mdi-weather-night' : 'mdi-white-balance-sunny'
                 }}
               </v-icon>
             </v-btn>
@@ -143,19 +143,14 @@ export default {
     theme: '',
   }),
   created() {
-    if (!this.$store.state.user.length > 0) {
+    /*if (!this.$store.state.user.length > 0) {
       db.collection('user')
         .limit(1)
         .get()
         .then((user) => {
           Object.assign(this.$store.state.user, user[0]);
-          if (this.$store.state.user.length > 0) {
-            this.theme = this.$store.state.user.configs.theme;
-          }
         });
-    } else {
-      this.theme = this.$store.state.user.configs.theme;
-    }
+    }*/
   },
   methods: {
     actions(item) {
@@ -175,7 +170,7 @@ export default {
     },
     changeTheme() {
       this.loading_theme = true;
-      this.theme == 1 ? (this.theme = 0) : (this.theme = 1);
+      this.dark_theme ? (this.theme = 1) : (this.theme = 0);
       this.$store.state.user.configs.theme = this.theme;
       this.$store.dispatch('configs', this.$store.state.user);
       this.$http
@@ -220,16 +215,39 @@ export default {
 
   computed: {
     user_name() {
-      return this.$store.state.user.full_name;
+      try {
+        return this.$store.state.user.full_name;
+      } catch (err) {
+        return false;
+      }
     },
     user_role() {
-      return this.$store.state.user.role;
+      try {
+        return this.$store.state.user.role;
+      } catch (err) {
+        return false;
+      }
     },
     user_photo() {
-      return this.$store.state.user.photo;
+      try {
+        return this.$store.state.user.photo;
+      } catch (err) {
+        return false;
+      }
     },
     user_gender() {
-      return this.$store.state.user.gender;
+      try {
+        return this.$store.state.user.gender;
+      } catch (err) {
+        return false;
+      }
+    },
+    dark_theme() {
+      try {
+        return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
     },
   },
 };

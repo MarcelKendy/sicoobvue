@@ -140,7 +140,7 @@
 </template>
 
 <script>
-console.log = function () {};
+//console.log = function () {};
 export default {
   data() {
     return {

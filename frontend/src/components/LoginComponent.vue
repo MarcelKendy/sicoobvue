@@ -518,10 +518,6 @@ export default {
   border-radius: 10px;
 }
 
-/* Demo Stuff End -> */
-
-/* <- Magic Stuff Start */
-
 .btn:hover {
   background-position: right center; /* change the direction of the change here */
 }

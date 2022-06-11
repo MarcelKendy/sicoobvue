@@ -245,9 +245,6 @@ export default {
       immediate: true,
       handler(to) {
         document.title = 'Sicoob Credisg - ' + to.name || 'Sicoob Credisg';
-        if (to.name == 'Dashboard') {
-          this.verifyLoggedUser();
-        }
       },
     },
     state_user_access: function () {
@@ -590,5 +587,31 @@ li::before {
 .chip__content {
   color: white;
   margin-right: 1px;
+}
+
+.btn {
+  flex: 1 1 auto;
+  margin: 10px;
+  padding: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.2s;
+  background-size: 200% auto;
+  color: white;
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  /*box-shadow: 0 0 20px teal; */
+  border-radius: 10px;
+}
+
+.btn:hover {
+  background-position: right center; /* change the direction of the change here */
+}
+.btn-gradient {
+  background-image: linear-gradient(
+    to right,
+    #62fa9a 0%,
+    #40bfff 51%,
+    #acf849 100%
+  );
 }
 </style>
