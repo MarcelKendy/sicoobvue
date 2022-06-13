@@ -3,7 +3,7 @@
     <v-card class="flex" flat tile>
       <v-img
         src="../assets/images/footer-banner.png"
-        :gradient="dark_theme ? 'to bottom left, rgba(43,12,127,.6), rgba(0,180,85,.7)' : 'to bottom left, rgba(173,12,227,.6), rgba(0,260,145,.4)'"
+        :gradient="$route.name != 'Landing' ? (dark_theme ? 'to bottom left, rgba(43,12,127,.6), rgba(0,180,85,.7)' : 'to bottom left, rgba(173,12,227,.6), rgba(0,260,145,.4)') : ('to bottom left, rgba(43,92,107,.6), rgba(0,10,55,.7)')"
         dark
         class="pt-5 text-center"
         max-height="82"

@@ -104,8 +104,8 @@
                     class="d-block ml-auto mr-auto"
                     :class="{ 'zoom-efect': hover }"
                   ></v-img>
-                  <h1 class="font-weight-regular">{{ feature.title }}</h1>
-                  <h4 class="font-weight-regular subtitle-1">
+                  <h2 class="mt-2">{{ feature.title }}</h2>
+                  <h4 style="font-weight: 400">
                     {{ feature.text }}
                   </h4>
                 </v-card>
@@ -264,7 +264,7 @@ export default {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 3rem;
+  height: 5rem;
   width: 100%;
   overflow: hidden;
 }
@@ -285,6 +285,12 @@ export default {
   min-height: 300px;
   padding: 10px;
   transition: 0.5s ease-out;
+  background-image: linear-gradient(
+    to right,
+    rgb(0, 0, 0),
+    rgba(1, 16, 13, 0.814),
+    rgba(0, 24, 68, 0.316)
+  );
 }
 
 .card .v-image {
@@ -292,12 +298,12 @@ export default {
   transition: 0.75s;
 }
 
-.card h1 {
-  margin-bottom: 10px;
+.card h2 {
+  margin-bottom: 20px;
 }
 
 .zoom-efect {
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
 
 .up {
