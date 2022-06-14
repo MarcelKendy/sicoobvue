@@ -95,8 +95,7 @@
                   dark
                   class="card"
                   shaped
-                  :elevation="hover ? 15 : 4"
-                  :class="{ up: hover }"
+                  :class="{ up: hover, cardsecurity: i == 0 , cardengineer: i == 1 , carddesign: i == 2 }"
                 >
                   <v-img
                     :src="feature.img"
@@ -156,7 +155,7 @@ export default {
         {
           img: require('@/assets/images/AI.png'),
           title: 'Nova Engenharia',
-          text: 'Software desenvolvido em arquitetura Vue, Laravel, e muito mais.',
+          text: 'Software SPA desenvolvido em arquitetura Vue, Laravel, e muito mais.',
         },
         {
           img: require('@/assets/images/web-design.png'),
@@ -310,6 +309,29 @@ export default {
   transform: translateY(-20px);
   transition: 0.5s ease-out;
 }
+
+
+
+.cardsecurity:hover {
+  box-shadow: rgb(191, 198, 0) 0px 15px 30px -10px !important;
+}
+.cardsecurity {
+    box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px, rgba(29, 38, 171, 0.2) 0px 0px 10px, rgba(255, 255, 255, 0.2) 0px 0px 0px, rgba(255, 255, 255, 0.2) 0px 0px 13px, rgba(255, 255, 255, 0.2) 0px 0px 2px !important;
+}
+
+.cardengineer:hover {
+  box-shadow: rgb(99, 169, 0) 0px 15px 30px -10px !important;
+}
+.cardengineer {
+    box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px, rgba(29, 38, 171, 0.2) 0px 0px 10px, rgba(255, 255, 255, 0.2) 0px 0px 0px, rgba(255, 255, 255, 0.2) 0px 0px 13px, rgba(255, 255, 255, 0.2) 0px 0px 2px !important;
+}
+
+.carddesign:hover {
+  box-shadow: rgb(0, 81, 96) 0px 15px 30px -10px !important;
+}
+.carddesign {
+  box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px, rgba(29, 38, 171, 0.2) 0px 0px 10px, rgba(255, 255, 255, 0.2) 0px 0px 0px, rgba(255, 255, 255, 0.2) 0px 0px 13px, rgba(255, 255, 255, 0.2) 0px 0px 2px !important;
+}
 </style>
 
 <style>
@@ -317,3 +339,10 @@ section {
   position: relative;
 }
 </style>
+/*
+.card-style:hover {
+  box-shadow: rgb(255, 255, 255) 0px 20px 30px -10px !important;
+}
+.card-style {
+  box-shadow: rgba(96, 96, 96, 0.25) 0px 0px 0px, rgba(99, 99, 99, 0.12) 0px -2px 0px, rgba(113, 113, 113, 0.12) 0px 4px 6px, rgba(126, 126, 126, 0.17) 0px 12px 13px, rgba(116, 116, 116, 0.09) 0px -3px 5px !important;
+}

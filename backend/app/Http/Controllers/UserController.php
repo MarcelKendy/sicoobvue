@@ -50,7 +50,7 @@ class UserController extends Controller
 
     public function getUserPassword (Request $request) {
         $match = ['email' => $request->email];
-        $user = User::with('access')->where($match)->get();
+        $user = User::select('password')->where($match)->get();
         return response()->json($user);
     }
 
@@ -86,16 +86,6 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->cpf = $request->cpf;
         $user->role = $request->role;
-
-
-        /*if (isset($request->photo) && $request->photo) {
-            $photo_name = time().'.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
-            \Image::make($request->photo)->save(public_path('img/profile/').$photo_name);
-            $request->merge(['photo' => $photo_name]);
-            $user->photo = $photo_name;
-        }*/
-
-
 
         if (isset($request->active)) {
             $user->active = $request->active;

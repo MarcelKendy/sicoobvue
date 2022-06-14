@@ -37,7 +37,7 @@
                   <p class="text-justify">
                     <strong class="title-about">Sistema de Comissionamento</strong>
                     <br />
-                    A fim de proporcionar mais eficiência e segurânca no
+                    A fim de proporcionar mais eficiência e segurança no
                     processo de comissionamento de produtos, foi desenvolvido
                     uma plataforma automatizada com muitos recursos.
                   </p>
@@ -61,7 +61,7 @@
                     class="mr-4"
                   />
                   <p class="text-justify">
-                    <strong class="title-about">Muito Mais</strong>
+                    <strong class="title-about">Ao Infinito e Além</strong>
                     <br />
                     Nosso futuro é grande, e o do sistema também. Serão
                     anunciadas as novas implementações na seção "Updates", no final da página ;)
@@ -71,10 +71,10 @@
             </v-col>
             <v-col cols="12" md="5" class="d-none d-md-flex">
               <v-img
-                src="@/assets/img/ill1.svg"
+                src="@/assets/img/credisg.png"
                 class="d-block ml-auto mr-auto"
                 max-width="400px"
-              />
+              ></v-img>
             </v-col>
           </v-row>
         </v-col>

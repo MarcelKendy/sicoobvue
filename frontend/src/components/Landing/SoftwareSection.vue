@@ -66,7 +66,8 @@ export default {
 
 <style scoped>
 #software {
-  background-image: url('~@/assets/img/bgDownload.jpg');
+  opacity: 1;
+  background-image: url('~@/assets/img/bghero2.jpg');
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;

@@ -124,7 +124,21 @@
               </v-form>
             </v-list-item-content>
 
-            <v-list-item-action class="mt-6">
+            <v-list-item-action class="mt-6" style="display: inline-block">
+              <v-tooltip id="tooltip" left>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    class="mr-2"
+                    icon
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="modalEditProfile(item)"
+                  >
+                    <v-icon color="orange">mdi-badge-account</v-icon>
+                  </v-btn>
+                </template>
+                <span>Editar Perfil</span>
+              </v-tooltip>
               <v-tooltip id="tooltip" left>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -180,13 +194,19 @@
         ></v-pagination>
       </v-card-actions>
     </v-card>
+    <modal-edit
+      :open="modal_profile"
+      :user="modal_profile_user"
+      @closeModal="modalEditProfile"
+    ></modal-edit>
   </div>
 </template>
 
 <script>
+import ModalEdit from './Modals/ModalEditProfile.vue';
 export default {
   name: 'UsersComponent',
-
+  components: { ModalEdit },
   data: () => ({
     total_items: [],
     items: [],
@@ -198,6 +218,9 @@ export default {
     loading: false,
     loading_access: {},
     loading_all_accesses: false,
+    modal_profile: false,
+    modal_profile_user: {},
+    snackbar_profile: false,
     loading_active: {},
     valid_access: true,
     valid_page: true,
@@ -288,6 +311,24 @@ export default {
     },
     avatar_path(photo_path) {
       return require('../../../backend/storage/app/' + photo_path);
+    },
+    modalEditProfile(user, edit = true) {
+      if (!this.modal_profile) {
+        Object.assign(this.modal_profile_user, user);
+        this.modal_profile_user.current_password =
+          this.modal_profile_user.password;
+        Object.assign(this.modal_profile_user, { password: null });
+      } else {
+        this.modal_profile_user = {};
+        if (edit) {
+          this.total_items = this.total_items.map((user_map) =>
+            user_map.id !== user.id ? user_map : user
+          );
+          this.pagination(false);
+          this.snackbar_profile = true;
+        }
+      }
+      this.modal_profile = !this.modal_profile;
     },
   },
 };

@@ -82,7 +82,7 @@ export default {
 </script>
 <style scoped>
 .v-main {
-  background-image: url('~@/assets/images/wallpapers/earth.jpg');
+  background-image: url('~@/assets/images/wallpapers/nature1.jpg');
   background-attachment: fixed;
   background-position: center;
   background-size: cover;

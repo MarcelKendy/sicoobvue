@@ -49,7 +49,15 @@
                       @click:append="show1 = !show1"
                     ></v-text-field>
                   </v-col>
-                  <v-col class="d-flex" cols="12" sm="6" xsm="12">
+
+                  <div v-if="capslock" style="position: absolute; bottom: 70px">
+                    <v-icon small color="orange">mdi-information</v-icon
+                    ><small class="pl-1 orange--text bold"
+                      >Caps Lock ativado!</small
+                    ><v-icon right small color="black">mdi-format-letter-case-upper</v-icon>
+                  </div>
+
+                  <v-col class="d-flex" cols="12" sm="6">
                     <span
                       v-if="!loading_btn"
                       class="forgot-text"
@@ -256,13 +264,10 @@
         color="red"
         dark
       >
-        <div style="text-align:center;">
-         <v-icon class="pr-3" dark>mdi-alert</v-icon>
-        <strong>{{
-          error_login
-        }}</strong>
+        <div style="text-align: center">
+          <v-icon class="pr-3" dark>mdi-alert</v-icon>
+          <strong>{{ error_login }}</strong>
         </div>
-       
       </v-snackbar>
       <v-snackbar
         v-model="register_succeeded"
@@ -312,6 +317,7 @@ export default {
     validLogin: true,
     validRegister: true,
     show1: false,
+    capslock: false,
     show2: false,
     success_mail: false,
     modal_mail: false,
@@ -379,6 +385,9 @@ export default {
       verifyPasswordRule: (value) => !!value || 'Confirme a sua senha',
     },
   }),
+  created() {
+    document.addEventListener('keyup', this.capslockActivate);
+  },
   computed: {
     matchPasswords() {
       return (
@@ -391,6 +400,10 @@ export default {
     },
   },
   methods: {
+    capslockActivate(event) {
+      this.capslock =
+        event.getModifierState && event.getModifierState('CapsLock');
+    },
     validate(form) {
       if (form == 'login') {
         if (this.$refs.loginForm.validate()) {
@@ -479,7 +492,8 @@ export default {
 <style scoped>
 .forgot-text {
   cursor: pointer;
-  padding-top: 40px;
+  position: absolute;
+  bottom: 22px;
   color: #40bfff;
   font-weight: bold;
   font-family: 'Quicksand', sans-serif;

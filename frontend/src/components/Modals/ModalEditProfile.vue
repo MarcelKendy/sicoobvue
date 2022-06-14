@@ -109,7 +109,6 @@
                   prepend-icon="mdi-camera"
                   show-size
                   truncate-length="40"
-                  
                 ></v-file-input>
               </v-col>
               <v-col cols="12">
@@ -274,11 +273,8 @@ export default {
   },
   methods: {
     assignUser() {
-      Object.assign(
-        Object.assign(this.item, this.defaultItem),
-        this.state_user
-      );
-      this.item.photo = null
+      Object.assign(Object.assign(this.item, this.defaultItem), this.user);
+      this.item.photo = null;
     },
     editProfile() {
       if (this.$refs.form.validate()) {
@@ -297,18 +293,25 @@ export default {
                   headers: { 'Content-Type': 'multipart/form-data' },
                 })
                 .then((response) => {
-                  console.log(response.data);
-                  this.$store
-                    .dispatch('login', response.data)
-                    .then(this.$emit('closeModal'));
+                  if (this.$store.state.user.id == response.data.id) {
+                    this.$store
+                      .dispatch('login', response.data)
+                      .then(this.$emit('closeModal', response.data));
+                  } else {
+                    this.$emit('closeModal', response.data);
+                  }
                   if (this.$refs.form) {
                     this.$refs.form.reset();
                   }
                 });
             } else {
-              this.$store
-                .dispatch('login', response.data)
-                .then(this.$emit('closeModal'));
+              if (this.$store.state.user.id == response.data.id) {
+                this.$store
+                  .dispatch('login', response.data)
+                  .then(this.$emit('closeModal', response.data));
+              } else {
+                this.$emit('closeModal', response.data);
+              }
               if (this.$refs.form) {
                 this.$refs.form.reset();
               }
@@ -319,7 +322,7 @@ export default {
     closeModal() {
       this.$refs.form.resetValidation();
       this.change_password = false;
-      this.$emit('closeModal');
+      this.$emit('closeModal', null, false);
     },
   },
   computed: {
@@ -346,9 +349,6 @@ export default {
         password: '',
         verify: '',
       };
-    },
-    state_user() {
-      return this.$store.state.user;
     },
   },
 };
