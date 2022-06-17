@@ -14,27 +14,28 @@
             <v-col cols="12" sm="8" class="white--text text-left pl-10">
               <span class="mb-2 begin bold">Acesso</span>
               <h3 class="font-weight-light">Clique aqui e acesse o sistema</h3>
-              <v-hover v-slot="{ hover }">
-                <v-btn
-                  rounded
-                  outlined
-                  :to="to"
-                  large
-                  color="white"
-                  class="neon-button my-6"
-                >
-                  <v-img
-                    class="mr-2"
-                    max-width="24"
-                    :src="
-                      require(!hover
-                        ? '@/assets/img/power-button-green.png'
-                        : '@/assets/img/power-button.png')
-                    "
-                  ></v-img>
-                  <strong>Entrar</strong>
-                </v-btn>
-              </v-hover>
+              <v-btn
+                rounded
+                outlined
+                large
+                v-on:mouseenter="hoverBtn()"
+                v-on:mouseleave="leaveBtn()"
+                color="white"
+                class="neon-button my-6"
+                :class="{ increase_size: delayed_leave }"
+                @click="redirectUser()"
+              >
+                <v-img
+                  max-width="24"
+                  class="icon"
+                  :src="require('@/assets/img/power-button-green.png')"
+                ></v-img>
+                <v-slide-x-transition>
+                  <strong v-if="delayed_hover" class="text_gradient"
+                    >Entrar</strong
+                  >
+                </v-slide-x-transition>
+              </v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -47,19 +48,44 @@
 import db from '@/services/localbase';
 export default {
   data: () => ({
-    to: '/login',
+    delayed_hover: false,
+    delayed_leave: false,
+    hover_timeout_id: null,
+    hover_timeout_active: false,
   }),
-  mounted() {
-    db.collection('user')
-      .limit(1)
-      .get()
-      .then((user) => {
-        if (!user.length) {
-          this.to = '/login';
-        } else {
-          this.to = '/dashboard';
-        }
-      });
+  mounted() {},
+  methods: {
+    redirectUser() {
+      db.collection('user')
+        .limit(1)
+        .get()
+        .then((user) => {
+          if (!user.length) {
+            this.$router.push('/login');
+          } else {
+            this.$router.push('/dashboard');
+          }
+        });
+    },
+    hoverBtn() {
+      this.delayed_leave = true;
+      let _this = this;
+      this.hover_timeout_active = true;
+      this.hover_timeout_id = setTimeout(function () {
+        _this.delayed_hover = true;
+        _this.hover_timeout_active = false;
+      }, 100);
+    },
+    leaveBtn() {
+      if (this.hover_timeout_active) {
+        clearTimeout(this.hover_timeout_id);
+      }
+      this.delayed_hover = false;
+      let _this = this;
+      setTimeout(function () {
+        _this.delayed_leave = false;
+      }, 130);
+    },
   },
 };
 </script>
@@ -67,7 +93,7 @@ export default {
 <style scoped>
 #software {
   opacity: 1;
-  background-image: url('~@/assets/img/bghero2(1).png');
+  background-image: url('~@/assets/img/sicoob-city.jpg');
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
@@ -79,6 +105,7 @@ export default {
 #software .row {
   height: 100%;
 }
+
 .btn-gradient {
   background-image: linear-gradient(
     to right,
@@ -88,6 +115,7 @@ export default {
   ) !important;
   background-position: left center;
 }
+
 .btn-gradient:hover {
   transition: background-position 2s;
   background-image: linear-gradient(
@@ -98,86 +126,27 @@ export default {
   ) !important;
   background-position: right center; /* change the direction of the change here */
 }
+
 .begin {
   transition: 0.5s;
   font-size: 28px;
 }
-</style>
-<style scoped>
-.neon-button {
+
+.text_gradient {
+  position: absolute;
+  right: 3px;
+  background: linear-gradient(to right, rgb(210, 246, 92), rgb(0, 96, 84));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.increase_size {
+  transition: 0.1s;
   width: 150px;
-  height: 50px;
-  border: none;
-  outline: none;
-  color: #fff;
-  background: #111;
-  cursor: pointer;
-  position: relative;
-  z-index: 0;
-  border-radius: 10px;
 }
 
-.neon-button:before {
-  content: '';
-  background: linear-gradient(
-    45deg,
-    #ff0000,
-    #ff7300,
-    #fffb00,
-    #48ff00,
-    #00ffd5,
-    #002bff,
-    #7a00ff,
-    #ff00c8,
-    #ff0000
-  );
+.icon {
   position: absolute;
-  top: -2px;
-  left: -2px;
-  background-size: 400%;
-  z-index: -1;
-  filter: blur(5px);
-  width: calc(100% + 4px);
-  height: calc(100% + 4px);
-  animation: glowing 20s linear infinite;
-  opacity: 0.3;
-  transition: opacity 0.3s ease-in-out;
-  border-radius: 10px;
-}
-
-.neon-button:active {
-  color: #000;
-}
-
-.neon-button:active:after {
-  background: transparent;
-}
-
-.neon-button:hover:before {
-  opacity: 1;
-}
-
-.neon-button:after {
-  z-index: -1;
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: #111;
-  left: 0;
-  top: 0;
-  border-radius: 10px;
-}
-
-@keyframes glowing {
-  0% {
-    background-position: 0 0;
-  }
-  50% {
-    background-position: 400% 0;
-  }
-  100% {
-    background-position: 0 0;
-  }
+  left: 10px;
 }
 </style>

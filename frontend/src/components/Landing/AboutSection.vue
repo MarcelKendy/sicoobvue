@@ -6,7 +6,7 @@
           <v-row align="center" justify="center">
             <v-col cols="12" md="7">
               <h1>
-                <span class="maintitle-about">Sobre</span>
+                <span class="text_gradient">Sobre</span>
                 <v-img
                   max-width="24"
                   style="display: inline-block"
@@ -22,7 +22,7 @@
                     class="mr-4"
                   />
                   <p class="text-justify">
-                    <strong class="title-about">Dashboard de Metas</strong>
+                    <strong class="text_gradient">Dashboard de Metas</strong>
                     <br />
                     Será possível acompanhar através de uma dashboard moderna, o
                     nosso progresso das metas estabelecidas pela cooperativa.
@@ -35,7 +35,9 @@
                     class="mr-4"
                   />
                   <p class="text-justify">
-                    <strong class="title-about">Sistema de Comissionamento</strong>
+                    <strong class="text_gradient"
+                      >Sistema de Comissionamento</strong
+                    >
                     <br />
                     A fim de proporcionar mais eficiência e segurança no
                     processo de comissionamento de produtos, foi desenvolvido
@@ -49,9 +51,10 @@
                     class="mr-4"
                   />
                   <p class="text-justify">
-                    <strong class="title-about">Gestão Completa</strong>
+                    <strong class="text_gradient">Gestão Completa</strong>
                     <br />
-                    Ferramentas fáceis e eficientes para os administradores do sistema.
+                    Ferramentas fáceis e eficientes para os administradores do
+                    sistema.
                   </p>
                 </v-col>
                 <v-col cols="12" class="d-flex align-center">
@@ -61,18 +64,25 @@
                     class="mr-4"
                   />
                   <p class="text-justify">
-                    <strong class="title-about">Ao Infinito e Além</strong>
+                    <strong class="text_gradient">Ao Infinito e Além</strong>
                     <br />
                     Nosso futuro é grande, e o do sistema também. Serão
-                    anunciadas as novas implementações na seção "Updates", no final da página ;)
+                    anunciadas as novas implementações na seção "Updates", no
+                    final da página ;)
                   </p>
                 </v-col>
               </v-row>
             </v-col>
             <v-col cols="12" md="5" class="d-none d-md-flex">
               <v-img
+                class="sicoob-mark"
+                src="@/assets/img/sicoob-mark.png"
+                style="position:absolute; top:0px; right: 0px; border-radius: 0 0 0 20px 20px"
+                max-width="200px"
+              ></v-img>
+              <v-img
                 src="@/assets/img/credisg.png"
-                class="d-block ml-auto mr-auto"
+                style="position:absolute; bottom:0px; right: 0px"
                 max-width="400px"
               ></v-img>
             </v-col>
@@ -93,17 +103,14 @@
   );
   color: rgb(255, 255, 255);
 }
-.title-about {
-  background: linear-gradient(to right, rgb(92, 246, 97), rgb(255, 255, 255));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.maintitle-about {
+.text_gradient {
   background: linear-gradient(to right, rgb(165, 213, 44), rgb(0, 82, 85));
   -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-fill-color: transparent;
+}
+
+.sicoob-mark {
+  background-color: linear-gradient(to right, rgb(165, 213, 44), rgb(0, 82, 85));
 }
 </style>
 /* 

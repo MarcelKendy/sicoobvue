@@ -7,21 +7,29 @@
       <software />
       <updates />
     </v-main>
-    <v-scale-transition>
-      <v-btn
-        fab
-        v-show="fab"
-        v-scroll="onScroll"
-        dark
-        fixed
-        bottom
-        right
-        color="secondary"
-        @click="toTop"
-      >
-        <v-icon>mdi-arrow-up</v-icon>
-      </v-btn>
-    </v-scale-transition>
+
+    <v-tooltip left>
+      <template v-slot:activator="{ attrs, on }">
+        <v-scale-transition>
+          <v-btn
+            class=""
+            v-bind="attrs"
+            v-on="on"
+            fab
+            v-show="fab"
+            v-scroll="onScroll"
+            dark
+            fixed
+            bottom
+            right
+            @click="toTop"
+          >
+            <v-icon>mdi-arrow-up</v-icon>
+          </v-btn>
+        </v-scale-transition>
+      </template>
+      <span>Voltar para o topo</span>
+    </v-tooltip>
   </div>
 </template>
 
@@ -44,29 +52,11 @@ export default {
 
   data: () => ({
     fab: null,
-    color: '',
-    flat: null,
   }),
 
   created() {
-    const top = window.pageYOffset || 0;
-    if (top <= 60) {
-      this.color = 'transparent';
-      this.flat = true;
-    }
   },
 
-  watch: {
-    fab(value) {
-      if (value) {
-        this.color = 'secondary';
-        this.flat = false;
-      } else {
-        this.color = 'transparent';
-        this.flat = true;
-      }
-    },
-  },
 
   methods: {
     onScroll(e) {
@@ -82,7 +72,7 @@ export default {
 </script>
 <style scoped>
 .v-main {
-  background-image: url('~@/assets/images/wallpapers/nature1.jpg');
+  background-image: url('~@/assets/images/wallpapers/earth.jpg');
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
@@ -102,5 +92,38 @@ export default {
 }
 .bolder {
   font-weight: bolder;
+}
+.to-up-button {
+  border-style: solid;
+}
+</style>
+<style lang="scss">
+.gamer-border {
+  border-radius: 1000px !important;
+  --angle: 0deg;
+  border-style: solid;
+
+  border-image: conic-gradient(
+      from var(--angle),
+      rgb(253, 249, 1),
+      rgb(10, 255, 2),
+      rgb(121, 178, 253),
+      rgba(18, 210, 175)
+    )
+    1;
+
+  animation: 10s rotate linear infinite;
+}
+
+@keyframes rotate {
+  to {
+    --angle: 360deg;
+  }
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
 }
 </style>

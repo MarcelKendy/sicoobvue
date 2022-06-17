@@ -3,7 +3,6 @@
     <v-app-bar
       app
       :color="color ? color : 'rgba(8,110,95,.6)'"
-      :flat="flat"
       dark
       src="@/assets/images/bg2.png"
       class="opacity-change"
