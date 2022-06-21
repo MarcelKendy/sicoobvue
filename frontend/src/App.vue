@@ -589,6 +589,15 @@ li::before {
 .gradient-green {
   background-image: linear-gradient( to right, rgb(42, 250, 223), rgb(76, 131, 255), rgb(42, 250, 223));
 }
+.gradient-white-purple {
+  background-image: linear-gradient(to right, #e5e5e5, #75049b, #75049b);
+}
+.gradient-white-blue {
+  background-image: linear-gradient(to right, #e5e5e5, #0066c5, #0066c5);
+}
+.gradient-white-orange {
+  background-image: linear-gradient(to right, #e5e5e5, #db2e4b, #db2e4b);
+}
 .gradient-card {
   transition: 0.3s;
   background-size: 200% auto;
@@ -788,6 +797,30 @@ li::before {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+.info-cards {
+  border-radius: 10px;
+
+  transition: 0.3s;
+}
+.info-cards:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 6px 6px 6px 6px !important;
+  transition: 0.3s;
+}
+.info-cards-dark {
+  border-radius: 15px;
+
+  transition: 0.3s;
+}
+.info-cards-dark:hover {
+  box-shadow: rgb(0, 0, 0) 0px 19px 38px, rgb(0, 0, 0) 6px 6px 6px 6px !important;
+  transition: 0.3s;
+}
+.info-cards-text {
+  font-family: 'Quicksand', sans-serif;
+  color: white !important;
+  font-weight: bold !important;
 }
 </style>
 

@@ -2,54 +2,31 @@
   <div>
     <v-row class="align-center">
       <v-col cols="12" sm="4">
-        <v-card
-          :shaped="hover_1"
-          @mouseenter="hover_1 = !hover_1"
-          @mouseleave="hover_1 = !hover_1"
-          :class="dark_theme ? 'info-cards-dark' : 'info-cards'"
-          class="gradient-card gradient-purple"
-        >
-          <v-card-title class="info-cards-text">
-            Comissões aprovadas
-          </v-card-title>
-          <v-card-subtitle class="info-cards-text"
-            >Últimas 4 semanas</v-card-subtitle
-          >
-          <v-card-text>
-            <apex-chart
-              type="line"
-              height="100"
-              :options="spark_done_commissions"
-              :series="series_spark_done_commissions"
-            ></apex-chart>
-          </v-card-text>
-        </v-card>
+        <spark-done-products
+          :options="spark_done_products"
+          :series="series_spark_done_products"
+          :total="total_spark_done_products"
+          :loading="loading_card_done_products"
+          :dark_theme="dark_theme"
+        ></spark-done-products>
       </v-col>
       <v-col cols="12" sm="4">
-        <v-card
-          :shaped="hover_2"
-          @mouseenter="hover_2 = !hover_2"
-          @mouseleave="hover_2 = !hover_2"
-          :class="dark_theme ? 'info-cards-dark' : 'info-cards'"
-          class="gradient-card gradient-green"
-        >
-          <v-card-title class="info-cards-text"> INFO CARD 2 </v-card-title>
-          <v-card-subtitle class="info-cards-text"> descricao </v-card-subtitle>
-          <v-card-text> </v-card-text>
-        </v-card>
+        <spark-commissions-val
+          :options="spark_commissions_val"
+          :series="series_spark_commissions_val"
+          :total="total_spark_commissions_val"
+          :loading="loading_card_commissions_val"
+          :dark_theme="dark_theme"
+        ></spark-commissions-val>
       </v-col>
       <v-col cols="12" sm="4">
-        <v-card
-          :shaped="hover_3"
-          @mouseenter="hover_3 = !hover_3"
-          @mouseleave="hover_3 = !hover_3"
-          :class="dark_theme ? 'info-cards-dark' : 'info-cards'"
-          class="gradient-card gradient-orange"
-        >
-          <v-card-title class="info-cards-text"> INFO CARD 3 </v-card-title>
-          <v-card-subtitle class="info-cards-text"> descricao </v-card-subtitle>
-          <v-card-text> </v-card-text>
-        </v-card>
+        <spark-products-registers
+          :options="spark_products_registers"
+          :series="series_spark_products_registers"
+          :total="total_spark_products_registers"
+          :loading="loading_card_products_registers"
+          :dark_theme="dark_theme"
+        ></spark-products-registers>
       </v-col>
     </v-row>
     <v-row class="align-center">
@@ -72,23 +49,30 @@
 </template>
 
 <script>
+import SparkDoneProducts from './Dashboard/SparkDoneProducts.vue';
+import SparkCommissionsVal from './Dashboard/SparkCommissionsVal.vue';
+import SparkProductsRegisters from './Dashboard/SparkProductsRegisters.vue';
 export default {
   name: 'DashboardComponent',
-
+  components: {
+    SparkDoneProducts,
+    SparkCommissionsVal,
+    SparkProductsRegisters,
+  },
   data: () => ({
-    hover_1: false,
-    hover_2: false,
-    hover_3: false,
-    loading_card_done_commissions: false,
-    loading_card_2: false,
-    loading_card_3: false,
-    series_spark_done_commissions: [
+    loading_card_done_products: true,
+    loading_card_commissions_val: true,
+    loading_card_products_registers: true,
+    total_spark_done_products: 0,
+    total_spark_commissions_val: 0,
+    total_spark_products_registers: 0,
+    series_spark_done_products: [
       {
-        name: 'spark_done_commissions',
-        data: [0, 1, 2, 3],
+        name: 'spark_done_products',
+        data: [],
       },
     ],
-    spark_done_commissions: {
+    spark_done_products: {
       chart: {
         sparkline: {
           enabled: true,
@@ -105,24 +89,11 @@ export default {
         curve: 'smooth',
       },
       xaxis: {
-        categories: [
-          '1',
-          '2',
-          '3',
-          '4',
-        ],
+        categories: [],
         tickAmount: 4,
         labels: {
           formatter: function (value) {
-            /*let date = String (value);
-            let day_month = date.slice(5, 10);
-            let day = day_month.slice(3);
-            let month = day_month.slice(0, 2);
-            return day + '/' + month;*/
-            let date = new Date() - value * 7;
-            
-            
-            return new Date(date).getTime();
+            return value;
           },
         },
       },
@@ -141,8 +112,134 @@ export default {
               return '';
             },
           },
+          formatter: function (value) {
+            return (
+              '<div class="mr-6">' +
+              '<span style="color:black">' +
+              value +
+              '</span>' +
+              '</div>'
+            );
+          },
         },
       },
+    },
+    series_spark_commissions_val: [
+      {
+        name: 'spark_commissions_val',
+        data: [],
+      },
+    ],
+    spark_commissions_val: {
+      chart: {
+        sparkline: {
+          enabled: true,
+        },
+        dropShadow: {
+          enabled: true,
+          top: 8,
+          left: 8,
+          blur: 2,
+          opacity: 0.2,
+        },
+      },
+      stroke: {
+        curve: 'smooth',
+      },
+      xaxis: {
+        categories: [],
+        tickAmount: 4,
+        labels: {
+          formatter: function (value) {
+            return value;
+          },
+        },
+      },
+      markers: {
+        size: 0,
+      },
+      grid: {},
+      colors: ['#fff'],
+      tooltip: {
+        x: {
+          show: true,
+        },
+        y: {
+          title: {
+            formatter: function formatter() {
+              return '';
+            },
+          },
+          formatter: function (value) {
+            return (
+              '<div style="position:absolute; left:12px; top:43px">' +
+              '<span style="color:black">' +
+              'R$ ' +
+              value +
+              '</span>' +
+              '</div>'
+            );
+          },
+        },
+      },
+    },
+    series_spark_products_registers: [
+      {
+        name: 'spark_products_registers',
+        data: [],
+      },
+    ],
+    spark_products_registers: {
+      chart: {
+        sparkline: {
+          enabled: true,
+        },
+        dropShadow: {
+          enabled: true,
+          top: 8,
+          left: 8,
+          blur: 2,
+          opacity: 0.2,
+        },
+      },
+      stroke: {
+        curve: 'smooth',
+      },
+      tooltip: {
+        x: {
+          show: true,
+        },
+        y: {
+          title: {
+            formatter: function formatter() {
+              return '';
+            },
+          },
+          formatter: function (value) {
+            return (
+              '<div class="mr-6" style="text-align:center !important">' +
+              '<span style="color:black">' +
+              value +
+              '</span>' +
+              '</div>'
+            );
+          },
+        },
+      },
+      xaxis: {
+        categories: [],
+        tickAmount: 4,
+        labels: {
+          formatter: function (value) {
+            return value;
+          },
+        },
+      },
+      markers: {
+        size: 0,
+      },
+      grid: {},
+      colors: ['#fff'],
     },
   }),
   created() {
@@ -159,10 +256,23 @@ export default {
   },
   methods: {
     getCards() {
-      this.loading_card_done_commissions = true;
-      this.$http.get('get_card_done_commissions').then((response) => {
-        console.log(response.data);
-        this.loading_card_done_commissions = false;
+      this.$http.get('get_card_done_products').then((response) => {
+        this.series_spark_done_products[0].data = response.data[0];
+        this.spark_done_products.xaxis.categories = response.data[1];
+        this.total_spark_done_products = response.data[2];
+        this.loading_card_done_products = false;
+      });
+      this.$http.get('get_card_commissions_val').then((response) => {
+        this.series_spark_commissions_val[0].data = response.data[0];
+        this.spark_commissions_val.xaxis.categories = response.data[1];
+        this.total_spark_commissions_val = response.data[2];
+        this.loading_card_commissions_val = false;
+      });
+      this.$http.get('get_card_products_registers').then((response) => {
+        this.series_spark_products_registers[0].data = response.data[0];
+        this.spark_products_registers.xaxis.categories = response.data[1];
+        this.total_spark_products_registers = response.data[2];
+        this.loading_card_products_registers = false;
       });
     },
     formatDate(date, type) {
@@ -179,31 +289,7 @@ export default {
   },
 };
 </script>
-<style scoped>
-.info-cards {
-  border-radius: 15px;
-
-  transition: 0.3s;
-}
-.info-cards:hover {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
-    rgba(0, 0, 0, 0.22) 0px 10px 10px !important;
-  transition: 0.3s;
-}
-.info-cards-dark {
-  border-radius: 15px;
-
-  transition: 0.3s;
-}
-.info-cards-dark:hover {
-  box-shadow: rgb(0, 0, 0) 0px 14px 18px, rgb(0, 0, 0) 10px 7px 10px !important;
-  transition: 0.3s;
-}
-.info-cards-text {
-  font-family: 'Quicksand', sans-serif;
-  color: white !important;
-  font-weight: bold !important;
-}
+<style>
 </style>
 /*
 .info-cards {

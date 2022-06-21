@@ -67,8 +67,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // ACCESS ROUTES
 
 // DASHBOARD ROUTES
-    Route::get('/get_card_done_commissions', [DashboardController::class, 'getCardDoneCommissions']);
-
+    Route::get('/get_card_done_products', [DashboardController::class, 'getCardDoneProducts']);
+    Route::get('/get_card_commissions_val', [DashboardController::class, 'getCardCommissionsVal']);
+    Route::get('/get_card_products_registers', [DashboardController::class, 'getCardProductsRegisters']);
 // DASHBOARD ROUTES
 
 
