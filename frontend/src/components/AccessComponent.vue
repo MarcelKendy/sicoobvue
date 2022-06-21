@@ -10,12 +10,7 @@
     >
       <v-card-title class="bold title-card">
         Acessos
-        <img
-          v-if="loading"
-          width="70"
-          class="loading-gif"
-          src="../assets/images/loading.gif"
-        />
+        <v-img class="mx-2" style="display:inline-block" src="@/assets/icons/sicoobicon.png" max-width="20"></v-img>
       </v-card-title>
       <v-card-subtitle
         :class="dark_theme ? 'bold subtitle-card-dark' : 'subtitle-card'"
@@ -23,7 +18,13 @@
         Acessos definidos no sistema
       </v-card-subtitle>
       <v-card-text>
-        <v-tooltip id="tooltip" right v-if="!loading">
+        <img
+          v-if="loading"
+          width="70"
+          class="loading-gif my-10"
+          src="../assets/images/loading.gif"
+        />
+        <v-tooltip id="tooltip" right v-else>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               v-bind="attrs"
@@ -283,7 +284,7 @@
           </v-expansion-panel>
         </v-expansion-panels>
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions v-if="!loading">
         <span
           :style="dark_theme ? 'color: white' : ''"
           class="bold page-items-text mx-3"
@@ -555,11 +556,6 @@ export default {
 <style scoped>
 .v-menu__content {
   color: black !important;
-}
-.loading-gif {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
 }
 .name-accesses-title {
   color: rgb(0, 101, 209);

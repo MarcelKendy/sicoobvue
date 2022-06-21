@@ -97,33 +97,3 @@ export default {
   border-style: solid;
 }
 </style>
-<style lang="scss">
-.gamer-border {
-  border-radius: 1000px !important;
-  --angle: 0deg;
-  border-style: solid;
-
-  border-image: conic-gradient(
-      from var(--angle),
-      rgb(253, 249, 1),
-      rgb(10, 255, 2),
-      rgb(121, 178, 253),
-      rgba(18, 210, 175)
-    )
-    1;
-
-  animation: 10s rotate linear infinite;
-}
-
-@keyframes rotate {
-  to {
-    --angle: 360deg;
-  }
-}
-
-@property --angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-</style>

@@ -7,7 +7,7 @@
     ></v-img>
     <div class="content">
       <v-btn dark small class="neon-button-filled" to="/"
-        ><v-icon left>mdi-home</v-icon><span class="bold">Home</span></v-btn
+        ><v-img max-width="20" class="mr-1" src="@/assets/icons/sicoobicon.png"></v-img><span class="bold">Home</span></v-btn
       >
       <vue-particles
         color="#ffffff"

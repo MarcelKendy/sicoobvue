@@ -8,8 +8,15 @@
       outlined
       :dark="dark_theme"
     >
-      <v-card-title>
-        <span class="bold title-card">Usuários do Sistema</span>
+      <v-card-title class="bold title-card">
+        Usuários do Sistema
+    
+        <v-img
+          class="mx-2"
+          style="display: inline-block"
+          src="@/assets/icons/sicoobicon.png"
+          max-width="20"
+        ></v-img>
       </v-card-title>
       <v-card-subtitle>
         <span :class="dark_theme ? 'bold subtitle-card-dark' : 'subtitle-card'"
@@ -17,6 +24,12 @@
         >
       </v-card-subtitle>
       <v-card-text>
+        <img
+          v-if="loading"
+          width="70"
+          class="loading-gif my-10"
+          src="../assets/images/loading.gif"
+        />
         <v-list three-line v-for="(item, index) in items" :key="index">
           <v-list-item
             :key="index + 0.1"
@@ -166,7 +179,7 @@
           </v-list-item>
         </v-list>
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions v-if="!loading">
         <span
           :style="dark_theme ? 'color: white' : ''"
           class="bold page-items-text mx-3"

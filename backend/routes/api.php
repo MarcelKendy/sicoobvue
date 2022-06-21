@@ -5,6 +5,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AccessController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UpdatesController;
 use Illuminate\Support\Facades\Route;
 
@@ -64,6 +65,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::put('/edit_access/{access}', [AccessController::class, 'editAccess']);
     Route::delete('/delete_access/{access}', [AccessController::class, 'deleteAccess']);
 // ACCESS ROUTES
+
+// DASHBOARD ROUTES
+    Route::get('/get_card_done_commissions', [DashboardController::class, 'getCardDoneCommissions']);
+
+// DASHBOARD ROUTES
 
 
 // SOFTWARE UPDATES ROUTES

@@ -34,11 +34,12 @@
       <span>Adicionar</span>
     </v-tooltip>
 
-    <v-card class="hover-card" elevation="7" outlined shaped>
+    <v-card :dark="dark_theme" class="hover-card" elevation="7" outlined shaped>
       <v-card-title :class="dark_theme ? 'title-card-dark' : 'title-card'">
-        <span>Produtos e Comissões</span>
+        <span class="pb-10">Produtos e Comissões<v-img class="mx-2" style="display:inline-block" src="@/assets/icons/sicoobicon.png" max-width="20"></v-img></span>
         <v-spacer></v-spacer>
         <v-text-field
+          style=""
           v-model="search"
           append-icon="mdi-magnify"
           label="Pesquisar"
@@ -50,7 +51,7 @@
       <v-card-subtitle v-if="!mobile">
         <span
           :class="dark_theme ? 'subtitle-card-dark' : 'subtitle-card'"
-          style="position: absolute; top: 70px"
+          style="position: absolute; top: 60px"
           >Produtos vendidos e suas comissões</span
         >
       </v-card-subtitle>

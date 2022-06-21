@@ -250,9 +250,9 @@ export default {
       if (this.state_user_access) {
         let verify_screen_access = this.verifyScreenAccess(this.$route.name);
         if (verify_screen_access == 404) {
-          this.$route.name == 'Página Inválida'
-            ? ''
-            : this.$router.push('/404');
+          this.$route.name != 'Página Inválida'
+            ? this.$router.push('/404')
+            : this.$router.push('/');
         } else {
           this.$route.name !== 'Home' && !verify_screen_access
             ? this.$router.push('/505')
@@ -351,7 +351,7 @@ export default {
 <style scoped>
 .main-dark {
   font-family: 'Quicksand', sans-serif;
-  background-color: #191a1b;
+  background-color: rgb(36, 38, 41);
 }
 .main-light {
   font-family: 'Quicksand', sans-serif;
@@ -397,7 +397,7 @@ font-family: 'Yanone Kaffeesatz', sans-serif;
 }
 .bg-black {
   background-color: rgb(211, 210, 210) !important;
-  color: #27282b !important;
+  color: rgb(39, 40, 43) !important;
 }
 .font-quicksand {
   font-family: 'Quicksand', sans-serif;
@@ -576,6 +576,25 @@ li::before {
 }
 .gradient-pink {
   background-image: linear-gradient(to right, #ff648e, #db6767, #ff64ed);
+}
+.gradient-purple {
+  background-image: linear-gradient( to right, rgb(238, 154, 229), rgb(153, 65, 235), rgb(238, 154, 229));
+}
+.gradient-blue {
+  background-image: linear-gradient( to right, rgb(130, 215, 255), rgb(0, 101, 202), rgb(20, 169, 164));
+}
+.gradient-orange {
+  background-image: linear-gradient( to right, rgb(255, 211, 165), rgb(253, 101, 133), rgb(255, 211, 165));
+}
+.gradient-green {
+  background-image: linear-gradient( to right, rgb(42, 250, 223), rgb(76, 131, 255), rgb(42, 250, 223));
+}
+.gradient-card {
+  transition: 0.3s;
+  background-size: 200% auto;
+}
+.gradient-card:hover {
+  background-position: right center !important;
 }
 .chip:hover {
   background-position: right center; /* change the direction of the change here */
@@ -764,6 +783,11 @@ li::before {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+.loading-gif {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
 

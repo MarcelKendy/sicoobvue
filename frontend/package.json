@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@vue/devtools-api": "^6.1.4",
+    "apexcharts": "^3.35.3",
     "axios": "^0.26.1",
     "core-js": "^3.8.3",
     "deepai": "^1.0.17",

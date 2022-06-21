@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
-use App\Models\Xml;
 
 class TaskController extends Controller
 {
@@ -16,9 +15,6 @@ class TaskController extends Controller
 
     public function getTask (Task $task, Request $request) {
         return response()->json($task);
-    }
-    public function getXml (Xml $xml, Request $request) {
-        return response()->json($xml);
     }
 
     /*public function doneTask (Task $task, Request $request) {
