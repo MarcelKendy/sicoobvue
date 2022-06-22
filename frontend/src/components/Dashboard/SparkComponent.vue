@@ -1,29 +1,30 @@
 <template>
   <div>
     <v-card
+      v-if="classes.length > 0"
       :loading="loading"
       :shaped="hover"
       @mouseenter="hover = !hover"
       @mouseleave="hover = !hover"
-      :class="dark_theme ? 'info-cards-dark' : 'info-cards'"
-      class="gradient-card gradient-purple"
+      :class="classes"
     >
       <template slot="progress">
         <v-progress-linear
-          color="#75049b"
+          :color="loading_color"
           height="4"
           indeterminate
         ></v-progress-linear>
       </template>
-      <v-card-title class="info-cards-text">
+      <v-card-title class="spark-cards-text">
         <v-row class="align-center">
-          <v-col cols="12" md="8">
-            <span>Produtos Aprovados</span>
+          <v-col cols="12" :md="total.length > 9 ? '6' : '8'">
+            <span>{{(title.length > 19 && total.length > 9) ? title.split(' ')[0] : title}}</span>
+            <span v-if="(title.length > 19 && total.length > 9)"><br>{{title.split(' ')[1]}}</span>
           </v-col>
-          <v-col cols="12" md="4">
+          <v-col cols="12" :md="total.length > 9 ? '6' : '4'">
             <div
-              class="chip gradient-white-purple"
-              style="max-width: 120px"
+              :class="'chip gradient-white-' + gradient"
+              :style="'max-width: ' + total.length > 9 ? '160px;' : '140px;'"
               v-if="!loading"
             >
               <div class="chip__content">
@@ -33,8 +34,8 @@
           </v-col>
         </v-row>
       </v-card-title>
-      <v-card-subtitle class="info-cards-text"
-        ><span>Spark Quadrimestral</span></v-card-subtitle
+      <v-card-subtitle class="spark-cards-text"
+        ><span>{{subtitle}}</span></v-card-subtitle
       >
       <v-card-text class="text-center">
         <apex-chart
@@ -57,14 +58,23 @@
 
 <script>
 export default {
-  name: 'SparkDoneProducts',
-  props: ['options', 'series', 'loading', 'total', 'dark_theme'],
+  name: 'SparkComponent',
+  props: ['options', 'series', 'loading', 'total', 'dark_theme', 'gradient', 'loading_color', 'title', 'subtitle'],
   data: () => ({
     hover: true,
   }),
   created() {},
   methods: {},
+  computed: {
+    classes() {
+      let classes = this.dark_theme
+        ? 'spark-cards-dark gradient-card gradient-'
+        : 'spark-cards gradient-card gradient-';
+      classes = classes.concat(this.gradient)
+       
+      return classes;
+    },
+  },
 };
 </script>
-<style scoped>
-</style>
+

@@ -161,4 +161,17 @@ class DashboardController extends Controller
 
         return response()->json([$products_registers, $dates, $total]);
     }
+    public function getInfoCards (Request $request) {
+        $all_status = Commission::selectRaw('status, COUNT(*) as qtt')
+            ->whereRaw("status != 'Aprovado UPS' AND '".date('Y')."' = year(CAST(created_at as date))")
+            ->groupBy('status')
+            ->get()->toArray();
+        $temp = $all_status[0];
+        $all_status[0] = $all_status[1];
+        $all_status[1] = $temp;
+        return response()->json($all_status);
+    }
+
+
+
 }

@@ -2,64 +2,74 @@
   <div>
     <v-row class="align-center">
       <v-col cols="12" sm="4">
-        <spark-done-products
+        <spark-component
           :options="spark_done_products"
           :series="series_spark_done_products"
           :total="total_spark_done_products"
           :loading="loading_card_done_products"
           :dark_theme="dark_theme"
-        ></spark-done-products>
+          gradient="purple"
+          title="Produtos Aprovados"
+          subtitle="Spark Quadrimestral"
+          loading_color="#75049b"
+        ></spark-component>
       </v-col>
       <v-col cols="12" sm="4">
-        <spark-commissions-val
+        <spark-component
           :options="spark_commissions_val"
           :series="series_spark_commissions_val"
           :total="total_spark_commissions_val"
           :loading="loading_card_commissions_val"
           :dark_theme="dark_theme"
-        ></spark-commissions-val>
+          gradient="blue"
+          title="Comissionamento R$"
+          subtitle="Spark Quadrimestral"
+          loading_color="#0066c5"
+        ></spark-component>
       </v-col>
       <v-col cols="12" sm="4">
-        <spark-products-registers
+        <spark-component
           :options="spark_products_registers"
           :series="series_spark_products_registers"
           :total="total_spark_products_registers"
           :loading="loading_card_products_registers"
           :dark_theme="dark_theme"
-        ></spark-products-registers>
+          gradient="orange"
+          title="Produtos Cadastrados"
+          subtitle="Spark Quadrimestral"
+          loading_color="#db2e4b"
+        ></spark-component>
       </v-col>
     </v-row>
     <v-row class="align-center">
-      <v-col cols="12" md="6">
-        <v-card :dark="dark_theme">
-          <v-card-title> GRAFICO 1 </v-card-title>
-          <v-card-subtitle> descricao </v-card-subtitle>
-          <v-card-text> </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-card :dark="dark_theme">
-          <v-card-title> GRAFICO 2 </v-card-title>
-          <v-card-subtitle> descricao </v-card-subtitle>
-          <v-card-text> </v-card-text>
-        </v-card>
+      <v-col
+        cols="12"
+        sm="3"
+        v-for="info_card in info_cards_data"
+        :key="info_card.status"
+      >
+        <info-cards-component
+          :title="info_card.status"
+          subtitle=""
+          :data="info_card.qtt"
+          :dark="dark_theme"
+        ></info-cards-component>
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
-import SparkDoneProducts from './Dashboard/SparkDoneProducts.vue';
-import SparkCommissionsVal from './Dashboard/SparkCommissionsVal.vue';
-import SparkProductsRegisters from './Dashboard/SparkProductsRegisters.vue';
+import SparkComponent from './Dashboard/SparkComponent.vue';
+import InfoCardsComponent from './Dashboard/InfoCardsComponent.vue';
 export default {
   name: 'DashboardComponent',
   components: {
-    SparkDoneProducts,
-    SparkCommissionsVal,
-    SparkProductsRegisters,
+    SparkComponent,
+    InfoCardsComponent,
   },
   data: () => ({
+    info_cards_data: {},
     loading_card_done_products: true,
     loading_card_commissions_val: true,
     loading_card_products_registers: true,
@@ -256,6 +266,12 @@ export default {
   },
   methods: {
     getCards() {
+      this.$http.get('get_info_cards').then((response) => {
+        this.info_cards_data = response.data;
+      });
+      this.getSparkCards();
+    },
+    getSparkCards() {
       this.$http.get('get_card_done_products').then((response) => {
         this.series_spark_done_products[0].data = response.data[0];
         this.spark_done_products.xaxis.categories = response.data[1];
@@ -290,13 +306,26 @@ export default {
 };
 </script>
 <style>
+.apexcharts-tooltip {
+  width: 80px;
+}
+
+.apexcharts-tooltip-title {
+  background-color: #b5b5b5 !important;
+  color: #ffffff;
+}
+.total-text {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 500;
+  text-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.516);
+}
 </style>
 /*
-.info-cards {
+.spark-cards {
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.4) 8px 5px 4px, rgba(0, 0, 0, 0.3) 0px 10px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset !important;
 }
-.info-cards-dark {
+.spark-cards-dark {
   border-radius: 10px;
   box-shadow: rgba(84, 84, 84, 0.684) 8px 5px 4px, rgba(93, 93, 93, 0.25) 0px 10px 13px -3px, rgba(0, 0, 0, 0.467) 0px -3px 0px inset !important;
 }

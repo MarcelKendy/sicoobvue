@@ -578,16 +578,28 @@ li::before {
   background-image: linear-gradient(to right, #ff648e, #db6767, #ff64ed);
 }
 .gradient-purple {
-  background-image: linear-gradient( to right, rgb(238, 154, 229), rgb(153, 65, 235), rgb(238, 154, 229));
-}
-.gradient-blue {
-  background-image: linear-gradient( to right, rgb(130, 215, 255), rgb(0, 101, 202), rgb(20, 169, 164));
+  background-image: linear-gradient(
+    to right,
+    rgb(238, 154, 229),
+    rgb(153, 65, 235),
+    rgb(238, 154, 229)
+  );
 }
 .gradient-orange {
-  background-image: linear-gradient( to right, rgb(255, 211, 165), rgb(253, 101, 133), rgb(255, 211, 165));
+  background-image: linear-gradient(
+    to right,
+    rgb(255, 211, 165),
+    rgb(253, 101, 133),
+    rgb(255, 211, 165)
+  );
 }
-.gradient-green {
-  background-image: linear-gradient( to right, rgb(42, 250, 223), rgb(76, 131, 255), rgb(42, 250, 223));
+.gradient-blue {
+  background-image: linear-gradient(
+    to right,
+    rgb(42, 250, 223),
+    rgb(76, 131, 255),
+    rgb(42, 250, 223)
+  );
 }
 .gradient-white-purple {
   background-image: linear-gradient(to right, #e5e5e5, #75049b, #75049b);
@@ -798,29 +810,30 @@ li::before {
   margin-left: auto;
   margin-right: auto;
 }
-.info-cards {
+.spark-cards {
   border-radius: 10px;
 
   transition: 0.3s;
 }
-.info-cards:hover {
+.spark-cards:hover {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 19px 38px,
     rgba(0, 0, 0, 0.22) 6px 6px 6px 6px !important;
   transition: 0.3s;
 }
-.info-cards-dark {
+.spark-cards-dark {
   border-radius: 15px;
 
   transition: 0.3s;
 }
-.info-cards-dark:hover {
+.spark-cards-dark:hover {
   box-shadow: rgb(0, 0, 0) 0px 19px 38px, rgb(0, 0, 0) 6px 6px 6px 6px !important;
   transition: 0.3s;
 }
-.info-cards-text {
+.spark-cards-text {
   font-family: 'Quicksand', sans-serif;
   color: white !important;
   font-weight: bold !important;
 }
+
 </style>
 
