@@ -73,7 +73,7 @@ export default {
   -webkit-text-fill-color: transparent;
 }
 .value-gradient-green {
-  background: linear-gradient(to right, rgb(92, 246, 97), rgb(0, 98, 44));
+  background: linear-gradient(to right, rgb(0, 107, 4), rgb(0, 60, 98));
 }
 .text-shadow-white {
   text-shadow: 1px 1px rgb(255, 255, 255);
