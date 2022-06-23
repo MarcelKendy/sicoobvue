@@ -1,6 +1,22 @@
 <template>
   <div>
     <v-row class="align-center">
+      <v-col
+        cols="12"
+        sm="3"
+        v-for="info_card in info_cards_data"
+        :key="info_card.status"
+      >
+        <info-cards-component
+          :title="info_card.status"
+          subtitle="Total por Status"
+          :data="info_card.qtt"
+          :dark="dark_theme"
+          :delay="info_card.delay"
+        ></info-cards-component>
+      </v-col>
+    </v-row>
+    <v-row class="align-center">
       <v-col cols="12" sm="4">
         <spark-component
           :options="spark_done_products"
@@ -10,7 +26,7 @@
           :dark_theme="dark_theme"
           gradient="purple"
           title="Produtos Aprovados"
-          subtitle="Spark Quadrimestral"
+          subtitle="Spark Line Quadrimestral"
           loading_color="#75049b"
         ></spark-component>
       </v-col>
@@ -23,7 +39,7 @@
           :dark_theme="dark_theme"
           gradient="blue"
           title="Comissionamento R$"
-          subtitle="Spark Quadrimestral"
+          subtitle="Spark Line Quadrimestral"
           loading_color="#0066c5"
         ></spark-component>
       </v-col>
@@ -36,24 +52,41 @@
           :dark_theme="dark_theme"
           gradient="orange"
           title="Produtos Cadastrados"
-          subtitle="Spark Quadrimestral"
+          subtitle="Spark Line Quadrimestral"
           loading_color="#db2e4b"
         ></spark-component>
       </v-col>
     </v-row>
     <v-row class="align-center">
-      <v-col
-        cols="12"
-        sm="3"
-        v-for="info_card in info_cards_data"
-        :key="info_card.status"
-      >
-        <info-cards-component
-          :title="info_card.status"
-          subtitle=""
-          :data="info_card.qtt"
+      <v-col cols="12" md="6">
+        <graphs-card-component
+          title="Produtos Efetivados"
+          subtitle="Pie Chart em frequência relativa e absoluta"
+          type="pie"
+          color="#aa0000"
+          height="590"
+          graph_width="590"
+          :loading="loading_pie_chart_products"
+          :options="pie_products_percentage"
+          :series="series_pie_products_percentage"
+          :total="total_pie_chart_products"
           :dark="dark_theme"
-        ></info-cards-component>
+        ></graphs-card-component>
+      </v-col>
+      <v-col cols="12" md="6">
+        <graphs-card-component
+          title="Comissões por Produto"
+          subtitle="Donut Chart em frequência relativa e absoluta"
+          type="donut"
+          color="#aa0000"
+          height="590"
+          graph_width="546"
+          :loading="loading_donut_chart_commission_products"
+          :options="donut_commission_product"
+          :series="series_donut_commission_product"
+          :total="total_donut_chart_commission_products"
+          :dark="dark_theme"
+        ></graphs-card-component>
       </v-col>
     </v-row>
   </div>
@@ -62,20 +95,26 @@
 <script>
 import SparkComponent from './Dashboard/SparkComponent.vue';
 import InfoCardsComponent from './Dashboard/InfoCardsComponent.vue';
+import GraphsCardComponent from './Dashboard/GraphsCardComponent.vue';
 export default {
   name: 'DashboardComponent',
   components: {
     SparkComponent,
     InfoCardsComponent,
+    GraphsCardComponent,
   },
   data: () => ({
     info_cards_data: {},
     loading_card_done_products: true,
     loading_card_commissions_val: true,
     loading_card_products_registers: true,
+    loading_pie_chart_products: true,
+    loading_donut_chart_commission_products: true,
     total_spark_done_products: 0,
     total_spark_commissions_val: 0,
     total_spark_products_registers: 0,
+    total_pie_chart_products: 0,
+    total_donut_chart_commission_products: 0,
     series_spark_done_products: [
       {
         name: 'spark_done_products',
@@ -182,12 +221,10 @@ export default {
           },
           formatter: function (value) {
             return (
-              '<div style="position:absolute; left:12px; top:43px">' +
-              '<span style="color:black">' +
-              'R$ ' +
+              '<span style="color:black; position:absolute; left:10px;bottom:10px" >' +
+              '<strong style="font-size:8px;">R$</strong> ' +
               value +
-              '</span>' +
-              '</div>'
+              '</span>'
             );
           },
         },
@@ -251,8 +288,103 @@ export default {
       grid: {},
       colors: ['#fff'],
     },
+    series_pie_products_percentage: [],
+    pie_products_percentage: {
+      chart: {
+        width: 380,
+        type: 'pie',
+      },
+      legend: {
+        position: 'bottom',
+        labels: {
+          color: '#FFFFFF',
+          useSeriesColors: true,
+        },
+      },
+      labels: [],
+      responsive: [
+        {
+          breakpoint: 800,
+          options: {
+            chart: {
+              width: 400,
+            },
+            legend: {
+              show: false,
+            },
+          },
+        },
+      ],
+    },
+    series_donut_commission_product: [],
+    donut_commission_product: {
+      chart: {
+        width: 380,
+        type: 'donut',
+      },
+      labels: [],
+      legend: {
+        position: 'bottom',
+        labels: {
+          color: '#FFFFFF',
+          useSeriesColors: true,
+        },
+      },
+      plotOptions: {
+        pie: {
+          startAngle: -90,
+          endAngle: 270,
+          donut: {
+            labels: {
+              show: true,
+              name: {
+                show: true,
+              },
+              value: {
+                show: true,
+                fontFamily: 'Quicksand, sans-serif',
+                fontWeight: '900',
+                color: 'black',
+              },
+              total: {
+                label: 'Total R$',
+                fontFamily: 'Quicksand, sans-serif',
+                fontWeight: '900',
+                color: 'red',
+                show: true,
+                formatter: function (value) {
+                  console.log(value)
+                  return this.total_donut_chart_commission_products;
+                },
+              },
+            },
+          },
+        },
+      },
+      dataLabels: {
+        enabled: true,
+      },
+      fill: {
+        type: 'gradient',
+      },
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200,
+            },
+            legend: {
+              position: 'bottom',
+            },
+          },
+        },
+      ],
+    },
   }),
   created() {
+    this.donut_commission_product.plotOptions.pie.donut.labels.value.color =
+      this.dark_theme ? 'white' : 'black';
     this.getCards();
   },
   computed: {
@@ -270,6 +402,22 @@ export default {
         this.info_cards_data = response.data;
       });
       this.getSparkCards();
+      this.getCharts();
+    },
+    getCharts() {
+      this.$http.get('get_pie_chart_products').then((response) => {
+        this.pie_products_percentage.labels = response.data[0];
+        this.series_pie_products_percentage = response.data[1];
+        this.total_pie_chart_products = response.data[2];
+        this.loading_pie_chart_products = false;
+      });
+      this.$http.get('get_donut_chart_commission_products').then((response) => {
+        console.log(response.data);
+        this.donut_commission_product.labels = response.data[0];
+        this.series_donut_commission_product = response.data[1];
+        this.total_donut_chart_commission_products = response.data[2];
+        this.loading_donut_chart_commission_products = false;
+      });
     },
     getSparkCards() {
       this.$http.get('get_card_done_products').then((response) => {
@@ -303,11 +451,17 @@ export default {
       }
     },
   },
+  watch: {
+    dark_theme: function () {
+      this.donut_commission_product.plotOptions.pie.donut.labels.value.color =
+        this.dark_theme ? 'white' : 'black';
+    },
+  },
 };
 </script>
 <style>
 .apexcharts-tooltip {
-  width: 80px;
+  min-width: 80px;
 }
 
 .apexcharts-tooltip-title {

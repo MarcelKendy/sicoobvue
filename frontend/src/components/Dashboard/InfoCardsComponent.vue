@@ -1,20 +1,46 @@
 <template>
   <div>
-    <v-card class="info-cards info-card-border" :dark="dark" elevation="0">
-      <v-img class="bg-img" width="90" :src="bg_icon"></v-img>
-      <span class="card-content info-cards-title" :class="dark ? 'text-shadow-black' : 'text-shadow-white'">{{ title }}</span>
-      <span class="card-content info-cards-value value-gradient-green">{{ data }}</span>
-      <span class="card-content info-cards-subtitle" :class="dark ? 'text-shadow-black' : 'text-shadow-white'">{{ subtitle }}</span>
-      <span class="card-content footer" :class="dark ? 'text-shadow-black' : 'text-shadow-white'">{{ new Date().getFullYear() }}</span>
-    </v-card>
+    <v-slide-x-reverse-transition>
+      <v-hover v-slot:default="{ hover }" v-show="show_animation">
+        <div :class="{ up_info_cards: hover }" style="transition: 0.5s">
+          <v-card
+            :class="info_cards_classes"
+            :dark="dark"
+          >
+            <v-img class="bg-img" width="90" :src="bg_icon"></v-img>
+            <span class="card-content info-cards-title text-shadow-black">{{
+              title
+            }}</span>
+            <span :class="value_classes">{{ data }}</span>
+            <span
+              class="card-content info-cards-subtitle text-shadow-black"
+              >{{ subtitle }}</span
+            >
+            <span
+              class="card-content footer"
+              :class="dark ? 'text-shadow-black' : 'text-shadow-white'"
+              >{{ new Date().getFullYear() }}</span
+            >
+          </v-card>
+        </div>
+      </v-hover>
+    </v-slide-x-reverse-transition>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['data', 'title', 'subtitle', 'dark'],
+  props: ['data', 'title', 'subtitle', 'dark', 'delay'],
   name: 'InfoCardsComponent',
-  data: () => ({}),
+  data: () => ({
+    show_animation: false,
+  }),
+  created() {
+    let _this = this;
+    setTimeout(function () {
+      _this.show_animation = true;
+    }, this.delay * 1000);
+  },
   methods: {},
   computed: {
     bg_icon() {
@@ -35,6 +61,50 @@ export default {
       }
       return bg;
     },
+    info_cards_classes() {
+      let classes = 'info-cards ';
+      switch (this.title) {
+        case 'Aguard. Venda':
+          classes = classes.concat(
+            'info-cards-border-blue gradient-info-card-blue'
+          );
+          break;
+        case 'Aguard. UPS':
+          classes = classes.concat(
+            'info-cards-border-orange gradient-info-card-orange'
+          );
+          break;
+        case 'Não Vendido':
+          classes = classes.concat(
+            'info-cards-border-gray gradient-info-card-gray'
+          );
+          break;
+        case 'Recusado UPS':
+          classes = classes.concat(
+            'info-cards-border-red gradient-info-card-red'
+          );
+          break;
+      }
+      return classes;
+    },
+    value_classes() {
+      let classes = 'card-content info-cards-value ';
+      switch (this.title) {
+        case 'Aguard. Venda':
+          classes = classes.concat('value-gradient-blue');
+          break;
+        case 'Aguard. UPS':
+          classes = classes.concat('value-gradient-orange');
+          break;
+        case 'Não Vendido':
+          classes = classes.concat('value-gradient-gray');
+          break;
+        case 'Recusado UPS':
+          classes = classes.concat('value-gradient-red');
+          break;
+      }
+      return classes;
+    },
   },
 };
 </script>
@@ -45,10 +115,13 @@ export default {
   position: absolute;
 }
 .info-cards {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 9px 8px,
+    rgba(0, 0, 0, 0.22) 0px 0px 6px 0px !important;
   overflow: hidden;
   height: 120px;
   padding: 10px 10px 10px 10px;
 }
+
 .bg-img {
   z-index: 1;
   position: absolute;
@@ -59,26 +132,25 @@ export default {
   font-weight: bold;
 }
 .info-cards-subtitle {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   bottom: 10px;
   left: 10px;
 }
 .info-cards-value {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 30px;
   right: 10px;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent;
 }
-.value-gradient-green {
-  background: linear-gradient(to right, rgb(0, 107, 4), rgb(0, 60, 98));
-}
+
 .text-shadow-white {
   text-shadow: 1px 1px rgb(255, 255, 255);
 }
 .text-shadow-black {
+  color: white;
   text-shadow: 1px 1px rgb(0, 0, 0);
 }
 .footer {
@@ -89,7 +161,7 @@ export default {
 }
 </style>
 <style lang="scss">
-.info-card-border {
+.info-cards-border {
   --angle: 0deg;
 
   border: 2px solid;
@@ -99,6 +171,70 @@ export default {
       rgb(10, 255, 2),
       rgb(121, 178, 253),
       rgba(18, 210, 175)
+    )
+    1;
+
+  animation: 10s rotate linear infinite;
+}
+
+.info-cards-border-blue {
+  --angle: 0deg;
+
+  border: 2px solid;
+  border-image: conic-gradient(
+      from var(--angle),
+      rgb(0, 31, 131),
+      rgb(0, 39, 197),
+      rgb(0, 110, 255),
+      rgb(146, 220, 255)
+    )
+    1;
+
+  animation: 10s rotate linear infinite;
+}
+
+.info-cards-border-orange {
+  --angle: 0deg;
+
+  border: 2px solid;
+  border-image: conic-gradient(
+      from var(--angle),
+      rgb(222, 78, 0),
+      rgb(214, 93, 0),
+      rgb(255, 128, 0),
+      rgb(255, 188, 134)
+    )
+    1;
+
+  animation: 10s rotate linear infinite;
+}
+
+.info-cards-border-gray {
+  --angle: 0deg;
+
+  border: 2px solid;
+  border-image: conic-gradient(
+      from var(--angle),
+      rgb(15, 63, 99),
+      rgb(97, 108, 153),
+      rgb(130, 132, 144),
+      rgb(134, 166, 172)
+    )
+    1;
+
+  animation: 10s rotate linear infinite;
+}
+
+.info-cards-border-red {
+  --angle: 0deg;
+
+  border: 2px solid;
+  border-image: conic-gradient(
+      from var(--angle),
+      rgb(169, 34, 34),
+      rgb(150, 33, 97),
+      rgba(255, 0, 0, 0.765),
+      rgb(255, 107, 121)
     )
     1;
 

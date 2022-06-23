@@ -321,13 +321,6 @@ export default {
   transform: scale(1.2);
 }
 
-.up {
-  transform: translateY(-20px);
-  transition: 0.5s ease-out;
-}
-
-
-
 .cardsecurity:hover {
   box-shadow: rgb(191, 198, 0) 0px 15px 30px -10px !important;
 }

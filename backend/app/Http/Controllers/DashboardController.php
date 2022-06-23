@@ -169,9 +169,43 @@ class DashboardController extends Controller
         $temp = $all_status[0];
         $all_status[0] = $all_status[1];
         $all_status[1] = $temp;
+        $delay = 0;
+        foreach ($all_status as $key => $status) {
+            $all_status[$key]['delay'] = ($delay);
+            $delay += 0.3;
+        }
+
         return response()->json($all_status);
     }
-
-
+    public function getPieChartProducts (Request $request) {
+        $all_products = Commission::selectRaw('product, COUNT(*) as qtt')
+        ->where('status', 'Aprovado UPS')
+        ->groupBy('product')->get()->toArray();
+        $products = [];
+        $qtts = [];
+        $total = 0;
+        foreach ($all_products as $product) {
+            array_push($products, $product['product']);
+            array_push($qtts, $product['qtt']);
+            $total += $product['qtt'];
+        }
+        return response()->json([$products, $qtts, $total]);
+    }
+    public function getDonutChartCommissionProducts (Request $request) {
+        $all_products = Commission::
+        selectRaw("product, SUM(indicator_commission + seller_commission  + operator_commission) as qtt")
+        ->where('status', 'Aprovado UPS')
+        ->groupBy('product')->get()->toArray();
+        $products = [];
+        $qtts = [];
+        $total = 0;
+        foreach ($all_products as $product) {
+            array_push($products, $product['product']);
+            array_push($qtts, floatval($product['qtt']));
+            $total += $product['qtt'];
+        }
+        $total = number_format($total, 2, ",", ".");
+        return response()->json([$products, $qtts, $total]);
+    }
 
 }
