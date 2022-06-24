@@ -65,7 +65,8 @@
           type="pie"
           color="#aa0000"
           height="590"
-          graph_width="590"
+          graph_width="580"
+          icon="mdi-store"
           :loading="loading_pie_chart_products"
           :options="pie_products_percentage"
           :series="series_pie_products_percentage"
@@ -78,12 +79,31 @@
           title="Comissões por Produto"
           subtitle="Donut Chart em frequência relativa e absoluta"
           type="donut"
-          color="#aa0000"
+          icon="mdi-cash-multiple"
+          color="#116AEA"
           height="590"
-          graph_width="546"
+          graph_width="580"
           :loading="loading_donut_chart_commission_products"
           :options="donut_commission_product"
           :series="series_donut_commission_product"
+          :total="total_donut_chart_commission_products"
+          :dark="dark_theme"
+        ></graphs-card-component>
+      </v-col>
+    </v-row>
+    <v-row class="align-center">
+      <v-col cols="12">
+        <graphs-card-component
+          title="Comissões por usuário"
+          subtitle="Column Chart em frequência relativa e absoluta"
+          type="bar"
+          icon="mdi-cash-multiple"
+          color="#116AEA"
+          height="590"
+          graph_width="780"
+          :loading="loading_donut_chart_commission_products"
+          :options="column_chart_commission_users"
+          :series="series_column_chart_commission_users"
           :total="total_donut_chart_commission_products"
           :dark="dark_theme"
         ></graphs-card-component>
@@ -110,6 +130,7 @@ export default {
     loading_card_products_registers: true,
     loading_pie_chart_products: true,
     loading_donut_chart_commission_products: true,
+    loading_column_chart_commission_users: true,
     total_spark_done_products: 0,
     total_spark_commissions_val: 0,
     total_spark_products_registers: 0,
@@ -294,11 +315,61 @@ export default {
         width: 380,
         type: 'pie',
       },
+      colors: [
+        'rgba(255,210,10,1)', //yellow
+        'rgba(243,103,10,1)', //orange
+        'rgba(255,36,36,1)', //red
+        'rgba(255,36,131,1)', //pink
+        'rgba(153,16,188,1)', //purple
+        'rgba(90,16,188,1)', //indigo
+        'rgba(45,16,188,1)', //dark blue
+        'rgba(13,174,243,1)', //light blue
+        'rgba(13,243,220,1)', //cyan
+        'rgba(10,222,67,1)', //green
+        'rgba(192,220,10,1)', //green-yellow
+      ],
       legend: {
         position: 'bottom',
         labels: {
-          color: '#FFFFFF',
           useSeriesColors: true,
+        },
+      },
+      fill: {
+        colors: [
+          'rgba(255,210,10,1)', //yellow
+          'rgba(243,103,10,1)', //orange
+          'rgba(255,36,36,1)', //red
+          'rgba(255,36,131,1)', //pink
+          'rgba(153,16,188,1)', //purple
+          'rgba(90,16,188,1)', //indigo
+          'rgba(45,16,188,1)', //dark blue
+          'rgba(13,174,243,1)', //light blue
+          'rgba(13,243,220,1)', //cyan
+          'rgba(10,222,67,1)', //green
+          'rgba(192,220,10,1)', //green-yellow
+        ],
+        type: 'gradient',
+        gradient: {
+          type: 'horizontal',
+          shadeIntensity: 0.4,
+          gradientToColors: [
+            'rgba(245,26,26,0.9)', //red
+            'rgba(245,26,121,0.9)', //pink
+            'rgba(143,6,178,0.9)', //purple
+            'rgba(80,6,178,0.9)', //indigo
+            'rgba(35,6,178,0.9)', //dark blue
+            'rgba(3,164,233,0.9)', //light blue
+            'rgba(3,233,210,0.9)', //cyan
+            'rgba(0,212,57,0.9)', //green
+            'rgba(182,210,0,0.9)', //green-yellow
+            'rgba(245,200,0,0.9)', //yellow
+            'rgba(233,93,0,0.9)', //orange
+          ],
+          inverseColors: true,
+          opacityFrom: 1,
+          opacityTo: 1,
+          stops: [0, 100],
+          colorStops: [],
         },
       },
       labels: [],
@@ -322,11 +393,23 @@ export default {
         width: 380,
         type: 'donut',
       },
+      colors: [
+        'rgba(255,210,10,1)', //yellow
+        'rgba(243,103,10,1)', //orange
+        'rgba(255,36,36,1)', //red
+        'rgba(255,36,131,1)', //pink
+        'rgba(153,16,188,1)', //purple
+        'rgba(90,16,188,1)', //indigo
+        'rgba(45,16,188,1)', //dark blue
+        'rgba(13,174,243,1)', //light blue
+        'rgba(13,243,220,1)', //cyan
+        'rgba(10,222,67,1)', //green
+        'rgba(192,220,10,1)', //green-yellow
+      ],
       labels: [],
       legend: {
         position: 'bottom',
         labels: {
-          color: '#FFFFFF',
           useSeriesColors: true,
         },
       },
@@ -352,10 +435,7 @@ export default {
                 fontWeight: '900',
                 color: 'red',
                 show: true,
-                formatter: function (value) {
-                  console.log(value)
-                  return this.total_donut_chart_commission_products;
-                },
+                formatter: () => {},
               },
             },
           },
@@ -365,7 +445,42 @@ export default {
         enabled: true,
       },
       fill: {
+        colors: [
+          'rgba(255,210,10,0.2)', //yellow
+          'rgba(243,103,10,0.2)', //orange
+          'rgba(255,36,36,0.2)', //red
+          'rgba(255,36,131,0.2)', //pink
+          'rgba(153,16,188,0.2)', //purple
+          'rgba(90,16,188,0.2)', //indigo
+          'rgba(45,16,188,0.2)', //dark blue
+          'rgba(13,174,243,0.2)', //light blue
+          'rgba(13,243,220,0.2)', //cyan
+          'rgba(10,222,67,0.2)', //green
+          'rgba(192,220,10,0.2)', //green-yellow
+        ],
         type: 'gradient',
+        gradient: {
+          type: 'horizontal',
+          shadeIntensity: 1,
+          gradientToColors: [
+            'rgba(243,103,10,1)', //orange
+            'rgba(255,36,36,1)', //red
+            'rgba(255,36,131,1)', //pink
+            'rgba(153,16,188,1)', //purple
+            'rgba(90,16,188,1)', //indigo
+            'rgba(45,16,188,1)', //dark blue
+            'rgba(13,174,243,1)', //light blue
+            'rgba(13,243,220,1)', //cyan
+            'rgba(10,222,67,1)', //green
+            'rgba(192,220,10,1)', //green-yellow
+            'rgba(255,210,10,1)', //yellow
+          ],
+          inverseColors: true,
+          opacityFrom: 1,
+          opacityTo: 1,
+          stops: [30, 100],
+          colorStops: [],
+        },
       },
       responsive: [
         {
@@ -380,6 +495,69 @@ export default {
           },
         },
       ],
+    },
+    series_column_chart_commission_users: [
+      {
+        name: 'Indicação',
+        data: [44, 55, 41, 67, 22, 43],
+      },
+      {
+        name: 'Venda',
+        data: [13, 23, 20, 8, 13, 27],
+      },
+      {
+        name: 'Operação',
+        data: [11, 17, 15, 15, 21, 14],
+      }
+    ],
+    column_chart_commission_users: {
+      chart: {
+        type: 'bar',
+        height: 350,
+        stacked: true,
+        toolbar: {
+          show: true,
+        },
+        zoom: {
+          enabled: false,
+        },
+      },
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            legend: {
+              position: 'bottom',
+              offsetX: -10,
+              offsetY: 0,
+            },
+          },
+        },
+      ],
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          borderRadius: 10,
+        },
+      },
+      xaxis: {
+        type: 'datetime',
+        categories: [
+          '01/01/2011 GMT',
+          '01/02/2011 GMT',
+          '01/03/2011 GMT',
+          '01/04/2011 GMT',
+          '01/05/2011 GMT',
+          '01/06/2011 GMT',
+        ],
+      },
+      legend: {
+        position: 'right',
+        offsetY: 40,
+      },
+      fill: {
+        opacity: 1,
+      },
     },
   }),
   created() {
@@ -412,11 +590,13 @@ export default {
         this.loading_pie_chart_products = false;
       });
       this.$http.get('get_donut_chart_commission_products').then((response) => {
-        console.log(response.data);
         this.donut_commission_product.labels = response.data[0];
         this.series_donut_commission_product = response.data[1];
         this.total_donut_chart_commission_products = response.data[2];
         this.loading_donut_chart_commission_products = false;
+      });
+      this.$http.get('get_column_chart_commission_users').then((response) => {
+        console.log(response.data);
       });
     },
     getSparkCards() {

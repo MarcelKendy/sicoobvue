@@ -10,7 +10,7 @@
                 class="mr-5"
                 src="./../../assets/icons/newspaper.png"
               ></v-img>
-              <h2 class="title-card">Log de Desenvolvimento</h2>
+              <h2 class="title-card">Updates<strong class="mx-5" style="font-size:18px">(Log de Desenvolvimento)</strong></h2>
               <span style="position: absolute; right: 15px"
                 >{{
                   new Date()

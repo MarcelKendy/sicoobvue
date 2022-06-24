@@ -73,6 +73,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::get('/get_info_cards', [DashboardController::class, 'getInfoCards']);
     Route::get('/get_pie_chart_products', [DashboardController::class, 'getPieChartProducts']);
     Route::get('/get_donut_chart_commission_products', [DashboardController::class, 'getDonutChartCommissionProducts']);
+    Route::get('/get_column_chart_commission_users', [DashboardController::class, 'getColumnChartCommissionUsers']);
 // DASHBOARD ROUTES
 
 // SOFTWARE UPDATES ROUTES

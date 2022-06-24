@@ -26,7 +26,7 @@
                 :outlined="!hover"
                 :dark="hover"
               >
-                <v-icon left> mdi-store </v-icon>
+                <v-icon left> {{ icon }} </v-icon>
                 <strong>Total: </strong
                 ><strong class="mx-2">{{ total }}</strong>
               </v-chip>
@@ -48,7 +48,7 @@
               v-else
               :type="type"
               :width="graph_width"
-              :options="options"
+              :options="mutable_options"
               :series="series"
             ></apex-chart>
           </v-card-text>
@@ -69,6 +69,7 @@ export default {
     'series',
     'options',
     'title',
+    'icon',
     'subtitle',
     'total',
     'dark',
@@ -78,21 +79,45 @@ export default {
   name: 'GraphsCardComponent',
   data: () => ({
     show_animation: false,
-    reset: false
+    mutable_options: {},
+    reset: false,
   }),
+  mounted() {},
   created() {
     let _this = this;
-    setTimeout(function () {
-      _this.show_animation = true;
-    }, 500);
+    if (this.assignMutableOptions()) {
+      setTimeout(function () {
+        _this.show_animation = true;
+      }, 500);
+    }
+  },
+  methods: {
+    assignMutableOptions() {
+      this.mutable_options = this.options;
+      if (this.type == 'donut') {
+        if (Object.getOwnPropertyDescriptor(this.options, 'plotOptions')) {
+          this.mutable_options.plotOptions.pie.donut.labels.total.formatter =
+            () => {
+              return this.total;
+            };
+          return true;
+        } else {
+          return false;
+        }
+      }
+      return true;
+    },
   },
   watch: {
+    options: function () {
+      this.assignMutableOptions();
+    },
     dark: function () {
-        this.reset = true
-        let _this = this
-        setTimeout(function(){
-            _this.reset = false
-        }, 1)
+      this.reset = true;
+      let _this = this;
+      setTimeout(function () {
+        _this.reset = false;
+      }, 1);
     },
   },
 };

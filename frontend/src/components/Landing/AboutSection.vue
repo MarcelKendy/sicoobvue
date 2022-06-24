@@ -24,7 +24,7 @@
                   <p class="text-justify">
                     <strong class="text_gradient">Dashboard de Metas</strong>
                     <br />
-                    Será possível acompanhar através de uma dashboard moderna, o
+                    Através de uma dashboard moderna, será possível acompanhar o
                     nosso progresso das metas estabelecidas pela cooperativa.
                   </p>
                 </v-col>
