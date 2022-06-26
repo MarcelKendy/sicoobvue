@@ -71,6 +71,9 @@
           :options="pie_products_percentage"
           :series="series_pie_products_percentage"
           :total="total_pie_chart_products"
+          no_data_image="pie-chart.png"
+          no_data_text="Não existem produtos aprovados"
+          no_data_alert_color="red"
           :dark="dark_theme"
         ></graphs-card-component>
       </v-col>
@@ -87,6 +90,8 @@
           :options="donut_commission_product"
           :series="series_donut_commission_product"
           :total="total_donut_chart_commission_products"
+          no_data_text="Não existem produtos aprovados"
+          no_data_image="donut-chart.png"
           :dark="dark_theme"
         ></graphs-card-component>
       </v-col>
@@ -97,14 +102,18 @@
           title="Comissões por usuário"
           subtitle="Column Chart em frequência relativa e absoluta"
           type="bar"
-          icon="mdi-cash-multiple"
+          icon="mdi-account-group"
           color="#116AEA"
           height="590"
-          graph_width="780"
+          graph_width="700"
           :loading="loading_donut_chart_commission_products"
           :options="column_chart_commission_users"
           :series="series_column_chart_commission_users"
           :total="total_donut_chart_commission_products"
+          no_data_text="Nenhuma comissão foi gerada"
+          no_data_image="money-column-chart.png"
+          no_data_alert_size="600px"
+          no_data_alert_color="green"
           :dark="dark_theme"
         ></graphs-card-component>
       </v-col>

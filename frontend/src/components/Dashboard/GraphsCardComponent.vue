@@ -40,17 +40,40 @@
           >
             <img
               v-if="loading || reset"
-              width="60"
-              class="my-10"
-              src="../../assets/images/loading.gif"
+              width="70"
+              class="my-10 mt-16"
+              src="@/assets/images/loading.gif"
             />
             <apex-chart
-              v-else
+              v-else-if="total > 0 || total.length > 0"
               :type="type"
               :width="graph_width"
               :options="mutable_options"
               :series="series"
             ></apex-chart>
+            <div v-else class="mt-14">
+              <v-alert
+                :width="no_data_alert_size"
+                :color="no_data_alert_color"
+                border="left"
+                elevation="10"
+                outlined
+                dark
+                prominent
+              >
+                <template slot="prepend">
+                  
+                </template>
+                <h3>{{ no_data_text }}</h3>
+
+                <v-img
+                  class="ma-10"
+                  :width="no_data_image_size"
+                  :src="require('@/assets/images/' + no_data_image)"
+                ></v-img>
+                <p class="mt-2">{{ new Date().toLocaleString() }}</p>
+              </v-alert>
+            </div>
           </v-card-text>
         </v-card>
       </div>
@@ -60,22 +83,54 @@
 
 <script>
 export default {
-  props: [
-    'type',
-    'color',
-    'width',
-    'height',
-    'graph_width',
-    'series',
-    'options',
-    'title',
-    'icon',
-    'subtitle',
-    'total',
-    'dark',
-    'delay',
-    'loading',
-  ],
+  props: {
+    type: {},
+    color: {
+      required: false,
+      type: [String],
+      default: 'blue',
+    },
+    width: {
+      required: false,
+      type: [String],
+    },
+    height: {},
+    graph_width: {},
+    series: {},
+    options: {},
+    title: {},
+    icon: {},
+    subtitle: {},
+    total: {},
+    dark: {},
+    delay: {},
+    no_data_text: {
+      required: false,
+      type: [String],
+      default: 'Sem dados referentes',
+    },
+    no_data_image: {
+      required: false,
+      type: [String],
+      default: 'empty-box.png',
+    },
+    no_data_image_size: {
+      required: false,
+      type: [String],
+      default: '220px',
+    },
+    no_data_alert_size: {
+      required: false,
+      type: [String],
+      default: '420px',
+    },
+    no_data_alert_color: {
+      required: false,
+      type: [String],
+      default: 'blue',
+    },
+    loading: {},
+  },
   name: 'GraphsCardComponent',
   data: () => ({
     show_animation: false,
