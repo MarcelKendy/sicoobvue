@@ -263,11 +263,19 @@ li::before {
     background-image: linear-gradient(to right, #ff648e, #db6767, #ff64ed);
 }
 
-.gradient-purple {
+.gradient-purple-reverse {
     background-image: linear-gradient(to right,
             rgb(238, 154, 229),
             rgb(153, 65, 235),
             rgb(238, 154, 229));
+}
+
+.gradient-purple {
+    background-image: linear-gradient(to right,
+            rgb(153, 65, 235),
+            rgb(238, 154, 229),
+            rgb(153, 65, 235)
+        );
 }
 
 .gradient-orange {
