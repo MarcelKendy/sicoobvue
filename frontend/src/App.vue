@@ -355,7 +355,7 @@ export default {
 }
 .main-light {
   font-family: 'Quicksand', sans-serif;
-  background-color: #eeeeee;
+  background-color: rgb(238, 238, 238);
 }
 .item-nav {
   transition: 0.3s;

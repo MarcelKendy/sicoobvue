@@ -6,14 +6,36 @@
           <v-card
             :class="info_cards_classes"
             :dark="dark"
+            :style="
+              outlined
+                ? dark
+                  ? 'background-color: rgb(36, 38, 41);'
+                  : 'background-color: rgb(238, 238, 238);'
+                : ''
+            "
           >
             <v-img class="bg-img" width="90" :src="bg_icon"></v-img>
-            <span class="card-content info-cards-title text-shadow-black">{{
-              title
-            }}</span>
-            <span :class="value_classes">{{ data }}</span>
             <span
-              class="card-content info-cards-subtitle text-shadow-black"
+              class="card-content info-cards-title"
+              :class="outlined ? (dark ? 'text-shadow-black' : 'text-shadow-white') : ('text-shadow-black')"
+              style="font-size: 22px"
+              >{{ title }}</span
+            >
+            <span
+              class="card-content info-cards-title"
+              :class="outlined ? content_classes(1) : 'text-shadow-white'"
+              >{{ title }}</span
+            >
+            <span :class="content_classes()">{{ data }}</span>
+            <span
+              class="card-content info-cards-subtitle"
+              :class="
+                outlined
+                  ? dark
+                    ? 'text-shadow-black'
+                    : 'text-shadow-white'
+                  : 'text-shadow-black'
+              "
               >{{ subtitle }}</span
             >
             <span
@@ -30,7 +52,14 @@
 
 <script>
 export default {
-  props: ['data', 'title', 'subtitle', 'dark', 'delay'],
+  props: {
+    data: {},
+    title: {},
+    subtitle: {},
+    dark: {},
+    delay: {},
+    outlined: { type: [Boolean], default: false },
+  },
   name: 'InfoCardsComponent',
   data: () => ({
     show_animation: false,
@@ -41,7 +70,29 @@ export default {
       _this.show_animation = true;
     }, this.delay * 1000);
   },
-  methods: {},
+  methods: {
+    content_classes(type = 0) {
+      let classes =
+        type == 0
+          ? 'card-content info-cards-value '
+          : 'card-content info-cards-title ';
+      switch (this.title) {
+        case 'Aguard. Venda':
+          classes = classes.concat('value-gradient-blue');
+          break;
+        case 'Aguard. UPS':
+          classes = classes.concat('value-gradient-orange');
+          break;
+        case 'Não Vendido':
+          classes = classes.concat('value-gradient-gray');
+          break;
+        case 'Recusado UPS':
+          classes = classes.concat('value-gradient-red');
+          break;
+      }
+      return classes;
+    },
+  },
   computed: {
     bg_icon() {
       let bg = '';
@@ -65,42 +116,26 @@ export default {
       let classes = 'info-cards ';
       switch (this.title) {
         case 'Aguard. Venda':
-          classes = classes.concat(
-            'info-cards-border-blue gradient-info-card-blue'
-          );
+          classes = this.outlined
+            ? classes.concat('info-cards-border-blue')
+            : classes.concat('info-cards-border-blue gradient-info-card-blue');
           break;
         case 'Aguard. UPS':
-          classes = classes.concat(
-            'info-cards-border-orange gradient-info-card-orange'
-          );
+          classes = this.outlined
+            ? classes.concat('info-cards-border-orange')
+            : classes.concat(
+                'info-cards-border-orange gradient-info-card-orange'
+              );
           break;
         case 'Não Vendido':
-          classes = classes.concat(
-            'info-cards-border-gray gradient-info-card-gray'
-          );
+          classes = this.outlined
+            ? classes.concat('info-cards-border-gray')
+            : classes.concat('info-cards-border-gray gradient-info-card-gray');
           break;
         case 'Recusado UPS':
-          classes = classes.concat(
-            'info-cards-border-red gradient-info-card-red'
-          );
-          break;
-      }
-      return classes;
-    },
-    value_classes() {
-      let classes = 'card-content info-cards-value ';
-      switch (this.title) {
-        case 'Aguard. Venda':
-          classes = classes.concat('value-gradient-blue');
-          break;
-        case 'Aguard. UPS':
-          classes = classes.concat('value-gradient-orange');
-          break;
-        case 'Não Vendido':
-          classes = classes.concat('value-gradient-gray');
-          break;
-        case 'Recusado UPS':
-          classes = classes.concat('value-gradient-red');
+          classes = this.outlined
+            ? classes.concat('info-cards-border-red')
+            : classes.concat('info-cards-border-red gradient-info-card-red');
           break;
       }
       return classes;
@@ -114,6 +149,7 @@ export default {
   z-index: 2;
   position: absolute;
 }
+
 .info-cards {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 9px 8px,
     rgba(0, 0, 0, 0.22) 0px 0px 6px 0px !important;
@@ -127,16 +163,22 @@ export default {
   position: absolute;
   opacity: 0.7;
 }
+
 .info-cards-title {
   font-size: 22px;
   font-weight: bold;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent;
 }
+
 .info-cards-subtitle {
   font-size: 12px;
   font-weight: bold;
   bottom: 10px;
   left: 10px;
 }
+
 .info-cards-value {
   font-weight: bold;
   font-size: 30px;
@@ -146,13 +188,17 @@ export default {
   -webkit-text-fill-color: transparent;
 }
 
-.text-shadow-white {
-  text-shadow: 1px 1px rgb(255, 255, 255);
-}
+
 .text-shadow-black {
   color: white;
   text-shadow: 1px 1px rgb(0, 0, 0);
 }
+
+.text-shadow-white {
+  color: rgb(0, 0, 0);
+  text-shadow: 1px 1px rgb(255, 255, 255);
+}
+
 .footer {
   font-size: 12px;
   font-weight: bold;
@@ -160,11 +206,11 @@ export default {
   right: 10px;
 }
 </style>
-<style lang="scss">
+<style lang="scss" scoped>
 .info-cards-border {
   --angle: 0deg;
 
-  border: 2px solid;
+  border: 4px solid;
   border-image: conic-gradient(
       from var(--angle),
       rgb(253, 249, 1),
@@ -174,29 +220,29 @@ export default {
     )
     1;
 
-  animation: 10s rotate linear infinite;
+  animation: 15s rotate linear infinite;
 }
 
 .info-cards-border-blue {
   --angle: 0deg;
 
-  border: 2px solid;
+  border: 4px solid;
   border-image: conic-gradient(
       from var(--angle),
-      rgb(0, 31, 131),
-      rgb(0, 39, 197),
+      rgb(69, 0, 231),
+      rgb(32, 75, 248),
       rgb(0, 110, 255),
       rgb(146, 220, 255)
     )
     1;
 
-  animation: 10s rotate linear infinite;
+  animation: 15s rotate linear infinite;
 }
 
 .info-cards-border-orange {
   --angle: 0deg;
 
-  border: 2px solid;
+  border: 4px solid;
   border-image: conic-gradient(
       from var(--angle),
       rgb(222, 78, 0),
@@ -206,13 +252,13 @@ export default {
     )
     1;
 
-  animation: 10s rotate linear infinite;
+  animation: 15s rotate linear infinite;
 }
 
 .info-cards-border-gray {
   --angle: 0deg;
 
-  border: 2px solid;
+  border: 4px solid;
   border-image: conic-gradient(
       from var(--angle),
       rgb(15, 63, 99),
@@ -222,13 +268,13 @@ export default {
     )
     1;
 
-  animation: 10s rotate linear infinite;
+  animation: 15s rotate linear infinite;
 }
 
 .info-cards-border-red {
   --angle: 0deg;
 
-  border: 2px solid;
+  border: 4px solid;
   border-image: conic-gradient(
       from var(--angle),
       rgb(169, 34, 34),
@@ -238,7 +284,7 @@ export default {
     )
     1;
 
-  animation: 10s rotate linear infinite;
+  animation: 15s rotate linear infinite;
 }
 
 @keyframes rotate {

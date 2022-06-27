@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="align-center">
+    <v-row class="align-center my-5">
       <v-col
         cols="12"
         sm="3"
@@ -8,15 +8,16 @@
         :key="info_card.status"
       >
         <info-cards-component
+          outlined
           :title="info_card.status"
-          subtitle="Total por Status"
+          subtitle="Total"
           :data="info_card.qtt"
           :dark="dark_theme"
           :delay="info_card.delay"
         ></info-cards-component>
       </v-col>
     </v-row>
-    <v-row class="align-center">
+    <v-row class="align-center my-5">
       <v-col cols="12" sm="4">
         <spark-component
           :options="spark_done_products"
@@ -24,10 +25,10 @@
           :total="total_spark_done_products"
           :loading="loading_card_done_products"
           :dark_theme="dark_theme"
-          gradient="purple"
+          gradient="green"
           title="Produtos Aprovados"
           subtitle="Spark Line Quadrimestral"
-          loading_color="#75049b"
+          loading_color="rgb(25, 73, 19)"
         ></spark-component>
       </v-col>
       <v-col cols="12" sm="4">
@@ -37,10 +38,10 @@
           :total="total_spark_commissions_val"
           :loading="loading_card_commissions_val"
           :dark_theme="dark_theme"
-          gradient="blue"
+          gradient="teal"
           title="Comissionamento R$"
           subtitle="Spark Line Quadrimestral"
-          loading_color="#0066c5"
+          loading_color="rgb(0, 70, 103)"
         ></spark-component>
       </v-col>
       <v-col cols="12" sm="4">
@@ -50,20 +51,20 @@
           :total="total_spark_products_registers"
           :loading="loading_card_products_registers"
           :dark_theme="dark_theme"
-          gradient="orange"
+          gradient="purple"
           title="Produtos Cadastrados"
           subtitle="Spark Line Quadrimestral"
-          loading_color="#db2e4b"
+          loading_color="purple"
         ></spark-component>
       </v-col>
     </v-row>
-    <v-row class="align-center">
+    <v-row class="align-center my-5">
       <v-col cols="12" md="6">
         <graphs-card-component
           title="Produtos Efetivados"
           subtitle="Pie Chart em frequência relativa e absoluta"
           type="pie"
-          color="#aa0000"
+          color="rgb(85, 173, 29)"
           height="590"
           graph_width="580"
           icon="mdi-store"
@@ -73,7 +74,7 @@
           :total="total_pie_chart_products"
           no_data_image="pie-chart.png"
           no_data_text="Não existem produtos aprovados"
-          no_data_alert_color="red"
+          no_data_alert_color="green"
           :dark="dark_theme"
         ></graphs-card-component>
       </v-col>
@@ -83,7 +84,7 @@
           subtitle="Donut Chart em frequência relativa e absoluta"
           type="donut"
           icon="mdi-cash-multiple"
-          color="#116AEA"
+          color="rgb(0, 110, 153)"
           height="590"
           graph_width="580"
           :loading="loading_donut_chart_commission_products"
@@ -92,18 +93,19 @@
           :total="total_donut_chart_commission_products"
           no_data_text="Nenhuma comissão foi gerada"
           no_data_image="donut-chart.png"
+          no_data_alert_color="teal"
           :dark="dark_theme"
         ></graphs-card-component>
       </v-col>
     </v-row>
-    <v-row class="align-center">
+    <v-row class="align-center my-5">
       <v-col cols="12">
         <graphs-card-component
           title="Comissões por usuário"
           subtitle="Column Chart em frequência relativa e absoluta"
           type="bar"
           icon="mdi-account-group"
-          color="#4CAF50"
+          color="rgb(200, 207, 0)"
           height="720"
           graph_width="1200"
           graph_height="590"
@@ -114,7 +116,7 @@
           no_data_text="Nenhuma comissão foi gerada"
           no_data_image="money-column-chart.png"
           no_data_alert_size="600px"
-          no_data_alert_color="green"
+          no_data_alert_color="yellow"
           :dark="dark_theme"
         ></graphs-card-component>
       </v-col>
@@ -785,9 +787,6 @@ export default {
 };
 </script>
 <style>
-.apexcharts-tooltip {
-  min-width: 80px;
-}
 
 .total-text {
   font-family: 'Work Sans', sans-serif;
@@ -795,13 +794,3 @@ export default {
   text-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.516);
 }
 </style>
-/*
-.spark-cards {
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.4) 8px 5px 4px, rgba(0, 0, 0, 0.3) 0px 10px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset !important;
-}
-.spark-cards-dark {
-  border-radius: 10px;
-  box-shadow: rgba(84, 84, 84, 0.684) 8px 5px 4px, rgba(93, 93, 93, 0.25) 0px 10px 13px -3px, rgba(0, 0, 0, 0.467) 0px -3px 0px inset !important;
-}
-box-shadow: rgba(0, 0, 0, 0.17) 0px -1px 0px 0px inset, rgba(0, 0, 0, 0.15) 0px -6px 10px 0px inset, rgba(0, 0, 0, 0.1) 0px 0px 0px 0px inset, rgba(0, 0, 0, 0.156) 6px 8px 3px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 1px 0px, rgba(0, 0, 0, 0.09) 0px 0px 0px, rgba(0, 0, 0, 0.09) 0px 0px 0px !important;

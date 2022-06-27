@@ -42,7 +42,7 @@
             <img
               v-if="loading || reset"
               width="70"
-              class="my-10 mt-16"
+              style="padding-top: 90px !important"
               src="@/assets/images/loading.gif"
             />
             <apex-chart

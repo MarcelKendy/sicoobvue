@@ -224,19 +224,19 @@ li::before {
 }
 
 .value-gradient-blue {
-    background: linear-gradient(to right, rgb(92, 136, 199), rgb(15, 0, 221));
+    background: linear-gradient(to left, rgb(92, 136, 199), rgb(15, 0, 221));
 }
 
 .value-gradient-orange {
-    background: linear-gradient(to right, rgb(229, 111, 0), rgb(151, 13, 0));
+    background: linear-gradient(to left, rgb(229, 111, 0), rgb(151, 13, 0));
 }
 
 .value-gradient-gray {
-    background: linear-gradient(to right, rgb(106, 106, 106), rgb(54, 67, 116));
+    background: linear-gradient(to left, rgb(106, 106, 106), rgb(54, 67, 116));
 }
 
 .value-gradient-red {
-    background: linear-gradient(to right, rgb(255, 52, 52), rgb(110, 0, 35));
+    background: linear-gradient(to left, rgb(255, 52, 52), rgb(110, 0, 35));
 }
 
 .gradient-blue {
@@ -282,6 +282,39 @@ li::before {
             rgb(42, 250, 223),
             rgb(76, 131, 255),
             rgb(42, 250, 223));
+}
+
+.gradient-green {
+    background-image: linear-gradient(to right,
+            rgb(20, 110, 65),
+            rgb(137, 226, 35),
+            rgb(20, 110, 65));
+}
+
+.gradient-yellow {
+    background-image: linear-gradient(to right,
+            rgb(211, 127, 0),
+            rgb(240, 236, 0),
+            rgb(211, 127, 0));
+}
+
+.gradient-teal {
+    background-image: linear-gradient(to right,
+            rgb(0, 63, 82),
+            rgb(0, 217, 255),
+            rgb(0, 63, 82));
+}
+
+.gradient-white-green {
+    background-image: linear-gradient(to right, #e5e5e5, #2d790f, #2d790f);
+}
+
+.gradient-white-yellow {
+    background-image: linear-gradient(to right, #e5e5e5, #ca7900, #ca7900);
+}
+
+.gradient-white-teal {
+    background-image: linear-gradient(to right, #e5e5e5, #004872, #004872);
 }
 
 .gradient-white-purple {
