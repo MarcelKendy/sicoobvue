@@ -186,10 +186,6 @@ class DashboardController extends Controller
         $all_products = Commission::selectRaw('product, COUNT(*) as qtt')
         ->where('status', 'Aprovado UPS')
         ->groupBy('product')->get()->toArray();
-        if (count($all_products) == 0){
-            $all_products = [['product' => 'Não existem produtos já efetivados', 'qtt' => 1]];
-        }
-        
         $products = [];
         $qtts = [];
         $total = 0;
