@@ -72,7 +72,6 @@ export default {
         }
       },
       configs_update({commit}, data) {
-        console.log(data)
         if (data) { 
               db.collection('user').update(
                 { id: data.id },

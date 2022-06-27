@@ -99,7 +99,6 @@ class CommissionController extends Controller
             case 'Consórcio':
                 $commission_sicoob_value = ($commission_percentage * $value);
                 return $this->calculatingCommission($commission_sicoob_value);
-
         }
     }
 
@@ -154,7 +153,7 @@ class CommissionController extends Controller
                 $commission->seller_commission    = null;
                 $commission->operator_commission  = null;
             }
-            if ($commission->custom_value){
+            if ($commission->custom_value) {
                 $commission->custom_value = null;
             }
         }

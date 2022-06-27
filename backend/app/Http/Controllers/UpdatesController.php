@@ -10,17 +10,20 @@ use App\Models\Update;
 class UpdatesController extends Controller
 {
 
-    public function getUpdates (Request $request) {
+    public function getUpdates(Request $request)
+    {
         $allUpdates = Update::all();
         return response()->json($allUpdates);
     }
 
-    public function getUpdatesMonth (Request $request) {
+    public function getUpdatesMonth(Request $request)
+    {
         $allUpdates = Update::whereRaw('MONTH(CAST(date as date)) = MONTH(CURRENT_TIMESTAMP)')->get();
         return response()->json($allUpdates);
     }
 
-    public function addUpdate (Request $request) {
+    public function addUpdate(Request $request)
+    {
         $newUpdate = new Update();
         $newUpdate->title = $request->title;
         $newUpdate->content = $request->content;
@@ -30,7 +33,8 @@ class UpdatesController extends Controller
         return response()->json($newUpdate);
     }
 
-    public function editUpdate (Update $update, Request $request) {
+    public function editUpdate(Update $update, Request $request)
+    {
         $update->title = $request->title;
         $update->content = $request->content;
         $update->date = $request->date;
@@ -39,7 +43,8 @@ class UpdatesController extends Controller
         return response()->json($request);
     }
 
-    public function deleteUpdate (Update $update, Request $request) {
+    public function deleteUpdate(Update $update, Request $request)
+    {
         $update->delete();
         return response()->json($update);
     }

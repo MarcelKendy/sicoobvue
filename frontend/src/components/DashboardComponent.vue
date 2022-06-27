@@ -90,7 +90,7 @@
           :options="donut_commission_product"
           :series="series_donut_commission_product"
           :total="total_donut_chart_commission_products"
-          no_data_text="Não existem produtos aprovados"
+          no_data_text="Nenhuma comissão foi gerada"
           no_data_image="donut-chart.png"
           :dark="dark_theme"
         ></graphs-card-component>
@@ -103,10 +103,11 @@
           subtitle="Column Chart em frequência relativa e absoluta"
           type="bar"
           icon="mdi-account-group"
-          color="#116AEA"
-          height="590"
-          graph_width="700"
-          :loading="loading_donut_chart_commission_products"
+          color="#4CAF50"
+          height="720"
+          graph_width="1200"
+          graph_height="590"
+          :loading="loading_column_chart_commission_users"
           :options="column_chart_commission_users"
           :series="series_column_chart_commission_users"
           :total="total_donut_chart_commission_products"
@@ -182,6 +183,7 @@ export default {
       grid: {},
       colors: ['#fff'],
       tooltip: {
+        theme: 'dark',
         x: {
           show: true,
         },
@@ -193,11 +195,7 @@ export default {
           },
           formatter: function (value) {
             return (
-              '<div class="mr-6">' +
-              '<span style="color:black">' +
-              value +
-              '</span>' +
-              '</div>'
+              '<div class="mr-6">' + '<span>' + value + '</span>' + '</div>'
             );
           },
         },
@@ -240,6 +238,7 @@ export default {
       grid: {},
       colors: ['#fff'],
       tooltip: {
+        theme: 'dark',
         x: {
           show: true,
         },
@@ -250,12 +249,7 @@ export default {
             },
           },
           formatter: function (value) {
-            return (
-              '<span style="color:black; position:absolute; left:10px;bottom:10px" >' +
-              '<strong style="font-size:8px;">R$</strong> ' +
-              value +
-              '</span>'
-            );
+            return 'R$ ' + value;
           },
         },
       },
@@ -283,6 +277,7 @@ export default {
         curve: 'smooth',
       },
       tooltip: {
+        theme: 'dark',
         x: {
           show: true,
         },
@@ -295,7 +290,7 @@ export default {
           formatter: function (value) {
             return (
               '<div class="mr-6" style="text-align:center !important">' +
-              '<span style="color:black">' +
+              '<span>' +
               value +
               '</span>' +
               '</div>'
@@ -505,20 +500,7 @@ export default {
         },
       ],
     },
-    series_column_chart_commission_users: [
-      {
-        name: 'Indicação',
-        data: [44, 55, 41, 67, 22, 43],
-      },
-      {
-        name: 'Venda',
-        data: [13, 23, 20, 8, 13, 27],
-      },
-      {
-        name: 'Operação',
-        data: [11, 17, 15, 15, 21, 14],
-      }
-    ],
+    series_column_chart_commission_users: [],
     column_chart_commission_users: {
       chart: {
         type: 'bar',
@@ -533,12 +515,119 @@ export default {
       },
       responsive: [
         {
-          breakpoint: 480,
+          breakpoint: 520,
           options: {
             legend: {
               position: 'bottom',
               offsetX: -10,
               offsetY: 0,
+            },
+            chart: {
+              width: 300,
+            },
+          },
+        },
+        {
+          breakpoint: 705,
+          options: {
+            legend: {
+              position: 'bottom',
+              offsetX: -10,
+              offsetY: 0,
+            },
+            chart: {
+              width: 500,
+            },
+          },
+        },
+        {
+          breakpoint: 910,
+          options: {
+            legend: {
+              position: 'bottom',
+              offsetX: -10,
+              offsetY: 0,
+            },
+            chart: {
+              width: 700,
+            },
+          },
+        },
+        {
+          breakpoint: 1330,
+          options: {
+            legend: {
+              position: 'bottom',
+              offsetX: -10,
+              offsetY: 0,
+            },
+            chart: {
+              width: 900,
+            },
+          },
+        },
+        {
+          breakpoint: 1420,
+          options: {
+            legend: {
+              position: 'bottom',
+              offsetX: 10,
+              offsetY: 7,
+            },
+          },
+          chart: {
+            width: 1000,
+          },
+        },
+        {
+          breakpoint: 1590,
+          options: {
+            legend: {
+              position: 'bottom',
+              offsetX: 10,
+              offsetY: 7,
+            },
+            chart: {
+              width: 1000,
+            },
+          },
+        },
+        {
+          breakpoint: 1690,
+          options: {
+            legend: {
+              position: 'bottom',
+              offsetX: 10,
+              offsetY: 7,
+            },
+            chart: {
+              width: 1200,
+            },
+          },
+        },
+        {
+          breakpoint: 1800,
+          options: {
+            legend: {
+              position: 'bottom',
+              offsetX: 10,
+              offsetY: 7,
+            },
+            chart: {
+              width: 1400,
+            },
+          },
+        },
+        {
+          breakpoint: 1930,
+          options: {
+            legend: {
+              position: 'bottom',
+              offsetX: 10,
+              offsetY: 7,
+            },
+            chart: {
+              width: 1550,
             },
           },
         },
@@ -546,23 +635,58 @@ export default {
       plotOptions: {
         bar: {
           horizontal: false,
-          borderRadius: 10,
+          borderRadius: 6,
+        },
+      },
+      tooltip: {
+        enabled: true,
+        shared: true,
+        intersect: false,
+        theme: 'dark',
+      },
+      yaxis: {
+        labels: {
+          formatter: function (value) {
+            return 'R$ ' + value + ',00';
+          },
+          style: {
+            colors: 'black',
+            fontSize: '12px',
+            fontFamily: 'Quicksand',
+            fontWeight: 900,
+          },
         },
       },
       xaxis: {
-        type: 'datetime',
-        categories: [
-          '01/01/2011 GMT',
-          '01/02/2011 GMT',
-          '01/03/2011 GMT',
-          '01/04/2011 GMT',
-          '01/05/2011 GMT',
-          '01/06/2011 GMT',
-        ],
+        categories: [],
+        labels: {
+          show: true,
+          formatter: function (value) {
+            let initials = value.match(/\b\w/g).join('. ') + '.';
+            initials = initials.substr(initials.indexOf(' ') + 1);
+            return value.split(' ').shift() + ' ' + initials;
+          },
+          style: {
+            colors: 'black',
+            fontSize: '12px',
+            fontFamily: 'Quicksand',
+            fontWeight: 900,
+          },
+        },
       },
+
+      colors: [
+        'rgb(221, 224, 0)',
+        'rgb(0, 133, 143)',
+        'rgb(113, 212, 33)',
+        'rgb(135, 44, 195)',
+      ],
       legend: {
-        position: 'right',
-        offsetY: 40,
+        position: 'bottom',
+        offsetY: 30,
+        labels: {
+          useSeriesColors: true,
+        },
       },
       fill: {
         opacity: 1,
@@ -570,8 +694,7 @@ export default {
     },
   }),
   created() {
-    this.donut_commission_product.plotOptions.pie.donut.labels.value.color =
-      this.dark_theme ? 'white' : 'black';
+    this.darkThemeGraphs();
     this.getCards();
   },
   computed: {
@@ -605,7 +728,9 @@ export default {
         this.loading_donut_chart_commission_products = false;
       });
       this.$http.get('get_column_chart_commission_users').then((response) => {
-        console.log(response.data);
+        this.column_chart_commission_users.xaxis.categories = response.data[0];
+        this.series_column_chart_commission_users = response.data[1];
+        this.loading_column_chart_commission_users = false;
       });
     },
     getSparkCards() {
@@ -628,6 +753,18 @@ export default {
         this.loading_card_products_registers = false;
       });
     },
+    darkThemeGraphs() {
+      this.donut_commission_product.plotOptions.pie.donut.labels.value.color =
+        this.dark_theme ? 'white' : 'black';
+      this.column_chart_commission_users.xaxis.labels.style.colors =
+        this.column_chart_commission_users.yaxis.labels.style.colors = this
+          .dark_theme
+          ? 'white'
+          : 'black';
+      this.column_chart_commission_users.tooltip.theme = this.dark_theme
+        ? 'dark'
+        : 'light';
+    },
     formatDate(date, type) {
       if (type == 'd_m') {
         let day_month = date.slice(5, 10);
@@ -642,8 +779,7 @@ export default {
   },
   watch: {
     dark_theme: function () {
-      this.donut_commission_product.plotOptions.pie.donut.labels.value.color =
-        this.dark_theme ? 'white' : 'black';
+      this.darkThemeGraphs();
     },
   },
 };
@@ -653,10 +789,6 @@ export default {
   min-width: 80px;
 }
 
-.apexcharts-tooltip-title {
-  background-color: #b5b5b5 !important;
-  color: #ffffff;
-}
 .total-text {
   font-family: 'Work Sans', sans-serif;
   font-weight: 500;

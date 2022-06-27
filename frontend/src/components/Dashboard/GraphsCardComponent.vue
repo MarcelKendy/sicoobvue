@@ -3,6 +3,7 @@
     <v-expand-transition>
       <div v-if="show_animation">
         <v-card
+          style="overflow:hidden"
           :width="width"
           :height="height"
           :dark="dark"
@@ -36,7 +37,7 @@
             ><strong>{{ subtitle }}</strong></v-card-subtitle
           >
           <v-card-text
-            :class="loading ? 'text-center' : 'd-flex justify-center'"
+            :class="loading ? 'text-center pa-5' : 'd-flex justify-center pa-5'"
           >
             <img
               v-if="loading || reset"
@@ -45,14 +46,25 @@
               src="@/assets/images/loading.gif"
             />
             <apex-chart
-              v-else-if="total > 0 || total.length > 0"
+              v-else-if="
+                typeof total == 'string'
+                  ? parseFloat(total.replace(',', '.')) > 0
+                  : total > 0
+              "
               :type="type"
               :width="graph_width"
+              :height="graph_height ? graph_height : ''"
               :options="mutable_options"
               :series="series"
             ></apex-chart>
             <div v-else class="mt-14">
+              <v-img
+                style="margin-left: auto; margin-right: auto; display: block"
+                :width="no_data_image_size"
+                :src="require('@/assets/images/' + no_data_image)"
+              ></v-img>
               <v-alert
+                class="mt-10"
                 :width="no_data_alert_size"
                 :color="no_data_alert_color"
                 border="left"
@@ -62,15 +74,9 @@
                 prominent
               >
                 <template slot="prepend">
-                  
+                  <v-img src="@/assets/icons/empty-box.png" max-width="64px"></v-img>
                 </template>
                 <h3>{{ no_data_text }}</h3>
-
-                <v-img
-                  class="ma-10"
-                  :width="no_data_image_size"
-                  :src="require('@/assets/images/' + no_data_image)"
-                ></v-img>
                 <p class="mt-2">{{ new Date().toLocaleString() }}</p>
               </v-alert>
             </div>
@@ -96,6 +102,7 @@ export default {
     },
     height: {},
     graph_width: {},
+    graph_height: {},
     series: {},
     options: {},
     title: {},

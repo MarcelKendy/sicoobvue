@@ -11,7 +11,8 @@ use Carbon\Carbon;
 class UserController extends Controller
 {
 
-    public function getUsers (Request $request) {
+    public function getUsers(Request $request)
+    {
 
         if (isset($request->select)) {
             $select = $request->select;
@@ -28,7 +29,8 @@ class UserController extends Controller
         return response()->json($allUsers);
     }
 
-    public function getUser (Request $request) {
+    public function getUser(Request $request)
+    {
         $match = ['email' => $request->email];
         $user = User::with('access')->where($match)->get();
         if (isset($user[0]['password'])) {
@@ -48,18 +50,20 @@ class UserController extends Controller
         }
     }
 
-    public function getUserPassword (Request $request) {
+    public function getUserPassword(Request $request)
+    {
         $match = ['email' => $request->email];
         $user = User::select('password')->where($match)->get();
         return response()->json($user);
     }
 
-    public function addUser (Request $request) {
+    public function addUser(Request $request)
+    {
         $newUser = new User();
         $newUser->active = 1;
         $newUser->gender = $request->gender;
         $newUser->name = $request->firstName;
-        $newUser->full_name = $request->firstName.' '.$request->lastName;
+        $newUser->full_name = $request->firstName . ' ' . $request->lastName;
         $newUser->email = $request->email;
         $newUser->cpf = $request->cpf;
         $newUser->role = $request->role;
@@ -70,7 +74,8 @@ class UserController extends Controller
         return response()->json($newUser->load('access'));
     }
 
-    public function editUser (User $user, Request $request) {
+    public function editUser(User $user, Request $request)
+    {
         if (isset($request->configs) && $request->configs == 'change') {
             $configs = json_decode($user->configs);
             if (isset($request->theme)) {
@@ -104,7 +109,8 @@ class UserController extends Controller
         return response()->json($user->load('access'));
     }
 
-     public function editUserAccess (User $user, Request $request) {
+    public function editUserAccess(User $user, Request $request)
+    {
         if (isset($request->access_id) && !empty($request->access_id)) {
             $user->access_id = $request->access_id;
         }
@@ -119,26 +125,29 @@ class UserController extends Controller
         return response()->json($user->load('access'));
     }
 
-    public function deleteUser (User $user, Request $request) {
+    public function deleteUser(User $user, Request $request)
+    {
         $user->delete();
         return response()->json($user);
     }
 
-    public function addAvatar(){
+    public function addAvatar()
+    {
         return view('add_avatar');
     }
     //Store image
-    public function storeAvatar(Request $request){
+    public function storeAvatar(Request $request)
+    {
 
         $user = User::find($request->user_id);
-        $user->photo = $request->file('photo')->store('uploads/avatars/'.$user->cpf);
+        $user->photo = $request->file('photo')->store('uploads/avatars/' . $user->cpf);
         $user->save();
 
         return response()->json($user->load('access'));
     }
-	//View image
-    public function getAvatar(){
+    //View image
+    public function getAvatar()
+    {
         return view('view_avatar');
     }
-
 }

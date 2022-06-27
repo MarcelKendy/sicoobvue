@@ -9,7 +9,7 @@ class LogLogin extends Model
 {
     protected $table = 'log_login';
     use HasFactory;
-     public function user()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
