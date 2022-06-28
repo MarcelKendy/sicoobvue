@@ -7,14 +7,16 @@
         v-for="info_card in info_cards_data"
         :key="info_card.status"
       >
-        <info-cards-component
-          outlined
-          :title="info_card.status"
-          subtitle="Total"
-          :data="info_card.qtt"
-          :dark="dark_theme"
-          :delay="info_card.delay"
-        ></info-cards-component>
+        <v-hover v-slot:default="{ hover }">
+          <info-cards-component
+            :outlined="!hover"
+            :title="info_card.status"
+            subtitle="Total"
+            :data="info_card.qtt"
+            :dark="dark_theme"
+            :delay="info_card.delay"
+          ></info-cards-component>
+        </v-hover>
       </v-col>
     </v-row>
     <v-row class="align-center my-5">
@@ -708,11 +710,11 @@ export default {
     loading_cards() {
       return Boolean(
         this.loading_card_done_products ||
-        this.loading_card_commissions_val ||
-        this.loading_card_products_registers ||
-        this.loading_pie_chart_products ||
-        this.loading_donut_chart_commission_products ||
-        this.loading_column_chart_commission_users
+          this.loading_card_commissions_val ||
+          this.loading_card_products_registers ||
+          this.loading_pie_chart_products ||
+          this.loading_donut_chart_commission_products ||
+          this.loading_column_chart_commission_users
       );
     },
     dark_theme() {
