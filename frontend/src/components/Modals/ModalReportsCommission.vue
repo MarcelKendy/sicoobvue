@@ -567,6 +567,10 @@ export default {
     },
     modalOverlay() {
       this.overlay = !this.overlay;
+      if (this.overlay) {
+        this.items = [];
+        this.items = this.commissions;
+      }
     },
     formatDate(date, y = true) {
       let day_month = date.slice(5, 10);
@@ -666,6 +670,7 @@ export default {
             this.generate_pdf = true;
           }
         } else {
+          this.loading = false;
           this.modalOverlay();
         }
       }
@@ -743,7 +748,7 @@ export default {
         'Produtos: ' +
           (this.item.products.length > 0 ? this.item.products : 'TODOS'),
         'Data/Período: ' +
-          (this.item.products.dates > 0 ? this.item.dates : 'SEM FILTRO'),
+          (this.item.dates.length > 0 ? this.item.dates : 'SEM FILTRO'),
         'Status: ' + (this.item.status.length > 0 ? this.item.status : 'TODOS'),
       ];
     },
@@ -755,7 +760,7 @@ export default {
         'Produtos: ' +
           (this.item.products.length > 0 ? this.item.products : 'TODOS'),
         'Data/Período: ' +
-          (this.item.products.dates > 0 ? this.item.dates : 'SEM FILTRO'),
+          (this.item.dates.length > 0 ? this.item.dates : 'SEM FILTRO'),
         'Status: ' + (this.item.status.length > 0 ? this.item.status : 'TODOS'),
         'Requisitado em: ' + new Date().toLocaleString(),
         this.$store.state.software.name + '-' + this.$store.state.software.version,
