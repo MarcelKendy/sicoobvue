@@ -12,7 +12,7 @@
               ></v-img>
               <h2 class="title-card">Updates<strong class="mx-5" style="font-size:18px">(Log de Desenvolvimento)</strong></h2>
               <span style="position: absolute; right: 15px"
-                >{{
+                >Até {{
                   new Date()
                     .toLocaleString('pt', { month: 'long' })
                     .toUpperCase()
@@ -170,7 +170,7 @@ export default {
   methods: {
     getSoftwareUpdates () {
       this.loading_news = true;
-      this.$http.get('get_software_updates_month').then((response) => {
+      this.$http.get('get_software_updates').then((response) => {
         this.news = response.data;
         this.loading_news = false;
       });
