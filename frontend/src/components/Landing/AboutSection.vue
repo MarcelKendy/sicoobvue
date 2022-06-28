@@ -97,7 +97,7 @@
 #about {
   background-image: linear-gradient(
     to right,
-    rgba(8, 10, 17, 0.886),
+    rgba(8, 10, 17, 0.664),
     rgba(0, 0, 0, 0.97),
     rgba(3, 12, 64, 0.878)
   );

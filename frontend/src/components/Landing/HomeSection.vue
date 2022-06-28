@@ -1,13 +1,32 @@
 <template>
   <section id="home">
     <v-parallax dark src="@/assets/images/home/circuits1.jpg" height="880" alt="background">
+    <div class="content">
+      <vue-particles
+        color="#0087a8"
+        :particleOpacity="0.8"
+        :particlesNumber="20"
+        shapeType="triangle"
+        :particleSize="9"
+        linesColor="#3ac200"
+        :linesWidth="1"
+        :lineLinked="true"
+        :lineOpacity="0.4"
+        :linesDistance="150"
+        :moveSpeed="4"
+        :hoverEffect="true"
+        hoverMode="grab"
+        :clickEffect="true"
+        clickMode="push"
+      ></vue-particles>
+    </div>
       <v-row align="center" justify="center">
         <v-col cols="10">
           <v-row align="center" justify="center">
             <v-col cols="12" md="6" xl="8">
               <h1 style="font-size: 32px" class="font-quicksand">Bem-vindo</h1>
               <h1 class="font-weight-light">
-                <span>Novas tecnologias feitas por nós, para nós</span>
+                <span>Novas tecnologias pra você.</span>
                 <br />
                 <span>Sicoob Credisg - {{ new Date().getFullYear() }}</span>
                 <br />
@@ -270,7 +289,14 @@ export default {
 }
 </style>
 
-<style>
+<style scoped>
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 .btn-play {
   transition: 0.2s;
 }
