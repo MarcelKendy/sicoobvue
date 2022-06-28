@@ -1,6 +1,6 @@
 <template>
   <section id="home">
-    <v-parallax dark src="@/assets/images/home/circuits1.jpg" height="750" alt="background">
+    <v-parallax dark src="@/assets/images/home/circuits1.jpg" height="880" alt="background">
       <v-row align="center" justify="center">
         <v-col cols="10">
           <v-row align="center" justify="center">
