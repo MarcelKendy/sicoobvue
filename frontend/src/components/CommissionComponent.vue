@@ -36,7 +36,14 @@
 
     <v-card :dark="dark_theme" class="hover-card" elevation="7" outlined shaped>
       <v-card-title :class="dark_theme ? 'title-card-dark' : 'title-card'">
-        <span class="pb-10">Produtos e Comissões<v-img class="mx-2" style="display:inline-block" src="@/assets/icons/sicoobicon.png" max-width="20"></v-img></span>
+        <span class="pb-10"
+          >Produtos e Comissões<v-img
+            class="mx-2"
+            style="display: inline-block"
+            src="@/assets/icons/sicoobicon.png"
+            max-width="20"
+          ></v-img
+        ></span>
         <v-spacer></v-spacer>
         <v-text-field
           style=""
@@ -260,17 +267,21 @@
           </v-tooltip>
         </template>
         <template v-slot:[`item.value`]="{ item }">
-          <v-chip
-            color="green lighten-1"
-            :class="dark_theme ? 'white--text ' : 'green--text text--lighten-1'"
-            small
-            :outlined="!dark_theme"
-          >
-            <span v-if="item.value" class="second_font-bold">{{
-              'R$ ' + (+item.value).toFixed(2)
-            }}</span>
-            <span v-else class="second_font">Aguardando</span>
-          </v-chip>
+          <v-hover v-slot:default="{ hover }">
+            <v-chip
+              color="green lighten-1"
+              :class="
+                dark_theme ? 'white--text ' : (hover ? 'white--text' : 'green--text text--lighten-1')
+              "
+              small
+              :outlined="(!dark_theme && !hover) || (dark_theme && hover)"
+            >
+              <span v-if="item.value" class="second_font-bold">{{
+                'R$ ' + (+item.value).toFixed(2)
+              }}</span>
+              <span v-else class="second_font">Aguardando</span>
+            </v-chip>
+          </v-hover>
         </template>
         <template v-slot:[`item.status`]="{ item }">
           <div :class="'chip gradient-' + statusStyle(item.status, 'gradient')">

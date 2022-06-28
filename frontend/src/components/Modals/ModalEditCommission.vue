@@ -835,6 +835,7 @@ export default {
           this.item.custom_value =
           this.item.date_seller =
           this.item.value =
+          this.item.operator_id =
             '';
         if (
           this.item.product !== 'Seguro Prestamista' &&

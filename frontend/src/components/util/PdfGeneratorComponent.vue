@@ -10,7 +10,7 @@
     :pdf-quality="2"
     pdf-format="a4"
     pdf-orientation="landscape"
-    pdf-content-width="1600px"
+    pdf-content-width="1183px"
     @progress="onProgress($event)"
     ref="html2Pdf"
   >
