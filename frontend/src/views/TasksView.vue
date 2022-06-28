@@ -95,7 +95,7 @@ export default {
       this.new_task.subtitle = '';
     },
     getTasks() {
-      this.$http.get('get_tasks').then((response) => {
+      this.$http.post('get_user_tasks', {user_id: this.$store.state.user.id}).then((response) => {
         this.items = response.data;
         this.loading_tasks = false;
       });

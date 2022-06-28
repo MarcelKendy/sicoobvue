@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // TASK ROUTES
     Route::get('/get_tasks', [TaskController::class, 'getTasks']);
+    Route::post('/get_user_tasks', [TaskController::class, 'getUserTasks']);
     Route::get('/get_task/{task}', [TaskController::class, 'getTask']);
     Route::put('/done_task/{task}', [TaskController::class, 'doneTask']);
     Route::post('/add_task', [TaskController::class, 'addTask']);

@@ -48,8 +48,8 @@
 </template>
 
 <script>
-import ModalEdit from '../Modals/ModalEdit.vue';
-import ModalDelete from '../Modals/ModalDelete.vue';
+import ModalEdit from '../Modals/ModalEditTask.vue';
+import ModalDelete from '../Modals/ModalDeleteTask.vue';
 export default {
   props: ['task'],
   components: { ModalEdit, ModalDelete },
