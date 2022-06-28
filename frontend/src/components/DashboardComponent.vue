@@ -105,7 +105,7 @@
           subtitle="Column Chart em frequência relativa e absoluta"
           type="bar"
           icon="mdi-account-group"
-          color="rgb(200, 207, 0)"
+          color="rgb(255, 205, 70)"
           height="720"
           graph_width="1200"
           graph_height="590"
@@ -116,7 +116,7 @@
           no_data_text="Nenhuma comissão foi gerada"
           no_data_image="money-column-chart.png"
           no_data_alert_size="600px"
-          no_data_alert_color="yellow"
+          no_data_alert_color="rgb(255, 205, 70)"
           :dark="dark_theme"
         ></graphs-card-component>
       </v-col>
@@ -649,7 +649,7 @@ export default {
       yaxis: {
         labels: {
           formatter: function (value) {
-            return 'R$ ' + value + ',00';
+            return 'R$ ' + value;
           },
           style: {
             colors: 'black',
@@ -695,11 +695,26 @@ export default {
       },
     },
   }),
+  mounted() {
+    let _this = this;
+    window.setInterval(() => {
+      _this.checkSystemComs();
+    }, 10000);
+  },
   created() {
-    this.darkThemeGraphs();
-    this.getCards();
+    this.loadDashboard();
   },
   computed: {
+    loading_cards() {
+      return Boolean(
+        this.loading_card_done_products ||
+        this.loading_card_commissions_val ||
+        this.loading_card_products_registers ||
+        this.loading_pie_chart_products ||
+        this.loading_donut_chart_commission_products ||
+        this.loading_column_chart_commission_users
+      );
+    },
     dark_theme() {
       try {
         return this.$store.state.user.configs.theme == 0;
@@ -709,7 +724,33 @@ export default {
     },
   },
   methods: {
-    getCards() {
+    checkSystemComs() {
+      if (this.loading_cards) {
+        return false;
+      }
+      this.$http.post('get_system_com', { code: 0 }).then((response) => {
+        if (response.data) {
+          this.loadDashboard(true);
+        }
+      });
+    },
+    loadDashboard(att = false) {
+      this.darkThemeGraphs();
+      this.getCards(att);
+    },
+    loadingCards() {
+      this.loading_pie_chart_products =
+        this.loading_donut_chart_commission_products =
+        this.loading_column_chart_commission_users =
+        this.loading_card_done_products =
+        this.loading_card_commissions_val =
+        this.loading_card_products_registers =
+          true;
+    },
+    getCards(att) {
+      if (att) {
+        this.loadingCards();
+      }
       this.$http.get('get_info_cards').then((response) => {
         this.info_cards_data = response.data;
       });
@@ -787,7 +828,6 @@ export default {
 };
 </script>
 <style>
-
 .total-text {
   font-family: 'Work Sans', sans-serif;
   font-weight: 500;

@@ -1,6 +1,6 @@
 <template>
   <section id="home">
-    <v-parallax dark src="@/assets/img/circuits1.jpg" height="750" alt="background">
+    <v-parallax dark src="@/assets/images/home/circuits1.jpg" height="750" alt="background">
       <v-row align="center" justify="center">
         <v-col cols="10">
           <v-row align="center" justify="center">
@@ -73,7 +73,7 @@
         </v-col>
       </v-row>
       <div class="svg-border-waves text-white">
-        <v-img src="@/assets/img/borderWaves.svg" />
+        <v-img src="@/assets/images/home/borderWaves.svg" />
       </div>
     </v-parallax>
     <v-container fluid id="features" class="mt-2">
@@ -133,7 +133,7 @@
       </v-card>
     </v-dialog>
     <div class="svg-border-waves">
-      <img src="~@/assets/img/wave2.svg" />
+      <img src="~@/assets/images/home/wave2.svg" />
     </div>
   </section>
 </template>
@@ -148,17 +148,17 @@ export default {
       videoId: '-V5b2vEKFtM',
       features: [
         {
-          img: require('@/assets/images/web-security.png'),
+          img: require('@/assets/images/home/web-security.png'),
           title: 'Mais Segurança',
           text: 'Sistema de criptografia implementado nos seus dados sensíveis e comunicação API Rest',
         },
         {
-          img: require('@/assets/images/AI.png'),
+          img: require('@/assets/images/home/AI.png'),
           title: 'Nova Engenharia',
           text: 'Software SPA desenvolvido em arquitetura Vue, Laravel, e muito mais.',
         },
         {
-          img: require('@/assets/images/web-design.png'),
+          img: require('@/assets/images/home/web-design.png'),
           title: 'Design Moderno',
           text: 'Interface interativa criada com muito capricho, só pra você.',
         },

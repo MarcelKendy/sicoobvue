@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Commission;
 use App\Models\User;
+use App\Models\SystemCom;
 
 class CommissionController extends Controller
 {
@@ -48,6 +49,7 @@ class CommissionController extends Controller
             $newCommission->operator_commission = $commissions[2];
         }
         $newCommission->save();
+        $this->sendSystemCom();
         return response()->json($newCommission->load('indicator', 'seller', 'operator'));
     }
 
@@ -163,12 +165,21 @@ class CommissionController extends Controller
         $commission->product = $request->product;
 
         $commission->save();
+        $this->sendSystemCom();
         return response()->json($commission->load('indicator', 'seller', 'operator'));
     }
 
     public function deleteCommission(Commission $commission, Request $request)
     {
         $commission->delete();
+        $this->sendSystemCom();
         return response()->json($commission);
+    }
+
+    public function sendSystemCom() {
+        $newSystemCom = new SystemCom();
+        $newSystemCom->code = 0;
+        $newSystemCom->save();
+        return true;
     }
 }

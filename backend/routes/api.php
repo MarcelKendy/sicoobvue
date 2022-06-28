@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AccessController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UpdatesController;
+use App\Http\Controllers\SystemComsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -84,4 +85,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::delete('/delete_update/{update}', [UpdatesController::class, 'deleteUpdate']);
 // SOFTWARE UPDATES ROUTES
 
-
+// SYSTEM COMS ROUTES
+    Route::post('/get_system_com', [SystemComsController::class, 'getSystemCom']);
+    Route::post('/add_system_com', [SystemComsController::class, 'addSystemCom']);
+    Route::put('/edit_system_com/{system_com}', [SystemComsController::class, 'editSystemCom']);
+    Route::delete('/delete_system_com/{system_com}', [SystemComsController::class, 'deleteSystemCom']);
+// SYSTEM COMS ROUTES

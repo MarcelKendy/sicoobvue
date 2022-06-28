@@ -17,7 +17,7 @@
               <v-row>
                 <v-col cols="12" class="d-flex align-center">
                   <v-img
-                    src="@/assets/img/dashboard.png"
+                    src="@/assets/images/home/dashboard.png"
                     max-width="60px"
                     class="mr-4"
                   />
@@ -30,7 +30,7 @@
                 </v-col>
                 <v-col cols="12" class="d-flex align-center">
                   <v-img
-                    src="@/assets/img/commission.png"
+                    src="@/assets/images/home/commission.png"
                     max-width="60px"
                     class="mr-4"
                   />
@@ -46,7 +46,7 @@
                 </v-col>
                 <v-col cols="12" class="d-flex align-center">
                   <v-img
-                    src="@/assets/img/adm.png"
+                    src="@/assets/images/home/adm.png"
                     max-width="60px"
                     class="mr-4"
                   />
@@ -59,7 +59,7 @@
                 </v-col>
                 <v-col cols="12" class="d-flex align-center">
                   <v-img
-                    src="@/assets/img/up.png"
+                    src="@/assets/images/home/up.png"
                     max-width="60px"
                     class="mr-4"
                   />
@@ -76,12 +76,12 @@
             <v-col cols="12" md="5" class="d-none d-md-flex">
               <v-img
                 class="sicoob-mark"
-                src="@/assets/img/sicoob-mark.png"
+                src="@/assets/images/home/sicoob-mark.png"
                 style="position:absolute; top:0px; right: 0px; border-radius: 0 0 0 20px 20px"
                 max-width="200px"
               ></v-img>
               <v-img
-                src="@/assets/img/credisg.png"
+                src="@/assets/images/home/credisg.png"
                 style="position:absolute; bottom:0px; right: 0px"
                 max-width="400px"
               ></v-img>

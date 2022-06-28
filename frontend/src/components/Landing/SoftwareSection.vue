@@ -6,7 +6,7 @@
           <v-row align="center" justify="center">
             <v-col sm="4" class="hidden-xs-only">
               <v-img
-                src="@/assets/img/computer.png"
+                src="@/assets/images/home/computer.png"
                 class="d-block ml-auto mr-auto"
                 max-width="350px"
               />
@@ -28,7 +28,7 @@
                 <v-img
                   max-width="24"
                   class="icon"
-                  :src="require('@/assets/img/power-button-green.png')"
+                  :src="require('@/assets/images/home/power-button-green.png')"
                 ></v-img>
                 <v-slide-x-transition>
                   <strong v-if="delayed_hover" class="text_gradient"
@@ -93,7 +93,7 @@ export default {
 <style scoped>
 #software {
   opacity: 1;
-  background-image: url('~@/assets/img/sicoob-city.jpg');
+  background-image: url('~@/assets/images/home/sicoob-city.jpg');
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
