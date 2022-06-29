@@ -93,3 +93,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::put('/edit_system_com/{system_com}', [SystemComsController::class, 'editSystemCom']);
     Route::delete('/delete_system_com/{system_com}', [SystemComsController::class, 'deleteSystemCom']);
 // SYSTEM COMS ROUTES
+
+// LOG LOGIN ROUTES
+    Route::post('/add_log_login', [UserController::class, 'AddLogLogin']);
+// LOG LOGIN ROUTES
+

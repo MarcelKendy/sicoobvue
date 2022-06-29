@@ -31,7 +31,7 @@
             <v-col cols="12" :md="total.length > 9 ? '6' : '4'">
               <div
                 :class="'chip gradient-white-' + gradient"
-                :style="'max-width: ' + total.length > 9 ? '160px;' : '140px;'"
+                :style="total.length > 9 ? 'width: 130px;' : 'width: 110px;'"
                 v-if="!loading"
               >
                 <div class="chip__content">

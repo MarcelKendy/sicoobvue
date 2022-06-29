@@ -23,16 +23,21 @@
               ></v-img>
             </template>
             <h3>Até a próxima!</h3>
-            <p class="mt-2">{{new Date().toLocaleString()}}</p>   
+            <p class="mt-2">{{ new Date().toLocaleString() }}</p>
           </v-alert>
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions>
+        <v-card-actions v-if="!loading">
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="closeModal">
             Cancelar
           </v-btn>
           <v-btn color="red darken-1" text @click="logout"> Sair </v-btn>
+        </v-card-actions>
+        <v-card-actions v-else>
+          <v-spacer></v-spacer>
+          <v-btn text color="orange" :loading="loading"> </v-btn>
+          <strong class="font-quicksand orange--text">Saindo...</strong>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -44,6 +49,7 @@ export default {
   props: ['activate'],
   data() {
     return {
+      loading: false,
       dialog: false,
     };
   },
@@ -57,7 +63,17 @@ export default {
       this.$emit('closeLogoutModal');
     },
     logout() {
-      this.$emit('logout');
+      this.loading = true;
+      this.$http
+        .post('add_log_login', {
+          user_id: this.$store.state.user.id,
+          status: 0,
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.$emit('logout');
+          this.loading = false;
+        });
     },
   },
   computed: {

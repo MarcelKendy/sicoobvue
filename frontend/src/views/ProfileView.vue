@@ -17,17 +17,17 @@ export default {
     margin_calculate() {
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':
-          return 'ma-2';
+          return 'ma-1';
         case 'sm':
-          return 'ma-5';
+          return 'ma-2';
         case 'md':
-          return 'ma-7';
+          return 'ma-3';
         case 'lg':
-          return 'ma-14';
+          return 'ma-5';
         case 'xl':
-          return 'ma-16';
+          return 'ma-14';
         default:
-          return 'ma-10';
+          return 'ma-8';
       }
     },
   },

@@ -21,22 +21,36 @@
         dark
         class="pt-5 text-center"
       >
-        <v-btn class="rounded-circle mt-10" large icon :to="'/perfil/' + state_user.id">
-          <v-avatar size="80px">
-            <v-img
-              alt="Avatar"
-              :src="
-                state_user.photo
-                  ? avatar_path(state_user.photo)
-                  : require(state_user.gender == 1
-                      ? './assets/images/man.png'
-                      : './assets/images/woman.png')
-              "
-            ></v-img>
-          </v-avatar>
-        </v-btn>
+        <v-tooltip top>
+          <template v-slot:activator="{ attrs, on }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              class="rounded-circle mt-7"
+              width="80px"
+              height="80px"
+              icon
+              color="green"
+              :to="'/perfil/' + state_user.id"
+            >
+              <v-avatar size="80px">
+                <v-img
+                  alt="Avatar"
+                  :src="
+                    state_user.photo
+                      ? avatar_path(state_user.photo)
+                      : require(state_user.gender == 1
+                          ? './assets/images/man.png'
+                          : './assets/images/woman.png')
+                  "
+                ></v-img>
+              </v-avatar>
+            </v-btn>
+          </template>
+          <strong class="font-quicksand">Meu Perfil</strong>
+        </v-tooltip>
 
-        <v-list-item class="mt-8">
+        <v-list-item class="mt-2">
           <v-list-item-content>
             <v-list-item-title
               style="font-family: 'Quicksand', sans-serif; font-size: 24px"

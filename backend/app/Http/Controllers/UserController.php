@@ -40,6 +40,7 @@ class UserController extends Controller
             if (password_verify($request->password, $user[0]['password'])) {
                 $log_login = new LogLogin();
                 $log_login->user_id = $user[0]['id'];
+                $log_login->status = 1;
                 $log_login->save();
                 return response()->json($user);
             } else {
@@ -50,10 +51,18 @@ class UserController extends Controller
         }
     }
 
-    public function getProfile(Request $request) 
+
+    public function getProfile(Request $request)
     {
-        $user = User::select('full_name', 'email', 'cpf', 'photo', 'role', 'gender', 'active', 'access_id')->with('access:id,name')->find($request->user_id);
+        $user = User::select('id', 'full_name', 'email', 'cpf', 'photo', 'role', 'gender', 'active', 'access_id')->with('access:id,name')->find($request->user_id)->toArray();
         if ($user) {
+            $session_active = false;
+            $latest_logged_in = LogLogin::select('id')->where('user_id', $user['id'])->where('status', 1)->latest('created_at')->first();
+            if ($latest_logged_in) {
+                $latest_logged_out = LogLogin::select('id')->where('user_id', $user['id'])->where('status', 0)->where('id', '>', $latest_logged_in->id)->first();
+                $session_active = !$latest_logged_out;
+            }
+            $user['logged'] = $session_active;
             return response()->json($user);
         }
         return 404;
@@ -64,6 +73,15 @@ class UserController extends Controller
         $match = ['email' => $request->email];
         $user = User::select('password')->where($match)->get();
         return response()->json($user);
+    }
+
+    public function addLogLogin(Request $request)
+    {
+        $log_login = new LogLogin();
+        $log_login->user_id = $request->user_id;
+        $log_login->status = $request->status;
+        $log_login->save();
+        return response()->json($log_login);
     }
 
     public function addUser(Request $request)
