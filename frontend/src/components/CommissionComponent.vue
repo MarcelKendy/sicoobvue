@@ -385,7 +385,7 @@
               </v-list>
 
               <v-list>
-                <v-list-item @click="() => {}">
+                <v-list-item :to="'perfil/' + item.indicator_id">
                   <v-list-item-action>
                     <v-icon>mdi-arrow-left</v-icon>
                   </v-list-item-action>

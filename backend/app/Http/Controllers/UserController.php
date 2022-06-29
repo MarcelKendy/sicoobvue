@@ -50,6 +50,15 @@ class UserController extends Controller
         }
     }
 
+    public function getProfile(Request $request) 
+    {
+        $user = User::select('full_name', 'email', 'cpf', 'photo', 'role', 'gender', 'active', 'access_id')->with('access:id,name')->find($request->user_id);
+        if ($user) {
+            return response()->json($user);
+        }
+        return 404;
+    }
+
     public function getUserPassword(Request $request)
     {
         $match = ['email' => $request->email];

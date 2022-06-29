@@ -21,20 +21,23 @@
         dark
         class="pt-5 text-center"
       >
-        <v-avatar size="80px">
-          <v-img
-            alt="Avatar"
-            :src="
-              state_user.photo
-                ? avatar_path(state_user.photo)
-                : require(state_user.gender == 1
-                    ? './assets/images/man.png'
-                    : './assets/images/woman.png')
-            "
-          ></v-img>
-        </v-avatar>
-        <v-list-item>
-          <v-list-item-content style="padding-top: 40px">
+        <v-btn class="rounded-circle mt-10" large icon :to="'/perfil/' + state_user.id">
+          <v-avatar size="80px">
+            <v-img
+              alt="Avatar"
+              :src="
+                state_user.photo
+                  ? avatar_path(state_user.photo)
+                  : require(state_user.gender == 1
+                      ? './assets/images/man.png'
+                      : './assets/images/woman.png')
+              "
+            ></v-img>
+          </v-avatar>
+        </v-btn>
+
+        <v-list-item class="mt-8">
+          <v-list-item-content>
             <v-list-item-title
               style="font-family: 'Quicksand', sans-serif; font-size: 24px"
             >
@@ -303,6 +306,8 @@ export default {
           case 'Landing':
             return true;
           case 'Checklist':
+            return true;
+          case 'Perfil':
             return true;
           case 'Sobre':
             return true;

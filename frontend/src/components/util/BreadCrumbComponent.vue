@@ -2,7 +2,6 @@
   <div>
     <v-btn-toggle v-model="route">
       <v-btn
-        
         small
         :class="dark_theme ? 'white--text' : ''"
         :color="dark_theme ? 'rgb(0,0,70)' : 'blue lighten-4'"
@@ -141,6 +140,22 @@ export default {
             },
           ];
           break;
+        case 'Perfil':
+          this.items = [
+            {
+              text: 'Home',
+              icon: 'mdi-view-dashboard',
+              disabled: false,
+              href: '/',
+            },
+            {
+              text: 'Perfil',
+              icon: 'mdi-account',
+              disabled: true,
+              href: '/perfil',
+            },
+          ];
+          break;
         case 'Sobre':
           this.items = [
             {
@@ -180,5 +195,4 @@ export default {
 </script>
 
 <style>
-
 </style>

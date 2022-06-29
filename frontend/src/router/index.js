@@ -7,6 +7,7 @@ import DashboardView from '../views/DashboardView.vue'
 import TasksView from '../views/TasksView.vue'
 import UsersView from '../views/UsersView.vue'
 import AccessView from '../views/AccessView.vue'
+import ProfileView from '../views/ProfileView.vue'
 import AboutView from '../views/AboutView.vue'
 import CommissionView from '../views/CommissionView.vue'
 import InvalidPageView from '../views/InvalidPageView.vue'
@@ -54,6 +55,11 @@ const routes = [
     path: '/acessos',
     name: 'Acessos',
     component: AccessView
+  },
+  {
+    path: '/perfil/:id',
+    name: 'Perfil',
+    component: ProfileView
   },
   {
     path: '/about',
