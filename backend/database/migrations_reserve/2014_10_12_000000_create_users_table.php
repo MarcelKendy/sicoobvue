@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('configs');
             $table->foreignId('access_id')->references('id')->on('accesses')->constrained();
+            $table->text('profile_about');
             $table->timestamps();
         });
     }

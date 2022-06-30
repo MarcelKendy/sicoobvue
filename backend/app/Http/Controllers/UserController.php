@@ -51,10 +51,9 @@ class UserController extends Controller
         }
     }
 
-
     public function getProfile(Request $request)
     {
-        $user = User::select('id', 'full_name', 'email', 'cpf', 'photo', 'role', 'gender', 'active', 'access_id')->with('access:id,name')->find($request->user_id)->toArray();
+        $user = User::select('id', 'full_name', 'email', 'cpf', 'photo', 'role', 'gender', 'active', 'access_id', 'profile_about')->with('access:id,name')->find($request->user_id)->toArray();
         if ($user) {
             $session_active = false;
             $latest_logged_in = LogLogin::select('id')->where('user_id', $user['id'])->where('status', 1)->latest('created_at')->first();
@@ -96,6 +95,7 @@ class UserController extends Controller
         $newUser->role = $request->role;
         $newUser->password = password_hash($request->password, PASSWORD_DEFAULT);
         $newUser->access_id = 1;
+        $newUser->profile_about = 'Eu conecto pessoas para promover justiça financeira e prosperidade.';
         $newUser->configs = '{"theme":1}';
         $newUser->save();
         return response()->json($newUser->load('access'));
@@ -128,12 +128,21 @@ class UserController extends Controller
         if (isset($request->access_id) && !empty($request->access_id)) {
             $user->access_id = $request->access_id;
         }
+        if (isset($request->profile_about) && !empty($request->profile_about)) {
+            $user->profile_about = $request->profile_about;
+        }
         if (isset($request->gender) && !empty($request->gender)) {
             $user->gender = $request->gender;
         }
 
         $user->save();
         return response()->json($user->load('access'));
+    }
+
+    public function editProfile(User $user, Request $request) {
+        $user->profile_about = $request->profile_about;
+        $user->save();
+        return true;
     }
 
     public function editUserAccess(User $user, Request $request)
@@ -162,7 +171,7 @@ class UserController extends Controller
     {
         return view('add_avatar');
     }
-    //Store image
+    
     public function storeAvatar(Request $request)
     {
 
@@ -172,7 +181,7 @@ class UserController extends Controller
 
         return response()->json($user->load('access'));
     }
-    //View image
+    
     public function getAvatar()
     {
         return view('view_avatar');

@@ -95,6 +95,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // SYSTEM COMS ROUTES
 
 // LOG LOGIN ROUTES
-    Route::post('/add_log_login', [UserController::class, 'AddLogLogin']);
+    Route::post('/add_log_login', [UserController::class, 'addLogLogin']);
 // LOG LOGIN ROUTES
 
+// PROFILE ROUTES
+    Route::put('/edit_profile/{user}', [UserController::class, 'editProfile']);
+// PROFILE ROUTES
