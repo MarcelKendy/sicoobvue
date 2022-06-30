@@ -105,6 +105,7 @@
               <v-text-field
                 @keyup.enter="changeProfile"
                 v-else
+                placeholder='Pressione "enter" ou saia do campo para salvar'
                 @click.stop
                 @change="changeProfile"
                 v-model="profile.profile_about"
@@ -114,12 +115,12 @@
                 append-icon="mdi-pencil"
               >
               </v-text-field>
-              <v-overlay absolute :value="hover && !activate_edit_profile" color="green">
+              <v-overlay absolute :value="hover && !activate_edit_profile" color="rgb(115,215,38)">
                 <v-tooltip right>
                   <template v-slot:activator="{ attrs, on }">
                     <v-btn
                       fab
-                      color="teal"
+                      color="rgb(10,121,117)"
                       v-bind="attrs"
                       v-on="on"
                       @click="activate_edit_profile = true"
@@ -135,7 +136,58 @@
         </v-col>
       </v-row>
       <v-row class="align-center px-10 mt-10">
-        <v-col cols="12">
+        <v-col cols="12" md="6">
+          <v-tooltip top v-model="hover_delay">
+            <template v-slot:activator="{}">
+              <v-card
+                class="profile-info-card"
+                outlined
+                color="transparent"
+                elevation="12"
+              >
+                <v-list class="transparent-list">
+                  <v-hover
+                    v-slot:default="{ hover }"
+                    v-for="item in info_card_items"
+                    :key="item.key"
+                  >
+                    <v-list-item
+                      @mouseenter="activateTooltip()"
+                      @click.stop.prevent="copyInfo(item.title)"
+                      class="introduction-item"
+                    >
+                      <v-img
+                        class="mr-5"
+                        max-width="32"
+                        :src="require('@/assets/icons/' + item.icon)"
+                      ></v-img>
+
+                      <v-list-item-content>
+                        <span class="introduction-item-text">
+                          {{ profile[item.data] }}
+                        </span>
+                      </v-list-item-content>
+                      <v-slide-x-reverse-transition>
+                        <div v-if="hover" class="mr-7">
+                          <span class="introduction-item-title">
+                            {{ item.title }}
+                          </span>
+                        </div>
+                      </v-slide-x-reverse-transition>
+                      <input
+                        type="hidden"
+                        :id="item.title"
+                        :value="profile[item.data]"
+                      />
+                    </v-list-item>
+                  </v-hover>
+                </v-list>
+              </v-card>
+            </template>
+            <span class="font-quicksand">Clique para copiar</span>
+          </v-tooltip>
+        </v-col>
+        <v-col cols="12" md="6">
           <v-tooltip top v-model="hover_delay">
             <template v-slot:activator="{}">
               <v-card
