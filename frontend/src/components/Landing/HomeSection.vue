@@ -1,26 +1,35 @@
 <template>
   <section id="home">
-    <v-parallax dark src="@/assets/images/home/circuits1.jpg" height="880" alt="background">
-    <div class="content">
-      <vue-particles
-        color="#0087a8"
-        :particleOpacity="0.8"
-        :particlesNumber="20"
-        shapeType="triangle"
-        :particleSize="9"
-        linesColor="#3ac200"
-        :linesWidth="1"
-        :lineLinked="true"
-        :lineOpacity="0.4"
-        :linesDistance="150"
-        :moveSpeed="4"
-        :hoverEffect="true"
-        hoverMode="grab"
-        :clickEffect="true"
-        clickMode="push"
-      ></vue-particles>
-    </div>
-      <v-row align="center" justify="center">
+    <v-parallax
+      dark
+      src="@/assets/images/home/circuits1.jpg"
+      height="880"
+      alt="background"
+    >
+      <div class="particles">
+        <vue-particles
+          color="#0087a8"
+          :particleOpacity="0.8"
+          :particlesNumber="20"
+          shapeType="triangle"
+          :particleSize="9"
+          linesColor="#3ac200"
+          :linesWidth="1"
+          :lineLinked="true"
+          :lineOpacity="0.4"
+          :linesDistance="150"
+          :moveSpeed="4"
+          :hoverEffect="true"
+          hoverMode="grab"
+          :clickEffect="true"
+          clickMode="push"
+        ></vue-particles>
+      </div>
+      <v-row
+        align="center"
+        justify="center"
+        
+      >
         <v-col cols="10">
           <v-row align="center" justify="center">
             <v-col cols="12" md="6" xl="8">
@@ -32,6 +41,7 @@
                 <br />
               </h1>
               <v-btn
+                style="position: relative; z-index: 2"
                 rounded
                 outlined
                 large
@@ -42,7 +52,7 @@
                 Me mostre
                 <v-icon class="ml-2">mdi-arrow-down</v-icon>
               </v-btn>
-              <div class="video d-flex align-center py-4">
+              <div class="video d-flex align-center py-4" style="position: relative; z-index: 2">
                 <a @click.stop="dialog = true" class="playBut">
                   <svg
                     version="1.1"
@@ -114,7 +124,12 @@
                   dark
                   class="card"
                   shaped
-                  :class="{ up: hover, cardsecurity: i == 0 , cardengineer: i == 1 , carddesign: i == 2 }"
+                  :class="{
+                    up: hover,
+                    cardsecurity: i == 0,
+                    cardengineer: i == 1,
+                    carddesign: i == 2,
+                  }"
                 >
                   <v-img
                     :src="feature.img"
@@ -239,6 +254,7 @@ export default {
   stroke-dasharray: 650;
   stroke-dashoffset: 650;
   -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
   opacity: 0.3;
 }
 
@@ -246,9 +262,11 @@ export default {
   /*  border: 1px solid red;*/
   display: inline-block;
   -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 
   .triangle {
     -webkit-transition: all 0.7s ease-in-out;
+    transition: all 0.7s ease-in-out;
     stroke-dasharray: 240;
     stroke-dashoffset: 480;
     stroke: white;
@@ -290,7 +308,8 @@ export default {
 </style>
 
 <style scoped>
-.content {
+.particles {
+  z-index: 2;
   position: absolute;
   top: 0;
   left: 0;
@@ -351,21 +370,27 @@ export default {
   box-shadow: rgb(191, 198, 0) 0px 15px 30px -10px !important;
 }
 .cardsecurity {
-    box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px, rgba(29, 38, 171, 0.2) 0px 0px 10px, rgba(255, 255, 255, 0.2) 0px 0px 0px, rgba(255, 255, 255, 0.2) 0px 0px 13px, rgba(255, 255, 255, 0.2) 0px 0px 2px !important;
+  box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px,
+    rgba(29, 38, 171, 0.2) 0px 0px 10px, rgba(255, 255, 255, 0.2) 0px 0px 0px,
+    rgba(255, 255, 255, 0.2) 0px 0px 13px, rgba(255, 255, 255, 0.2) 0px 0px 2px !important;
 }
 
 .cardengineer:hover {
   box-shadow: rgb(99, 169, 0) 0px 15px 30px -10px !important;
 }
 .cardengineer {
-    box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px, rgba(29, 38, 171, 0.2) 0px 0px 10px, rgba(255, 255, 255, 0.2) 0px 0px 0px, rgba(255, 255, 255, 0.2) 0px 0px 13px, rgba(255, 255, 255, 0.2) 0px 0px 2px !important;
+  box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px,
+    rgba(29, 38, 171, 0.2) 0px 0px 10px, rgba(255, 255, 255, 0.2) 0px 0px 0px,
+    rgba(255, 255, 255, 0.2) 0px 0px 13px, rgba(255, 255, 255, 0.2) 0px 0px 2px !important;
 }
 
 .carddesign:hover {
   box-shadow: rgb(0, 81, 96) 0px 15px 30px -10px !important;
 }
 .carddesign {
-  box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px, rgba(29, 38, 171, 0.2) 0px 0px 10px, rgba(255, 255, 255, 0.2) 0px 0px 0px, rgba(255, 255, 255, 0.2) 0px 0px 13px, rgba(255, 255, 255, 0.2) 0px 0px 2px !important;
+  box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px,
+    rgba(29, 38, 171, 0.2) 0px 0px 10px, rgba(255, 255, 255, 0.2) 0px 0px 0px,
+    rgba(255, 255, 255, 0.2) 0px 0px 13px, rgba(255, 255, 255, 0.2) 0px 0px 2px !important;
 }
 </style>
 

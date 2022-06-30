@@ -1,5 +1,5 @@
 <template>
-  <div class="background-image">
+  <div>
     <v-card
       :dark="dark_theme"
       :class="dark_theme ? 'profile-card-dark' : ''"
@@ -10,7 +10,6 @@
       <v-skeleton-loader :dark="dark_theme" transition="scroll-y-transition" elevation="5" height="40vh" class="mx-auto" type="card"></v-skeleton-loader>
     </v-card>
     <v-card
-      image="@/assets/images/bg3.png"
       :dark="dark_theme"
       :class="dark_theme ? 'profile-card-dark' : ''"
       v-else
@@ -160,9 +159,21 @@ export default {
 </script>
 
 <style scoped>
+
 .background-image {
-  background-image: url("./../assets/images/bg3.png");
+  filter: brightness(70%);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: no-repeat center center;
+  background-size: cover;
+  transform: scale(1.1);
 }
+
 .profile-card {
   background-color: rgb(255, 255, 255);
   box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
@@ -171,22 +182,21 @@ export default {
     rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px,
     rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px !important;
 }
+
 .profile-card-dark {
   color: white;
   background-color: rgba(0, 0, 0, 0.32) !important;
 }
+
 .profile-info-card {
   font-weight: bold !important;
   color: black !important;
 }
+
 .profile-info-card-dark {
   color: rgb(255, 255, 255) !important;
 }
-.introduction-card {
-  color: white;
-  border-radius: 30px;
-  background-image: linear-gradient(to bottom right, rgba(0, 98, 130, 0.53), rgba(188, 255, 212, 0.4));
-}
+
 .profile-name {
   font-weight: bold;
   color: white;
@@ -196,10 +206,11 @@ export default {
   bottom: 2vh;
   left: 40vh;
 }
+
 .cover-photo {
   border-radius: 5px;
-
 }
+
 .rounded-gradient-border {
   width: 300px;
   height: 80px;
@@ -215,24 +226,34 @@ export default {
   background-origin: border-box;
   background-clip: content-box, border-box;
 }
+
 .banner {
   margin-bottom: 100px;
   position: relative;
 }
+
 .logged-badge {
   position: absolute;
   top: -11vh;
   left: 30vh;
 }
+
 .avatar-photo {
   position: absolute;
   bottom: -10vh;
   left: 10vh;
 }
+
 .sicoob-icon {
   position: absolute;
   z-index: 2;
   right: 0px;
+}
+
+.introduction-card {
+  color: white;
+  border-radius: 30px;
+  background-image: linear-gradient(to bottom right, rgba(0, 73, 97, 0.432), rgba(0, 130, 108, 0.534), rgba(188, 255, 212, 0.4));
 }
 
 </style>
