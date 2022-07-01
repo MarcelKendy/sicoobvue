@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 30-Jun-2022 às 11:11
+-- Tempo de geração: 01-Jul-2022 às 20:12
 -- Versão do servidor: 5.7.36
 -- versão do PHP: 7.4.26
 
@@ -119,6 +119,45 @@ INSERT INTO `commissions` (`id`, `user_id`, `date_indicator`, `date_seller`, `da
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `departments`
+--
+
+DROP TABLE IF EXISTS `departments`;
+CREATE TABLE IF NOT EXISTS `departments` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `team` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=261 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `departments`
+--
+
+INSERT INTO `departments` (`id`, `name`, `team`, `created_at`, `updated_at`) VALUES
+(1, 'Tecnologia da Informação', 'Administrativa', '2022-07-01 16:10:46', '2022-07-01 16:10:46'),
+(8, 'Caixa', 'Negócios', '2022-07-01 16:10:46', '2022-07-01 16:10:46'),
+(9, 'Gerência', 'Negócios', '2022-07-01 16:10:46', '2022-07-01 16:10:46'),
+(17, 'Cadastro', 'Operacional', '2022-07-01 16:10:46', '2022-07-01 16:10:46'),
+(18, 'Crédito', 'Operacional', '2022-07-01 16:10:46', '2022-07-01 16:10:46'),
+(19, 'Cobrança', 'Operaconal', '2022-07-01 16:10:46', '2022-07-01 16:10:46'),
+(11, 'Produtos e Serviços', 'Negócios', '2022-07-01 16:10:46', '2022-07-01 16:10:46'),
+(2, 'Contas a Pagar', 'Administrativa', '2022-07-01 16:10:46', '2022-07-01 16:10:46'),
+(3, 'Cedoc/Contabilidade', 'Administrativa', '2022-07-01 16:10:46', '2022-07-01 16:10:46'),
+(6, 'Controle Interno', 'Gestão de Riscos', '2022-07-01 16:10:46', '2022-07-01 16:10:46'),
+(20, 'Staff', 'Staff', '2022-07-01 16:10:46', '2022-07-01 16:10:46'),
+(12, 'Gestão Executiva', 'Negócios', '2022-07-01 16:15:37', '2022-07-01 16:15:37'),
+(7, 'Gestão Executiva', 'Gestão de Riscos', '2022-07-01 16:15:37', '2022-07-01 16:15:37'),
+(13, 'Gestão Tática', 'Negócios', '2022-07-01 16:15:37', '2022-07-01 16:15:37'),
+(5, 'Gestão Tática', 'Administrativa', '2022-07-01 16:15:37', '2022-07-01 16:15:37'),
+(15, 'Atendimento', 'Negócios', '2022-07-01 16:15:37', '2022-07-01 16:15:37'),
+(16, 'Assistentes', 'Negócios', '2022-07-01 16:15:37', '2022-07-01 16:15:37');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `log_login`
 --
 
@@ -131,7 +170,26 @@ CREATE TABLE IF NOT EXISTS `log_login` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `log_login_user_id_foreign` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `log_login`
+--
+
+INSERT INTO `log_login` (`id`, `user_id`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '2022-06-30 11:39:32', '2022-06-30 11:39:32'),
+(2, 1, 0, '2022-07-01 16:40:44', '2022-07-01 16:40:44'),
+(3, 1, 1, '2022-07-01 16:41:44', '2022-07-01 16:41:44'),
+(4, 1, 0, '2022-07-01 16:45:22', '2022-07-01 16:45:22'),
+(5, 1, 1, '2022-07-01 16:45:27', '2022-07-01 16:45:27'),
+(6, 1, 0, '2022-07-01 16:45:43', '2022-07-01 16:45:43'),
+(7, 1, 1, '2022-07-01 16:45:49', '2022-07-01 16:45:49'),
+(8, 1, 0, '2022-07-01 16:47:45', '2022-07-01 16:47:45'),
+(9, 1, 1, '2022-07-01 16:47:47', '2022-07-01 16:47:47'),
+(10, 1, 0, '2022-07-01 18:55:56', '2022-07-01 18:55:56'),
+(11, 1, 1, '2022-07-01 18:55:59', '2022-07-01 18:55:59'),
+(12, 1, 0, '2022-07-01 20:10:26', '2022-07-01 20:10:26'),
+(13, 1, 1, '2022-07-01 20:10:32', '2022-07-01 20:10:32');
 
 -- --------------------------------------------------------
 
@@ -145,7 +203,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `migrations`
@@ -160,7 +218,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (17, '2022_04_19_022736_create_log_login_table', 8),
 (14, '2022_04_19_022736_create_accesses_table', 5),
 (15, '2010_04_19_022736_create_accesses_table', 6),
-(16, '2010_04_19_022736_create_system_coms_table', 7);
+(16, '2010_04_19_022736_create_system_coms_table', 7),
+(18, '2014_10_12_000000_create_tests_table', 9),
+(19, '2008_04_19_022736_create_departments_table', 10),
+(20, '2009_04_19_022736_create_roles_table', 10);
 
 -- --------------------------------------------------------
 
@@ -193,6 +254,50 @@ INSERT INTO `products` (`id`, `name`, `created_at`, `updated_at`) VALUES
 (9, 'Crédito Consignado', '2022-04-28 17:54:16', '2022-04-28 17:54:16'),
 (10, 'Consórcio', '2022-04-28 17:54:16', '2022-04-28 17:54:16'),
 (11, 'Previdência', '2022-04-28 17:54:16', '2022-04-28 17:54:16');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `roles`
+--
+
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `department_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `roles_department_id_foreign` (`department_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `roles`
+--
+
+INSERT INTO `roles` (`id`, `department_id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Analista de TI', '2022-07-01 16:24:43', '2022-07-01 16:24:43'),
+(2, 4, 'Diretor Administrativo', '2022-07-01 16:24:43', '2022-07-01 16:24:43'),
+(3, 12, 'Diretor de Negócios', '2022-07-01 16:24:43', '2022-07-01 16:24:43'),
+(4, 7, 'Diretor de Gestão de Riscos', '2022-07-01 16:24:43', '2022-07-01 16:24:43'),
+(5, 2, 'Agente Administrativo', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(6, 20, 'Secretária Executiva', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(7, 3, 'Agente Administrativo', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(8, 5, 'Gerente Administrativo', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(9, 6, 'Agente de Controle Interno', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(10, 8, 'Agente de Atendimento', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(11, 9, 'Gerente de Relacionamento', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(12, 11, 'Agente de Produtos', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(13, 13, 'Gerente de Negócios', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(14, 13, 'Gerente de PA', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(15, 15, 'Agente de Atendimento', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(16, 17, 'Agente Administrativo', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(17, 18, 'Agente Administrativo', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(18, 19, 'Agente Administrativo', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(19, 20, 'Agente de Marketing', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(20, 20, 'Analista de Negócios', '2022-07-01 18:27:11', '2022-07-01 18:27:15'),
+(21, 20, 'Agente de RH', '2022-07-01 18:27:11', '2022-07-01 18:27:15');
 
 -- --------------------------------------------------------
 
@@ -298,14 +403,19 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `full_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` varchar(191) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `gender` tinyint(4) NOT NULL,
   `active` tinyint(4) NOT NULL,
   `cpf` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `photo` text COLLATE utf8mb4_unicode_ci,
   `access_id` bigint(20) UNSIGNED NOT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL,
   `configs` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `profile_about` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `agency` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone_corporation` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -318,23 +428,23 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Extraindo dados da tabela `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `full_name`, `role`, `gender`, `active`, `cpf`, `email`, `photo`, `access_id`, `configs`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'Marcel', 'Marcel Kendy Rabelo Matsumoto', 'Analista TI', 1, 1, '09022715639', 'kendymarcel@gmail.com', 'uploads/avatars/09022715639/9T3rrSXSBIvojIuk4wD6TN0NYVLLEqIQMcJAMsX9.jpg', 8, '{\"theme\":1}', '$2y$10$YtsTsN.8sZYYjx/K7328keFAVyq/9z.A3I17APTuuNf5jeOx71vRe', '2022-04-28 17:49:51', '2022-06-28 13:34:48'),
-(2, 'Niccoló', 'Niccoló di Bernardo dei Machiavelli', 'Funcionário Aleatório', 1, 1, '32323232356', 'machiavelli@gmail.com', 'uploads/avatars/32323232356/axXyxAFvVGbgCVQzzlO6uJXUwczaPeH8c5j6LjID.jpg', 2, '{\"theme\":1}', '$2y$10$O8288ZEq99PZnLEB/bHNVuHIKTQgvDxliQyjgZjets316E3rnSlGC', '2022-04-28 17:49:51', '2022-06-27 19:28:48'),
-(3, 'Michelangelo', 'Michelangelo Soares', 'Funcionário Aleatório', 2, 0, '43223424333', 'michel@dad.c', NULL, 5, '{\"theme\":1}', '$2y$10$O8288ZEq99PZnLEB/bHNVuHIKTQgvDxliQyjgZjets316E3rnSlGC', '2022-05-02 15:32:25', '2022-06-14 18:15:28'),
-(4, 'Leonardo', 'Leonardo Da Vinci', 'Funcionário Semi Aleatório', 1, 1, '21312313213', 'leo@leo.com', 'uploads/avatars/21312313213/uwoOlOXItHqd7kE71oGU3q3e6KS6zKD8uZNJ9k9q.webp', 4, '{\"theme\":1}', '$2y$10$XZUzmIxEp1yJP9fXcmpfbuCUktF3lQIqfENeFKxx8oWp0rusOBozG', '2022-05-02 15:37:28', '2022-06-27 19:27:48'),
-(5, 'Alan', 'Alan Mathison Turing', 'Pai da Computação', 1, 1, '66666666609', 'alan@gmail.com', 'uploads/avatars/66666666609/BRdrBXeyxH1fQbwmcEBzYLmsL486MtQprZi0s38H.jpg', 6, '{\"theme\":1}', '$2y$10$uF3.PqtvHl0/qt6QvHWYQO/H1B8oX8mX7FZpWnVln9sYn2PUCSPka', '2022-05-04 21:36:11', '2022-06-27 19:25:35'),
-(6, 'Donatello', 'Donatello Vincerine', 'Funcionário Aleatório', 1, 0, '76865765756', 'seller@seller.com', NULL, 3, '{\"theme\":1}', '$2y$10$O8288ZEq99PZnLEB/bHNVuHIKTQgvDxliQyjgZjets316E3rnSlGC', '2022-05-04 21:46:14', '2022-06-06 15:36:19'),
-(7, 'Marie', 'Marie Currie', 'Funcionário Aleatório', 2, 1, '43543543342', 'basic@basic.com', NULL, 1, '{\"theme\":1}', '$2y$10$O8288ZEq99PZnLEB/bHNVuHIKTQgvDxliQyjgZjets316E3rnSlGC', '2022-05-04 21:46:47', '2022-06-09 17:35:51'),
-(8, 'Nikola', 'Nikola Tesla Никола Тесла', 'Vendedor Aleatório', 1, 1, '76865733765', 'nikola@gmail.com', 'uploads/avatars/76865733765/pr6b0xZmLYAzo0BZbsib3tzZD4AHGbjwZcut53Fv.jpg', 2, '{\"theme\":1}', '$2y$10$O8288ZEq99PZnLEB/bHNVuHIKTQgvDxliQyjgZjets316E3rnSlGC', '2022-05-04 21:46:14', '2022-06-27 19:24:28'),
-(9, 'Monalisa', 'Monalisa Geek de Roma', 'Pintura Renascentista Italiana', 2, 1, '77551111111', 'monalisa@gmail.com', 'uploads/avatars/77551111111/GCP4jPvcovilzxixEYs1JPTXkAZPYfJZahy633Re.jpg', 5, '{\"theme\":0}', '$2y$10$ecfVfVQ/THWUmK/GoXAgHujKvFsXstZ7XKItzYAh2VmN/.XBXhmbq', '2022-05-16 13:45:35', '2022-06-14 20:01:17'),
-(10, 'Caius', 'Caius Julius Ceasar', 'Funcionário Aleatório', 1, 1, '54354354353', 'teste@teste.com', NULL, 5, '{\"theme\":1}', '$2y$10$O8288ZEq99PZnLEB/bHNVuHIKTQgvDxliQyjgZjets316E3rnSlGC', '2022-05-17 16:05:36', '2022-06-14 20:00:45'),
-(11, 'Friedrich', 'Friedrich Nietzsche', 'Funcionário Aleatório', 1, 1, '34342342423', 'teste2@teste.vom', NULL, 6, '{\"theme\":1}', '$2y$10$O8288ZEq99PZnLEB/bHNVuHIKTQgvDxliQyjgZjets316E3rnSlGC', '2022-05-17 16:15:44', '2022-06-06 15:37:14'),
-(12, 'Anne', 'Anne Frank', 'Escritora', 2, 1, '22222222222', 'anne@gmail.com', 'uploads/avatars/22222222222/31RAyXFaPg1b3VzWGjZEUG12jNqQN36hatP9w6Q5.jpg', 1, '{\"theme\":1}', '$2y$10$ZOgSufewlgcZea4gh9MBqulnIzKqgh0rIRY.4qOg1Db19vXMPPwvC', '2022-05-23 19:06:15', '2022-06-27 19:26:17'),
-(13, 'David', 'David Hume', 'Filósofo', 1, 1, '23123241221', 'acesso@acesso.com', NULL, 1, '{\"theme\":1}', '$2y$10$MUS8WMv1uMLcGm2Gk4wBC.CAFY88IpysIkB.EU.aE4WOJZ12JZ1wW', '2022-05-24 16:37:30', '2022-06-06 15:37:42'),
-(14, 'Santo', 'Santo Agostinho', 'Assistente Administrativo', 2, 1, '44444444444', 'genero@gmail.com', NULL, 8, '{\"theme\":1}', '$2y$10$c6Z2e2.HTU4r032BrbkRYeV8hTaGQ6EE3f.jig7T1bSRdDP7DBQLq', '2022-05-27 17:22:31', '2022-06-06 15:37:21'),
-(15, 'São Tomás', 'São Tomás de Aquino', 'Gerente Administrativaa', 2, 1, '42321312312', 'camila@gmail.com', 'uploads/avatars/42321312312/ejwVRr0BNkHPoV7UlnfvyTlK954ekLtwawpOxsxr.jpg', 1, '{\"theme\":0}', '$2y$10$Qar1o2xtMe4qsmfsix8EgurJCNSVEyqyIlqv06EWrB9.7n1nxihcu', '2022-06-08 17:37:04', '2022-06-09 16:27:47'),
-(16, 'Tiririca', 'Tiririca Dos Santos Melo', 'Deputado Federal 22 22', 1, 1, '43243677777', 'tiririca@gmail.com', 'uploads/avatars/43243677777/VTuYPDvB5BYeMuIafR8p7v1fdMMy3wDgfsYiLMvQ.webp', 1, '{\"theme\":1}', '$2y$10$1tgOfAK90ODCHy.AviggueN6si.E9Iw9.vIFsHw5H5Gy5QfdryjpC', '2022-06-09 16:45:48', '2022-06-09 17:01:16');
+INSERT INTO `users` (`id`, `name`, `full_name`, `gender`, `active`, `cpf`, `email`, `photo`, `access_id`, `role_id`, `configs`, `profile_about`, `agency`, `address`, `phone`, `phone_corporation`, `password`, `created_at`, `updated_at`) VALUES
+(1, 'Marcel', 'Marcel Kendy Rabelo Matsumoto', 1, 1, '09022715639', 'kendymarcel@gmail.com', 'uploads/avatars/09022715639/9T3rrSXSBIvojIuk4wD6TN0NYVLLEqIQMcJAMsX9.jpg', 8, 1, '{\"theme\":0}', 'Customizando meu perfil, seção About :) Gostei viu', 'Matriz', 'Belle Fornitude, Forth Avenue n. 64', '(34) 98885-7677', '0795', '$2y$10$YtsTsN.8sZYYjx/K7328keFAVyq/9z.A3I17APTuuNf5jeOx71vRe', '2022-04-28 17:49:51', '2022-07-01 15:46:59'),
+(2, 'Niccoló', 'Niccoló di Bernardo dei Machiavelli', 1, 1, '32323232356', 'machiavelli@gmail.com', 'uploads/avatars/32323232356/axXyxAFvVGbgCVQzzlO6uJXUwczaPeH8c5j6LjID.jpg', 2, 7, '{\"theme\":1}', 'Eu conecto pessoas para promover justiça financeira e prosperidade.', 'Matriz', 'Belle Fornitude, Forth Avenue n. 64', '(34) 98885-7677', '0795', '$2y$10$O8288ZEq99PZnLEB/bHNVuHIKTQgvDxliQyjgZjets316E3rnSlGC', '2022-04-28 17:49:51', '2022-06-27 19:28:48'),
+(3, 'Michelangelo', 'Michelangelo Soares', 2, 0, '43223424333', 'michel@dad.c', NULL, 5, 2, '{\"theme\":1}', 'Eu conecto pessoas para promover justiça financeira e prosperidade.', 'Matriz', 'Belle Fornitude, Forth Avenue n. 64', '(34) 98885-7677', '0795', '$2y$10$O8288ZEq99PZnLEB/bHNVuHIKTQgvDxliQyjgZjets316E3rnSlGC', '2022-05-02 15:32:25', '2022-06-14 18:15:28'),
+(4, 'Leonardo', 'Leonardo Da Vinci', 1, 1, '21312313213', 'leo@leo.com', 'uploads/avatars/21312313213/uwoOlOXItHqd7kE71oGU3q3e6KS6zKD8uZNJ9k9q.webp', 4, 1, '{\"theme\":1}', 'Eu conecto pessoas para promover justiça financeira e prosperidade.', 'Matriz', 'Belle Fornitude, Forth Avenue n. 64', '(34) 98885-7677', '0795', '$2y$10$XZUzmIxEp1yJP9fXcmpfbuCUktF3lQIqfENeFKxx8oWp0rusOBozG', '2022-05-02 15:37:28', '2022-06-27 19:27:48'),
+(5, 'Alan', 'Alan Mathison Turing', 1, 1, '66666666609', 'alan@gmail.com', 'uploads/avatars/66666666609/BRdrBXeyxH1fQbwmcEBzYLmsL486MtQprZi0s38H.jpg', 6, 5, '{\"theme\":1}', 'Fui um matemático, cientista da computação, lógico, criptoanalista, filósofo e biólogo teórico britânico.', 'Matriz', 'Belle Fornitude, Forth Avenue n. 64', '(34) 98885-7677', '0795', '$2y$10$uF3.PqtvHl0/qt6QvHWYQO/H1B8oX8mX7FZpWnVln9sYn2PUCSPka', '2022-05-04 21:36:11', '2022-07-01 13:45:50'),
+(6, 'Donatello', 'Donatello Vincerine', 1, 0, '76865765756', 'seller@seller.com', NULL, 3, 6, '{\"theme\":1}', 'Eu conecto pessoas para promover justiça financeira e prosperidade.', 'Matriz', 'Belle Fornitude, Forth Avenue n. 64', '(34) 98885-7677', '0795', '$2y$10$O8288ZEq99PZnLEB/bHNVuHIKTQgvDxliQyjgZjets316E3rnSlGC', '2022-05-04 21:46:14', '2022-06-06 15:36:19'),
+(7, 'Marie', 'Marie Currie', 2, 1, '43543543342', 'basic@basic.com', NULL, 1, 3, '{\"theme\":1}', 'Eu conecto pessoas para promover justiça financeira e prosperidade.', 'Matriz', 'Belle Fornitude, Forth Avenue n. 64', '(34) 98885-7677', '0795', '$2y$10$O8288ZEq99PZnLEB/bHNVuHIKTQgvDxliQyjgZjets316E3rnSlGC', '2022-05-04 21:46:47', '2022-06-09 17:35:51'),
+(8, 'Nikola', 'Nikola Tesla Никола Тесла', 1, 1, '76865733765', 'nikola@gmail.com', 'uploads/avatars/76865733765/pr6b0xZmLYAzo0BZbsib3tzZD4AHGbjwZcut53Fv.jpg', 2, 1, '{\"theme\":1}', 'Eu conecto pessoas para promover justiça financeira e prosperidade.', 'Matriz', 'Belle Fornitude, Forth Avenue n. 64', '(34) 98885-7677', '0795', '$2y$10$O8288ZEq99PZnLEB/bHNVuHIKTQgvDxliQyjgZjets316E3rnSlGC', '2022-05-04 21:46:14', '2022-06-27 19:24:28'),
+(9, 'Monalisa', 'Monalisa Geek de Roma', 2, 1, '77551111111', 'monalisa@gmail.com', 'uploads/avatars/77551111111/GCP4jPvcovilzxixEYs1JPTXkAZPYfJZahy633Re.jpg', 5, 8, '{\"theme\":0}', 'Eu conecto pessoas para promover justiça financeira e prosperidade.', 'Matriz', 'Belle Fornitude, Forth Avenue n. 64', '(34) 98885-7677', '0795', '$2y$10$ecfVfVQ/THWUmK/GoXAgHujKvFsXstZ7XKItzYAh2VmN/.XBXhmbq', '2022-05-16 13:45:35', '2022-06-14 20:01:17'),
+(10, 'Caius', 'Caius Julius Ceasar', 1, 1, '54354354353', 'teste@teste.com', NULL, 5, 9, '{\"theme\":1}', 'Eu conecto pessoas para promover justiça financeira e prosperidade.', 'Matriz', 'Belle Fornitude, Forth Avenue n. 64', '(34) 98885-7677', '0795', '$2y$10$O8288ZEq99PZnLEB/bHNVuHIKTQgvDxliQyjgZjets316E3rnSlGC', '2022-05-17 16:05:36', '2022-06-14 20:00:45'),
+(11, 'Friedrich', 'Friedrich Nietzsche', 1, 1, '34342342423', 'teste2@teste.vom', NULL, 6, 10, '{\"theme\":1}', 'Eu conecto pessoas para promover justiça financeira e prosperidade.', 'Matriz', '78 District, Fifth Avenue n. 23', '(34) 98865-6566', '4367', '$2y$10$O8288ZEq99PZnLEB/bHNVuHIKTQgvDxliQyjgZjets316E3rnSlGC', '2022-05-17 16:15:44', '2022-06-06 15:37:14'),
+(12, 'Anne', 'Anne Frank', 2, 1, '22222222222', 'anne@gmail.com', 'uploads/avatars/22222222222/31RAyXFaPg1b3VzWGjZEUG12jNqQN36hatP9w6Q5.jpg', 1, 13, '{\"theme\":1}', 'Eu conecto pessoas para promover justiça financeira e prosperidade.', 'Matriz', '78 District, Fifth Avenue n. 23', '(34) 98865-6566', '4367', '$2y$10$ZOgSufewlgcZea4gh9MBqulnIzKqgh0rIRY.4qOg1Db19vXMPPwvC', '2022-05-23 19:06:15', '2022-06-27 19:26:17'),
+(13, 'David', 'David Hume', 1, 1, '23123241221', 'acesso@acesso.com', NULL, 1, 15, '{\"theme\":1}', 'Eu conecto pessoas para promover justiça financeira e prosperidade.', 'Matriz', '78 District, Fifth Avenue n. 23', '(34) 98865-6566', '4367', '$2y$10$MUS8WMv1uMLcGm2Gk4wBC.CAFY88IpysIkB.EU.aE4WOJZ12JZ1wW', '2022-05-24 16:37:30', '2022-06-06 15:37:42'),
+(14, 'Santo', 'Santo Agostinho', 2, 1, '44444444444', 'genero@gmail.com', NULL, 8, 19, '{\"theme\":1}', 'Eu conecto pessoas para promover justiça financeira e prosperidade.', 'Matriz', '78 District, Fifth Avenue n. 23', '(34) 98865-6566', '4367', '$2y$10$c6Z2e2.HTU4r032BrbkRYeV8hTaGQ6EE3f.jig7T1bSRdDP7DBQLq', '2022-05-27 17:22:31', '2022-06-06 15:37:21'),
+(15, 'São Tomás', 'São Tomás de Aquino', 2, 1, '42321312312', 'camila@gmail.com', 'uploads/avatars/42321312312/ejwVRr0BNkHPoV7UlnfvyTlK954ekLtwawpOxsxr.jpg', 1, 20, '{\"theme\":0}', 'Eu conecto pessoas para promover justiça financeira e prosperidade.', 'Matriz', '78 District, Fifth Avenue n. 23', '(34) 98865-6566', '4367', '$2y$10$Qar1o2xtMe4qsmfsix8EgurJCNSVEyqyIlqv06EWrB9.7n1nxihcu', '2022-06-08 17:37:04', '2022-06-09 16:27:47'),
+(16, 'Tiririca', 'Tiririca Dos Santos Melo', 1, 1, '43243677777', 'tiririca@gmail.com', 'uploads/avatars/43243677777/VTuYPDvB5BYeMuIafR8p7v1fdMMy3wDgfsYiLMvQ.webp', 1, 21, '{\"theme\":1}', 'Eu conecto pessoas para promover justiça financeira e prosperidade.', 'Matriz', '78 District, Fifth Avenue n. 23', '(34) 98865-6566', '4367', '$2y$10$1tgOfAK90ODCHy.AviggueN6si.E9Iw9.vIFsHw5H5Gy5QfdryjpC', '2022-06-09 16:45:48', '2022-06-09 17:01:16');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
