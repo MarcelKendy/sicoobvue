@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
-class Access extends Model
+use App\Models\Department;
+
+class Role extends Model
 {
     use HasFactory;
-    public function user()
+    public function department()
     {
-        return $this->belongsTo(User::class);
-
+        return $this->belongsTo(Department::class);
     }
 }

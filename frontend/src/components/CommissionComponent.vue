@@ -350,7 +350,7 @@
                         {{ item.indicator.full_name }}
                       </v-list-item-title>
                       <v-list-item-subtitle>
-                        {{ item.indicator.role }}
+                        {{ item.indicator.role.name }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-action>
@@ -461,7 +461,7 @@
                         {{ item.seller.full_name }}
                       </v-list-item-title>
                       <v-list-item-subtitle>
-                        {{ item.seller.role }}
+                        {{ item.seller.role.name }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-action>
@@ -496,7 +496,7 @@
               </v-list>
 
               <v-list>
-                <v-list-item @click="() => {}">
+                <v-list-item :to="'perfil/' + item.seller_id">
                   <v-list-item-action>
                     <v-icon>mdi-arrow-left</v-icon>
                   </v-list-item-action>
@@ -578,7 +578,7 @@
                         {{ item.operator.full_name }}
                       </v-list-item-title>
                       <v-list-item-subtitle>
-                        {{ item.operator.role }}
+                        {{ item.operator.role.name }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-action>
@@ -613,7 +613,7 @@
               </v-list>
 
               <v-list>
-                <v-list-item @click="() => {}">
+                <v-list-item :to="'perfil/' + item.operator_id">
                   <v-list-item-action>
                     <v-icon>mdi-arrow-left</v-icon>
                   </v-list-item-action>

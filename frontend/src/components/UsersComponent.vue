@@ -10,7 +10,7 @@
     >
       <v-card-title class="bold title-card">
         Usuários do Sistema
-    
+
         <v-img
           class="mx-2"
           style="display: inline-block"
@@ -35,17 +35,54 @@
             :key="index + 0.1"
             :class="dark_theme ? 'list-item-dark' : 'list-item'"
           >
-            <v-list-item-avatar class="mt-6" size="48">
-              <v-img v-if="item.photo" :src="avatar_path(item.photo)"></v-img>
-              <v-img
-                v-else
-                :src="
-                  require(`./../assets/icons/${
-                    item.gender == 1 ? 'man.png' : 'woman.png'
-                  }`)
-                "
-              ></v-img>
-            </v-list-item-avatar>
+            <v-tooltip top color="green darken-3">
+              <template v-slot:activator="{ attrs, on }">
+                <v-list-item-avatar
+                  class="mt-6"
+                  size="48"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-img v-if="item.photo" :src="avatar_path(item.photo)"
+                    ><v-btn
+                      :color="item.active ? 'success' : 'error'"
+                      width="48"
+                      height="48"
+                      icon
+                      :to="'/perfil/' + item.id"
+                    ></v-btn
+                  ></v-img>
+
+                  <v-img
+                    v-else
+                    :src="
+                      require(`./../assets/icons/${
+                        item.gender == 1 ? 'man.png' : 'woman.png'
+                      }`)
+                    "
+                    ><v-btn
+                      :color="item.active ? 'success' : 'error'"
+                      width="48"
+                      height="48"
+                      icon
+                      :to="'/perfil/' + item.id"
+                    ></v-btn
+                  ></v-img>
+                </v-list-item-avatar>
+              </template>
+              <div>
+                <span class="tooltip-text">Perfil</span>
+                <v-icon small dark class="tooltip-icon-right"
+                  >mdi-account-arrow-right</v-icon
+                >
+                <v-img
+                  class="tooltip-icon-sicoob"
+                  src="@/assets/icons/sicoobicon.png"
+                  width="13"
+                ></v-img>
+              </div>
+            </v-tooltip>
+
             <v-list-item-content class="bold">
               <span>{{ item.full_name }}</span>
               <v-list-item-subtitle>{{
@@ -72,7 +109,7 @@
               }}</v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-content class="bold">
-              <span>{{ item.role }}</span>
+              <span>{{ item.role.name }}</span>
             </v-list-item-content>
             <v-list-item-content class="bold">
               <v-form ref="form_access" v-model="valid_access" lazy-validation>
@@ -111,7 +148,7 @@
                             "
                             >Nenhum acesso encontrado</span
                           >
-                          <v-tooltip id="tooltip" top>
+                          <v-tooltip id="tooltip" top color="green darken-3">
                             <template v-slot:activator="{ on, attrs }">
                               <v-icon
                                 style="padding-left: 5px"
@@ -138,7 +175,7 @@
             </v-list-item-content>
 
             <v-list-item-action class="mt-6" style="display: inline-block">
-              <v-tooltip id="tooltip" left>
+              <v-tooltip id="tooltip" left color="orange">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     class="mr-2"
@@ -152,7 +189,11 @@
                 </template>
                 <span>Editar Perfil</span>
               </v-tooltip>
-              <v-tooltip id="tooltip" left>
+              <v-tooltip
+                id="tooltip"
+                left
+                :color="item.active ? 'success' : 'error'"
+              >
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     icon
@@ -346,4 +387,23 @@ export default {
   },
 };
 </script>
+<style scoped>
+.tooltip-text {
+  font-family: 'Quicksand', 'sans-serif';
+  font-weight: bold;
+  display: inline-block;
+}
 
+.tooltip-icon-sicoob {
+  position: absolute;
+  top: 0px;
+  right: 1px;
+  display: inline-block;
+}
+
+.tooltip-icon-right {
+  margin-bottom: 6px;
+  margin-left: 3px;
+  display: inline-block;
+}
+</style>

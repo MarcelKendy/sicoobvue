@@ -88,18 +88,6 @@
                 />
               </v-col>
               <v-col cols="12">
-                <v-text-field
-                  v-model="item.role"
-                  :rules="requiredRule"
-                  label="Cargo na Cooperativa"
-                  :color="color"
-                  placeholder="Diretor de Negócios"
-                  name="register_role"
-                  maxlength="50"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
                 <v-file-input
                   v-model="item.photo"
                   accept="image/*"
@@ -228,7 +216,6 @@ export default {
         email: '',
         cpf: '',
         active: '',
-        role: '',
         photo: null,
         password: '',
         verify: '',
@@ -344,7 +331,6 @@ export default {
         email: '',
         active: '',
         cpf: '',
-        role: '',
         photo: null,
         password: '',
         verify: '',

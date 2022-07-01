@@ -25,14 +25,14 @@ class UserController extends Controller
             $where = 'true';
         }
 
-        $allUsers = User::with('access')->select($select)->whereRaw($where)->get();
+        $allUsers = User::with('access', 'role')->select($select)->whereRaw($where)->get();
         return response()->json($allUsers);
     }
 
     public function getUser(Request $request)
     {
         $match = ['email' => $request->email];
-        $user = User::with('access')->where($match)->get();
+        $user = User::with('access', 'role')->where($match)->get();
         if (isset($user[0]['password'])) {
             if ($user[0]['active'] != 1) {
                 return 606;
@@ -53,7 +53,7 @@ class UserController extends Controller
 
     public function getProfile(Request $request)
     {
-        $user = User::select('id', 'full_name', 'email', 'cpf', 'photo', 'role', 'gender', 'active', 'access_id', 'profile_about')->with('access:id,name')->find($request->user_id)->toArray();
+        $user = User::select('id', 'full_name', 'email', 'cpf', 'photo', 'role_id', 'gender', 'active', 'access_id', 'agency', 'address', 'phone', 'phone_corporation', 'profile_about')->with('access:id,name', 'role')->find($request->user_id)->toArray();
         if ($user) {
             $session_active = false;
             $latest_logged_in = LogLogin::select('id')->where('user_id', $user['id'])->where('status', 1)->latest('created_at')->first();
@@ -98,7 +98,7 @@ class UserController extends Controller
         $newUser->profile_about = 'Eu conecto pessoas para promover justiça financeira e prosperidade.';
         $newUser->configs = '{"theme":1}';
         $newUser->save();
-        return response()->json($newUser->load('access'));
+        return response()->json($newUser->load('access', 'role'));
     }
 
     public function editUser(User $user, Request $request)
@@ -110,14 +110,13 @@ class UserController extends Controller
             }
             $user->configs = json_encode($configs);
             $user->save();
-            return response()->json($user->load('access'));
+            return response()->json($user->load('access', 'role'));
         }
         $name = substr($request->full_name, 0, strpos($request->full_name, " "));
         $user->name = $name;
         $user->full_name = $request->full_name;
         $user->email = $request->email;
         $user->cpf = $request->cpf;
-        $user->role = $request->role;
 
         if (isset($request->active)) {
             $user->active = $request->active;
@@ -128,6 +127,9 @@ class UserController extends Controller
         if (isset($request->access_id) && !empty($request->access_id)) {
             $user->access_id = $request->access_id;
         }
+        if (isset($request->role_id) && !empty($request->role_id)) {
+            $user->role_id = $request->role_id;
+        }
         if (isset($request->profile_about) && !empty($request->profile_about)) {
             $user->profile_about = $request->profile_about;
         }
@@ -136,7 +138,7 @@ class UserController extends Controller
         }
 
         $user->save();
-        return response()->json($user->load('access'));
+        return response()->json($user->load('access', 'role'));
     }
 
     public function editProfile(User $user, Request $request) {
@@ -158,7 +160,7 @@ class UserController extends Controller
             }
         }
         $user->save();
-        return response()->json($user->load('access'));
+        return response()->json($user->load('access', 'role'));
     }
 
     public function deleteUser(User $user, Request $request)
@@ -179,7 +181,7 @@ class UserController extends Controller
         $user->photo = $request->file('photo')->store('uploads/avatars/' . $user->cpf);
         $user->save();
 
-        return response()->json($user->load('access'));
+        return response()->json($user->load('access', 'role'));
     }
     
     public function getAvatar()

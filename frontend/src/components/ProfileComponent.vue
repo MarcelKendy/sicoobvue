@@ -100,7 +100,7 @@
                 max-width="28"
               ></v-img>
               <span class="about-text" v-if="!activate_edit_profile">
-                {{ profile.profile_about }} 
+                {{ profile.profile_about }}
               </span>
               <v-text-field
                 @keyup.enter="changeProfile"
@@ -115,7 +115,11 @@
                 append-icon="mdi-pencil"
               >
               </v-text-field>
-              <v-overlay absolute :value="hover && !activate_edit_profile" color="rgb(115,215,38)">
+              <v-overlay
+                absolute
+                :value="hover && !activate_edit_profile"
+                color="rgb(115,215,38)"
+              >
                 <v-tooltip right>
                   <template v-slot:activator="{ attrs, on }">
                     <v-btn
@@ -128,17 +132,19 @@
                       <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                   </template>
-                  <span>Editar "Sobre"</span>
+                  <span class="yellow--text"
+                    >Deixe uma introdução sobre você!</span
+                  >
                 </v-tooltip>
               </v-overlay>
             </v-card>
           </v-hover>
         </v-col>
       </v-row>
-      <v-row class="align-center px-10 mt-10">
-        <v-col cols="12" md="6">
-          <v-tooltip top v-model="hover_delay">
-            <template v-slot:activator="{}">
+      <v-tooltip top v-model="hover_delay">
+        <template v-slot:activator="{}">
+          <v-row class="align-center px-10 mt-10">
+            <v-col cols="12" md="6">
               <v-card
                 class="profile-info-card"
                 outlined
@@ -148,12 +154,11 @@
                 <v-list class="transparent-list">
                   <v-hover
                     v-slot:default="{ hover }"
-                    v-for="item in info_card_items"
+                    v-for="item in info_cards_items[0]"
                     :key="item.key"
                   >
                     <v-list-item
-                      @mouseenter="activateTooltip()"
-                      @click.stop.prevent="copyInfo(item.title)"
+                      @click.stop.prevent="copyInfo(item.data, item.title)"
                       class="introduction-item"
                     >
                       <v-img
@@ -176,20 +181,15 @@
                       </v-slide-x-reverse-transition>
                       <input
                         type="hidden"
-                        :id="item.title"
+                        :id="item.data"
                         :value="profile[item.data]"
                       />
                     </v-list-item>
                   </v-hover>
                 </v-list>
               </v-card>
-            </template>
-            <span class="font-quicksand">Clique para copiar</span>
-          </v-tooltip>
-        </v-col>
-        <v-col cols="12" md="6">
-          <v-tooltip top v-model="hover_delay">
-            <template v-slot:activator="{}">
+            </v-col>
+            <v-col cols="12" md="6">
               <v-card
                 class="profile-info-card"
                 outlined
@@ -199,12 +199,11 @@
                 <v-list class="transparent-list">
                   <v-hover
                     v-slot:default="{ hover }"
-                    v-for="item in info_card_items"
+                    v-for="item in info_cards_items[1]"
                     :key="item.key"
                   >
                     <v-list-item
-                      @mouseenter="activateTooltip()"
-                      @click.stop.prevent="copyInfo(item.title)"
+                      @click.stop.prevent="copyInfo(item.data, item.title)"
                       class="introduction-item"
                     >
                       <v-img
@@ -227,18 +226,20 @@
                       </v-slide-x-reverse-transition>
                       <input
                         type="hidden"
-                        :id="item.title"
+                        :id="item.data"
                         :value="profile[item.data]"
                       />
                     </v-list-item>
                   </v-hover>
                 </v-list>
               </v-card>
-            </template>
-            <span class="font-quicksand">Clique para copiar</span>
-          </v-tooltip>
-        </v-col>
-      </v-row>
+            </v-col>
+          </v-row>
+        </template>
+        <span class="font-quicksand orange--text bold"
+          >Clique em uma informação abaixo para copiá-la</span
+        >
+      </v-tooltip>
     </v-card>
     <v-snackbar
       v-model="snackbar_copy"
@@ -260,7 +261,6 @@ export default {
   name: 'ProfileComponent',
   data: () => ({
     loading: false,
-    user_id: 0,
     unmasked_cpf: '',
     snackbar_copy: false,
     snackbar_copy_message: '',
@@ -274,37 +274,82 @@ export default {
       email: '',
       gender: '',
       role: '',
+      department: '',
+      team: '',
       active: '',
       access: '',
       photo: '',
       logged: '',
       profile_about: '',
+      address: '',
+      phone: '',
+      phone_corporation: '',
     },
-    info_card_items: [
-      {
-        key: 0,
-        title: 'Função',
-        data: 'role',
-        icon: 'suitcase.png',
-      },
-      {
-        key: 1,
-        title: 'CPF',
-        data: 'cpf',
-        icon: 'id-card.png',
-      },
-      {
-        key: 2,
-        title: 'E-mail',
-        data: 'email',
-        icon: 'email.png',
-      },
-      {
-        key: 3,
-        title: 'Acesso',
-        data: 'access',
-        icon: 'access-1.png',
-      },
+    info_cards_items: [
+      [
+        {
+          key: 0,
+          title: 'Cargo',
+          data: 'role',
+          icon: 'suitcase.png',
+        },
+        {
+          key: 1,
+          title: 'Setor',
+          data: 'department',
+          icon: 'department.png',
+        },
+        {
+          key: 2,
+          title: 'Equipe',
+          data: 'team',
+          icon: 'team.png',
+        },
+        {
+          key: 3,
+          title: 'Agência',
+          data: 'agency',
+          icon: 'building.png',
+        },
+        {
+          key: 4,
+          title: 'Acesso',
+          data: 'access',
+          icon: 'access-1.png',
+        },
+      ],
+      [
+        {
+          key: 0,
+          title: 'Endereço',
+          data: 'address',
+          icon: 'house.png',
+        },
+        {
+          key: 1,
+          title: 'CPF',
+          data: 'cpf',
+          icon: 'id-card.png',
+        },
+        {
+          key: 2,
+          title: 'E-mail',
+          data: 'email',
+          icon: 'email.png',
+        },
+        {
+          key: 3,
+          title: 'Contato Pessoal',
+          data: 'phone',
+          icon: 'phone.png',
+        },
+        {
+          key: 4,
+          title: 'Ramal',
+          data: 'phone_corporation',
+          icon: 'phone_corporation.png',
+        },
+      ],
     ],
   }),
   created() {
@@ -314,12 +359,14 @@ export default {
     changeProfile() {
       this.loading_profile_about = true;
       this.$http
-        .put(`edit_profile/${this.user_id}`, { profile_about: this.profile.profile_about })
+        .put(`edit_profile/${this.user_id}`, {
+          profile_about: this.profile.profile_about,
+        })
         .then(() => {
           this.activate_edit_profile = this.loading_profile_about = false;
         });
     },
-    copyInfo(info) {
+    copyInfo(info, title) {
       let element = document.querySelector('#' + info);
       element.setAttribute('type', 'text');
       element.select();
@@ -327,8 +374,8 @@ export default {
       try {
         let successful = document.execCommand('copy');
         this.snackbar_copy_message = successful
-          ? info + ' copiado com sucesso!'
-          : 'Não foi possível copiar ' + info;
+          ? '"' + title + '"' + ' copiado com sucesso!'
+          : 'Não foi possível copiar ' + title;
         this.snackbar_copy = true;
       } catch (err) {
         alert(
@@ -342,43 +389,50 @@ export default {
     },
     loadProfile() {
       this.loading = true;
-      this.user_id = this.$route.params.id;
       this.$http
         .post('get_profile', { user_id: this.user_id })
         .then((response) => {
-          response.data.access = response.data.access.name;
-          this.unmasked_cpf = response.data.cpf;
-          response.data.cpf = response.data.cpf.replace(
-            /(\d{3})(\d{3})(\d{3})(\d{2})/,
-            function (
-              regex,
-              first_numbers,
-              second_numbers,
-              third_numbers,
-              last_numbers
-            ) {
-              return (
-                first_numbers +
-                '.' +
-                second_numbers +
-                '.' +
-                third_numbers +
-                '-' +
-                last_numbers
-              );
-            }
-          );
-          Object.assign(this.profile, response.data);
+          this.formatData(response.data);
           this.loading = false;
+          this.activateTooltip(4);
         });
     },
-    activateTooltip() {
+    formatData(data) {
+      data.access = data.access.name;
+      this.unmasked_cpf = data.cpf;
+      data.cpf = data.cpf.replace(
+        /(\d{3})(\d{3})(\d{3})(\d{2})/,
+        function (
+          regex,
+          first_numbers,
+          second_numbers,
+          third_numbers,
+          last_numbers
+        ) {
+          return (
+            first_numbers +
+            '.' +
+            second_numbers +
+            '.' +
+            third_numbers +
+            '-' +
+            last_numbers
+          );
+        }
+      );
+      let role = data.role;
+      data.role = role.name;
+      data.department = role.department.name;
+      data.team = role.department.team;
+      Object.assign(this.profile, data);
+    },
+    activateTooltip(delay) {
       let _this = this;
       _this.hover_delay = true;
       clearTimeout(this.timeout_id);
       this.timeout_id = setTimeout(function () {
         _this.hover_delay = false;
-      }, 1600);
+      }, delay * 1000);
     },
     avatar_path(photo_path) {
       return require('../../../backend/storage/app/' + photo_path);
@@ -387,6 +441,16 @@ export default {
   computed: {
     dark_theme() {
       return this.$store.state.user.configs.theme == 0;
+    },
+    user_id() {
+      return this.$route.params.id;
+    },
+  },
+  watch: {
+    user_id: function () {
+      if (!this.loading) {
+        this.loadProfile();
+      }
     },
   },
 };

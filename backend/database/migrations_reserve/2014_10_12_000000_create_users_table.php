@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('full_name');
-            $table->string('role');
             $table->string('cpf')->unique();
             $table->string('email')->unique();
             $table->string('photo')->nullable();
@@ -27,6 +26,12 @@ return new class extends Migration
             $table->string('configs');
             $table->foreignId('access_id')->references('id')->on('accesses')->constrained();
             $table->text('profile_about');
+            $table->foreignId('role_id')->references('id')->on('roles')->constrained();
+            $table->string('agency');
+            $table->string('address');
+            $table->string('phone');
+            $table->string('phone_corporation');
+            
             $table->timestamps();
         });
     }
