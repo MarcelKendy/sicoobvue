@@ -92,7 +92,8 @@ class UserController extends Controller
         $newUser->full_name = $request->firstName . ' ' . $request->lastName;
         $newUser->email = $request->email;
         $newUser->cpf = $request->cpf;
-        $newUser->role = $request->role;
+        $newUser->agency = $request->agency;
+        $newUser->role_id = 0;
         $newUser->password = password_hash($request->password, PASSWORD_DEFAULT);
         $newUser->access_id = 1;
         $newUser->profile_about = 'Eu conecto pessoas para promover justiça financeira e prosperidade.';
@@ -117,7 +118,12 @@ class UserController extends Controller
         $user->full_name = $request->full_name;
         $user->email = $request->email;
         $user->cpf = $request->cpf;
-
+        $user->address = $request->address;
+        $user->phone_corporation = $request->phone_corporation;
+        $user->phone = $request->phone;
+        $user->agency = $request->agency;
+        $user->gender = $request->gender;
+        
         if (isset($request->active)) {
             $user->active = $request->active;
         }
@@ -133,9 +139,9 @@ class UserController extends Controller
         if (isset($request->profile_about) && !empty($request->profile_about)) {
             $user->profile_about = $request->profile_about;
         }
-        if (isset($request->gender) && !empty($request->gender)) {
-            $user->gender = $request->gender;
-        }
+        
+        
+        
 
         $user->save();
         return response()->json($user->load('access', 'role'));

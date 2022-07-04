@@ -6,6 +6,7 @@ use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AccessController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UpdatesController;
 use App\Http\Controllers\SystemComsController;
 use Illuminate\Support\Facades\Route;
@@ -101,3 +102,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // PROFILE ROUTES
     Route::put('/edit_profile/{user}', [UserController::class, 'editProfile']);
 // PROFILE ROUTES
+
+// ROLES ROUTES
+    Route::get('/get_roles', [RolesController::class, 'getRoles']);
+    Route::post('/add_role', [RolesController::class, 'addRole']);
+    Route::put('/edit_role/{role}', [RolesController::class, 'editRole']);
+    Route::delete('/delete_role/{role}', [RolesController::class, 'deleteRole']);
+// ROLES ROUTES
+
+// DEPARTMENTS ROUTES
+    Route::get('/get_departments', [RolesController::class, 'getDepartments']);
+    Route::post('/add_department', [RolesController::class, 'addDepartment']);
+    Route::put('/edit_department/{department}', [RolesController::class, 'editDepartment']);
+    Route::delete('/delete_department/{department}', [RolesController::class, 'deleteDepartment']);
+// DEPARTMENTS ROUTES

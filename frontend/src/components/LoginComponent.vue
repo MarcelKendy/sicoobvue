@@ -25,7 +25,7 @@
                 <v-row>
                   <v-col cols="12">
                     <v-text-field
-                      placeholder="email@dominio.com"
+                      placeholder="email@sicoobcredisg.com.br"
                       v-model="formLogin.email"
                       :rules="emailRule"
                       name="login_email"
@@ -54,7 +54,9 @@
                     <v-icon small color="orange">mdi-information</v-icon
                     ><small class="pl-1 orange--text bold"
                       >Caps Lock ativado!</small
-                    ><v-icon right small color="black">mdi-format-letter-case-upper</v-icon>
+                    ><v-icon right small color="black"
+                      >mdi-format-letter-case-upper</v-icon
+                    >
                   </div>
 
                   <v-col class="d-flex" cols="12" sm="6">
@@ -103,6 +105,7 @@
                       name="register_first_name"
                       maxlength="20"
                       required
+                      prepend-icon="mdi-account"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
@@ -115,17 +118,19 @@
                       name="register_last_name"
                       maxlength="50"
                       required
+                  
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       v-model="formRegister.email"
                       :rules="emailRule"
-                      label="E-mail"
-                      placeholder="email@dominio.com"
+                      label="E-mail Corporativo"
+                      placeholder="email@sicoobcredisg.com.br"
                       :color="color_default"
                       name="register_email"
                       required
+                      prepend-icon="mdi-email"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
@@ -138,6 +143,7 @@
                         name: 'register_cpf',
                         placeholder: '000.000.000-00',
                         required: true,
+                        prependIcon: 'mdi-id-card'
                       }"
                       v-bind:options="{
                         inputMask: '###.###.###-##',
@@ -149,19 +155,22 @@
                       }"
                     />
                   </v-col>
-                  <v-col cols="12" md="8">
-                    <v-text-field
-                      v-model="formRegister.role"
-                      :rules="requiredRule"
-                      label="Cargo na Cooperativa"
+                  <v-col cols="12" md="7">
+                    <v-select
+                      :menu-props="{ offsetY: true }"
+                      solo
+                      :items="agencies"
+                      item-text="text"
+                      item-value="value"
                       :color="color_default"
-                      placeholder="Função exercida"
-                      name="register_role"
-                      maxlength="50"
-                      required
-                    ></v-text-field>
+                      :rules="requiredRule"
+                      label="Agência"
+                      v-model="formRegister.agency"
+                      prepend-icon="mdi-domain"
+                    >
+                    </v-select>
                   </v-col>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="5">
                     <v-select
                       :menu-props="{ offsetY: true }"
                       solo
@@ -172,7 +181,7 @@
                       :rules="requiredRule"
                       label="Gênero"
                       v-model="formRegister.gender"
-                      prepend-icon="mdi-user"
+                      prepend-icon="mdi-gender-male-female"
                     >
                       <template v-slot:selection="{ item }">
                         <div
@@ -329,6 +338,10 @@ export default {
       { text: 'Masc.', value: 1 },
       { text: 'Fem.', value: 2 },
     ],
+    agencies: [
+      { text: 'Matriz', value: 1 },
+      { text: 'PA-01', value: 2 },
+    ],
     formLogin: {
       email: '',
       password: '',
@@ -338,7 +351,7 @@ export default {
       lastName: '',
       email: '',
       cpf: '',
-      role: '',
+      agency: '',
       gender: '',
       password: '',
       verify: '',
@@ -447,9 +460,9 @@ export default {
             this.formRegister = {
               firstName: '',
               lastName: '',
-              role: '',
               email: '',
               cpf: '',
+              agency: '',
               password: '',
               verify: '',
             };

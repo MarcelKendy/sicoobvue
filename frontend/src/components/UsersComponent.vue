@@ -33,7 +33,7 @@
         <v-list three-line v-for="(item, index) in items" :key="index">
           <v-list-item
             :key="index + 0.1"
-            :class="dark_theme ? 'list-item-dark' : 'list-item'"
+            :class="dark_theme ? (item.active ? 'list-item-dark' : 'list-item-dark list-item-dark-error') : (item.active ? 'list-item' : 'list-item list-item-error')"
           >
             <v-tooltip top color="green darken-3">
               <template v-slot:activator="{ attrs, on }">
@@ -122,6 +122,7 @@
                   </v-col>
                   <v-col cols="10">
                     <v-autocomplete
+                      :menu-props="{ offsetY: true, dark: dark_theme }"
                       class="pr-9"
                       label="Acesso"
                       :color="color"
@@ -187,7 +188,7 @@
                     <v-icon color="orange">mdi-badge-account</v-icon>
                   </v-btn>
                 </template>
-                <span>Editar Perfil</span>
+                <span class="font-quicksand bold">Editar Perfil</span>
               </v-tooltip>
               <v-tooltip
                 id="tooltip"
@@ -211,10 +212,12 @@
                     <v-icon v-else color="red">mdi-close-circle</v-icon>
                   </v-btn>
                 </template>
-                <span v-if="item.active"
+                <span class="font-quicksand bold" v-if="item.active"
                   >Usuário Ativo (Clique para desativá-lo)</span
                 >
-                <span v-else>Usuário Desativado (Clique para ativá-lo)</span>
+                <span class="font-quicksand bold" v-else
+                  >Usuário Desativado (Clique para ativá-lo)</span
+                >
               </v-tooltip>
             </v-list-item-action>
           </v-list-item>
@@ -304,10 +307,21 @@ export default {
         this.pagination(true, 1);
       }
     },
+    state_user: function () {
+      let state_user = {}
+      Object.assign(state_user, this.state_user);
+      state_user.role = { name: state_user.role };
+      this.total_items.map((user) =>
+        user.id !== this.state_user.id ? user : Object.assign(user, state_user)
+      );
+    },
   },
   computed: {
     dark_theme() {
       return this.$store.state.user.configs.theme == 0;
+    },
+    state_user() {
+      return this.$store.state.user;
     },
   },
   methods: {
@@ -388,6 +402,24 @@ export default {
 };
 </script>
 <style scoped>
+.list-item {
+  background-color: rgb(230, 254, 255);
+}
+.list-item:hover {
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 14px,
+    rgba(0, 0, 0, 0.3) 10px 15px 17px -5px,
+    rgb(0, 94, 117) 4px 0px 0px inset;
+}
+
+.list-item-error:hover {
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 14px,
+    rgba(0, 0, 0, 0.3) 10px 15px 17px -5px,
+    rgba(211, 16, 16, 0.76) 4px 0px 0px inset;
+}
+.list-item-dark-error:hover {
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 14px, rgb(0, 0, 0) 10px 15px 17px -5px,
+        rgba(218, 23, 23, 0.705) 4px 0px 0px inset;
+}
 .tooltip-text {
   font-family: 'Quicksand', 'sans-serif';
   font-weight: bold;

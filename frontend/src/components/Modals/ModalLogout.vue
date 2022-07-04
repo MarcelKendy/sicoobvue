@@ -69,8 +69,7 @@ export default {
           user_id: this.$store.state.user.id,
           status: 0,
         })
-        .then((response) => {
-          console.log(response.data);
+        .then(() => {
           this.$emit('logout');
           this.loading = false;
         });

@@ -169,7 +169,13 @@
 
                       <v-list-item-content>
                         <span class="introduction-item-text">
-                          {{ profile[item.data] }}
+                          {{
+                            profile[item.data]
+                              ? item.mask
+                                ? item.mask(profile[item.data])
+                                : profile[item.data]
+                              : 'Dado não fornecido'
+                          }}
                         </span>
                       </v-list-item-content>
                       <v-slide-x-reverse-transition>
@@ -182,7 +188,11 @@
                       <input
                         type="hidden"
                         :id="item.data"
-                        :value="profile[item.data]"
+                        :value="
+                          profile[item.data]
+                            ? profile[item.data]
+                            : 'Dado não fornecido'
+                        "
                       />
                     </v-list-item>
                   </v-hover>
@@ -214,7 +224,11 @@
 
                       <v-list-item-content>
                         <span class="introduction-item-text">
-                          {{ profile[item.data] }}
+                          {{
+                            profile[item.data]
+                              ? profile[item.data]
+                              : 'Dado não fornecido'
+                          }}
                         </span>
                       </v-list-item-content>
                       <v-slide-x-reverse-transition>
@@ -227,7 +241,11 @@
                       <input
                         type="hidden"
                         :id="item.data"
-                        :value="profile[item.data]"
+                        :value="
+                          profile[item.data]
+                            ? profile[item.data]
+                            : 'Dado não fornecido'
+                        "
                       />
                     </v-list-item>
                   </v-hover>
@@ -309,6 +327,9 @@ export default {
           key: 3,
           title: 'Agência',
           data: 'agency',
+          mask: function (value) {
+            return value == 1 ? 'Matriz' : 'PA-01';
+          },
           icon: 'building.png',
         },
         {
@@ -327,15 +348,15 @@ export default {
         },
         {
           key: 1,
-          title: 'CPF',
-          data: 'cpf',
-          icon: 'id-card.png',
-        },
-        {
-          key: 2,
           title: 'E-mail',
           data: 'email',
           icon: 'email.png',
+        },
+        {
+          key: 2,
+          title: 'Ramal',
+          data: 'phone_corporation',
+          icon: 'phone_corporation.png',
         },
         {
           key: 3,
@@ -345,9 +366,9 @@ export default {
         },
         {
           key: 4,
-          title: 'Ramal',
-          data: 'phone_corporation',
-          icon: 'phone_corporation.png',
+          title: 'CPF',
+          data: 'cpf',
+          icon: 'id-card.png',
         },
       ],
     ],
@@ -445,11 +466,39 @@ export default {
     user_id() {
       return this.$route.params.id;
     },
+    state_user() {
+      return this.$store.state.user;
+    },
   },
   watch: {
     user_id: function () {
       if (!this.loading) {
         this.loadProfile();
+      }
+    },
+    state_user: function () {
+      if (this.user_id == this.state_user.id) {
+        Object.assign(this.profile, this.state_user);
+        this.profile.cpf = this.profile.cpf.replace(
+          /(\d{3})(\d{3})(\d{3})(\d{2})/,
+          function (
+            regex,
+            first_numbers,
+            second_numbers,
+            third_numbers,
+            last_numbers
+          ) {
+            return (
+              first_numbers +
+              '.' +
+              second_numbers +
+              '.' +
+              third_numbers +
+              '-' +
+              last_numbers
+            );
+          }
+        );
       }
     },
   },
@@ -543,7 +592,7 @@ export default {
   border-radius: 100px;
 }
 .logged-badge:hover {
-  box-shadow: rgb(105, 212, 72) 0px 0px 30px 2px;
+  box-shadow: rgb(69, 216, 25) 0px 0px 30px 4px;
 }
 
 .avatar-photo {
