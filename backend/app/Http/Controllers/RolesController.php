@@ -13,7 +13,7 @@ class RolesController extends Controller
 
     public function getRoles(Request $request)
     {
-        $result = Role::where('id', '!=', 0)->with('department')->get();
+        $result = Role::where('id', '!=', 1)->with('department')->get();
         return response()->json($result);
     }
 
@@ -36,7 +36,7 @@ class RolesController extends Controller
 
     public function deleteRole(Role $role, Request $request)
     {
-        User::where('role_id', $role->id)->update(['role_id' => 0]);
+        User::where('role_id', $role->id)->update(['role_id' => 1]);
         $role->delete();
         return true;
     }
@@ -70,7 +70,7 @@ class RolesController extends Controller
 
     public function deleteDepartment(Department $department, Request $request)
     {
-        Role::where('department_id', $department->id)->update(['department_id' => 0]);
+        Role::where('department_id', $department->id)->update(['department_id' => 1]);
         $department->delete();
         return true;
     }

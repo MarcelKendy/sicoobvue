@@ -93,7 +93,7 @@ class UserController extends Controller
         $newUser->email = $request->email;
         $newUser->cpf = $request->cpf;
         $newUser->agency = $request->agency;
-        $newUser->role_id = 0;
+        $newUser->role_id = 1;
         $newUser->password = password_hash($request->password, PASSWORD_DEFAULT);
         $newUser->access_id = 1;
         $newUser->profile_about = 'Eu conecto pessoas para promover justiça financeira e prosperidade.';

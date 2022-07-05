@@ -19,6 +19,13 @@ return new class extends Migration
             $table->string('team');
             $table->timestamps();
         });
+        DB::table('departments')->insert(
+            array(
+                'id' => 1,
+                'team' => 'Não definido',
+                'name' => 'Não definido'
+            )
+        );
     }
 
     /**
