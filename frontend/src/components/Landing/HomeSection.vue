@@ -8,12 +8,12 @@
     >
       <div class="particles">
         <vue-particles
-          color="#0087a8"
+          color="#8ee02f"
           :particleOpacity="0.8"
           :particlesNumber="20"
           shapeType="triangle"
           :particleSize="9"
-          linesColor="#3ac200"
+          linesColor="#016769"
           :linesWidth="1"
           :lineLinked="true"
           :lineOpacity="0.4"
@@ -25,11 +25,7 @@
           clickMode="push"
         ></vue-particles>
       </div>
-      <v-row
-        align="center"
-        justify="center"
-        
-      >
+      <v-row align="center" justify="center">
         <v-col cols="10">
           <v-row align="center" justify="center">
             <v-col cols="12" md="6" xl="8">
@@ -52,7 +48,10 @@
                 Me mostre
                 <v-icon class="ml-2">mdi-arrow-down</v-icon>
               </v-btn>
-              <div class="video d-flex align-center py-4" style="position: relative; z-index: 2">
+              <div
+                class="video d-flex align-center py-4"
+                style="position: relative; z-index: 2"
+              >
                 <a @click.stop="dialog = true" class="playBut">
                   <svg
                     version="1.1"
@@ -249,6 +248,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 .circle {
   stroke: white;
   stroke-dasharray: 650;

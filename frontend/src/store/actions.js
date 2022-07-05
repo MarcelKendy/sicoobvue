@@ -57,6 +57,7 @@ export default {
                 id: data.id, 
                 name: data.name,
                 role: data.role.name, 
+                role_id: data.role.id,
                 full_name: data.full_name,
                 last_name: data.full_name.slice(data.full_name.indexOf(' ') + 1),
                 cpf: data.cpf, 
@@ -92,7 +93,8 @@ export default {
               db.collection('user').add({
                 id: data.id, 
                 name: data.name,
-                role: data.role,  
+                role: data.role,
+                role_id: data.role_id,  
                 full_name: data.full_name,
                 last_name: data.last_name,
                 cpf: data.cpf, 
@@ -101,7 +103,13 @@ export default {
                 photo: data.photo,
                 accesses: data.accesses,
                 configs: data.configs,
-                active: data.active
+                active: data.active,
+                department: data.department,
+                team: data.team,
+                agency: data.agency,
+                address: data.address,
+                phone: data.phone,
+                phone_corporation: data.phone_corporation,
               }, 'logged_token').then(() => {
                 commit('getUser')
               })

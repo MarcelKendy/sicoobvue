@@ -27,7 +27,7 @@ return new class extends Migration
             $table->foreignId('access_id')->references('id')->on('accesses')->constrained();
             $table->text('profile_about');
             $table->foreignId('role_id')->references('id')->on('roles')->constrained();
-            $table->string('agency');
+            $table->smallInteger('agency');
             $table->string('address');
             $table->string('phone');
             $table->string('phone_corporation');

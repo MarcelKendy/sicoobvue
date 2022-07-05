@@ -9,7 +9,6 @@ import ProfileComponent from '../components/ProfileComponent';
 
 export default {
   name: 'ProfileView',
-
   components: {
     ProfileComponent,
   },

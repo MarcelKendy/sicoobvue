@@ -42,7 +42,7 @@
           style="font-family: 'Quicksand', sans-serif; font-weight: 700"
         >
           <v-form ref="form" v-model="valid" lazy-validation>
-            <v-row>
+            <v-row class="align-center">
               <v-col cols="12">
                 <v-text-field
                   v-model="item.full_name"
@@ -52,8 +52,53 @@
                   placeholder="Fulano da Silva"
                   name="register_full_name"
                   maxlength="50"
+                  prepend-icon="mdi-account"
                   required
                 ></v-text-field>
+              </v-col>
+              <v-col cols="12" v-if="admin">
+                <v-autocomplete
+                  :menu-props="{ dark: dark_theme }"
+                  :loading="loading_roles"
+                  label="Função na Cooperativa"
+                  :color="color"
+                  prepend-icon="mdi-briefcase"
+                  placeholder="Enter para confirmar"
+                  :rules="requiredRuleRole"
+                  v-model="item.role_id"
+                  :items="roles"
+                  item-text="name"
+                  item-value="id"
+                  auto-select-first
+                  solo
+                  clearable
+                >
+                  <template v-slot:no-data>
+                    <div class="px-4">
+                      <span
+                        style="
+                          font-family: 'Quicksand', sans-serif;
+                          font-weight: bold;
+                        "
+                        >Falha ao carregar os cargos da cooperativa</span
+                      >
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-icon
+                            style="padding-left: 5px"
+                            small
+                            v-bind="attrs"
+                            v-on="on"
+                            :color="color"
+                          >
+                            mdi-alert-circle-outline
+                          </v-icon>
+                        </template>
+                        <span>Não existem cargos com essa filtragem</span>
+                      </v-tooltip>
+                    </div>
+                  </template>
+                </v-autocomplete>
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
@@ -64,6 +109,7 @@
                   :color="color"
                   name="register_email"
                   required
+                  prepend-icon="mdi-email"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -76,6 +122,7 @@
                     name: 'register_cpf',
                     placeholder: '000.000.000-00',
                     required: true,
+                    prependIcon: 'mdi-id-card',
                   }"
                   v-bind:options="{
                     inputMask: '###.###.###-##',
@@ -85,6 +132,64 @@
                     numeric: true,
                     lowerCase: false,
                   }"
+                />
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field-simplemask
+                  label="Ramal"
+                  v-model="item.phone_corporation"
+                  v-bind:properties="{
+                    color: color,
+                    rules: ramalRule,
+                    name: 'register_phone_corporation',
+                    placeholder: '1500',
+                    required: true,
+                    prependIcon: 'mdi-card-account-phone',
+                  }"
+                  v-bind:options="{
+                    inputMask: '####',
+                    outputMask: '####',
+                    empty: null,
+                    applyAfter: false,
+                    numeric: true,
+                    lowerCase: false,
+                  }"
+                />
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field-simplemask
+                  label="Número de contato"
+                  v-model="item.phone"
+                  v-bind:properties="{
+                    color: color,
+                    
+                    name: 'register_phone',
+                    placeholder: '(00) 00000-0000',
+                    required: true,
+                    prependIcon: 'mdi-cellphone',
+                  }"
+                  v-bind:options="{
+                    inputMask: '(##) #####-####',
+                    outputMask: '(##) #####-####',
+                    empty: null,
+                    applyAfter: false,
+                    numeric: true,
+                    lowerCase: false,
+                  }"
+                />
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  label="Endereço"
+                  v-model="item.address"
+                  placeholder="São Gotardo, Av. João Cardoso 689"
+                  :color="color"
+                  name="register_address"
+                  maxlength="50"
+                  required
+                  counter="50"
+                  prepend-icon="mdi-map-marker"
+                  
                 />
               </v-col>
               <v-col cols="12">
@@ -99,8 +204,90 @@
                   truncate-length="40"
                 ></v-file-input>
               </v-col>
+              <v-col cols="6">
+                <v-tooltip id="tooltip" right :color="color">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      v-bind="attrs"
+                      v-on="on"
+                      :color="color"
+                      small
+                      @click="others = !others"
+                      dark
+                    >
+                      Outros <v-icon right>mdi-plus-circle</v-icon>
+                    </v-btn>
+                  </template>
+                  <span class="font-quicksand">Outras informações</span>
+                </v-tooltip>
+              </v-col>
+              <v-slide-y-transition>
+                <v-row v-if="others">
+                  <v-col cols="12" sm="6" md="6">
+                    <v-select
+                      :menu-props="{ offsetY: true, dark: dark_theme }"
+                      solo
+                      :items="agencies"
+                      item-text="text"
+                      item-value="value"
+                      :color="color"
+                      :rules="requiredRule"
+                      label="Agência"
+                      v-model="item.agency"
+                      prepend-icon="mdi-domain"
+                    >
+                    </v-select>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-select
+                      :menu-props="{ offsetY: true, dark: dark_theme }"
+                      solo
+                      :items="genders"
+                      item-text="text"
+                      item-value="value"
+                      :color="color"
+                      :rules="requiredRule"
+                      label="Gênero"
+                      v-model="item.gender"
+                      prepend-icon="mdi-gender-male-female"
+                    >
+                      <template v-slot:selection="{ item }">
+                        <div
+                          :class="
+                            'chip gradient-' +
+                            genderStyle(item.value, 'gradient')
+                          "
+                        >
+                          <div class="chip__content">
+                            <v-icon dark>{{
+                              genderStyle(item.value, 'icon')
+                            }}</v-icon>
+                          </div>
+                        </div>
+                      </template>
+                      <template v-slot:item="{ item }">
+                        <div
+                          :class="
+                            'chip gradient-' +
+                            genderStyle(item.value, 'gradient')
+                          "
+                        >
+                          <div class="chip__content">
+                            <v-icon small dark>{{
+                              genderStyle(item.value, 'icon')
+                            }}</v-icon>
+                            <span class="item-select-badge">{{
+                              item.text
+                            }}</span>
+                          </div>
+                        </div>
+                      </template>
+                    </v-select>
+                  </v-col>
+                </v-row>
+              </v-slide-y-transition>
               <v-col cols="12">
-                <v-tooltip id="tooltip" right>
+                <v-tooltip id="tooltip" right color="orange">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
                       v-bind="attrs"
@@ -116,7 +303,7 @@
                       }}</v-icon>
                     </v-btn>
                   </template>
-                  <span>{{
+                  <span class="font-quicksand">{{
                     change_password
                       ? 'Fechar Cartão de Senha'
                       : 'Abrir Cartão de Senha'
@@ -146,7 +333,7 @@
                     </v-tooltip>
                   </v-card-title>
                   <v-card-subtitle>
-                    A sua nova senha entrará em vigor no seu próximo Login.
+                    A nova senha entrará em vigor no seu próximo Login.
                   </v-card-subtitle>
                   <v-card-text class="bold">
                     <v-row align="center" justify="center">
@@ -191,7 +378,14 @@
           <v-btn color="red darken-1" dark text @click="closeModal()">
             Cancelar
           </v-btn>
-          <v-btn :color="color" text @click="editProfile()"> Salvar </v-btn>
+          <v-btn
+            :color="color"
+            :disabled="loading_roles"
+            text
+            @click="editProfile()"
+          >
+            Salvar
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -201,16 +395,24 @@
 <script>
 import FormData from 'form-data';
 export default {
-  props: ['open', 'user'],
+  props: {
+    open: {
+      type: [Boolean],
+    },
+    user: {},
+  },
   components: {},
   data() {
     return {
       color: 'blue',
       valid: true,
       dialog: false,
+      others: false,
       change_password: false,
       loading: false,
+      loading_roles: false,
       show: false,
+      roles: [],
       item: {
         full_name: '',
         email: '',
@@ -219,9 +421,17 @@ export default {
         photo: null,
         password: '',
         verify: '',
+        role_id: '',
+        department: '',
+        address: '',
+        phone: '',
+        phone_corporation: '',
+        agency: '',
+        gender: '',
       },
       /* RULES */
       requiredRule: [(v) => !!v || 'Essa informação é obrigatória'],
+      requiredRuleRole: [(v) => (v == 0 || !!v) || 'Essa informação é obrigatória'],
       cpfRule: [
         (v) => !!v || 'Digite o seu CPF',
         (v) => /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(v) || 'CPF inválido',
@@ -229,6 +439,14 @@ export default {
       emailRule: [
         (v) => !!v || 'Digite o seu E-mail',
         (v) => /.+@.+\..+/.test(v) || 'E-mail inválido',
+      ],
+      ramalRule: [
+        (v) =>
+          ((!v) || (!!v && v.length > 1 && v[0] == 1 && v[1] == 5)) ||
+          'Atualmente, todos os ramais começam com 15. (Exemplo: 1506)',
+        (v) =>
+          ((!v) || (!!v && v.length == 4)) ||
+          'Atualmente, todos os ramais possuem 4 dígitos. (Exemplo: 1506)',
       ],
       photoRule: [
         (value) =>
@@ -244,6 +462,28 @@ export default {
       rules: {
         verifyPasswordRule: (value) => !!value || 'Confirme a sua senha',
       },
+      agencies: [
+        { text: 'Matriz', value: 1 },
+        { text: 'PA-01', value: 2 },
+      ],
+      genders: [
+        { text: 'Masc.', value: 1 },
+        { text: 'Fem.', value: 2 },
+      ],
+      gender_style: [
+        {
+          gender: 1,
+          color: 'white',
+          icon: 'mdi-face-man-shimmer',
+          gradient: 'blue',
+        },
+        {
+          gender: 2,
+          color: 'white',
+          icon: 'mdi-face-woman-shimmer',
+          gradient: 'pink',
+        },
+      ],
     };
   },
   watch: {
@@ -261,12 +501,23 @@ export default {
   methods: {
     assignUser() {
       Object.assign(Object.assign(this.item, this.defaultItem), this.user);
+      this.admin ? this.getRoles() : '';
       this.item.photo = null;
+    },
+    getRoles() {
+      this.loading_roles = true;
+      this.$http.get('get_roles').then((response) => {
+        this.roles = response.data;
+        this.roles = this.roles.map(function (role) {
+          return {id: role.id, name: role.name + ' - ' + role.department.name};
+        });
+        this.loading_roles = false;
+      });
     },
     editProfile() {
       if (this.$refs.form.validate()) {
         this.loading = true;
-        this.change_password = false;
+        this.others = this.change_password = false;
         this.$http
           .put(`edit_user/${this.item.id}`, this.item)
           .then((response) => {
@@ -306,9 +557,24 @@ export default {
           });
       }
     },
+    genderStyle(gender, type) {
+      let value = '';
+      this.gender_style.forEach((item) => {
+        if (item.gender == gender) {
+          if (type == 'color') {
+            value = item.color;
+          } else if (type == 'icon') {
+            value = item.icon;
+          } else {
+            value = item.gradient;
+          }
+        }
+      });
+      return value;
+    },
     closeModal() {
       this.$refs.form.resetValidation();
-      this.change_password = false;
+      this.others = this.change_password = false;
       this.$emit('closeModal', null, false);
     },
   },
@@ -316,6 +582,13 @@ export default {
     dark_theme() {
       try {
         return this.$store.state.user.configs.theme == 0;
+      } catch (err) {
+        return false;
+      }
+    },
+    admin() {
+      try {
+        return this.$store.state.user.accesses.users == 1;
       } catch (err) {
         return false;
       }
@@ -333,7 +606,14 @@ export default {
         cpf: '',
         photo: null,
         password: '',
+        address: '',
         verify: '',
+        role_id: '',
+        department: '',
+        phone: '',
+        phone_corporation: '',
+        agency: '',
+        gender: '',
       };
     },
   },

@@ -30,7 +30,7 @@
               width="80px"
               height="80px"
               icon
-              color="green"
+              :color="dark_theme ? 'purple' : 'green'"
               :to="'/perfil/' + state_user.id"
             >
               <v-avatar size="80px">
@@ -177,7 +177,7 @@
 
       <v-spacer></v-spacer>
 
-      <user-card />
+      <user-card/>
     </v-app-bar>
 
     <v-main
@@ -185,7 +185,7 @@
       v-if="$route.name != 'Login'"
     >
       <bread-crumb-component
-        v-if="$route.name != 'Login' && $route.name != 'Landing'"
+        v-if="$route.name != 'Landing'"
         :activeRoute="this.$route.name"
       ></bread-crumb-component>
       <router-view></router-view>
