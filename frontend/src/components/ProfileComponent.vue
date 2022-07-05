@@ -103,6 +103,8 @@
                 {{ profile.profile_about }}
               </span>
               <v-text-field
+                counter="600"
+                maxlength="600"
                 @keyup.enter="changeProfile"
                 v-else
                 placeholder='Pressione "enter" ou saia do campo para salvar'
