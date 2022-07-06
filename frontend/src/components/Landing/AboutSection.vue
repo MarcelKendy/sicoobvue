@@ -24,7 +24,7 @@
                   <p class="text-justify">
                     <strong class="text_gradient">Dashboard de Metas</strong>
                     <br />
-                    Através de uma dashboard moderna, será possível acompanhar o
+                    Através de uma dashboard moderna, diversas análises de dados sobre o sistema são realizadas. Futuramente, também será possível acompanhar o
                     nosso progresso das metas estabelecidas pela cooperativa.
                   </p>
                 </v-col>
@@ -53,7 +53,7 @@
                   <p class="text-justify">
                     <strong class="text_gradient">Gestão Completa</strong>
                     <br />
-                    Ferramentas fáceis e eficientes para os administradores do
+                    Ferramentas fáceis, completas e eficientes para os administradores do
                     sistema.
                   </p>
                 </v-col>
