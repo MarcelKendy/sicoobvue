@@ -223,7 +223,6 @@
                       :type="show2 ? 'text' : 'password'"
                       name="register_password"
                       label="Senha"
-                      hint="No mínimo 5 caracteres"
                       counter
                       :color="color_default"
                       @click:append="show2 = !show2"
