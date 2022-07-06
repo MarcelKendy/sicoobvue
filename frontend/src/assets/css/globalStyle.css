@@ -1,5 +1,7 @@
 .v-tooltip__content {
     background-color: rgb(36, 33, 33) !important;
+    font-family: 'Quicksand' !important;
+    font-weight: bold !important;
 }
 
 .bg-black {

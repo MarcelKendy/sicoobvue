@@ -23,6 +23,10 @@ return new class extends Migration
             $table->decimal('value',15,2)->nullable();
             $table->decimal('custom_value',15,2)->nullable();
             $table->decimal('commission_percentage',4,2)->nullable();
+            $table->string('insurance_policy');
+            $table->integer('consortium_group');
+            $table->integer('consortium_quota');
+            $table->tinyInteger('type');
             $table->string('status');
             $table->foreignId('indicator_id')->references('id')->on('users')->constrained()->cascadeOnDelete();
             $table->foreignId('seller_id')->references('id')->on('users')->nullable()->constrained()->cascadeOnDelete();

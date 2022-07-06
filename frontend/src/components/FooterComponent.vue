@@ -13,7 +13,7 @@
           :key="item.destination"
           style="width: 100px; display: inline"
         >
-          <v-tooltip id="tooltip" top>
+          <v-tooltip id="tooltip" top :color="dark_theme ? 'grey darken-3' : ''">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 class="mx-10"

@@ -24,7 +24,7 @@
           class="loading-gif my-10"
           src="../assets/images/loading.gif"
         />
-        <v-tooltip id="tooltip" right v-else>
+        <v-tooltip id="tooltip" right v-else :color="dark_theme ? 'grey darken-3' : ''">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               v-bind="attrs"
@@ -55,7 +55,7 @@
                     item.name
                   }}</span>
                   <v-col sm="3" cols="12" v-else>
-                    <v-tooltip id="tooltip" right>
+                    <v-tooltip id="tooltip" right :color="dark_theme ? 'grey darken-3' : ''">
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
                           dense
@@ -76,7 +76,7 @@
                   </v-col>
                   <v-spacer></v-spacer>
                   <div style="order: 3; display: inline-flex">
-                    <v-tooltip id="tooltip" left>
+                    <v-tooltip id="tooltip" left :color="dark_theme ? 'grey darken-3' : ''">
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn
                           @click.stop

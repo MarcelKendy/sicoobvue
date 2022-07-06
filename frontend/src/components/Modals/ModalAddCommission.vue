@@ -171,7 +171,7 @@
                         "
                         >Nenhum usuário encontrado</span
                       >
-                      <v-tooltip id="tooltip" top>
+                      <v-tooltip id="tooltip" top :color="dark_theme ? 'grey darken-3' : ''">
                         <template v-slot:activator="{ on, attrs }">
                           <v-icon
                             style="padding-left: 5px"
@@ -292,7 +292,7 @@
                           "
                           >Nenhum usuário encontrado</span
                         >
-                        <v-tooltip id="tooltip" top>
+                        <v-tooltip id="tooltip" top :color="dark_theme ? 'grey darken-3' : ''">
                           <template v-slot:activator="{ on, attrs }">
                             <v-icon
                               style="padding-left: 5px"
@@ -380,6 +380,38 @@
                     }"
                     v-model="item.custom_value"
                   ></v-text-field-money>
+                </v-col>
+              </v-row>
+              <v-row align="center" v-if="item.type == 2">
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="item.consortium_group"
+                    label="Grupo"
+                    :disabled="accesses('disableSeller')"
+                    :outlined="true"
+                    :rules="requiredSellerRule"
+                    type="number"
+                    hide-spin-buttons
+                    :color="color"
+                    maxlength="11"
+                    placeholder="Grupo do consórcio"
+                    prepend-icon="mdi-account-box-multiple"
+                  />
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="item.consortium_quota"
+                    label="Cota"
+                    :disabled="accesses('disableSeller')"
+                    :outlined="true"
+                    :rules="requiredSellerRule"
+                    type="number"
+                    hide-spin-buttons
+                    :color="color"
+                    maxlength="11"
+                    placeholder="Cota do consórcio"
+                    prepend-icon="mdi-account-box"
+                  />
                 </v-col>
               </v-row>
             </div>
@@ -470,7 +502,7 @@
                           "
                           >Nenhum usuário encontrado</span
                         >
-                        <v-tooltip id="tooltip" top>
+                        <v-tooltip id="tooltip" top :color="dark_theme ? 'grey darken-3' : ''">
                           <template v-slot:activator="{ on, attrs }">
                             <v-icon
                               style="padding-left: 5px"
@@ -504,6 +536,21 @@
                     :color="color"
                     clearable
                   ></DateTimePicker>
+                </v-col>
+              </v-row>
+              <v-row align="center" v-if="item.type == 1">
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    label="Apólice"
+                    v-model="item.insurance_policy"
+                    placeholder="Apólice do seguro efetivado"
+                    :color="color"
+                    name="insurance_policy"
+                    :rules="requiredOperatorRule"
+                    :disabled="accesses('disableOperator')"
+                    required
+                    prepend-icon="mdi-file-document-check"
+                  />
                 </v-col>
               </v-row>
             </div>
@@ -558,6 +605,10 @@ export default {
         indicator_id: '',
         seller_id: '',
         operator_id: '',
+        insurance_policy: '',
+        consortium_group: '',
+        consortium_quota: '',
+        type: '',
         status: '',
         indicator_commission: '',
         seller_commission: '',
@@ -637,7 +688,7 @@ export default {
       valueRule: [
         (v) =>
           (!!v &&
-            (parseFloat(this.item.value) > 0 || 'O valor não pode ser 0')) ||
+            (parseFloat(v) > 0 || 'O valor não pode ser 0')) ||
           this.item.status == 'Aguard. Venda' ||
           this.item.status == 'Não Vendido' ||
           this.item.status == '' ||
@@ -855,6 +906,7 @@ export default {
       this.$refs.form.resetValidation();
     },*/
     changeProduct(item) {
+      item.startsWith('Seguro') ? (this.item.type = 1) : (item.startsWith('Consórcio') ? (this.item.type = 2) : (this.item.type = 3)); 
       switch (item) {
         case 'Seguro Prestamista':
           this.item.custom_value = '';
@@ -913,6 +965,10 @@ export default {
         seller_id: '',
         operator_id: '',
         status: '',
+        type: '',
+        insurance_policy: '',
+        consortium_group: '',
+        consortium_quota: '',
         indicator_commission: '',
         seller_commission: '',
         operator_commission: '',

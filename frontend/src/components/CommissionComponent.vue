@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="pb-5 px-5" id="reports" v-if="!loading_commissions">
-      <v-tooltip id="tooltip" right>
+      <v-tooltip id="tooltip" right :color="dark_theme ? 'black' : ''">
         <template v-slot:activator="{ attrs, on }">
           <v-img
             width="32"
@@ -15,7 +15,7 @@
         <span>Relatórios</span>
       </v-tooltip>
     </div>
-    <v-tooltip id="tooltip" left>
+    <v-tooltip id="tooltip" left :color="dark_theme ? 'black' : ''">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           small
@@ -132,7 +132,7 @@
                             >{{ item.commission_percentage }}%)
                           </span>
                         </span>
-                        <v-tooltip id="tooltip" left>
+                        <v-tooltip id="tooltip" left :color="dark_theme ? 'black' : ''">
                           <template v-slot:activator="{ on, attrs }">
                             <v-btn
                               v-bind="attrs"
@@ -206,11 +206,12 @@
           </v-icon>
         </template>
         <template v-slot:[`item.date_indicator`]="{ item }">
-          <v-chip color="blue-grey lighten-2" small style="min-width: 58px">
+          <v-chip color="blue-black" small style="min-width: 58px">
             <v-tooltip
               id="tooltip"
               left
               v-if="!item.date_seller && !item.date_operator"
+              :color="dark_theme ? 'black' : ''"
             >
               <template v-slot:activator="{ on, attrs }">
                 <span v-bind="attrs" v-on="on">
@@ -219,7 +220,7 @@
               </template>
               <span>{{ formatDate(item.date_indicator, 'y') }}</span>
             </v-tooltip>
-            <v-tooltip id="tooltip" left v-else-if="!item.date_operator">
+            <v-tooltip id="tooltip" left v-else-if="!item.date_operator" :color="dark_theme ? 'black' : ''">
               <template v-slot:activator="{ on, attrs }">
                 <span v-bind="attrs" v-on="on">
                   {{ formatDate(item.date_seller, 'd_m') }}
@@ -227,7 +228,7 @@
               </template>
               <span>{{ formatDate(item.date_seller, 'y') }}</span>
             </v-tooltip>
-            <v-tooltip id="tooltip" left v-else>
+            <v-tooltip id="tooltip" left v-else :color="dark_theme ? 'black' : ''">
               <template v-slot:activator="{ on, attrs }">
                 <span v-bind="attrs" v-on="on">
                   {{ formatDate(item.date_operator, 'd_m') }}
@@ -238,7 +239,7 @@
           </v-chip>
         </template>
         <template v-slot:[`item.product`]="{ item }">
-          <v-tooltip id="tooltip" right>
+          <v-tooltip id="tooltip" right :color="dark_theme ? 'black' : ''">
             <template v-slot:activator="{ on, attrs }">
               <!--<v-avatar
                 class="avatar-class"
@@ -257,13 +258,31 @@
                 "
                 v-bind="attrs"
                 v-on="on"
+                :style="(item.insurance_policy || item.consortium_group || item.consortium_quota) ? 'cursor: pointer' : ''"
+                @click.stop.prevent="(item.insurance_policy || item.consortium_group || item.consortium_quota) ? copyInfo('input_' + item.id, item.product) : ''"
               >
                 <span class="white--text text-h7">{{
                   productStyle(item.product, 'initials')
                 }}</span>
+                <input
+                  type="hidden"
+                  :id="'input_' + item.id"
+                  :value="
+                    item.insurance_policy 
+                      ? item.insurance_policy
+                      : item.consortium_group 
+                        ? item.consortium_group + ' - ' + item.consortium_quota
+                        : ''
+                    "
+                />
               </div>
             </template>
-            <span>{{ item.product }}</span>
+            <span :class="item.type == 1 ? 'purple--text text--lighten-1' : item.type == 2 ? 'orange--text' : 'green--text'">{{ item.product }}
+              <div v-if="item.insurance_policy || item.consortium_group || item.consortium_quota">
+                <span v-if="item.type == 1">Apólice: <span class="white--text" style="font-weight: 600">{{item.insurance_policy}}</span></span>
+                <span v-else>Grupo - Cota: <span class="white--text" style="font-weight: 600">{{item.consortium_group}} - {{item.consortium_quota}}</span></span>
+              </div>
+            </span>
           </v-tooltip>
         </template>
         <template v-slot:[`item.value`]="{ item }">
@@ -330,7 +349,7 @@
                         alt="Foto"
                         :src="avatar_path(item.indicator.photo)"
                       />
-                      <v-tooltip id="tooltip" top v-else>
+                      <v-tooltip id="tooltip" top v-else :color="dark_theme ? 'black' : ''">
                         <template v-slot:activator="{ on, attrs }">
                           <v-img
                             v-bind="attrs"
@@ -373,7 +392,7 @@
                             >mdi-close-circle</v-icon
                           >
                         </template>
-                        <span>{{
+                        <span :class="item.indicator.active == 1 ? 'green--text' : 'red--text'">{{
                           item.indicator.active == 1
                             ? 'Usuário Ativo'
                             : 'Usuário Desativado'
@@ -438,7 +457,7 @@
                         alt="Foto"
                         :src="avatar_path(item.seller.photo)"
                       />
-                      <v-tooltip id="tooltip" top v-else>
+                      <v-tooltip id="tooltip" top v-else :color="dark_theme ? 'black' : ''">
                         <template v-slot:activator="{ on, attrs }">
                           <!--<v-icon large v-bind="attrs" v-on="on">
                             mdi-account-circle
@@ -484,7 +503,7 @@
                             >mdi-close-circle</v-icon
                           >
                         </template>
-                        <span>{{
+                        <span :class="item.seller.active == 1 ? 'green--text' : 'bold red--text'">{{
                           item.seller.active == 1
                             ? 'Usuário Ativo'
                             : 'Usuário Desativado'
@@ -505,7 +524,7 @@
               </v-list>
             </v-card>
           </v-menu>
-          <v-tooltip id="tooltip" top v-else>
+          <v-tooltip id="tooltip" top v-else :color="dark_theme ? 'black' : ''">
             <template v-slot:activator="{ on, attrs }">
               <v-chip pill outlined v-bind="attrs" v-on="on">
                 <v-icon left>mdi-account-clock</v-icon>
@@ -558,7 +577,7 @@
                         alt="Foto"
                         :src="avatar_path(item.operator.photo)"
                       />
-                      <v-tooltip id="tooltip" top v-else>
+                      <v-tooltip id="tooltip" top v-else :color="dark_theme ? 'black' : ''">
                         <template v-slot:activator="{ on, attrs }">
                           <v-img
                             v-bind="attrs"
@@ -601,7 +620,7 @@
                             >mdi-close-circle</v-icon
                           >
                         </template>
-                        <span>{{
+                        <span :class="item.operator.active == 1 ? 'green--text' : 'red--text'">{{
                           item.operator.active == 1
                             ? 'Usuário Ativo'
                             : 'Usuário Desativado'
@@ -622,7 +641,7 @@
               </v-list>
             </v-card>
           </v-menu>
-          <v-tooltip id="tooltip" top v-else>
+          <v-tooltip id="tooltip" top v-else :color="dark_theme ? 'black' : ''">
             <template v-slot:activator="{ on, attrs }">
               <v-chip pill outlined v-bind="attrs" v-on="on">
                 <v-icon left>mdi-account-clock</v-icon>
@@ -654,7 +673,7 @@
             >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
-            <v-tooltip id="tooltip" top v-else>
+            <v-tooltip id="tooltip" top v-else :color="dark_theme ? 'black' : ''">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   fab
@@ -679,7 +698,7 @@
             >
               <v-icon>mdi-delete</v-icon>
             </v-btn>
-            <v-tooltip id="tooltip" top v-else>
+            <v-tooltip id="tooltip" top v-else :color="dark_theme ? 'black' : ''">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn fab dark small color="red" v-bind="attrs" v-on="on">
                   <v-icon>mdi-delete-off</v-icon>
@@ -749,6 +768,18 @@
         >Dado removido com sucesso</strong
       >
     </v-snackbar>
+    <v-snackbar
+      v-model="snackbar_copy"
+      timeout="2500"
+      elevation="24"
+      rounded="pill"
+      color="success"
+    >
+      <v-icon class="pr-3" dark>mdi-check-circle</v-icon>
+      <strong style="padding-left: 35px" class="white--text">{{
+        this.snackbar_copy_message
+      }}</strong>
+    </v-snackbar>
     <br />
   </div>
 </template>
@@ -774,6 +805,8 @@ export default {
       deleted_item: {},
       loading_commissions: true,
       menu_indicator: false,
+      snackbar_copy: false,
+      snackbar_copy_message: '',
       mobile: false,
       add_modal: false,
       edit_modal: false,
@@ -790,6 +823,15 @@ export default {
         { text: 'Vendedor', value: 'seller.full_name' },
         { text: 'Operador', value: 'operator.full_name' },
         { text: 'Ações', value: 'actions', sortable: false },
+        // hidden columns for filter, using "align: ' d-none'"
+        { text: '', value: 'user.full_name', align: ' d-none' },
+        { text: '', value: 'custom_value', align: ' d-none' },
+        { text: '', value: 'date_seller', align: ' d-none' },
+        { text: '', value: 'date_operator', align: ' d-none' },
+        { text: '', value: 'insurance_policy', align: ' d-none' },
+        { text: '', value: 'consortium_group', align: ' d-none' },
+        { text: '', value: 'consortium_quota', align: ' d-none' },
+        //
       ],
       status_style: [
         {
@@ -923,11 +965,32 @@ export default {
     },
   },
   methods: {
+    copyInfo(info, title = 'Dado') {
+      let element = document.querySelector('#' + info);
+      element.setAttribute('type', 'text');
+      element.select();
+
+      try {
+        let successful = document.execCommand('copy');
+        this.snackbar_copy_message = successful
+          ? '"' + title + '"' + ' copiado com sucesso!'
+          : 'Não foi possível copiar ' + title;
+        this.snackbar_copy = true;
+      } catch (err) {
+        alert(
+          'Algum erro ocorreu. Certifique-se de usar o Google Chrome e contate o desenvolvedor.'
+        );
+      }
+
+      /* unselect the range */
+      element.setAttribute('type', 'hidden');
+      window.getSelection().removeAllRanges();
+    },
     onResize() {
       this.mobile = window.innerWidth < 900;
     },
     getItemId(item) {
-      return item.id; // Must be uid of record (would be nice if v-data-table exposed a "getItemKey" method)
+      return item.id; 
     },
     toggleExpand(props) {
       const item = props.item;
@@ -1128,6 +1191,7 @@ export default {
 };
 </script>
 <style scoped>
+
 .expanded-closing {
   border-bottom: none !important;
 }

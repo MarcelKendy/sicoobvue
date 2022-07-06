@@ -188,7 +188,7 @@
                     <v-icon color="orange">mdi-badge-account</v-icon>
                   </v-btn>
                 </template>
-                <span class="font-quicksand bold">Editar Perfil</span>
+                <span>Editar Perfil</span>
               </v-tooltip>
               <v-tooltip
                 id="tooltip"
@@ -212,10 +212,10 @@
                     <v-icon v-else color="red">mdi-close-circle</v-icon>
                   </v-btn>
                 </template>
-                <span class="font-quicksand bold" v-if="item.active"
+                <span v-if="item.active"
                   >Usuário Ativo (Clique para desativá-lo)</span
                 >
-                <span class="font-quicksand bold" v-else
+                <span v-else
                   >Usuário Desativado (Clique para ativá-lo)</span
                 >
               </v-tooltip>

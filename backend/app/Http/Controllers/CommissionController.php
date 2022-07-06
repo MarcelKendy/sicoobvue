@@ -35,7 +35,13 @@ class CommissionController extends Controller
         $newCommission->operator_id = $request->operator_id;
         $newCommission->status = $request->status;
         $newCommission->commission_percentage = $request->commission_percentage;
-
+        $newCommission->type = $request->type;
+        if ($newCommission->type == 1 && (isset($request->insurance_policy) && !empty($request->insurance_policy))) {
+            $newCommission->insurance_policy = $request->insurance_policy;
+        } else if ($newCommission->type == 2 && ((isset($request->consortium_group) && !empty($request->consortium_group)) && (isset($request->consortium_quota) && !empty($request->consortium_quota)))) {
+            $newCommission->consortium_group = $request->consortium_group;
+            $newCommission->consortium_quota = $request->consortium_quota;
+        }
         if ($request->custom_value) {
             $newCommission->custom_value = $request->custom_value;
             $value = $request->custom_value;
@@ -163,7 +169,13 @@ class CommissionController extends Controller
         $commission->commission_percentage = $request->commission_percentage;
         $commission->value = $request->value;
         $commission->product = $request->product;
-
+        $commission->type = $this->getType($request->product);
+        if ($commission->type == 1 && (isset($request->insurance_policy) && !empty($request->insurance_policy))) {
+            $commission->insurance_policy = $request->insurance_policy;
+        } else if ($commission->type == 2 && ((isset($request->consortium_group) && !empty($request->consortium_group)) && (isset($request->consortium_quota) && !empty($request->consortium_quota)))) {
+            $commission->consortium_group = $request->consortium_group;
+            $commission->consortium_quota = $request->consortium_quota;
+        }
         $commission->save();
         $this->sendSystemCom();
         return response()->json($commission->load('indicator', 'seller', 'operator'));
@@ -176,10 +188,25 @@ class CommissionController extends Controller
         return response()->json($commission);
     }
 
-    public function sendSystemCom() {
+    public function sendSystemCom()
+    {
         $newSystemCom = new SystemCom();
         $newSystemCom->code = 0;
         $newSystemCom->save();
         return true;
+    }
+
+    public function getType($product)
+    {
+        $insurance = 'Seguro';
+        $consortium = 'Consórcio';
+        $credit = 'Crédito';
+        if ((substr($product, 0, strlen($insurance)) === $insurance)) {
+            return 1;
+        } 
+        if ((substr($product, 0, strlen($consortium)) === $consortium)) {
+            return 2;
+        }
+        return 3;
     }
 }

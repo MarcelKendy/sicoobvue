@@ -82,7 +82,7 @@
                         "
                         >Falha ao carregar os cargos da cooperativa</span
                       >
-                      <v-tooltip top>
+                      <v-tooltip top :color="dark_theme ? 'grey darken-3' : ''">
                         <template v-slot:activator="{ on, attrs }">
                           <v-icon
                             style="padding-left: 5px"
@@ -218,7 +218,7 @@
                       Outros <v-icon right>mdi-plus-circle</v-icon>
                     </v-btn>
                   </template>
-                  <span class="font-quicksand">Outras informações</span>
+                  <span>Outras informações</span>
                 </v-tooltip>
               </v-col>
               <v-slide-y-transition>
@@ -319,7 +319,7 @@
                 >
                   <v-card-title color="orange" style="font-weight: bold">
                     Alterar Senha
-                    <v-tooltip id="tooltip" right>
+                    <v-tooltip id="tooltip" right :color="dark_theme ? 'grey darken-3' : ''">
                       <template v-slot:activator="{ on, attrs }">
                         <v-icon
                           class="mx-2"

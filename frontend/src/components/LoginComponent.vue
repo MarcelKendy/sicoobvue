@@ -118,7 +118,6 @@
                       name="register_last_name"
                       maxlength="50"
                       required
-                  
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
@@ -143,7 +142,7 @@
                         name: 'register_cpf',
                         placeholder: '000.000.000-00',
                         required: true,
-                        prependIcon: 'mdi-id-card'
+                        prependIcon: 'mdi-id-card',
                       }"
                       v-bind:options="{
                         inputMask: '###.###.###-##',
@@ -228,7 +227,17 @@
                       counter
                       :color="color_default"
                       @click:append="show2 = !show2"
-                    ></v-text-field>
+                      :loading="formRegister.password.length > 0"
+                    >
+                      <template v-slot:progress>
+                        <v-progress-linear
+                          :value="password_level"
+                          :color="password_level_color"
+                          absolute
+                          height="7"
+                        ></v-progress-linear>
+                      </template>
+                    </v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field
@@ -410,6 +419,12 @@ export default {
     },
     logged_user() {
       return this.$store.state.user;
+    },
+    password_level() {
+      return Math.min(100, this.formRegister.password.length * 8);
+    },
+    password_level_color() {
+      return ['red', 'orange', 'yellow darken-1', 'green lighten-3', 'success', 'success'][Math.floor(this.password_level / 20)];
     },
   },
   methods: {

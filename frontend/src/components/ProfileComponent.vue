@@ -58,7 +58,7 @@
                 >mdi-check-decagram</v-icon
               >
             </template>
-            <span class="font-quicksand bold">ONLINE</span>
+            <span>ONLINE</span>
           </v-tooltip>
         </div>
 
@@ -79,7 +79,7 @@
                 }}</v-icon
               >
             </template>
-            <span class="font-quicksand bold">{{
+            <span>{{
               profile.active == 1 ? 'Conta Ativa' : 'Conta Desativada'
             }}</span>
           </v-tooltip>
@@ -134,7 +134,7 @@
                       <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                   </template>
-                  <span class="yellow--text"
+                  <span class="yellow--text" style="font-weight:500"
                     >Deixe uma introdução sobre você!</span
                   >
                 </v-tooltip>
@@ -256,7 +256,7 @@
             </v-col>
           </v-row>
         </template>
-        <span class="font-quicksand orange--text bold"
+        <span class="orange--text"
           >Clique em uma informação abaixo para copiá-la</span
         >
       </v-tooltip>

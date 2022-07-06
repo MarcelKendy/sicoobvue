@@ -21,7 +21,7 @@
         dark
         class="pt-5 text-center"
       >
-        <v-tooltip top>
+        <v-tooltip top :color="dark_theme ? 'grey darken-3' : ''">
           <template v-slot:activator="{ attrs, on }">
             <v-btn
               v-bind="attrs"
