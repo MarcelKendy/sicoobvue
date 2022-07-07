@@ -233,8 +233,24 @@
                           :value="password_level"
                           :color="password_level_color"
                           absolute
-                          height="7"
-                        ></v-progress-linear>
+                          striped
+                          height="9"
+                        >
+                          <template v-slot:default="{ value }">
+                            <span class="progress-text" v-if="formRegister.password.length > 15"
+                              >É melhor anotar isso aí...</span
+                            >
+                            <span class="progress-text" v-else-if="value > 80"
+                              >Excelente! <v-icon small color="white">mdi-check</v-icon> </span
+                            >
+                            <span class="progress-text" v-else-if="value > 60"
+                              >Bom</span
+                            >
+                            <span class="progress-text" v-else-if="value > 49"
+                              >Médio</span
+                            >
+                          </template>
+                        </v-progress-linear>
                       </template>
                     </v-text-field>
                   </v-col>
@@ -420,10 +436,36 @@ export default {
       return this.$store.state.user;
     },
     password_level() {
-      return Math.min(100, this.formRegister.password.length * 8);
+      //return Math.min(100, this.formRegister.password.length * 10);
+      if(this.formRegister.password.length < 6) {
+        return Math.min(100, this.formRegister.password.length * 10);
+      } else {
+        let regex_special_characters = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/ //eslint-disable-line
+        let regex_numbers = /\d/ //eslint-disable-line
+        let contains_special_characters = regex_special_characters.test(this.formRegister.password)
+        let contains_numbers = regex_numbers.test(this.formRegister.password)
+        if (!contains_special_characters && !contains_numbers) {
+          return 50;
+        } else if ((contains_special_characters && !contains_numbers) || (!contains_special_characters && contains_numbers)) {
+          return 60;
+        } else {
+          if (this.formRegister.password.length > 8) {
+            return 100;
+          } else {
+            return 80;
+          }
+        }
+      }
     },
     password_level_color() {
-      return ['red', 'orange', 'yellow darken-1', 'green lighten-3', 'success', 'success'][Math.floor(this.password_level / 20)];
+      return [
+        'red',
+        'orange',
+        'yellow darken-1',
+        'green lighten-3',
+        'success',
+        'success',
+      ][Math.floor(this.password_level / (22))];
     },
   },
   methods: {
@@ -517,6 +559,14 @@ export default {
 };
 </script>
 <style scoped>
+.progress-text {
+  font-weight: bold;
+  font-family: 'Quicksand';
+  font-size: 10px;
+  color: rgb(0, 0, 0);
+  text-shadow: 1px 1px white;
+}
+
 .forgot-text {
   cursor: pointer;
   position: absolute;
