@@ -13,8 +13,39 @@
         elevation="5"
         height="40vh"
         class="mx-auto"
-        type="card"
+        type="card-avatar"
       ></v-skeleton-loader>
+      <v-skeleton-loader
+        :dark="dark_theme"
+        transition="scroll-y-transition"
+        elevation="5"
+        height="15vh"
+        class="mx-auto"
+        type="list-item-two-line"
+      ></v-skeleton-loader>
+      <br>
+      <v-row>
+        <v-col cols="12" md="6">
+          <v-skeleton-loader
+            :dark="dark_theme"
+            transition="scroll-y-transition"
+            elevation="5"
+            height="20vh"
+            class="mx-auto"
+            type="list-item-avatar-three-line"
+          ></v-skeleton-loader>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-skeleton-loader
+            :dark="dark_theme"
+            transition="scroll-y-transition"
+            elevation="5"
+            height="20vh"
+            class="mx-auto"
+            type="list-item-avatar-three-line"
+          ></v-skeleton-loader>
+        </v-col>
+      </v-row>
     </v-card>
     <v-card
       :class="dark_theme ? 'profile-card-dark' : ''"
@@ -134,7 +165,7 @@
                       <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                   </template>
-                  <span class="yellow--text" style="font-weight:500"
+                  <span class="yellow--text" style="font-weight: 500"
                     >Deixe uma introdução sobre você!</span
                   >
                 </v-tooltip>
