@@ -574,7 +574,6 @@ export default {
 
 <style scoped>
 .background-card-image {
-  filter: brightness(80%);
   background: no-repeat center center;
   background-size: cover;
   overflow: hidden;
