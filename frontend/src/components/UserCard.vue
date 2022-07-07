@@ -27,7 +27,7 @@
         >
           <v-img
             max-height="60px"
-            src="../assets/images/bg1.png"
+            src="../assets/images/backgrounds/bg1.png"
             gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)"
           >
             <v-list-item>
@@ -60,7 +60,7 @@
                 <v-img
                   max-width="35px"
                   alt="Sicoob"
-                  src="../assets/images/sicoobicon.png"
+                  src="../assets/images/logos/sicoobicon.png"
                 ></v-img>
               </v-list-item-action>
             </v-list-item>

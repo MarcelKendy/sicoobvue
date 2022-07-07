@@ -1,5 +1,18 @@
 <template>
   <div>
+    <v-card>
+      <v-file-input
+        v-model="file_excel"
+        accept="xlsx"
+        label="aaaaaa"
+        color="red"
+        placeholder="teste"
+        prepend-icon="mdi-camera"
+        show-size
+        truncate-length="40"
+        @change="changeFile"
+      ></v-file-input>
+    </v-card>
     <v-card
       :dark="dark_theme"
       :class="dark_theme ? 'profile-card-dark' : ''"
@@ -23,7 +36,7 @@
         class="mx-auto"
         type="list-item-two-line"
       ></v-skeleton-loader>
-      <br>
+      <br />
       <v-row>
         <v-col cols="12" md="6">
           <v-skeleton-loader
@@ -52,245 +65,250 @@
       v-else
       class="pt-1 px-1 pb-10 profile-card"
     >
-      <div class="banner">
-        <v-img
-          src="@/assets/images/logosicoobcredisg.png"
-          width="102"
-          class="credisg-icon ma-3"
-        ></v-img>
-        <v-img
-          class="cover-photo"
-          src="@/assets/images/wallpapers/nature1.jpg"
-          height="40vh"
-        ></v-img>
-        <div style="position: relative">
-          <v-avatar class="avatar-photo rounded-gradient-border" size="25vh">
-            <v-img v-if="profile.photo" :src="avatar_path(profile.photo)">
-            </v-img>
-            <v-img
-              v-else
-              :src="
-                require(profile.gender == 1
-                  ? './../assets/images/man.png'
-                  : './../assets/images/woman.png')
-              "
-            ></v-img>
-          </v-avatar>
-          <v-tooltip right color="success">
-            <template v-slot:activator="{ on, attrs }">
-              <v-icon
-                v-if="profile.logged"
-                large
-                v-bind="attrs"
-                v-on="on"
-                class="logged-badge"
-                right
-                color="green"
-                >mdi-check-decagram</v-icon
-              >
-            </template>
-            <span>ONLINE</span>
-          </v-tooltip>
-        </div>
-
-        <span style="display: inline" class="profile-name"
-          >{{ profile.full_name }}
-          <v-tooltip top :color="profile.active == 1 ? 'success' : 'error'">
-            <template v-slot:activator="{ on, attrs }">
-              <v-icon
-                v-bind="attrs"
-                v-on="on"
-                :color="profile.active == 1 ? 'green' : 'red'"
-                size="32"
-                style="padding-bottom: 9px"
-                >{{
-                  profile.active == 1
-                    ? 'mdi-account-check'
-                    : 'mdi-account-cancel'
-                }}</v-icon
-              >
-            </template>
-            <span>{{
-              profile.active == 1 ? 'Conta Ativa' : 'Conta Desativada'
-            }}</span>
-          </v-tooltip>
-        </span>
-      </div>
-      <v-row class="align-center px-10 mt-10">
-        <v-col cols="12">
-          <v-hover v-slot:default="{ hover }">
-            <v-card
-              class="profile-introduction-card"
-              outlined
-              color="transparent"
-              elevation="3"
-            >
+      <v-img
+        src="@/assets/images/backgrounds/transparentbg.png"
+        class="background-card-image"
+      >
+        <div class="banner">
+          <v-img
+            src="@/assets/images/logos/logosicoobcredisg.png"
+            width="102"
+            class="credisg-icon ma-3"
+          ></v-img>
+          <v-img
+            class="cover-photo"
+            src="@/assets/images/wallpapers/nature1.jpg"
+            height="40vh"
+          ></v-img>
+          <div style="position: relative">
+            <v-avatar class="avatar-photo rounded-gradient-border" size="25vh">
+              <v-img v-if="profile.photo" :src="avatar_path(profile.photo)">
+              </v-img>
               <v-img
-                src="@/assets/icons/sicoobicon.png"
-                class="sicoob-icon"
-                max-width="28"
-              ></v-img>
-              <span class="about-text" v-if="!activate_edit_profile">
-                {{ profile.profile_about }}
-              </span>
-              <v-text-field
-                counter="600"
-                maxlength="600"
-                @keyup.enter="changeProfile"
                 v-else
-                placeholder='Pressione "enter" ou saia do campo para salvar'
-                @click.stop
-                @change="changeProfile"
-                v-model="profile.profile_about"
-                :loading="loading_profile_about"
-                color="green"
-                dark
-                append-icon="mdi-pencil"
-              >
-              </v-text-field>
-              <v-overlay
-                absolute
-                :value="hover && !activate_edit_profile"
-                color="rgb(115,215,38)"
-              >
-                <v-tooltip right>
-                  <template v-slot:activator="{ attrs, on }">
-                    <v-btn
-                      fab
-                      color="rgb(10,121,117)"
-                      v-bind="attrs"
-                      v-on="on"
-                      @click="activate_edit_profile = true"
-                    >
-                      <v-icon>mdi-pencil</v-icon>
-                    </v-btn>
-                  </template>
-                  <span class="yellow--text" style="font-weight: 500"
-                    >Deixe uma introdução sobre você!</span
-                  >
-                </v-tooltip>
-              </v-overlay>
-            </v-card>
-          </v-hover>
-        </v-col>
-      </v-row>
-      <v-tooltip top v-model="hover_delay">
-        <template v-slot:activator="{}">
-          <v-row class="align-center px-10 mt-10">
-            <v-col cols="12" md="6">
+                :src="
+                  require(profile.gender == 1
+                    ? './../assets/images/man.png'
+                    : './../assets/images/woman.png')
+                "
+              ></v-img>
+            </v-avatar>
+            <v-tooltip right color="success">
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                  v-if="profile.logged"
+                  large
+                  v-bind="attrs"
+                  v-on="on"
+                  class="logged-badge"
+                  right
+                  color="green"
+                  >mdi-check-decagram</v-icon
+                >
+              </template>
+              <span>ONLINE</span>
+            </v-tooltip>
+          </div>
+
+          <span style="display: inline" class="profile-name"
+            >{{ profile.full_name }}
+            <v-tooltip top :color="profile.active == 1 ? 'success' : 'error'">
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                  v-bind="attrs"
+                  v-on="on"
+                  :color="profile.active == 1 ? 'green' : 'red'"
+                  size="32"
+                  style="padding-bottom: 9px"
+                  >{{
+                    profile.active == 1
+                      ? 'mdi-account-check'
+                      : 'mdi-account-cancel'
+                  }}</v-icon
+                >
+              </template>
+              <span>{{
+                profile.active == 1 ? 'Conta Ativa' : 'Conta Desativada'
+              }}</span>
+            </v-tooltip>
+          </span>
+        </div>
+        <v-row class="align-center px-10 mt-10">
+          <v-col cols="12">
+            <v-hover v-slot:default="{ hover }">
               <v-card
-                class="profile-info-card"
+                class="profile-introduction-card"
                 outlined
                 color="transparent"
-                elevation="12"
+                elevation="3"
               >
-                <v-list class="transparent-list">
-                  <v-hover
-                    v-slot:default="{ hover }"
-                    v-for="item in info_cards_items[0]"
-                    :key="item.key"
-                  >
-                    <v-list-item
-                      @click.stop.prevent="copyInfo(item.data, item.title)"
-                      class="introduction-item"
+                <v-img
+                  src="@/assets/icons/sicoobicon.png"
+                  class="sicoob-icon"
+                  max-width="28"
+                ></v-img>
+                <span class="about-text" v-if="!activate_edit_profile">
+                  {{ profile.profile_about }}
+                </span>
+                <v-text-field
+                  counter="600"
+                  maxlength="600"
+                  @keyup.enter="changeProfile"
+                  v-else
+                  placeholder='Pressione "enter" ou saia do campo para salvar'
+                  @click.stop
+                  @change="changeProfile"
+                  v-model="profile.profile_about"
+                  :loading="loading_profile_about"
+                  color="yellow"
+                  dark
+                  append-icon="mdi-pencil"
+                >
+                </v-text-field>
+                <v-overlay
+                  absolute
+                  :value="hover && !activate_edit_profile"
+                  color="rgba(60, 150, 99, 0.9)"
+                >
+                  <v-tooltip right>
+                    <template v-slot:activator="{ attrs, on }">
+                      <v-btn
+                        fab
+                        color="rgb(10,121,117)"
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="activate_edit_profile = true"
+                      >
+                        <v-icon>mdi-pencil</v-icon>
+                      </v-btn>
+                    </template>
+                    <span class="yellow--text" style="font-weight: 500"
+                      >Deixe uma introdução sobre você!</span
                     >
-                      <v-img
-                        class="mr-5"
-                        max-width="32"
-                        :src="require('@/assets/icons/' + item.icon)"
-                      ></v-img>
-
-                      <v-list-item-content>
-                        <span class="introduction-item-text">
-                          {{
-                            profile[item.data]
-                              ? item.mask
-                                ? item.mask(profile[item.data])
-                                : profile[item.data]
-                              : 'Dado não fornecido'
-                          }}
-                        </span>
-                      </v-list-item-content>
-                      <v-slide-x-reverse-transition>
-                        <div v-if="hover" class="mr-7">
-                          <span class="introduction-item-title">
-                            {{ item.title }}
-                          </span>
-                        </div>
-                      </v-slide-x-reverse-transition>
-                      <input
-                        type="hidden"
-                        :id="item.data"
-                        :value="
-                          profile[item.data]
-                            ? profile[item.data]
-                            : 'Dado não fornecido'
-                        "
-                      />
-                    </v-list-item>
-                  </v-hover>
-                </v-list>
+                  </v-tooltip>
+                </v-overlay>
               </v-card>
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-card
-                class="profile-info-card"
-                outlined
-                color="transparent"
-                elevation="12"
-              >
-                <v-list class="transparent-list">
-                  <v-hover
-                    v-slot:default="{ hover }"
-                    v-for="item in info_cards_items[1]"
-                    :key="item.key"
-                  >
-                    <v-list-item
-                      @click.stop.prevent="copyInfo(item.data, item.title)"
-                      class="introduction-item"
+            </v-hover>
+          </v-col>
+        </v-row>
+        <v-tooltip top v-model="hover_delay">
+          <template v-slot:activator="{}">
+            <v-row class="align-center px-10 mt-10">
+              <v-col cols="12" md="6">
+                <v-card
+                  class="profile-info-card-1"
+                  shaped
+                  color="transparent"
+                  elevation="12"
+                >
+                  <v-list class="transparent-list">
+                    <v-hover
+                      v-slot:default="{ hover }"
+                      v-for="item in info_cards_items[0]"
+                      :key="item.key"
                     >
-                      <v-img
-                        class="mr-5"
-                        max-width="32"
-                        :src="require('@/assets/icons/' + item.icon)"
-                      ></v-img>
+                      <v-list-item
+                        @click.stop.prevent="copyInfo(item.data, item.title)"
+                        class="introduction-item"
+                      >
+                        <v-img
+                          class="mr-5"
+                          max-width="32"
+                          :src="require('@/assets/icons/' + item.icon)"
+                        ></v-img>
 
-                      <v-list-item-content>
-                        <span class="introduction-item-text">
-                          {{
+                        <v-list-item-content>
+                          <span class="introduction-item-text">
+                            {{
+                              profile[item.data]
+                                ? item.mask
+                                  ? item.mask(profile[item.data])
+                                  : profile[item.data]
+                                : 'Dado não fornecido'
+                            }}
+                          </span>
+                        </v-list-item-content>
+                        <v-slide-x-reverse-transition>
+                          <div v-if="hover" class="mr-7">
+                            <span class="introduction-item-title">
+                              {{ item.title }}
+                            </span>
+                          </div>
+                        </v-slide-x-reverse-transition>
+                        <input
+                          type="hidden"
+                          :id="item.data"
+                          :value="
                             profile[item.data]
                               ? profile[item.data]
                               : 'Dado não fornecido'
-                          }}
-                        </span>
-                      </v-list-item-content>
-                      <v-slide-x-reverse-transition>
-                        <div v-if="hover" class="mr-7">
-                          <span class="introduction-item-title">
-                            {{ item.title }}
+                          "
+                        />
+                      </v-list-item>
+                    </v-hover>
+                  </v-list>
+                </v-card>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-card
+                  class="profile-info-card-2"
+                  shaped
+                  color="transparent"
+                  elevation="12"
+                >
+                  <v-list class="transparent-list">
+                    <v-hover
+                      v-slot:default="{ hover }"
+                      v-for="item in info_cards_items[1]"
+                      :key="item.key"
+                    >
+                      <v-list-item
+                        @click.stop.prevent="copyInfo(item.data, item.title)"
+                        class="introduction-item"
+                      >
+                        <v-img
+                          class="mr-5"
+                          max-width="32"
+                          :src="require('@/assets/icons/' + item.icon)"
+                        ></v-img>
+
+                        <v-list-item-content>
+                          <span class="introduction-item-text">
+                            {{
+                              profile[item.data]
+                                ? profile[item.data]
+                                : 'Dado não fornecido'
+                            }}
                           </span>
-                        </div>
-                      </v-slide-x-reverse-transition>
-                      <input
-                        type="hidden"
-                        :id="item.data"
-                        :value="
-                          profile[item.data]
-                            ? profile[item.data]
-                            : 'Dado não fornecido'
-                        "
-                      />
-                    </v-list-item>
-                  </v-hover>
-                </v-list>
-              </v-card>
-            </v-col>
-          </v-row>
-        </template>
-        <span class="orange--text"
-          >Clique em uma informação abaixo para copiá-la</span
-        >
-      </v-tooltip>
+                        </v-list-item-content>
+                        <v-slide-x-reverse-transition>
+                          <div v-if="hover" class="mr-7">
+                            <span class="introduction-item-title">
+                              {{ item.title }}
+                            </span>
+                          </div>
+                        </v-slide-x-reverse-transition>
+                        <input
+                          type="hidden"
+                          :id="item.data"
+                          :value="
+                            profile[item.data]
+                              ? profile[item.data]
+                              : 'Dado não fornecido'
+                          "
+                        />
+                      </v-list-item>
+                    </v-hover>
+                  </v-list>
+                </v-card>
+              </v-col>
+            </v-row>
+          </template>
+          <span class="orange--text"
+            >Clique em uma informação abaixo para copiá-la</span
+          >
+        </v-tooltip>
+      </v-img>
     </v-card>
     <v-snackbar
       v-model="snackbar_copy"
@@ -308,9 +326,11 @@
 </template>
 
 <script>
+import readXlsxFile from 'read-excel-file';
 export default {
   name: 'ProfileComponent',
   data: () => ({
+    file_excel: null,
     loading: false,
     unmasked_cpf: '',
     snackbar_copy: false,
@@ -410,6 +430,20 @@ export default {
     this.loadProfile();
   },
   methods: {
+    changeFile(file) {
+      let obj_excel_data = []
+      readXlsxFile(file).then((data) => {
+        console.log(data)
+        data.shift()
+        data.map(function(row) {
+          obj_excel_data.push({
+            name: row[0],
+            department_id: row[1]
+          })
+        })
+        console.log(obj_excel_data)
+      });
+    },
     changeProfile() {
       this.loading_profile_about = true;
       this.$http
@@ -539,13 +573,18 @@ export default {
 </script>
 
 <style scoped>
+.background-card-image {
+  filter: brightness(80%);
+  background: no-repeat center center;
+  background-size: cover;
+  overflow: hidden;
+}
 .background-image {
   filter: brightness(70%);
-  position: relative;
   overflow: hidden;
+  position: absolute;
   width: 100%;
   height: 100%;
-  position: absolute;
   top: 0;
   left: 0;
   background: no-repeat center center;
@@ -554,7 +593,6 @@ export default {
 }
 
 .profile-card {
-  background-color: rgb(255, 255, 255);
   box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
     rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
     rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px,
@@ -562,9 +600,9 @@ export default {
     rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px !important;
   background-image: linear-gradient(
     to bottom right,
-    rgba(0, 32, 68, 0.884),
-    rgba(0, 73, 97, 0.801),
-    rgba(28, 0, 59, 0.801)
+    rgba(0, 40, 56, 0.945),
+    rgba(0, 73, 107, 0.884),
+    rgba(42, 0, 109, 0.788)
   );
 }
 
@@ -656,20 +694,31 @@ export default {
   color: white;
   border-radius: 30px;
   background-image: linear-gradient(
-    to bottom right,
-    rgba(255, 255, 255, 0.05),
-    rgba(255, 255, 255, 0.05)
+    to top left,
+    rgba(0, 167, 173, 0.877),
+    rgba(68, 212, 152, 0.623),
+    rgba(130, 216, 79, 0.664)
   );
 }
 
-.profile-info-card {
+.profile-info-card-1 {
   padding: 20px;
   color: white;
   border-radius: 30px;
   background-image: linear-gradient(
     to bottom right,
-    rgba(255, 255, 255, 0.05),
-    rgba(255, 255, 255, 0.05)
+    rgba(0, 136, 141, 0.658),
+    rgba(86, 62, 192, 0.651)
+  );
+}
+.profile-info-card-2 {
+  padding: 20px;
+  color: white;
+  border-radius: 30px;
+  background-image: linear-gradient(
+    to bottom left,
+    rgba(0, 136, 141, 0.658),
+    rgba(86, 62, 192, 0.651)
   );
 }
 

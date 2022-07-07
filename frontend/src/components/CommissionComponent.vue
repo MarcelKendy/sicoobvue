@@ -125,7 +125,7 @@
                             style="display: inline-block"
                             max-width="15px"
                             alt="Sicoob"
-                            src="../assets/images/sicoobicon.png"
+                            src="../assets/images/logos/sicoobicon.png"
                           ></v-img>
                           :
                           <span class="text-decoration-underline"
@@ -337,7 +337,7 @@
               <v-list>
                 <v-img
                   height="100px"
-                  src="./../assets/images/bg1.png"
+                  src="./../assets/images/backgrounds/bg1.png"
                   gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)"
                   dark
                   class="pt-5 text-center"
@@ -445,7 +445,7 @@
               <v-list>
                 <v-img
                   height="100px"
-                  src="./../assets/images/bg1.png"
+                  src="./../assets/images/backgrounds/bg1.png"
                   gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)"
                   dark
                   class="pt-5 text-center"
@@ -565,7 +565,7 @@
               <v-list>
                 <v-img
                   height="100px"
-                  src="./../assets/images/bg1.png"
+                  src="./../assets/images/backgrounds/bg1.png"
                   gradient="to bottom left, rgba(173,12,227,.5), rgba(0,260,145,.6)"
                   dark
                   class="pt-5 text-center"

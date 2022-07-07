@@ -4,14 +4,14 @@
       app
       :color="color ? color : 'rgba(8,110,95,.6)'"
       dark
-      src="@/assets/images/bg2.png"
+      src="@/assets/images/backgrounds/bg2.png"
       class="opacity-change"
       fade-img-on-scroll
       scroll-threshold="800"
     >
       <v-toolbar-title>
         <v-img
-          src="@/assets/images/sicoobicon.png"
+          src="@/assets/images/logos/sicoobicon.png"
           class="mt-2"
           style="display: inline-block"
           max-width="30px"

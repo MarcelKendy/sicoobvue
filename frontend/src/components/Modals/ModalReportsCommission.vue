@@ -16,7 +16,7 @@
         <v-card-title class="title-modal" v-if="!loading">
           <strong>Gerar Relatório</strong>
           <v-spacer></v-spacer>
-          <img width="30" src="../../assets/images/sicoobicon.png" />
+          <img width="30" src="../../assets/images/logos/sicoobicon.png" />
         </v-card-title>
         <v-card-title class="title-modal" v-else>
           <strong>Gerando Relatório</strong>

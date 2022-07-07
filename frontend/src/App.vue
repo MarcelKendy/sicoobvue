@@ -10,8 +10,8 @@
         height="216px"
         :src="
           require(dark_theme
-            ? './assets/images/circuitsbg2.png'
-            : './assets/images/circuitsbg2.png')
+            ? './assets/images/backgrounds/circuitsbg2.png'
+            : './assets/images/backgrounds/circuitsbg2.png')
         "
         :gradient="
           dark_theme

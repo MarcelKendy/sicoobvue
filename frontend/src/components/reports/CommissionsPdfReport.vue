@@ -60,7 +60,7 @@
           </tr>
         </table>
         <img
-          src="./../../assets/images/logosicoobcredisg.png"
+          src="@/assets/images/logos/logosicoobcredisg.png"
           width="60px"
           style="position: absolute; left: 15px; margin-top: 10px"
           alt="Sicoob Credisg"

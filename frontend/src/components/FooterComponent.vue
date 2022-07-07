@@ -24,7 +24,7 @@
                 v-on="on"
               >
                 <img
-                  :src="require('../assets/images/' + item.img)"
+                  :src="require('@/assets/images/logos/' + item.img)"
                   alt="CPro"
                   contain
                   :height="item.height"

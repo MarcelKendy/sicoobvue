@@ -2,7 +2,7 @@
   <div class="brighten">
     <img
       class="top"
-      src="../assets/images/marca_sicoob_branca.png"
+      src="@/assets/images/logos/marca_sicoob_branca.png"
       width="402"
       alt=""
     />
