@@ -230,6 +230,12 @@ export default {
         img: 'commission.png',
         to: '/comissoes',
       },
+      {
+        title: 'Associados',
+        icon: 'mdi-account-group',
+        img: 'associates.png',
+        to: '/associados',
+      },
     ],
     items_adm: [
       {
@@ -328,6 +334,8 @@ export default {
           case 'Landing':
             return true;
           case 'Checklist':
+            return true;
+          case 'Associados':
             return true;
           case 'Perfil':
             return true;

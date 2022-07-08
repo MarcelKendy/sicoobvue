@@ -8,6 +8,9 @@
       :loading="loading"
       :dark="dark_theme"
     >
+      <template v-slot:progress>
+        <v-progress-linear height="6" indeterminate color="green lighten-1"></v-progress-linear>
+      </template>
       <v-card-title class="bold title-card">
         Acessos
         <v-img class="mx-2" style="display:inline-block" src="@/assets/icons/sicoobicon.png" max-width="20"></v-img>
@@ -680,8 +683,5 @@ export default {
 .title-card {
   transition: 0.5s;
 }
-.hover-card:hover .title-card,
-.hover-card:hover .page-items-text {
-  color: rgb(0, 84, 181);
-}
+
 </style>

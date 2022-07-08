@@ -156,6 +156,22 @@ export default {
             },
           ];
           break;
+        case 'Associados':
+          this.items = [
+            {
+              text: 'Home',
+              icon: 'mdi-view-dashboard',
+              disabled: false,
+              href: '/',
+            },
+            {
+              text: 'Associados',
+              icon: 'mdi-account-group',
+              disabled: true,
+              href: '/associates',
+            },
+          ];
+          break;
         case 'Perfil':
           this.items = [
             {

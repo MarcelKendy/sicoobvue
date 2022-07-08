@@ -3,6 +3,12 @@
     <v-card class="hover-card" elevation="7" outlined shaped :dark="dark_theme">
       <v-card-title>
         <span class="bold title-card">Importar Dados</span>
+        <v-img
+          class="mx-2"
+          style="display: inline-block"
+          src="@/assets/icons/sicoobicon.png"
+          max-width="20"
+        ></v-img>
       </v-card-title>
       <v-card-subtitle>
         <span :class="dark_theme ? 'bold subtitle-card-dark' : 'subtitle-card'"

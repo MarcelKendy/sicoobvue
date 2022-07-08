@@ -11,6 +11,7 @@ import UploadView from '../views/UploadView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import AboutView from '../views/AboutView.vue'
 import CommissionView from '../views/CommissionView.vue'
+import AssociatesView from '../views/AssociatesView.vue'
 import InvalidPageView from '../views/InvalidPageView.vue'
 import AccessDeniedView from '../views/AccessDeniedView.vue'
 
@@ -61,6 +62,11 @@ const routes = [
     path: '/uploads',
     name: 'Uploads',
     component: UploadView
+  },
+  {
+    path: '/associados',
+    name: 'Associados',
+    component: AssociatesView
   },
   {
     path: '/perfil/:id',

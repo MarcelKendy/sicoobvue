@@ -8,6 +8,9 @@
       outlined
       :dark="dark_theme"
     >
+      <template v-slot:progress>
+        <v-progress-linear height="6" indeterminate color="green lighten-1"></v-progress-linear>
+      </template>
       <v-card-title class="bold title-card">
         Usuários do Sistema
 
@@ -234,7 +237,7 @@
             <vuetify-number
               class="page-items-textfield"
               v-model="page_total_items"
-              v-bind:rules="requiredRule"
+              v-bind:rules="pageItemsRule"
               v-bind:options="options"
               v-bind:backgroundColor="dark_theme ? 'rgb(30, 30, 31)' : ''"
             />
@@ -282,7 +285,7 @@ export default {
     valid_access: true,
     valid_page: true,
     color: 'orange',
-    requiredRule: [(v) => v > 0 || 'x > 0'],
+    pageItemsRule: [(v) => v > 0 || 'x > 0'],
     options: {
       locale: 'pt-BR',
       prefix: '',
