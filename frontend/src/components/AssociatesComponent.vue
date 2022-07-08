@@ -51,10 +51,11 @@
           class="mt-16 animate__animated animate__bounceInUp"
         >
           <center style="padding-bottom: 60px">
-            <v-img
+            <!-- <v-img
               width="50"
               :src="require('@/assets/icons/bots/bot1/bot-question.png')"
-            ></v-img>
+            ></v-img> -->
+            <v-icon size="50" color="rgba(18,210,195)">mdi-emoticon-sad</v-icon>
             <div
               class="mt-3"
               style="
