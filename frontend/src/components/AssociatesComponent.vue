@@ -17,13 +17,22 @@
       </template>
       <v-card-title class="bold title-card">
         <span>Associados da cooperativa</span>
-
         <v-img
           class="mx-2"
           style="display: inline-block"
           src="@/assets/icons/sicoobicon.png"
           max-width="20"
         ></v-img>
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          :disabled="loading"
+          append-icon="mdi-magnify"
+          label="Pesquisar"
+          :dark="dark_theme"
+          single-line
+          color="rgba(18,210,175)"
+        ></v-text-field>
       </v-card-title>
       <v-card-subtitle>
         <span :class="dark_theme ? 'bold subtitle-card-dark' : 'subtitle-card'"
@@ -37,6 +46,28 @@
           class="loading-gif my-10"
           src="../assets/images/loading.gif"
         />
+        <div
+          v-if="no_data_animation"
+          class="mt-16 animate__animated animate__bounceInUp"
+        >
+          <center style="padding-bottom: 60px">
+            <v-img
+              width="50"
+              :src="require('@/assets/icons/bots/bot1/bot-question.png')"
+            ></v-img>
+            <div
+              class="mt-3"
+              style="
+                color: rgba(18, 210, 195);
+                font-size: 24px;
+                font-weight: bold;
+                font-family: 'Quicksand', sans-serif;
+              "
+            >
+              Nenhum associado(a) encontrado(a)
+            </div>
+          </center>
+        </div>
         <v-list three-line v-for="(item, index) in items" :key="index">
           <v-list-item
             :key="item.cpf_cnpj"
@@ -152,8 +183,10 @@ export default {
     loading: false,
     items: [],
     total_items: [],
+    mutable_total_items: [],
     snackbar_copy: false,
     snackbar_copy_message: '',
+    no_data_animation: false,
     valid_page: true,
     total_pages: 1,
     page_total_items: 10,
@@ -166,6 +199,7 @@ export default {
       length: 2,
       precision: 0,
     },
+    search: '',
   }),
   created() {
     this.getAssociates();
@@ -179,6 +213,7 @@ export default {
         })
         .then((response) => {
           this.total_items = response.data;
+          this.mutable_total_items = response.data;
           this.pagination();
           this.loading = false;
         });
@@ -207,16 +242,44 @@ export default {
     pagination(reload_total_pages = true, page = this.page) {
       if (reload_total_pages) {
         this.total_pages = Math.ceil(
-          this.total_items.length / this.page_total_items
+          this.mutable_total_items.length / this.page_total_items
         );
       }
+      this.page = page;
       this.page_total_items = parseInt(this.page_total_items);
       let begin = (page - 1) * this.page_total_items;
       let end = begin + this.page_total_items;
-      this.items = this.total_items.slice(begin, end);
+      this.items = this.mutable_total_items.slice(begin, end);
+    },
+    filterData() {
+      this.mutable_total_items = this.total_items.filter((item) => {
+        return this.search
+          .toLowerCase()
+          .split(' ')
+          .every(
+            (search_char) =>
+              item.associate.toLowerCase().includes(search_char) ||
+              item.cpf_cnpj.toLowerCase().includes(search_char) ||
+              item.account.toLowerCase().includes(search_char) ||
+              item.phone.toLowerCase().includes(search_char)
+          );
+      });
+      this.pagination(true, 1);
     },
   },
   watch: {
+    search: function () {
+      if (this.search.length > 0) {
+        this.filterData();
+      } else {
+        this.items = [];
+        this.mutable_total_items = this.total_items;
+        this.pagination(true, 1);
+      }
+    },
+    no_data: function () {
+      this.no_data_animation = this.no_data;
+    },
     page: function () {
       this.pagination(false);
     },
@@ -230,6 +293,9 @@ export default {
     },
   },
   computed: {
+    no_data() {
+      return this.items.length == 0;
+    },
     dark_theme() {
       return this.$store.state.user.configs.theme == 0;
     },

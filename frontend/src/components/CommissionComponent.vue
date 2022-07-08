@@ -46,7 +46,6 @@
         ></span>
         <v-spacer></v-spacer>
         <v-text-field
-          style=""
           v-model="search"
           append-icon="mdi-magnify"
           label="Pesquisar"

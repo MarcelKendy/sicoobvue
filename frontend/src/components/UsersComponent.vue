@@ -9,7 +9,11 @@
       :dark="dark_theme"
     >
       <template v-slot:progress>
-        <v-progress-linear height="6" indeterminate color="green lighten-1"></v-progress-linear>
+        <v-progress-linear
+          height="6"
+          indeterminate
+          color="green lighten-1"
+        ></v-progress-linear>
       </template>
       <v-card-title class="bold title-card">
         Usuários do Sistema
@@ -20,6 +24,16 @@
           src="@/assets/icons/sicoobicon.png"
           max-width="20"
         ></v-img>
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          :disabled="loading"
+          append-icon="mdi-magnify"
+          label="Pesquisar"
+          :dark="dark_theme"
+          single-line
+          color="rgba(18,210,175)"
+        ></v-text-field>
       </v-card-title>
       <v-card-subtitle>
         <span :class="dark_theme ? 'bold subtitle-card-dark' : 'subtitle-card'"
@@ -33,10 +47,40 @@
           class="loading-gif my-10"
           src="../assets/images/loading.gif"
         />
+        <div
+          v-if="no_data_animation"
+          class="mt-16 animate__animated animate__bounceInUp"
+        >
+          <center style="padding-bottom: 60px">
+            <v-img
+              width="50"
+              :src="require('@/assets/icons/bots/bot1/bot-question.png')"
+            ></v-img>
+            <div
+              class="mt-3"
+              style="
+                color: rgba(18, 210, 195);
+                font-size: 24px;
+                font-weight: bold;
+                font-family: 'Quicksand', sans-serif;
+              "
+            >
+              Nenhum usuário encontrado
+            </div>
+          </center>
+        </div>
         <v-list three-line v-for="(item, index) in items" :key="index">
           <v-list-item
             :key="index + 0.1"
-            :class="dark_theme ? (item.active ? 'list-item-dark' : 'list-item-dark list-item-dark-error') : (item.active ? 'list-item' : 'list-item list-item-error')"
+            :class="
+              dark_theme
+                ? item.active
+                  ? 'list-item-dark'
+                  : 'list-item-dark list-item-dark-error'
+                : item.active
+                ? 'list-item'
+                : 'list-item list-item-error'
+            "
           >
             <v-tooltip top color="green darken-3">
               <template v-slot:activator="{ attrs, on }">
@@ -218,9 +262,7 @@
                 <span v-if="item.active"
                   >Usuário Ativo (Clique para desativá-lo)</span
                 >
-                <span v-else
-                  >Usuário Desativado (Clique para ativá-lo)</span
-                >
+                <span v-else>Usuário Desativado (Clique para ativá-lo)</span>
               </v-tooltip>
             </v-list-item-action>
           </v-list-item>
@@ -268,9 +310,12 @@ export default {
   name: 'UsersComponent',
   components: { ModalEdit },
   data: () => ({
+    mutable_total_items: [],
     total_items: [],
     items: [],
     accesses: [],
+    no_data_animation: false,
+    search: '',
     total_pages: 1,
     page_total_items: 10,
     page: 1,
@@ -299,6 +344,18 @@ export default {
     this.getUsers();
   },
   watch: {
+    search: function () {
+      if (this.search.length > 0) {
+        this.filterData();
+      } else {
+        this.items = [];
+        this.mutable_total_items = this.total_items;
+        this.pagination(true, 1);
+      }
+    },
+    no_data: function () {
+      this.no_data_animation = this.no_data;
+    },
     page: function () {
       this.pagination(false);
     },
@@ -311,15 +368,21 @@ export default {
       }
     },
     state_user: function () {
-      let state_user = {}
+      let state_user = {};
       Object.assign(state_user, this.state_user);
       state_user.role = { name: state_user.role };
       this.total_items.map((user) =>
         user.id !== this.state_user.id ? user : Object.assign(user, state_user)
       );
+      this.mutable_total_items.map((user) =>
+        user.id !== this.state_user.id ? user : Object.assign(user, state_user)
+      );
     },
   },
   computed: {
+    no_data() {
+      return this.items.length == 0;
+    },
     dark_theme() {
       return this.$store.state.user.configs.theme == 0;
     },
@@ -328,6 +391,21 @@ export default {
     },
   },
   methods: {
+    filterData() {
+      this.mutable_total_items = this.total_items.filter((item) => {
+        return this.search
+          .toLowerCase()
+          .split(' ')
+          .every(
+            (search_char) =>
+              item.full_name.toLowerCase().includes(search_char) ||
+              item.cpf.toLowerCase().includes(search_char) ||
+              item.role.name.toLowerCase().includes(search_char) ||
+              item.access.name.toLowerCase().includes(search_char)
+          );
+      });
+      this.pagination(true, 1);
+    },
     loading_access_computed(id) {
       return this.loading_access[id] || this.loading_all_accesses;
     },
@@ -348,6 +426,9 @@ export default {
             this.total_items = this.total_items.map((user) =>
               user.id !== user_id ? user : response.data
             );
+            this.mutable_total_items = this.mutable_total_items.map((user) =>
+              user.id !== user_id ? user : response.data
+            );
             this.loading_active[user_id] = false;
           }
           this.pagination(false);
@@ -356,13 +437,14 @@ export default {
     pagination(reload_total_pages = true, page = this.page) {
       if (reload_total_pages) {
         this.total_pages = Math.ceil(
-          this.total_items.length / this.page_total_items
+          this.mutable_total_items.length / this.page_total_items
         );
       }
+      this.page = page;
       this.page_total_items = parseInt(this.page_total_items);
       let begin = (page - 1) * this.page_total_items;
       let end = begin + this.page_total_items;
-      this.items = this.total_items.slice(begin, end);
+      this.items = this.mutable_total_items.slice(begin, end);
     },
     getAccesses() {
       this.loading_all_accesses = true;
@@ -375,6 +457,7 @@ export default {
       this.loading = true;
       this.$http.post('get_users').then((response) => {
         this.total_items = response.data;
+        this.mutable_total_items = response.data;
         this.pagination();
         this.loading = false;
         this.getAccesses();
@@ -410,8 +493,7 @@ export default {
 }
 .list-item:hover {
   box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 14px,
-    rgba(0, 0, 0, 0.3) 10px 15px 17px -5px,
-    rgb(0, 94, 117) 4px 0px 0px inset;
+    rgba(0, 0, 0, 0.3) 10px 15px 17px -5px, rgb(0, 94, 117) 4px 0px 0px inset;
 }
 
 .list-item-error:hover {
@@ -421,7 +503,7 @@ export default {
 }
 .list-item-dark-error:hover {
   box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 14px, rgb(0, 0, 0) 10px 15px 17px -5px,
-        rgba(218, 23, 23, 0.705) 4px 0px 0px inset;
+    rgba(218, 23, 23, 0.705) 4px 0px 0px inset;
 }
 .tooltip-text {
   font-family: 'Quicksand', 'sans-serif';
