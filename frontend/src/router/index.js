@@ -7,6 +7,7 @@ import DashboardView from '../views/DashboardView.vue'
 import TasksView from '../views/TasksView.vue'
 import UsersView from '../views/UsersView.vue'
 import AccessView from '../views/AccessView.vue'
+import UploadView from '../views/UploadView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import AboutView from '../views/AboutView.vue'
 import CommissionView from '../views/CommissionView.vue'
@@ -55,6 +56,11 @@ const routes = [
     path: '/acessos',
     name: 'Acessos',
     component: AccessView
+  },
+  {
+    path: '/uploads',
+    name: 'Uploads',
+    component: UploadView
   },
   {
     path: '/perfil/:id',

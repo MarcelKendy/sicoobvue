@@ -44,6 +44,84 @@
         <v-card-text class="mt-4" v-else>
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-row align="center">
+              <v-col cols="12">
+                <v-autocomplete
+                  :menu-props="{ dark: dark_theme, offsetY: true }"
+                  solo
+                  :items="associates"
+                  :color="color"
+                  label="Associado"
+                  placeholder="Enter para confirmar"
+                  item-text="associate"
+                  item-value="cpf_cnpj"
+                  v-model="item.associate_cpf_cnpj"
+                  :loading="loading_associates"
+                  prepend-icon="mdi-account"
+                  auto-select-first
+                  clearable
+                >
+                  <template v-slot:selection="{ item }">
+                     <v-chip :dark="dark_theme" pill class="mr-2">
+                      <v-avatar left>
+                        <v-img src="@/assets/icons/associate.png"></v-img>
+                      </v-avatar>
+                      <span class="font-quicksand bold">{{ item.associate }}</span>
+                    </v-chip>
+                    <v-chip :dark="dark_theme">
+                      <v-avatar left>
+                        <v-img src="@/assets/icons/account.png"></v-img>
+                      </v-avatar>
+                      <span class="font-quicksand bold">{{ item.account }}</span>
+                    </v-chip>
+                  </template>
+                  <template v-slot:item="{ item }">
+                    <v-chip :dark="dark_theme" pill>
+                      <v-avatar left>
+                        <v-img src="@/assets/icons/associate.png"></v-img>
+                      </v-avatar>
+                      <span class="font-quicksand bold">{{ item.associate }}</span>
+                    </v-chip>
+                    <v-spacer></v-spacer>
+                    <v-chip :dark="dark_theme">
+                      <v-avatar left>
+                        <v-img src="@/assets/icons/account.png"></v-img>
+                      </v-avatar>
+                      <span class="font-quicksand bold">{{ item.account }}</span>
+                    </v-chip>
+                  </template>
+                  <template v-slot:no-data>
+                    <div class="px-4">
+                      <span
+                        style="
+                          font-family: 'Quicksand', sans-serif;
+                          font-weight: bold;
+                        "
+                        >Nenhum associado encontrado / carregando</span
+                      >
+                      <v-tooltip top :color="dark_theme ? 'grey darken-3' : ''">
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-icon
+                            style="padding-left: 5px"
+                            small
+                            v-bind="attrs"
+                            v-on="on"
+                            :color="color"
+                          >
+                            mdi-alert-circle-outline
+                          </v-icon>
+                        </template>
+                        <span
+                          >Se existe um associado (considerando o
+                          filtro), houve um erro de rede ou o mesmo não está cadastrado no sistema. Certifique-se de sua
+                          conexão e contate um adm.</span
+                        >
+                      </v-tooltip>
+                    </div>
+                  </template>
+                </v-autocomplete>
+              </v-col>
+            </v-row>
+            <v-row align="center">
               <v-col cols="12" sm="6">
                 <v-select
                   :menu-props="{ dark: dark_theme, offsetY: true }"
@@ -580,10 +658,12 @@ export default {
       dialog: false,
       loading: false,
       loading_users: false,
+      loading_associates: false,
       update_datetime_picker: false,
       update_datetime_picker_operator: false,
       update_datetime_picker_seller: false,
       users: [],
+      associates: [],
       no_users:
         'Se existem usuários cadastrados (considerando o filtro), houve um erro de rede. Certifique-se de sua conexão e atualize a página',
       item: {
@@ -591,6 +671,7 @@ export default {
         date_indicator: '',
         date_seller: '',
         date_operator: '',
+        associate_cpf_cnpj: '',
         product: '',
         value: '',
         custom_value: '',
@@ -694,7 +775,7 @@ export default {
               'O vendedor e o operador devem ser distintos')) ||
           this.item.status == 'Aguard. Venda' ||
           this.item.status == '' ||
-          'O status selecionado indica que a venda foi feita ou houve contato com o cliente, então essa informação é obrigatória',
+          'O status selecionado indica que a venda foi feita ou que houve contato com o cliente, então essa informação é obrigatória',
       ],
       operatorRule: [
         (v) =>
@@ -716,7 +797,8 @@ export default {
       this.loading = false;
       this.resetValidation();
       if (this.dialog) {
-        this.get_users();
+        this.getUsers();
+        this.getAssociates();
       }
     },
     commission: function () {
@@ -762,7 +844,7 @@ export default {
         prefix + (space_p ? ' ' : '') + initials + (space_s ? ' ' : '') + suffix
       );
     },
-    get_users() {
+    getUsers() {
       this.loading_users = true;
       this.$http
         .post('get_users', {
@@ -771,6 +853,17 @@ export default {
         .then((response) => {
           this.users = response.data;
           this.loading_users = false;
+        });
+    },
+    getAssociates() {
+      this.loading_associates = true;
+      this.$http
+        .post('get_associates', {
+          select: ['associate', 'cpf_cnpj', 'account'],
+        })
+        .then((response) => {
+          this.associates = response.data;
+          this.loading_associates = false;
         });
     },
     resetValidation() {
@@ -997,6 +1090,7 @@ export default {
         date_seller: '',
         date_operator: '',
         product: '',
+        associate_cpf_cnpj: '',
         value: '',
         custom_value: '',
         commission_percentage: '',

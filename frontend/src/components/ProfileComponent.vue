@@ -1,18 +1,5 @@
 <template>
   <div>
-    <v-card>
-      <v-file-input
-        v-model="file_excel"
-        accept="xlsx"
-        label="aaaaaa"
-        color="red"
-        placeholder="teste"
-        prepend-icon="mdi-camera"
-        show-size
-        truncate-length="40"
-        @change="changeFile"
-      ></v-file-input>
-    </v-card>
     <v-card
       :dark="dark_theme"
       :class="dark_theme ? 'profile-card-dark' : ''"
@@ -326,7 +313,7 @@
 </template>
 
 <script>
-import readXlsxFile from 'read-excel-file';
+
 export default {
   name: 'ProfileComponent',
   data: () => ({
@@ -430,20 +417,6 @@ export default {
     this.loadProfile();
   },
   methods: {
-    changeFile(file) {
-      let obj_excel_data = []
-      readXlsxFile(file).then((data) => {
-        console.log(data)
-        data.shift()
-        data.map(function(row) {
-          obj_excel_data.push({
-            name: row[0],
-            department_id: row[1]
-          })
-        })
-        console.log(obj_excel_data)
-      });
-    },
     changeProfile() {
       this.loading_profile_about = true;
       this.$http

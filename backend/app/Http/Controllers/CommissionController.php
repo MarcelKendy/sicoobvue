@@ -12,7 +12,7 @@ class CommissionController extends Controller
 
     public function getCommissions(Request $request)
     {
-        $allCommissions = Commission::with('user', 'indicator', 'seller', 'operator')->get();
+        $allCommissions = Commission::with('user', 'associate', 'indicator', 'seller', 'operator')->get();
         return response()->json($allCommissions);
     }
 
@@ -29,6 +29,7 @@ class CommissionController extends Controller
         $newCommission->date_seller = $request->date_seller;
         $newCommission->date_operator = $request->date_operator;
         $newCommission->product = $request->product;
+        $newCommission->associate_cpf_cnpj = $request->associate_cpf_cnpj;
         $newCommission->value = $request->value;
         $newCommission->indicator_id = $request->indicator_id;
         $newCommission->seller_id = $request->seller_id;
@@ -56,7 +57,7 @@ class CommissionController extends Controller
         }
         $newCommission->save();
         $this->sendSystemCom();
-        return response()->json($newCommission->load('indicator', 'seller', 'operator'));
+        return response()->json($newCommission->load('user', 'associate', 'indicator', 'seller', 'operator'));
     }
 
     public function calculateCommission($product, $value, $commission_percentage)
@@ -169,6 +170,7 @@ class CommissionController extends Controller
         $commission->commission_percentage = $request->commission_percentage;
         $commission->value = $request->value;
         $commission->product = $request->product;
+        $commission->associate_cpf_cnpj = $request->associate_cpf_cnpj;
         $commission->type = $this->getType($request->product);
         if ($commission->type == 1 && (isset($request->insurance_policy) && !empty($request->insurance_policy))) {
             $commission->insurance_policy = $request->insurance_policy;
@@ -178,7 +180,7 @@ class CommissionController extends Controller
         }
         $commission->save();
         $this->sendSystemCom();
-        return response()->json($commission->load('indicator', 'seller', 'operator'));
+        return response()->json($commission->load('user', 'associate', 'indicator', 'seller', 'operator'));
     }
 
     public function deleteCommission(Commission $commission, Request $request)

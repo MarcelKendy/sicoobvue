@@ -825,6 +825,12 @@ export default {
         { text: 'Ações', value: 'actions', sortable: false },
         // hidden columns for filter, using "align: ' d-none'"
         { text: '', value: 'user.full_name', align: ' d-none' },
+        { text: '', value: 'associate.associate', align: ' d-none' },
+        { text: '', value: 'associate.cpf_cnpj', align: ' d-none' },
+        { text: '', value: 'associate.account', align: ' d-none' },
+        { text: '', value: 'associate.account_type', align: ' d-none' },
+        { text: '', value: 'associate.category', align: ' d-none' },
+        { text: '', value: 'associate.group', align: ' d-none' },
         { text: '', value: 'custom_value', align: ' d-none' },
         { text: '', value: 'date_seller', align: ' d-none' },
         { text: '', value: 'date_operator', align: ' d-none' },

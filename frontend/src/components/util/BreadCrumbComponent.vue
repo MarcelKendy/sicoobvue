@@ -140,6 +140,22 @@ export default {
             },
           ];
           break;
+        case 'Uploads':
+          this.items = [
+            {
+              text: 'Home',
+              icon: 'mdi-view-dashboard',
+              disabled: false,
+              href: '/',
+            },
+            {
+              text: 'Upload',
+              icon: 'mdi-file-upload',
+              disabled: true,
+              href: '/uploads',
+            },
+          ];
+          break;
         case 'Perfil':
           this.items = [
             {

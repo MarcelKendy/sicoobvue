@@ -13,7 +13,6 @@ import VueParticles from 'vue-particles'
 import "./plugins/vuetify-mask.js"
 import "./plugins/vuetify-number.js"
 
-
 Vue.component('apexChart', VueApexCharts)
 Vue.component("downloadExcel", JsonExcel)
 Vue.use(VueParticles)

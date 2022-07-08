@@ -111,6 +111,64 @@
             <v-expansion-panel-content>
               <v-divider></v-divider>
               <v-card class="mt-5 pa-2" elevation="2">
+                <span class="name-commissions bold">Módulo Comissões:</span>
+                <v-row class="mt-2">
+                  <v-col cols="12" md="3">
+                    <v-select
+                      :loading="changing_commissions_access"
+                      :disabled="changing_commissions_access"
+                      :menu-props="{ offsetY: true, dark: dark_theme }"
+                      outlined
+                      @change="changeAccess(item, 1)"
+                      :items="commissions_accesses"
+                      item-text="name"
+                      item-value="value"
+                      color="rgb(18,210,175)"
+                      label="Tela de comissões"
+                      v-model="item.accesses.commissions"
+                      prepend-icon="mdi-cash"
+                    >
+                      <template v-slot:selection="{ item }">
+                        <div
+                          :class="
+                            'chip gradient-' +
+                            commissionStyle(item.value, 'gradient')
+                          "
+                        >
+                          <div class="chip__content">
+                            <v-icon
+                              :color="commissionStyle(item.value, 'color')"
+                              >{{ commissionStyle(item.value, 'icon') }}</v-icon
+                            >
+                            <span class="item-select-badge">{{
+                              item.name
+                            }}</span>
+                          </div>
+                        </div>
+                      </template>
+                      <template v-slot:item="{ item }">
+                        <div
+                          :class="
+                            'chip gradient-' +
+                            commissionStyle(item.value, 'gradient')
+                          "
+                        >
+                          <div class="chip__content">
+                            <v-icon
+                              :color="commissionStyle(item.value, 'color')"
+                              >{{ commissionStyle(item.value, 'icon') }}</v-icon
+                            >
+                            <span class="item-select-badge">{{
+                              item.name
+                            }}</span>
+                          </div>
+                        </div>
+                      </template>
+                    </v-select>
+                  </v-col>
+                </v-row>
+              </v-card>
+              <v-card class="mt-5 pa-2" elevation="2">
                 <span class="name-accesses bold">Módulo Acessos:</span>
                 <v-row class="mt-2">
                   <v-col cols="12" md="3">
@@ -119,7 +177,7 @@
                       :disabled="changing_accesses_access"
                       :menu-props="{ offsetY: true, dark: dark_theme }"
                       outlined
-                      @change="changeAccess(item, 1)"
+                      @change="changeAccess(item, 2)"
                       :items="allowed_accesses"
                       item-text="name"
                       item-value="value"
@@ -175,7 +233,7 @@
                       :disabled="changing_users_access"
                       :menu-props="{ offsetY: true, dark: dark_theme }"
                       outlined
-                      @change="changeAccess(item, 2)"
+                      @change="changeAccess(item, 3)"
                       :items="allowed_accesses"
                       item-text="name"
                       item-value="value"
@@ -223,35 +281,34 @@
                 </v-row>
               </v-card>
               <v-card class="mt-5 pa-2" elevation="2">
-                <span class="name-commissions bold">Módulo Comissões:</span>
+                <span class="name-uploads bold">Módulo Uploads:</span>
                 <v-row class="mt-2">
                   <v-col cols="12" md="3">
                     <v-select
-                      :loading="changing_commissions_access"
-                      :disabled="changing_commissions_access"
+                      :loading="changing_uploads_access"
+                      :disabled="changing_uploads_access"
                       :menu-props="{ offsetY: true, dark: dark_theme }"
                       outlined
-                      @change="changeAccess(item, 3)"
-                      :items="commissions_accesses"
+                      @change="changeAccess(item, 4)"
+                      :items="allowed_accesses"
                       item-text="name"
                       item-value="value"
                       color="rgb(18,210,175)"
-                      label="Tela de comissões"
-                      v-model="item.accesses.commissions"
-                      prepend-icon="mdi-cash"
+                      label="Tela de Uploads"
+                      v-model="item.accesses.uploads"
+                      prepend-icon="mdi-file-upload"
                     >
                       <template v-slot:selection="{ item }">
                         <div
                           :class="
                             'chip gradient-' +
-                            commissionStyle(item.value, 'gradient')
+                            allowedStyle(item.value, 'gradient')
                           "
                         >
                           <div class="chip__content">
-                            <v-icon
-                              :color="commissionStyle(item.value, 'color')"
-                              >{{ commissionStyle(item.value, 'icon') }}</v-icon
-                            >
+                            <v-icon color="white">{{
+                              allowedStyle(item.value, 'icon')
+                            }}</v-icon>
                             <span class="item-select-badge">{{
                               item.name
                             }}</span>
@@ -262,14 +319,13 @@
                         <div
                           :class="
                             'chip gradient-' +
-                            commissionStyle(item.value, 'gradient')
+                            allowedStyle(item.value, 'gradient')
                           "
                         >
                           <div class="chip__content">
-                            <v-icon
-                              :color="commissionStyle(item.value, 'color')"
-                              >{{ commissionStyle(item.value, 'icon') }}</v-icon
-                            >
+                            <v-icon color="white">{{
+                              allowedStyle(item.value, 'icon')
+                            }}</v-icon>
                             <span class="item-select-badge">{{
                               item.name
                             }}</span>
@@ -370,9 +426,10 @@ export default {
     snackbar_add: false,
     snackbar_delete: false,
     changing_access_name: false,
+    changing_commissions_access: false,
     changing_accesses_access: false,
     changing_users_access: false,
-    changing_commissions_access: false,
+    changing_uploads_access: false,
     loading: false,
     color: 'blue',
     requiredRule: [(v) => v > 0 || 'x > 0'],
@@ -450,13 +507,16 @@ export default {
           this.changing_access_name = on;
           break;
         case 1:
-          this.changing_accesses_access = on;
+          this.changing_commissions_access = on;
           break;
         case 2:
-          this.changing_users_access = on;
+          this.changing_accesses_access = on;
           break;
         case 3:
-          this.changing_commissions_access = on;
+          this.changing_users_access = on;
+          break;
+        case 4:
+          this.changing_uploads_access = on;
           break;
       }
     },
@@ -567,6 +627,10 @@ export default {
 .name-users {
   font-size: 16px;
   color: rgb(160, 125, 255);
+}
+.name-uploads {
+  font-size: 16px;
+  color: rgb(245, 160, 80);
 }
 .name-commissions {
   font-size: 16px;

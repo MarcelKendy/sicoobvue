@@ -250,6 +250,12 @@ export default {
             img: 'access-1.png',
             to: '/acessos',
           },
+          {
+            title: 'Uploads',
+            icon: 'mdi-file-upload',
+            img: 'file-upload.png',
+            to: '/uploads',
+          },
         ],
       },
     ],
@@ -306,6 +312,8 @@ export default {
             return this.$store.state.user.accesses.accesses == 1;
           case 'Usuários':
             return this.$store.state.user.accesses.users == 1;
+          case 'Uploads':
+            return this.$store.state.user.accesses.uploads == 1;
           case 'adm':
             return (
               this.$store.state.user.accesses.users == 1 ||
