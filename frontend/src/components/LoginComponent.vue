@@ -226,7 +226,7 @@
                       counter
                       :color="color_default"
                       @click:append="show2 = !show2"
-                      :loading="formRegister.password.length > 0"
+                      :loading="formRegister.password != null && formRegister.password.length > 0"
                     >
                       <template v-slot:progress>
                         <v-progress-linear
@@ -237,7 +237,7 @@
                           height="9"
                         >
                           <template v-slot:default="{ value }">
-                            <span class="progress-text" v-if="formRegister.password.length > 15"
+                            <span class="progress-text" v-if="formRegister.password != null && formRegister.password.length > 15"
                               >É melhor anotar isso aí...</span
                             >
                             <span class="progress-text" v-else-if="value > 80"
@@ -437,7 +437,7 @@ export default {
     },
     password_level() {
       //return Math.min(100, this.formRegister.password.length * 10);
-      if(this.formRegister.password.length < 6) {
+      if(this.formRegister.password != null && this.formRegister.password.length < 6) {
         return Math.min(100, this.formRegister.password.length * 10);
       } else {
         let regex_special_characters = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/ //eslint-disable-line
@@ -449,7 +449,7 @@ export default {
         } else if ((contains_special_characters && !contains_numbers) || (!contains_special_characters && contains_numbers)) {
           return 60;
         } else {
-          if (this.formRegister.password.length > 8) {
+          if (this.formRegister.password != null && this.formRegister.password.length > 8) {
             return 100;
           } else {
             return 80;
