@@ -152,7 +152,7 @@
             </v-list-item-content>
             <v-list-item-action>
               <v-speed-dial
-                v-if="!upload_access"
+                v-if="upload_access"
                 :id="item.account"
                 direction="left"
                 open-on-hover
@@ -448,7 +448,7 @@ export default {
                 item.phone.toLowerCase().includes(search_char)
             );
         });
-        this.pagination(true, 1);
+        this.pagination(true, preservePage ? this.page : 1);
       } else {
         if (!addAccount) {
           this.items = [];
