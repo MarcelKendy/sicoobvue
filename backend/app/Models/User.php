@@ -10,6 +10,7 @@ use App\Models\LogLogin;
 
 class User extends Model
 {
+    public $timestamps = true;
     use HasFactory;
     public function access()
     {

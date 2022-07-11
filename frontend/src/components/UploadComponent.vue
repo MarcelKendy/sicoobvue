@@ -27,7 +27,7 @@
                 ><span
                   class="sub-card-title"
                   :class="dark_theme ? 'blue--text' : 'white--text'"
-                  >Upload de Associados</span
+                  >Upload de Associados/Contas</span
                 >
                 <v-spacer></v-spacer>
                 <v-tooltip left>
@@ -49,7 +49,7 @@
                       accept=".xlsx"
                       label="Insira a planilha (.xlsx)"
                       color="green"
-                      placeholder="Selecione uma planilha com todos os associados"
+                      placeholder="Selecione uma planilha com todos as contas"
                       prepend-icon="mdi-microsoft-excel"
                       show-size
                       truncate-length="40"
@@ -100,28 +100,31 @@ export default {
         return false;
       }
       this.loading_import_associates = true;
+      let user_id = this.$store.state.user.id;
       let obj_excel_data = [];
       readXlsxFile(file).then((data) => {
         data.shift();
         data.map(function (row) {
-           obj_excel_data.push({
-             account: row[0],
-             associate: row[1],
-             cpf_cnpj: row[2],
-             phone: row[3],
-             account_type: row[4],
-             category: row[5],
-             group: row[6]
-           });
-         });
+          obj_excel_data.push({
+            user_id: user_id,
+            account: row[0],
+            associate: row[1],
+            cpf_cnpj: row[2],
+            phone: row[3],
+            account_type: row[4],
+            category: row[5],
+            group: row[6]
+          });
+        });
+        console.log(obj_excel_data)
         this.$http
           .post('/upload_associates', obj_excel_data)
           .then((response) => {
             if (response.data == 1) {
               this.snackbar_type = 1;
-              this.snackbar_message = 'Associados importados com sucesso';
+              this.snackbar_message = 'Contas importadas com sucesso';
             } else {
-              console.log(response.data)
+              console.log(response.data);
               this.snackbar_type = 0;
               this.snackbar_message = 'Houve um erro na importação';
             }
@@ -134,6 +137,18 @@ export default {
   computed: {
     dark_theme() {
       return this.$store.state.user.configs.theme == 0;
+    },
+    get_datetime() {
+      var today = new Date();
+      var date =
+        today.getFullYear() +
+        '-' +
+        (String(today.getMonth() + 1).length == 1 ? ('0' + (today.getMonth() + 1)) : (today.getMonth() + 1)) +
+        '-' +
+        today.getDate();
+      var time =
+        today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+      return date + ' ' + time;
     },
   },
 };

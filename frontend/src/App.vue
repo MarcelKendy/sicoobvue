@@ -231,10 +231,10 @@ export default {
         to: '/comissoes',
       },
       {
-        title: 'Associados',
+        title: 'Contas',
         icon: 'mdi-account-group',
         img: 'associates.png',
-        to: '/associados',
+        to: '/contas',
       },
     ],
     items_adm: [
@@ -335,7 +335,7 @@ export default {
             return true;
           case 'Checklist':
             return true;
-          case 'Associados':
+          case 'Contas':
             return true;
           case 'Perfil':
             return true;

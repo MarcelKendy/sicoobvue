@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
-use App\Models\Associate;
+use App\Models\Account;
 
 class Commission extends Model
 {
@@ -14,9 +14,9 @@ class Commission extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id')->with('role');
     }
-    public function associate()
+    public function account()
     {
-        return $this->belongsTo(Associate::class, 'associate_cpf_cnpj');
+        return $this->belongsTo(Account::class, 'associate_cpf_cnpj');
     }
     public function indicator()
     {

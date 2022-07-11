@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Associate;
-
+use App\Models\Account;
+use Carbon\Carbon;
 
 class UploadController extends Controller
 {
     public function uploadAssociates(Request $request)
     {
-        Associate::truncate();
-        return Associate::insert($request->toArray());
+        Account::truncate();  
+        return Account::insert($request->toArray());
     }
 }

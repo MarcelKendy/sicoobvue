@@ -869,7 +869,7 @@ export default {
     getAssociates() {
       this.loading_associates = true;
       this.$http
-        .post('get_associates', {
+        .post('get_accounts', {
           select: ['associate', 'cpf_cnpj', 'account'],
         })
         .then((response) => {

@@ -124,5 +124,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // UPLOAD ROUTES
 
 // ASSOCIATES ROUTES
-    Route::post('/get_associates', [AssociatesController::class, 'getAssociates']);
+    Route::post('/get_accounts', [AssociatesController::class, 'getAccounts']);
+    Route::post('/add_account', [AssociatesController::class, 'addAccount']);
+    Route::post('/edit_account', [AssociatesController::class, 'editAccount']);
+    Route::post('/delete_account', [AssociatesController::class, 'deleteAccount']);
 // ASSOCIATES ROUTES

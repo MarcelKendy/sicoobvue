@@ -12,7 +12,7 @@ class CommissionController extends Controller
 
     public function getCommissions(Request $request)
     {
-        $allCommissions = Commission::with('user', 'associate', 'indicator', 'seller', 'operator')->get();
+        $allCommissions = Commission::with('user', 'account', 'indicator', 'seller', 'operator')->get();
         return response()->json($allCommissions);
     }
 
@@ -57,7 +57,7 @@ class CommissionController extends Controller
         }
         $newCommission->save();
         $this->sendSystemCom();
-        return response()->json($newCommission->load('user', 'associate', 'indicator', 'seller', 'operator'));
+        return response()->json($newCommission->load('user', 'account', 'indicator', 'seller', 'operator'));
     }
 
     public function calculateCommission($product, $value, $commission_percentage)
@@ -180,7 +180,7 @@ class CommissionController extends Controller
         }
         $commission->save();
         $this->sendSystemCom();
-        return response()->json($commission->load('user', 'associate', 'indicator', 'seller', 'operator'));
+        return response()->json($commission->load('user', 'account', 'indicator', 'seller', 'operator'));
     }
 
     public function deleteCommission(Commission $commission, Request $request)
