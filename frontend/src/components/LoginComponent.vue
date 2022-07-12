@@ -361,6 +361,7 @@ export default {
     genders: [
       { text: 'Masc.', value: 1 },
       { text: 'Fem.', value: 2 },
+      { text: 'Indefinido', value: 3 },
     ],
     agencies: [
       { text: 'Matriz', value: 1 },
@@ -392,6 +393,12 @@ export default {
         color: 'white',
         icon: 'mdi-face-woman-shimmer',
         gradient: 'pink',
+      },
+      {
+        gender: 3,
+        color: 'white',
+        icon: 'mdi-account-outline',
+        gradient: 'gray',
       },
     ],
     emailRule: [

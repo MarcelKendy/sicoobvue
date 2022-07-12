@@ -105,7 +105,7 @@
                     v-else
                     :src="
                       require(`./../assets/icons/${
-                        item.gender == 1 ? 'man.png' : 'woman.png'
+                        item.gender != 2 ? 'man.png' : 'woman.png'
                       }`)
                     "
                     ><v-btn
@@ -490,7 +490,7 @@ export default {
 </script>
 <style scoped>
 .list-item {
-  background-color: rgb(230, 254, 255);
+  background-color: rgb(207, 242, 243);
 }
 .list-item:hover {
   box-shadow: rgba(0, 0, 0, 0.4) 0px 12px 14px,

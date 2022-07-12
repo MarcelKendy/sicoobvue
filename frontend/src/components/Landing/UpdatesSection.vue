@@ -29,7 +29,7 @@
                   :key="index"
                   class="list-item-dark mt-2"
                 >
-                  <v-tooltip top :color="dark_theme ? 'grey darken-3' : ''">
+                  <v-tooltip top color="grey darken-3">
                     <template v-slot:activator="{ attrs, on }">
                       <v-img
                         v-bind="attrs"

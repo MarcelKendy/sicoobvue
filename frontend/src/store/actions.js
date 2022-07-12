@@ -68,6 +68,8 @@ export default {
                 team: data.role.department.team,
                 agency: data.agency,
                 address: data.address,
+                birthday: data.birthday,
+                job_begin: data.job_begin,
                 phone: data.phone,
                 phone_corporation: data.phone_corporation,
                 accesses: JSON.parse(data.access.accesses),
@@ -108,6 +110,8 @@ export default {
                 team: data.team,
                 agency: data.agency,
                 address: data.address,
+                birthday: data.birthday,
+                job_begin: data.job_begin,
                 phone: data.phone,
                 phone_corporation: data.phone_corporation,
               }, 'logged_token').then(() => {

@@ -64,8 +64,8 @@ const routes = [
     component: UploadView
   },
   {
-    path: '/associados',
-    name: 'Associados',
+    path: '/contas',
+    name: 'Contas',
     component: AssociatesView
   },
   {

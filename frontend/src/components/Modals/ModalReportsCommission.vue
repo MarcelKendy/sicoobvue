@@ -63,6 +63,100 @@
             <v-row>
               <v-col cols="12">
                 <v-autocomplete
+                  :menu-props="{ dark: dark_theme, offsetY: true }"
+                  :items="accounts"
+                  :color="color"
+                  label="Associado/Conta"
+                  placeholder="Enter para confirmar (Deixe vazio para pegar todos)"
+                  item-text="associate"
+                  item-value="account"
+                  v-model="item.accounts"
+                  :loading="loading_accounts"
+                  prepend-icon="mdi-account"
+                  auto-select-first
+                  clearable
+                  small-chips
+                  multiple
+                  deletable-chips
+                  solo
+                >
+                  <template v-slot:selection="{ item }">
+                    <v-chip
+                      :dark="dark_theme"
+                      pill
+                      class="mr-2"
+                      close
+                      @click:close="remove(item, 2)"
+                    >
+                      <v-avatar left>
+                        <v-img src="@/assets/icons/associate.png"></v-img>
+                      </v-avatar>
+                      <span class="font-quicksand bold">{{
+                        item.associate
+                      }}</span>
+                    </v-chip>
+                    <v-chip :dark="dark_theme">
+                      <v-avatar left>
+                        <v-img src="@/assets/icons/account.png"></v-img>
+                      </v-avatar>
+                      <span class="font-quicksand bold">{{
+                        item.account
+                      }}</span>
+                    </v-chip>
+                  </template>
+                  <template v-slot:item="{ item }">
+                    <v-chip :dark="dark_theme" pill>
+                      <v-avatar left>
+                        <v-img src="@/assets/icons/associate.png"></v-img>
+                      </v-avatar>
+                      <span class="font-quicksand bold">{{
+                        item.associate
+                      }}</span>
+                    </v-chip>
+                    <v-spacer></v-spacer>
+                    <v-chip :dark="dark_theme">
+                      <v-avatar left>
+                        <v-img src="@/assets/icons/account.png"></v-img>
+                      </v-avatar>
+                      <span class="font-quicksand bold">{{
+                        item.account
+                      }}</span>
+                    </v-chip>
+                  </template>
+                  <template v-slot:no-data>
+                    <div class="px-4">
+                      <span
+                        style="
+                          font-family: 'Quicksand', sans-serif;
+                          font-weight: bold;
+                        "
+                        >Nenhum associado encontrado / carregando</span
+                      >
+                      <v-tooltip top :color="dark_theme ? 'grey darken-3' : ''">
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-icon
+                            style="padding-left: 5px"
+                            small
+                            v-bind="attrs"
+                            v-on="on"
+                            :color="color"
+                          >
+                            mdi-alert-circle-outline
+                          </v-icon>
+                        </template>
+                        <span
+                          >Se existe um associado (considerando o filtro), houve
+                          um erro de rede ou o mesmo não está cadastrado no
+                          sistema. Certifique-se de sua conexão e contate um
+                          adm.</span
+                        >
+                      </v-tooltip>
+                    </div>
+                  </template>
+                </v-autocomplete>
+              </v-col>
+              <v-col cols="12">
+                <v-autocomplete
                   :menu-props="{ dark: dark_theme }"
                   label="Produtos"
                   :color="color"
@@ -136,11 +230,14 @@
                           v-if="!item.item.photo"
                           :src="
                             require(`./../../assets/icons/${
-                              item.item.gender == 1 ? 'man.png' : 'woman.png'
+                              item.item.gender != 2 ? 'man.png' : 'woman.png'
                             }`)
                           "
                         ></v-img>
-                         <v-img v-else :src="avatar_path(item.item.photo)"></v-img>
+                        <v-img
+                          v-else
+                          :src="avatar_path(item.item.photo)"
+                        ></v-img>
                       </v-avatar>
                       {{
                         abreviateString(
@@ -158,11 +255,11 @@
                         v-if="!item.item.photo"
                         :src="
                           require(`./../../assets/icons/${
-                            item.item.gender == 1 ? 'man.png' : 'woman.png'
+                            item.item.gender != 2 ? 'man.png' : 'woman.png'
                           }`)
                         "
                       ></v-img>
-                       <v-img v-else :src="avatar_path(item.item.photo)"></v-img>
+                      <v-img v-else :src="avatar_path(item.item.photo)"></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
                       <v-list-item-title
@@ -405,14 +502,17 @@ export default {
       dialog_date: false,
       loading: false,
       loading_users: false,
+      loading_accounts: false,
       disable_status: false,
       overlay: false,
       generate_pdf: false,
       progress: 0,
       users: [],
+      accounts: [],
       item: {
         products: [],
         users: [],
+        accounts: [],
         dates: [],
         status: ['Aprovado UPS'],
       },
@@ -436,7 +536,14 @@ export default {
         'Valor (R$)': {
           field: 'value',
           callback: (value) => {
-            return `R$ ${value}`;
+            return 'R$ ' + value;
+          },
+        },
+        Associado: 'account.associate',
+        Conta: {
+          field: 'account.account',
+          callback: (value) => {
+            return 'nº ' + value;
           },
         },
         Status: 'status',
@@ -446,31 +553,37 @@ export default {
         'Valor Prestamista (R$)': {
           field: 'custom_value',
           callback: (value) => {
-            return `R$ ${value}`;
+            return 'R$ ' + value;
           },
         },
         'Comissão Cooperativa (%)': {
           field: 'commission_percentage',
           callback: (value) => {
-            return `${value}%`;
+            return value + '%';
+          },
+        },
+        'Comissão Cooperativa (R$)': {
+          field: 'credisg_commission',
+          callback: (value) => {
+            return 'R$ ' + value;
           },
         },
         'Comissão Indicador (R$)': {
           field: 'indicator_commission',
           callback: (value) => {
-            return `R$ ${value}`;
+            return 'R$ ' + value;
           },
         },
         'Comissão Vendedor (R$)': {
           field: 'seller_commission',
           callback: (value) => {
-            return `R$ ${value}`;
+            return 'R$ ' + value;
           },
         },
         'Comissão Operador (R$)': {
           field: 'operator_commission',
           callback: (value) => {
-            return `R$ ${value}`;
+            return 'R$ ' + value;
           },
         },
         'Data da Indicação': 'date_indicator',
@@ -542,6 +655,7 @@ export default {
         this.items = this.commissions;
         Object.assign(this.item, this.defaultItem);
         this.getUsers();
+        this.getAccounts();
       } else {
         if (this.$refs.form) {
           this.$refs.form.resetValidation();
@@ -629,9 +743,14 @@ export default {
         prefix + (space_p ? ' ' : '') + initials + (space_s ? ' ' : '') + suffix
       );
     },
-    remove(item) {
-      const index = this.item.users.indexOf(item.id);
-      if (index >= 0) this.item.users.splice(index, 1);
+    remove(item, type = 1) {
+      if (type == 1) {
+        const index = this.item.users.indexOf(item.id);
+        if (index >= 0) this.item.users.splice(index, 1);
+      } else {
+        const index = this.item.accounts.indexOf(item.account);
+        if (index >= 0) this.item.accounts.splice(index, 1);
+      }
     },
     getUsers() {
       this.loading_users = true;
@@ -644,6 +763,17 @@ export default {
           this.loading_users = false;
         });
     },
+    getAccounts() {
+      this.loading_accounts = true;
+      this.$http
+        .post('get_accounts', {
+          select: ['account', 'id', 'associate', 'cpf_cnpj'],
+        })
+        .then((response) => {
+          this.accounts = response.data;
+          this.loading_accounts = false;
+        });
+    },
     loadReportData(type) {
       this.loading = true;
       if (this.$refs.form.validate()) {
@@ -651,12 +781,14 @@ export default {
         let filter_product = this.item.products.length != 0;
         let filter_dates = this.item.dates.length != 0;
         let filter_status = this.item.status.length != 0;
+        let filter_account = this.item.accounts.length != 0;
         if (
           this.filterReportData(
             filter_product,
             filter_user,
             filter_dates,
-            filter_status
+            filter_status,
+            filter_account
           )
         ) {
           Object.assign(this.items_computed, this.items);
@@ -675,7 +807,7 @@ export default {
         }
       }
     },
-    filterReportData(filter_product, filter_user, filter_dates, filter_status) {
+    filterReportData(filter_product, filter_user, filter_dates, filter_status, filter_account) {
       if (filter_user) {
         this.items = this.items.filter((commission) => {
           return (
@@ -683,6 +815,11 @@ export default {
             this.item.users.includes(commission.seller_id) ||
             this.item.users.includes(commission.operator_id)
           );
+        });
+      }
+      if (filter_account) {
+        this.items = this.items.filter((commission) => {
+          return this.item.accounts.includes(commission.associate_account);
         });
       }
       if (filter_product) {
@@ -730,9 +867,9 @@ export default {
     closeModal() {
       this.$emit('closeModal');
     },
-     avatar_path (photo_path) {
-      return require('../../../../backend/storage/app/' + photo_path)
-    }
+    avatar_path(photo_path) {
+      return require('../../../../backend/storage/app/' + photo_path);
+    },
   },
   computed: {
     dark_theme() {
@@ -750,6 +887,8 @@ export default {
         'Data/Período: ' +
           (this.item.dates.length > 0 ? this.item.dates : 'SEM FILTRO'),
         'Status: ' + (this.item.status.length > 0 ? this.item.status : 'TODOS'),
+        'Associado/Contas: ' +
+          (this.item.accounts.length > 0 ? this.accounts_name : 'TODOS'),
       ];
     },
     excel_report_info() {
@@ -757,13 +896,17 @@ export default {
         '--Fim dos Registros--',
         'Filtro Aplicado:',
         'Usuários: ' + (this.item.users.length > 0 ? this.users_name : 'TODOS'),
+        'Associado/Contas: ' +
+          (this.item.accounts.length > 0 ? this.accounts_name : 'TODOS'),
         'Produtos: ' +
           (this.item.products.length > 0 ? this.item.products : 'TODOS'),
         'Data/Período: ' +
           (this.item.dates.length > 0 ? this.item.dates : 'SEM FILTRO'),
         'Status: ' + (this.item.status.length > 0 ? this.item.status : 'TODOS'),
         'Requisitado em: ' + new Date().toLocaleString(),
-        this.$store.state.software.name + '-' + this.$store.state.software.version,
+        this.$store.state.software.name +
+          '-' +
+          this.$store.state.software.version,
       ];
     },
     dateFilter() {
@@ -790,10 +933,19 @@ export default {
         return user.full_name;
       });
     },
+    accounts_name() {
+      let accounts = this.accounts.filter((account) => {
+        return this.item.accounts.includes(account.account);
+      });
+      return accounts.map((account) => {
+        return ' ' + account.associate + ' / ' + account.account;
+      });
+    },
     defaultItem() {
       return {
         products: [],
         users: [],
+        accounts: [],
         dates: [],
         status: ['Aprovado UPS'],
       };

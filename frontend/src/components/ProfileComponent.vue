@@ -74,7 +74,7 @@
               <v-img
                 v-else
                 :src="
-                  require(profile.gender == 1
+                  require(profile.gender != 2
                     ? './../assets/images/man.png'
                     : './../assets/images/woman.png')
                 "
@@ -313,7 +313,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'ProfileComponent',
   data: () => ({
@@ -378,6 +377,12 @@ export default {
           data: 'access',
           icon: 'access-1.png',
         },
+        {
+          key: 5,
+          title: 'Ingresso na Cooperativa',
+          data: 'job_begin',
+          icon: 'job_begin.png',
+        },
       ],
       [
         {
@@ -409,6 +414,12 @@ export default {
           title: 'CPF',
           data: 'cpf',
           icon: 'id-card.png',
+        },
+        {
+          key: 5,
+          title: 'Nascimento',
+          data: 'birthday',
+          icon: 'birthday.png',
         },
       ],
     ],
@@ -458,8 +469,17 @@ export default {
           this.activateTooltip(4);
         });
     },
+    formatDate(date, y = true) {
+      let day_month = date.slice(5, 10);
+      let day = day_month.slice(3);
+      let month = day_month.slice(0, 2);
+      let year = date.slice(0, 4);
+      return y ? day + '/' + month + '/' + year : day + '/' + month;
+    },
     formatData(data) {
       data.access = data.access.name;
+      data.birthday = this.formatDate(data.birthday);
+      data.job_begin = this.formatDate(data.job_begin);
       this.unmasked_cpf = data.cpf;
       data.cpf = data.cpf.replace(
         /(\d{3})(\d{3})(\d{3})(\d{2})/,

@@ -73,8 +73,19 @@
       <br />
       <small class="bold">Filtros Aplicados: </small>
       <small>
-        [ {{ info[0] }}, {{ info[1] }}, {{ info[2] }}, {{ info[3] }} ]</small
+        [ {{ info[0] }}, {{ info[1] }}, {{ info[2] }}, {{ info[3] }}
+      </small>
+      <br />
+      <small v-if="mutable_info.length == 0">{{ info[4] }} ]</small>
+      <small
+        v-else
+        v-for="(associate_account, index) in mutable_info"
+        :key="index"
       >
+        <span>{{ mutable_info[index] }}</span>
+
+        <br />
+      </small>
       <br />
       <small class="bold">Requisitado em: </small
       ><small>{{ new Date().toLocaleString() }} | </small
@@ -85,9 +96,12 @@
         <br />
         <span>Registros por página (máx): 10</span>
         <br />
-        <span>Total de Registros: {{ info[4] }}</span>
+        <span>Total de Registros: {{ info[5] }}</span>
         <br />
-        <span>{{$store.state.software.name}} - {{$store.state.software.version}}</span>
+        <span
+          >{{ $store.state.software.name }} -
+          {{ $store.state.software.version }}</span
+        >
       </div>
       <br />
     </div>
@@ -99,11 +113,47 @@ export default {
   name: 'CommissionsPdfReport',
   props: ['items_table', 'info'],
   components: {},
+  data() {
+    return {
+      mutable_info: [],
+    };
+  },
+  methods: {
+    popArray(array, indexes) {
+      indexes.forEach((index) => {
+        array.splice(index, 1);
+      });
+      return array;
+    },
+    arrangeMutableInfo(array, qtt = 4) {
+      if (array.length <= qtt) {
+        return [array.join(', ')];
+      }
+      let array_return = []
+      for (let i = 0; i < array.length; i += qtt) {
+        let chunk = array.slice(i, i + qtt);
+        array_return.push(chunk.join())
+      }
+      return array_return;
+    },
+  },
+  computed: {
+    info_associates() {
+      return this.info[4];
+    },
+  },
+  watch: {
+    info_associates: function () {
+      this.mutable_info = [];
+      if (this.info[4].length > 150) {
+        this.mutable_info = this.arrangeMutableInfo(this.info[4].split(','));
+      }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-
 .container {
   margin-left: 10px;
   text-align: center;

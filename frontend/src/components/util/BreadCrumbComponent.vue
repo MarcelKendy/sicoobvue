@@ -156,7 +156,7 @@ export default {
             },
           ];
           break;
-        case 'Associados':
+        case 'Contas':
           this.items = [
             {
               text: 'Home',
@@ -165,10 +165,10 @@ export default {
               href: '/',
             },
             {
-              text: 'Associados',
+              text: 'Contas',
               icon: 'mdi-account-group',
               disabled: true,
-              href: '/associates',
+              href: '/contas',
             },
           ];
           break;

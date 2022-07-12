@@ -53,7 +53,7 @@ class UserController extends Controller
 
     public function getProfile(Request $request)
     {
-        $user = User::select('id', 'full_name', 'email', 'cpf', 'photo', 'role_id', 'gender', 'active', 'access_id', 'agency', 'address', 'phone', 'phone_corporation', 'profile_about')->with('access:id,name', 'role')->find($request->user_id)->toArray();
+        $user = User::select('id', 'full_name', 'email', 'cpf', 'photo', 'role_id', 'gender', 'active', 'access_id', 'agency', 'address', 'birthday', 'job_begin', 'phone', 'phone_corporation', 'profile_about')->with('access:id,name', 'role')->find($request->user_id)->toArray();
         if ($user) {
             $session_active = false;
             $latest_logged_in = LogLogin::select('id')->where('user_id', $user['id'])->where('status', 1)->latest('created_at')->first();
@@ -119,6 +119,8 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->cpf = $request->cpf;
         $user->address = $request->address;
+        $user->birthday = $request->birthday;
+        $user->job_begin = $request->job_begin;
         $user->phone_corporation = $request->phone_corporation;
         $user->phone = $request->phone;
         $user->agency = $request->agency;

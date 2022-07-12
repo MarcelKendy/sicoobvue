@@ -12,7 +12,7 @@ class CommissionController extends Controller
 
     public function getCommissions(Request $request)
     {
-        $allCommissions = Commission::with('user', 'associate', 'indicator', 'seller', 'operator')->get();
+        $allCommissions = Commission::with('user', 'account', 'indicator', 'seller', 'operator')->get();
         return response()->json($allCommissions);
     }
 
@@ -29,7 +29,7 @@ class CommissionController extends Controller
         $newCommission->date_seller = $request->date_seller;
         $newCommission->date_operator = $request->date_operator;
         $newCommission->product = $request->product;
-        $newCommission->associate_cpf_cnpj = $request->associate_cpf_cnpj;
+        $newCommission->associate_account = $request->associate_account;
         $newCommission->value = $request->value;
         $newCommission->indicator_id = $request->indicator_id;
         $newCommission->seller_id = $request->seller_id;
@@ -54,11 +54,16 @@ class CommissionController extends Controller
             $newCommission->indicator_commission = $commissions[0];
             $newCommission->seller_commission = $commissions[1];
             $newCommission->operator_commission = $commissions[2];
+            $newCommission->credisg_commission = $commissions[3];
         }
         $newCommission->save();
         $this->sendSystemCom();
-        return response()->json($newCommission->load('user', 'associate', 'indicator', 'seller', 'operator'));
+        return response()->json($newCommission->load('user', 'account', 'indicator', 'seller', 'operator'));
     }
+
+    // I could use default value for every product except the last two. 
+    // But the loss is minimal and I have more controll over each product individually.
+    // If the percentage changes over some product, adapt the "0.80" to the desirable percentage.
 
     public function calculateCommission($product, $value, $commission_percentage)
     {
@@ -111,18 +116,19 @@ class CommissionController extends Controller
         }
     }
 
-
-    public function calculatingCommission($sicoob_commission_value)
+    public function calculatingCommission($commission_sicoob_value)
     {
-        $sicoob_commission_value_taxing = 0.965 * $sicoob_commission_value;
+        $sicoob_commission_value_taxing = 0.965 * $commission_sicoob_value;
+        $credisg_commission_value = 0.96 * $sicoob_commission_value_taxing;
         $employees_commission_value = 0.04 * $sicoob_commission_value_taxing;
         $indicator_commission_value = 0.20 * $employees_commission_value;
         $seller_commission_value = 0.60 * $employees_commission_value;
         $operator_commission_value = 0.20 * $employees_commission_value;
+        $credisg_commission_value = number_format($credisg_commission_value, 2, '.', '');
         $indicator_commission_value = number_format($indicator_commission_value, 2, '.', '');
         $seller_commission_value = number_format($seller_commission_value, 2, '.', '');
         $operator_commission_value = number_format($operator_commission_value, 2, '.', '');
-        return [$indicator_commission_value, $seller_commission_value, $operator_commission_value];
+        return [$indicator_commission_value, $seller_commission_value, $operator_commission_value, $credisg_commission_value];
     }
 
     public function editCommission(Commission $commission, Request $request)
@@ -142,11 +148,13 @@ class CommissionController extends Controller
                     $commission->indicator_commission = $commissions[0];
                     $commission->seller_commission    = $commissions[1];
                     $commission->operator_commission  = $commissions[2];
+                    $commission->credisg_commission   = $commissions[3];
                 }
             } else if ($commission->status == 'Aprovado UPS') {
                 $commission->indicator_commission = null;
                 $commission->seller_commission    = null;
                 $commission->operator_commission  = null;
+                $commission->credisg_commission   = null;
             }
             $commission->custom_value = $request->custom_value;
         } else {
@@ -156,11 +164,13 @@ class CommissionController extends Controller
                     $commission->indicator_commission = $commissions[0];
                     $commission->seller_commission    = $commissions[1];
                     $commission->operator_commission  = $commissions[2];
+                    $commission->credisg_commission   = $commissions[3];
                 }
             } else if ($commission->status == 'Aprovado UPS') {
                 $commission->indicator_commission = null;
                 $commission->seller_commission    = null;
                 $commission->operator_commission  = null;
+                $commission->credisg_commission   = null;
             }
             if ($commission->custom_value) {
                 $commission->custom_value = null;
@@ -170,7 +180,7 @@ class CommissionController extends Controller
         $commission->commission_percentage = $request->commission_percentage;
         $commission->value = $request->value;
         $commission->product = $request->product;
-        $commission->associate_cpf_cnpj = $request->associate_cpf_cnpj;
+        $commission->associate_account = $request->associate_account;
         $commission->type = $this->getType($request->product);
         if ($commission->type == 1 && (isset($request->insurance_policy) && !empty($request->insurance_policy))) {
             $commission->insurance_policy = $request->insurance_policy;
@@ -180,7 +190,7 @@ class CommissionController extends Controller
         }
         $commission->save();
         $this->sendSystemCom();
-        return response()->json($commission->load('user', 'associate', 'indicator', 'seller', 'operator'));
+        return response()->json($commission->load('user', 'account', 'indicator', 'seller', 'operator'));
     }
 
     public function deleteCommission(Commission $commission, Request $request)
