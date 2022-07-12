@@ -28,6 +28,8 @@ return new class extends Migration
             $table->text('profile_about');
             $table->foreignId('role_id')->references('id')->on('roles')->constrained();
             $table->smallInteger('agency');
+            $table->string('birthday');
+            $table->string('job_begin');
             $table->string('address');
             $table->string('phone');
             $table->string('phone_corporation');

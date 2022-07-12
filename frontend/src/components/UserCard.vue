@@ -41,7 +41,7 @@
                   <v-img
                     v-else
                     :src="
-                      require(user_gender == 1
+                      require(user_gender != 2
                         ? './../assets/icons/man.png'
                         : './../assets/icons/woman.png')
                     "

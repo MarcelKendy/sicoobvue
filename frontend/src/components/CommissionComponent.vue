@@ -378,7 +378,7 @@
                   <v-img
                     v-else
                     :src="
-                      require(item.indicator.gender == 1
+                      require(item.indicator.gender != 2
                         ? './../assets/icons/man.png'
                         : './../assets/icons/woman.png')
                     "
@@ -414,7 +414,7 @@
                             v-bind="attrs"
                             v-on="on"
                             :src="
-                              require(item.indicator.gender == 1
+                              require(item.indicator.gender != 2
                                 ? './../assets/icons/man.png'
                                 : './../assets/icons/woman.png')
                             "
@@ -498,7 +498,7 @@
                   <v-img
                     v-else
                     :src="
-                      require(item.seller.gender == 1
+                      require(item.seller.gender != 2
                         ? './../assets/icons/man.png'
                         : './../assets/icons/woman.png')
                     "
@@ -537,7 +537,7 @@
                             v-bind="attrs"
                             v-on="on"
                             :src="
-                              require(item.seller.gender == 1
+                              require(item.seller.gender != 2
                                 ? './../assets/icons/man.png'
                                 : './../assets/icons/woman.png')
                             "
@@ -630,7 +630,7 @@
                   <v-img
                     v-else
                     :src="
-                      require(item.operator.gender == 1
+                      require(item.operator.gender != 2
                         ? './../assets/icons/man.png'
                         : './../assets/icons/woman.png')
                     "
@@ -666,7 +666,7 @@
                             v-bind="attrs"
                             v-on="on"
                             :src="
-                              require(item.operator.gender == 1
+                              require(item.operator.gender != 2
                                 ? './../assets/icons/man.png'
                                 : './../assets/icons/woman.png')
                             "

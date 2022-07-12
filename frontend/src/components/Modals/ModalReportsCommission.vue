@@ -230,7 +230,7 @@
                           v-if="!item.item.photo"
                           :src="
                             require(`./../../assets/icons/${
-                              item.item.gender == 1 ? 'man.png' : 'woman.png'
+                              item.item.gender != 2 ? 'man.png' : 'woman.png'
                             }`)
                           "
                         ></v-img>
@@ -255,7 +255,7 @@
                         v-if="!item.item.photo"
                         :src="
                           require(`./../../assets/icons/${
-                            item.item.gender == 1 ? 'man.png' : 'woman.png'
+                            item.item.gender != 2 ? 'man.png' : 'woman.png'
                           }`)
                         "
                       ></v-img>
@@ -536,7 +536,7 @@ export default {
         'Valor (R$)': {
           field: 'value',
           callback: (value) => {
-            return 'R$' + value;
+            return 'R$ ' + value;
           },
         },
         Associado: 'account.associate',
@@ -553,7 +553,7 @@ export default {
         'Valor Prestamista (R$)': {
           field: 'custom_value',
           callback: (value) => {
-            return 'R$' + value;
+            return 'R$ ' + value;
           },
         },
         'Comissão Cooperativa (%)': {
@@ -562,22 +562,28 @@ export default {
             return value + '%';
           },
         },
+        'Comissão Cooperativa (R$)': {
+          field: 'credisg_commission',
+          callback: (value) => {
+            return 'R$ ' + value;
+          },
+        },
         'Comissão Indicador (R$)': {
           field: 'indicator_commission',
           callback: (value) => {
-            return 'R$' + value;
+            return 'R$ ' + value;
           },
         },
         'Comissão Vendedor (R$)': {
           field: 'seller_commission',
           callback: (value) => {
-            return 'R$' + value;
+            return 'R$ ' + value;
           },
         },
         'Comissão Operador (R$)': {
           field: 'operator_commission',
           callback: (value) => {
-            return 'R$' + value;
+            return 'R$ ' + value;
           },
         },
         'Data da Indicação': 'date_indicator',

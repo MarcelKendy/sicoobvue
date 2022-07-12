@@ -105,7 +105,7 @@
                     v-else
                     :src="
                       require(`./../assets/icons/${
-                        item.gender == 1 ? 'man.png' : 'woman.png'
+                        item.gender != 2 ? 'man.png' : 'woman.png'
                       }`)
                     "
                     ><v-btn

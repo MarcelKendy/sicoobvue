@@ -201,7 +201,7 @@
                           v-if="!item.item.photo"
                           :src="
                             require(`./../../assets/icons/${
-                              item.item.gender == 1 ? 'man.png' : 'woman.png'
+                              item.item.gender != 2 ? 'man.png' : 'woman.png'
                             }`)
                           "
                         ></v-img>
@@ -226,7 +226,7 @@
                         v-if="!item.item.photo"
                         :src="
                           require(`./../../assets/icons/${
-                            item.item.gender == 1 ? 'man.png' : 'woman.png'
+                            item.item.gender != 2 ? 'man.png' : 'woman.png'
                           }`)
                         "
                       ></v-img>
@@ -323,7 +323,7 @@
                             v-if="!item.item.photo"
                             :src="
                               require(`./../../assets/icons/${
-                                item.item.gender == 1 ? 'man.png' : 'woman.png'
+                                item.item.gender != 2 ? 'man.png' : 'woman.png'
                               }`)
                             "
                           ></v-img>
@@ -348,7 +348,7 @@
                           v-if="!item.item.photo"
                           :src="
                             require(`./../../assets/icons/${
-                              item.item.gender == 1 ? 'man.png' : 'woman.png'
+                              item.item.gender != 2 ? 'man.png' : 'woman.png'
                             }`)
                           "
                         ></v-img>
@@ -537,7 +537,7 @@
                             v-if="!item.item.photo"
                             :src="
                               require(`./../../assets/icons/${
-                                item.item.gender == 1 ? 'man.png' : 'woman.png'
+                                item.item.gender != 2 ? 'man.png' : 'woman.png'
                               }`)
                             "
                           ></v-img>
@@ -562,7 +562,7 @@
                           v-if="!item.item.photo"
                           :src="
                             require(`./../../assets/icons/${
-                              item.item.gender == 1 ? 'man.png' : 'woman.png'
+                              item.item.gender != 2 ? 'man.png' : 'woman.png'
                             }`)
                           "
                         ></v-img>

@@ -39,7 +39,7 @@
                   :src="
                     state_user.photo
                       ? avatar_path(state_user.photo)
-                      : require(state_user.gender == 1
+                      : require(state_user.gender != 2
                           ? './assets/images/man.png'
                           : './assets/images/woman.png')
                   "
@@ -90,6 +90,8 @@
           v-show="verifyScreenAccess('adm')"
           v-for="item in items_adm"
           :key="item.title"
+          active-class="adm-nav"
+          color="green"
         >
           <template v-slot:activator>
             <v-list-item-icon>
@@ -170,7 +172,7 @@
         src="./assets/icons/sicoobicon.png"
       ></v-img>
       <strong style="font-size: 24px" class="font-quicksand mx-2 mt-1">{{
-        state_user.gender == 1
+        state_user.gender != 2
           ? 'Bem-Vindo, ' + state_user.name
           : 'Bem-Vinda, ' + state_user.name
       }}</strong>
@@ -395,18 +397,31 @@ export default {
 .item-nav {
   transition: 0.3s;
 }
+.v-list-item {
+  transition: 0.3s !important;
+}
+.v-list-item--active {
+  transition: 0.3s !important;
+}
 .item-nav:hover {
   color: white !important;
   background-size: 200% auto;
-  background-image: linear-gradient(to right, #49def8, #49f8cf, #a449f8);
+  background-image: linear-gradient(to right, #007b8be1, #00697cd7, #afdf61d0);
   background-position: right center;
 }
 
 .v-list-item--active {
   background-size: 200% auto;
-  background-image: linear-gradient(to right, #49def8, #49f8cf, #a449f8);
+  background-image: linear-gradient(to right, #007b8be1, #00697cd7, #afdf61d0);
   background-position: right center;
   color: white !important;
+}
+
+.adm-nav {
+  color: white !important;
+  background-size: 200% auto !important;
+  background-image: linear-gradient(to right, #007b8b, #006a7c, #aedf61) !important;
+  background-position: right center !important;
 }
 /*
 font-family: 'Asap Condensed', sans-serif;
@@ -424,6 +439,23 @@ font-family: 'Quicksand', sans-serif;
 font-family: 'Satisfy', cursive;
 font-family: 'Shadows Into Light', cursive;
 font-family: 'Yanone Kaffeesatz', sans-serif;
+
+
+.item-nav:hover {
+  color: white !important;
+  background-size: 200% auto;
+  background-image: linear-gradient(to right, #49def8, #49f8cf, #a449f8);
+  background-position: right center;
+}
+
+.v-list-item--active {
+  background-size: 200% auto;
+  background-image: linear-gradient(to right, #49def8, #49f8cf, #a449f8);
+  background-position: right center;
+  color: white !important;
+}
+
+
 */
 </style>
 <style src="./assets/css/globalStyle.css"></style>

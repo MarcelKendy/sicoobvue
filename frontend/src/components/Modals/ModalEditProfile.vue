@@ -162,7 +162,7 @@
                   v-model="item.phone"
                   v-bind:properties="{
                     color: color,
-                    
+
                     name: 'register_phone',
                     placeholder: '(00) 00000-0000',
                     required: true,
@@ -178,6 +178,77 @@
                   }"
                 />
               </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-menu
+                  ref="menu_birthday"
+                  v-model="menu_birthday"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  offset-x
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="birthday_text"
+                      label="Data de Nascimento"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="item.birthday"
+                    locale="pt-BR"
+                    :active-picker.sync="activePicker_birthday"
+                    :max="
+                      new Date(
+                        Date.now() - new Date().getTimezoneOffset() * 60000
+                      )
+                        .toISOString()
+                        .substr(0, 10)
+                    "
+                    min="1930-01-01"
+                    @change="saveBirthday"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-menu
+                  ref="menu_job_begin"
+                  v-model="menu_job_begin"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="job_begin_text"
+                      label="Ingresso na Cooperativa"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="item.job_begin"
+                    locale="pt-BR"
+                    :active-picker.sync="activePicker_job_begin"
+                    :max="
+                      new Date(
+                        Date.now() - new Date().getTimezoneOffset() * 60000
+                      )
+                        .toISOString()
+                        .substr(0, 10)
+                    "
+                    min="1930-01-01"
+                    @change="saveJobBegin"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
               <v-col cols="12">
                 <v-text-field
                   label="Endereço"
@@ -189,7 +260,6 @@
                   required
                   counter="50"
                   prepend-icon="mdi-map-marker"
-                  
                 />
               </v-col>
               <v-col cols="12">
@@ -319,7 +389,11 @@
                 >
                   <v-card-title color="orange" style="font-weight: bold">
                     Alterar Senha
-                    <v-tooltip id="tooltip" right :color="dark_theme ? 'grey darken-3' : ''">
+                    <v-tooltip
+                      id="tooltip"
+                      right
+                      :color="dark_theme ? 'grey darken-3' : ''"
+                    >
                       <template v-slot:activator="{ on, attrs }">
                         <v-icon
                           class="mx-2"
@@ -408,6 +482,12 @@ export default {
       valid: true,
       dialog: false,
       others: false,
+      menu_birthday: false,
+      birthday_text: '',
+      job_begin_text: '',
+      menu_job_begin: false,
+      activePicker_birthday: null,
+      activePicker_job_begin: null,
       change_password: false,
       loading: false,
       loading_roles: false,
@@ -423,6 +503,8 @@ export default {
         verify: '',
         role_id: '',
         department: '',
+        birthday: '',
+        job_begin: '',
         address: '',
         phone: '',
         phone_corporation: '',
@@ -431,7 +513,9 @@ export default {
       },
       /* RULES */
       requiredRule: [(v) => !!v || 'Essa informação é obrigatória'],
-      requiredRuleRole: [(v) => (v == 0 || !!v) || 'Essa informação é obrigatória'],
+      requiredRuleRole: [
+        (v) => v == 0 || !!v || 'Essa informação é obrigatória',
+      ],
       cpfRule: [
         (v) => !!v || 'Digite o seu CPF',
         (v) => /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(v) || 'CPF inválido',
@@ -442,10 +526,12 @@ export default {
       ],
       ramalRule: [
         (v) =>
-          ((!v) || (!!v && v.length > 1 && v[0] == 1 && v[1] == 5)) ||
+          !v ||
+          (!!v && v.length > 1 && v[0] == 1 && v[1] == 5) ||
           'Atualmente, todos os ramais começam com 15. (Exemplo: 1506)',
         (v) =>
-          ((!v) || (!!v && v.length == 4)) ||
+          !v ||
+          (!!v && v.length == 4) ||
           'Atualmente, todos os ramais possuem 4 dígitos. (Exemplo: 1506)',
       ],
       photoRule: [
@@ -469,6 +555,7 @@ export default {
       genders: [
         { text: 'Masc.', value: 1 },
         { text: 'Fem.', value: 2 },
+        { text: 'Indefinido', value: 3 },
       ],
       gender_style: [
         {
@@ -483,10 +570,28 @@ export default {
           icon: 'mdi-face-woman-shimmer',
           gradient: 'pink',
         },
+        {
+          gender: 3,
+          color: 'white',
+          icon: 'mdi-account-outline',
+          gradient: 'gray',
+        },
       ],
     };
   },
   watch: {
+    item_birthday: function() {
+      this.birthday_text = this.formatDate(this.item_birthday)
+    },
+    item_job_begin: function() {
+      this.job_begin_text = this.formatDate(this.item_job_begin)
+    },
+    menu_birthday(val) {
+      val && setTimeout(() => (this.activePicker_birthday = 'YEAR'));
+    },
+    menu_job_begin(val) {
+      val && setTimeout(() => (this.activePicker_job_begin = 'YEAR'));
+    },
     open: function () {
       this.dialog = this.open;
       if (this.dialog) {
@@ -499,6 +604,13 @@ export default {
     },
   },
   methods: {
+    formatDate(date, y = true) {
+      let day_month = date.slice(5, 10);
+      let day = day_month.slice(3);
+      let month = day_month.slice(0, 2);
+      let year = date.slice(0, 4);
+      return y ? day + '/' + month + '/' + year : day + '/' + month;
+    },
     assignUser() {
       Object.assign(Object.assign(this.item, this.defaultItem), this.user);
       this.admin ? this.getRoles() : '';
@@ -509,10 +621,19 @@ export default {
       this.$http.get('get_roles').then((response) => {
         this.roles = response.data;
         this.roles = this.roles.map(function (role) {
-          return {id: role.id, name: role.name + ' - ' + role.department.name};
+          return {
+            id: role.id,
+            name: role.name + ' - ' + role.department.name,
+          };
         });
         this.loading_roles = false;
       });
+    },
+    saveBirthday(date) {
+      this.$refs.menu_birthday.save(date);
+    },
+    saveJobBegin(date) {
+      this.$refs.menu_job_begin.save(date);
     },
     editProfile() {
       if (this.$refs.form.validate()) {
@@ -579,6 +700,12 @@ export default {
     },
   },
   computed: {
+    item_birthday() {
+      return this.item.birthday
+    },
+    item_job_begin() {
+      return this.item.job_begin
+    },
     dark_theme() {
       try {
         return this.$store.state.user.configs.theme == 0;
@@ -610,6 +737,8 @@ export default {
         verify: '',
         role_id: '',
         department: '',
+        birthday: '',
+        job_begin: '',
         phone: '',
         phone_corporation: '',
         agency: '',
