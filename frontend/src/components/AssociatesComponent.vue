@@ -16,7 +16,7 @@
         ></v-progress-linear>
       </template>
       <v-card-title class="bold title-card">
-        <span>Associados da cooperativa</span>
+        <span>Contas abertas na Cooperativa</span>
         <v-img
           class="mx-2"
           style="display: inline-block"
@@ -36,7 +36,7 @@
       </v-card-title>
       <v-card-subtitle>
         <span :class="dark_theme ? 'bold subtitle-card-dark' : 'subtitle-card'"
-          >Listagem completa com informações básicas</span
+          >Listagem completa de associados e suas contas ativas/inativas</span
         >
       </v-card-subtitle>
       <v-card-text>
