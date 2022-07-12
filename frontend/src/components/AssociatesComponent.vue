@@ -91,7 +91,7 @@
         </div>
         <v-list three-line v-for="(item, index) in items" :key="index">
           <v-list-item
-            :key="item.cpf_cnpj"
+            :key="item.account"
             :class="dark_theme ? 'list-item-dark' : 'list-item'"
           >
             <v-list-item-avatar class="mt-6" size="38">
@@ -115,7 +115,7 @@
             <v-chip
               :dark="dark_theme"
               @click.stop.prevent="
-                copyInfo('account_' + parseInt(item.cpf_cnpj), 'Conta')
+                copyInfo('account_' + parseInt(item.account), 'Conta')
               "
             >
               <v-avatar left>
@@ -129,7 +129,7 @@
                 :dark="dark_theme"
                 class="chip-phone"
                 @click.stop.prevent="
-                  copyInfo('phone_' + parseInt(item.cpf_cnpj), 'Telefone')
+                  copyInfo('phone_' + parseInt(item.account), 'Telefone')
                 "
               >
                 <v-avatar left>
@@ -141,12 +141,12 @@
             <v-list-item-content
               ><input
                 type="hidden"
-                :id="'account_' + parseInt(item.cpf_cnpj)"
+                :id="'account_' + parseInt(item.account)"
                 :value="item.account"
               />
               <input
                 type="hidden"
-                :id="'phone_' + parseInt(item.cpf_cnpj)"
+                :id="'phone_' + parseInt(item.account)"
                 :value="item.phone"
               />
             </v-list-item-content>
@@ -379,7 +379,7 @@ export default {
     },
     deleteAccount(data) {
       this.$http
-        .post('delete_account', { cpf_cnpj: data.cpf_cnpj })
+        .post('delete_account', { account: data.account })
         .then(() => {
           this.total_items = this.total_items.filter((account) => {
             return account.id !== data.id;

@@ -19,11 +19,12 @@ return new class extends Migration
             $table->string('date_indicator');
             $table->string('date_seller')->nullable();
             $table->string('date_operator')->nullable();
-            $table->string('associate_cpf_cnpj')->nullable();
+            $table->string('associate_account')->nullable();
             $table->string('product');
             $table->decimal('value',15,2)->nullable();
             $table->decimal('custom_value',15,2)->nullable();
             $table->decimal('commission_percentage',4,2)->nullable();
+            $table->decimal('credisg_commission',15,2)->nullable();
             $table->string('insurance_policy');
             $table->integer('consortium_group');
             $table->integer('consortium_quota');

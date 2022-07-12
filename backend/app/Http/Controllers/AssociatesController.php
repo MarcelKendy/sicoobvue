@@ -24,7 +24,7 @@ class AssociatesController extends Controller
         if (isset($request->with)) {
             $with = $request->with;
         } else {
-            $with = '';
+            $with = [];
         }
         $allAssociates = Account::select($select)->whereRaw($where)->with($with)->get();
         return response()->json($allAssociates);
@@ -47,7 +47,7 @@ class AssociatesController extends Controller
 
     public function editAccount(Request $request)
     {
-        $account = Account::find($request->original_cpf_cnpj);
+        $account = Account::find($request->original_account);
         $account->user_id = $request->user_id;
         $account->associate = $request->associate;
         $account->cpf_cnpj = $request->cpf_cnpj;
@@ -62,6 +62,6 @@ class AssociatesController extends Controller
 
     public function deleteAccount(Request $request)
     {
-        return Account::find($request->cpf_cnpj)->delete();
+        return Account::find($request->account)->delete();
     }
 }

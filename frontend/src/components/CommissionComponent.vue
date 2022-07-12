@@ -131,7 +131,11 @@
                             >{{ item.commission_percentage }}%)
                           </span>
                         </span>
-                        <v-tooltip id="tooltip" left :color="dark_theme ? 'black' : ''">
+                        <v-tooltip
+                          id="tooltip"
+                          left
+                          :color="dark_theme ? 'black' : ''"
+                        >
                           <template v-slot:activator="{ on, attrs }">
                             <v-btn
                               v-bind="attrs"
@@ -219,7 +223,12 @@
               </template>
               <span>{{ formatDate(item.date_indicator, 'y') }}</span>
             </v-tooltip>
-            <v-tooltip id="tooltip" left v-else-if="!item.date_operator" :color="dark_theme ? 'black' : ''">
+            <v-tooltip
+              id="tooltip"
+              left
+              v-else-if="!item.date_operator"
+              :color="dark_theme ? 'black' : ''"
+            >
               <template v-slot:activator="{ on, attrs }">
                 <span v-bind="attrs" v-on="on">
                   {{ formatDate(item.date_seller, 'd_m') }}
@@ -227,7 +236,12 @@
               </template>
               <span>{{ formatDate(item.date_seller, 'y') }}</span>
             </v-tooltip>
-            <v-tooltip id="tooltip" left v-else :color="dark_theme ? 'black' : ''">
+            <v-tooltip
+              id="tooltip"
+              left
+              v-else
+              :color="dark_theme ? 'black' : ''"
+            >
               <template v-slot:activator="{ on, attrs }">
                 <span v-bind="attrs" v-on="on">
                   {{ formatDate(item.date_operator, 'd_m') }}
@@ -257,8 +271,20 @@
                 "
                 v-bind="attrs"
                 v-on="on"
-                :style="(item.insurance_policy || item.consortium_group || item.consortium_quota) ? 'cursor: pointer' : ''"
-                @click.stop.prevent="(item.insurance_policy || item.consortium_group || item.consortium_quota) ? copyInfo('input_' + item.id, item.product) : ''"
+                :style="
+                  item.insurance_policy ||
+                  item.consortium_group ||
+                  item.consortium_quota
+                    ? 'cursor: pointer'
+                    : ''
+                "
+                @click.stop.prevent="
+                  item.insurance_policy ||
+                  item.consortium_group ||
+                  item.consortium_quota
+                    ? copyInfo('input_' + item.id, item.product)
+                    : ''
+                "
               >
                 <span class="white--text text-h7">{{
                   productStyle(item.product, 'initials')
@@ -267,19 +293,44 @@
                   type="hidden"
                   :id="'input_' + item.id"
                   :value="
-                    item.insurance_policy 
+                    item.insurance_policy
                       ? item.insurance_policy
-                      : item.consortium_group 
-                        ? item.consortium_group + ' - ' + item.consortium_quota
-                        : ''
-                    "
+                      : item.consortium_group
+                      ? item.consortium_group + ' - ' + item.consortium_quota
+                      : ''
+                  "
                 />
               </div>
             </template>
-            <span :class="item.type == 1 ? 'purple--text text--lighten-1' : item.type == 2 ? 'orange--text' : 'green--text'">{{ item.product }}
-              <div v-if="item.insurance_policy || item.consortium_group || item.consortium_quota">
-                <span v-if="item.type == 1">Apólice: <span class="white--text" style="font-weight: 600">{{item.insurance_policy}}</span></span>
-                <span v-else>Grupo - Cota: <span class="white--text" style="font-weight: 600">{{item.consortium_group}} - {{item.consortium_quota}}</span></span>
+            <span
+              :class="
+                item.type == 1
+                  ? 'purple--text text--lighten-1'
+                  : item.type == 2
+                  ? 'orange--text'
+                  : 'green--text'
+              "
+              >{{ item.product }}
+              <div
+                v-if="
+                  item.insurance_policy ||
+                  item.consortium_group ||
+                  item.consortium_quota
+                "
+              >
+                <span v-if="item.type == 1"
+                  >Apólice:
+                  <span class="white--text" style="font-weight: 600">{{
+                    item.insurance_policy
+                  }}</span></span
+                >
+                <span v-else
+                  >Grupo - Cota:
+                  <span class="white--text" style="font-weight: 600"
+                    >{{ item.consortium_group }} -
+                    {{ item.consortium_quota }}</span
+                  ></span
+                >
               </div>
             </span>
           </v-tooltip>
@@ -289,7 +340,11 @@
             <v-chip
               color="green lighten-1"
               :class="
-                dark_theme ? 'white--text ' : (hover ? 'white--text' : 'green--text text--lighten-1')
+                dark_theme
+                  ? 'white--text '
+                  : hover
+                  ? 'white--text'
+                  : 'green--text text--lighten-1'
               "
               small
               :outlined="(!dark_theme && !hover) || (dark_theme && hover)"
@@ -348,7 +403,12 @@
                         alt="Foto"
                         :src="avatar_path(item.indicator.photo)"
                       />
-                      <v-tooltip id="tooltip" top v-else :color="dark_theme ? 'black' : ''">
+                      <v-tooltip
+                        id="tooltip"
+                        top
+                        v-else
+                        :color="dark_theme ? 'black' : ''"
+                      >
                         <template v-slot:activator="{ on, attrs }">
                           <v-img
                             v-bind="attrs"
@@ -391,11 +451,18 @@
                             >mdi-close-circle</v-icon
                           >
                         </template>
-                        <span :class="item.indicator.active == 1 ? 'green--text' : 'red--text'">{{
-                          item.indicator.active == 1
-                            ? 'Usuário Ativo'
-                            : 'Usuário Desativado'
-                        }}</span>
+                        <span
+                          :class="
+                            item.indicator.active == 1
+                              ? 'green--text'
+                              : 'red--text'
+                          "
+                          >{{
+                            item.indicator.active == 1
+                              ? 'Usuário Ativo'
+                              : 'Usuário Desativado'
+                          }}</span
+                        >
                       </v-tooltip>
                     </v-list-item-action>
                   </v-list-item>
@@ -456,7 +523,12 @@
                         alt="Foto"
                         :src="avatar_path(item.seller.photo)"
                       />
-                      <v-tooltip id="tooltip" top v-else :color="dark_theme ? 'black' : ''">
+                      <v-tooltip
+                        id="tooltip"
+                        top
+                        v-else
+                        :color="dark_theme ? 'black' : ''"
+                      >
                         <template v-slot:activator="{ on, attrs }">
                           <!--<v-icon large v-bind="attrs" v-on="on">
                             mdi-account-circle
@@ -502,11 +574,18 @@
                             >mdi-close-circle</v-icon
                           >
                         </template>
-                        <span :class="item.seller.active == 1 ? 'green--text' : 'bold red--text'">{{
-                          item.seller.active == 1
-                            ? 'Usuário Ativo'
-                            : 'Usuário Desativado'
-                        }}</span>
+                        <span
+                          :class="
+                            item.seller.active == 1
+                              ? 'green--text'
+                              : 'bold red--text'
+                          "
+                          >{{
+                            item.seller.active == 1
+                              ? 'Usuário Ativo'
+                              : 'Usuário Desativado'
+                          }}</span
+                        >
                       </v-tooltip>
                     </v-list-item-action>
                   </v-list-item>
@@ -576,7 +655,12 @@
                         alt="Foto"
                         :src="avatar_path(item.operator.photo)"
                       />
-                      <v-tooltip id="tooltip" top v-else :color="dark_theme ? 'black' : ''">
+                      <v-tooltip
+                        id="tooltip"
+                        top
+                        v-else
+                        :color="dark_theme ? 'black' : ''"
+                      >
                         <template v-slot:activator="{ on, attrs }">
                           <v-img
                             v-bind="attrs"
@@ -619,11 +703,18 @@
                             >mdi-close-circle</v-icon
                           >
                         </template>
-                        <span :class="item.operator.active == 1 ? 'green--text' : 'red--text'">{{
-                          item.operator.active == 1
-                            ? 'Usuário Ativo'
-                            : 'Usuário Desativado'
-                        }}</span>
+                        <span
+                          :class="
+                            item.operator.active == 1
+                              ? 'green--text'
+                              : 'red--text'
+                          "
+                          >{{
+                            item.operator.active == 1
+                              ? 'Usuário Ativo'
+                              : 'Usuário Desativado'
+                          }}</span
+                        >
                       </v-tooltip>
                     </v-list-item-action>
                   </v-list-item>
@@ -672,7 +763,12 @@
             >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
-            <v-tooltip id="tooltip" top v-else :color="dark_theme ? 'black' : ''">
+            <v-tooltip
+              id="tooltip"
+              top
+              v-else
+              :color="dark_theme ? 'black' : ''"
+            >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   fab
@@ -697,7 +793,12 @@
             >
               <v-icon>mdi-delete</v-icon>
             </v-btn>
-            <v-tooltip id="tooltip" top v-else :color="dark_theme ? 'black' : ''">
+            <v-tooltip
+              id="tooltip"
+              top
+              v-else
+              :color="dark_theme ? 'black' : ''"
+            >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn fab dark small color="red" v-bind="attrs" v-on="on">
                   <v-icon>mdi-delete-off</v-icon>
@@ -1100,6 +1201,10 @@ export default {
     commissionPrint(item) {
       if (item.indicator_id == item.seller_id) {
         return (
+          "<span class='teal--text text--lighten-2 ma-2'>Credisg:</span>" +
+          "<span class='green--text ma-2'>R$ " +
+          item.credisg_commission +
+          "</span><br>" +
           "<span class='blue--text ma-2'>Indicador e Vendedor: </span>" +
           item.indicator.full_name +
           ": <span class='green--text ma-2'>R$ " +
@@ -1112,6 +1217,10 @@ export default {
         );
       } else if (item.indicator_id == item.operator_id) {
         return (
+          "<span class='teal--text text--lighten-2 ma-2'>Credisg:</span>" +
+          "<span class='green--text ma-2'>R$ " +
+          item.credisg_commission +
+          "</span><br>" +
           "<span class='blue--text ma-2'>Indicador e Operador: </span>" +
           item.indicator.full_name +
           ": <span class='green--text ma-2'>R$ " +
@@ -1124,6 +1233,10 @@ export default {
         );
       } else {
         return (
+          "<span class='teal--text text--lighten-2 ma-2'>Credisg:</span>" +
+          "<span class='green--text ma-2'>R$ " +
+          item.credisg_commission +
+          "</span><br>" +
           "<span class='blue--text ma-2'>Indicador: </span>" +
           item.indicator.full_name +
           ": <span class='green--text ma-2'>R$ " +
@@ -1196,7 +1309,6 @@ export default {
 };
 </script>
 <style scoped>
-
 .expanded-closing {
   border-bottom: none !important;
 }

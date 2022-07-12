@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Account extends Model
 {
     public $timestamps = true;
-    protected $primaryKey = 'cpf_cnpj';
+    protected $primaryKey = 'account';
     protected $keyType = 'string';
     public $incrementing = false;
     use HasFactory;

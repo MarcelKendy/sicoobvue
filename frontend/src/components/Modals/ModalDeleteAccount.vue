@@ -106,7 +106,7 @@ export default {
     },
     deleteAccount() {
       this.loading = true;
-      this.$emit('deleteAccount', {cpf_cnpj: this.item.cpf_cnpj, id: this.item.id});
+      this.$emit('deleteAccount', {account: this.item.account, id: this.item.id});
     },
     created_at_date() {
       let br_date = '';

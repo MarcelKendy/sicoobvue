@@ -45,10 +45,11 @@
                   :items="associates"
                   :color="color"
                   label="Associado"
+                  :rules="requiredRule"
                   placeholder="Enter para confirmar"
                   item-text="associate"
-                  item-value="cpf_cnpj"
-                  v-model="item.associate_cpf_cnpj"
+                  item-value="account"
+                  v-model="item.associate_account"
                   :loading="loading_associates"
                   prepend-icon="mdi-account"
                   auto-select-first
@@ -690,7 +691,7 @@ export default {
         date_indicator: '',
         date_seller: '',
         date_operator: '',
-        associate_cpf_cnpj: '',
+        associate_account: '',
         product: '',
         value: '',
         custom_value: '',
@@ -1066,7 +1067,7 @@ export default {
         date_seller: '',
         date_operator: '',
         product: '',
-        associate_cpf_cnpj: '',
+        associate_account: '',
         value: '',
         custom_value: '',
         commission_percentage: '',

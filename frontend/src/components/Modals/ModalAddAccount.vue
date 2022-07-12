@@ -200,7 +200,7 @@ export default {
       dialog: false,
       loading: false,
       item: {
-        original_cpf_cnpj: '',
+        original_account: '',
         id: '',
         user_id: this.$store.state.user.id,
         associate: '',
@@ -279,7 +279,7 @@ export default {
         this.loading = false;
         if (this.type == 'edit' && this.account) {
           Object.assign(this.item, this.account);
-          this.item.original_cpf_cnpj = this.item.cpf_cnpj
+          this.item.original_account = this.item.account
         }
       }
     },
@@ -345,7 +345,7 @@ export default {
     },
     defaultItem() {
       return {
-        original_cpf_cnpj: '',
+        original_account: '',
         id: '',
         user_id: this.$store.state.user.id,
         associate: '',

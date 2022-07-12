@@ -116,7 +116,6 @@ export default {
             group: row[6]
           });
         });
-        console.log(obj_excel_data)
         this.$http
           .post('/upload_associates', obj_excel_data)
           .then((response) => {

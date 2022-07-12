@@ -16,7 +16,7 @@ class Commission extends Model
     }
     public function account()
     {
-        return $this->belongsTo(Account::class, 'associate_cpf_cnpj');
+        return $this->belongsTo(Account::class, 'associate_account');
     }
     public function indicator()
     {
