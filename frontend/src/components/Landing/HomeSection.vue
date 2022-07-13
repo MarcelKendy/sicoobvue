@@ -29,8 +29,8 @@
         <v-col cols="10">
           <v-row align="center" justify="center">
             <v-col cols="12" md="6" xl="8">
-              <h1 style="font-size: 32px; text-shadow: 1px 1px black;" class="font-quicksand">Bem-vindo</h1>
-              <h1 class="font-weight-light" style="text-shadow: 1px 1px black;">
+              <h1 style="font-size: 32px" class="font-quicksand">Bem-vindo</h1>
+              <h1 class="font-weight-light">
                 <span>Temos novidades pra você.</span>
                 <br />
                 <span>Sicoob Credisg - {{ new Date().getFullYear() }}</span>
