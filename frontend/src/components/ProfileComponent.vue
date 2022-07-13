@@ -263,7 +263,9 @@
                           <span class="introduction-item-text">
                             {{
                               profile[item.data]
-                                ? profile[item.data]
+                                ? item.mask
+                                  ? item.mask(profile[item.data])
+                                  : profile[item.data]
                                 : 'Dado não fornecido'
                             }}
                           </span>
@@ -382,6 +384,16 @@ export default {
           title: 'Ingresso na Cooperativa',
           data: 'job_begin',
           icon: 'job_begin.png',
+          mask: function (date) {
+            if (!date || date.length < 5) {
+              return '';
+            }
+            let day_month = date.slice(5, 10);
+            let day = day_month.slice(3);
+            let month = day_month.slice(0, 2);
+            let year = date.slice(0, 4);
+            return day + '/' + month + '/' + year;
+          },
         },
       ],
       [
@@ -420,6 +432,16 @@ export default {
           title: 'Nascimento',
           data: 'birthday',
           icon: 'birthday.png',
+          mask: function (date) {
+            if (!date || date.length < 5) {
+              return '';
+            }
+            let day_month = date.slice(5, 10);
+            let day = day_month.slice(3);
+            let month = day_month.slice(0, 2);
+            let year = date.slice(0, 4);
+            return day + '/' + month + '/' + year;
+          },
         },
       ],
     ],
@@ -470,6 +492,9 @@ export default {
         });
     },
     formatDate(date, y = true) {
+      if (!date || date.length < 5) {
+        return '';
+      }
       let day_month = date.slice(5, 10);
       let day = day_month.slice(3);
       let month = day_month.slice(0, 2);
@@ -478,8 +503,6 @@ export default {
     },
     formatData(data) {
       data.access = data.access.name;
-      data.birthday = this.formatDate(data.birthday);
-      data.job_begin = this.formatDate(data.job_begin);
       this.unmasked_cpf = data.cpf;
       data.cpf = data.cpf.replace(
         /(\d{3})(\d{3})(\d{3})(\d{2})/,

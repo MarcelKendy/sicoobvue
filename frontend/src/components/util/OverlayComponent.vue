@@ -30,14 +30,21 @@
               dark
               prominent
             >
-              <template slot="prepend" v-if="image">
+              <template slot="prepend" v-if="prepend_image">
                 <v-img
                   width="64px"
-                  :src="require('./../../assets/icons/' + image)"
+                  :src="require('@/assets/' + prepend_image)"
                 ></v-img>
               </template>
               <h3>{{ text }}</h3>
               <p class="mt-2">{{ description }}</p>
+              <div v-if="image">
+                <v-img
+                  :height="image_height"
+                  :width="image_width"
+                  :src="require('@/assets/' + image)"
+                ></v-img>
+              </div>
               <v-divider v-if="footer"></v-divider>
               <span v-if="footer" class="font-weight-bold mt-3 font-italic">
                 {{ footer }}
@@ -100,9 +107,23 @@ export default {
       type: [String],
       default: 'mdi-alert',
     },
+    prepend_image: {
+      required: false,
+      type: [String],
+    },
     image: {
       required: false,
       type: [String],
+    },
+    image_width: {
+      required: false,
+      type: [String],
+      default: '400',
+    },
+    image_height: {
+      required: false,
+      type: [String],
+      default: '',
     },
     width: {
       required: false,

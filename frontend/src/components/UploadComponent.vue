@@ -32,7 +32,7 @@
                 <v-spacer></v-spacer>
                 <v-tooltip left>
                   <template v-slot:activator="{ attrs, on }">
-                    <v-btn icon dark v-bind="attrs" v-on="on"
+                    <v-btn icon dark v-bind="attrs" v-on="on" @click="overlay = true"
                       ><v-icon color="yellow">mdi-information</v-icon></v-btn
                     >
                   </template>
@@ -77,15 +77,33 @@
         snackbar_message
       }}</strong>
     </v-snackbar>
+    <overlay-component
+      :model="overlay"
+      color="orange"
+      title="Importação de Contas"
+      sub_title="Formatação do arquivo .xlsx"
+      text="O arquivo deve ser no formato .xlsx (excel), contendo as seguintes colunas na respectiva ordem:"
+      description="[Conta, Cliente, CPF/CNPJ, Telefone, Tipo Conta, Categoria, Grupo]. Quando não houver grupo, deixar vazio. Exemplo de planilha:"
+      footer="Ramal: 1506"
+      width="1050"
+      image_width="920"
+      image_height=""
+      image="images/tutorial_import_accounts.png"
+      @closeOverlay="overlay = false"
+    ></overlay-component>
   </div>
 </template>
 
 <script>
 import readXlsxFile from 'read-excel-file';
+import OverlayComponent from './Util/OverlayComponent.vue';
 export default {
   name: 'UploadComponent',
-
+  components: {
+    OverlayComponent,
+  },
   data: () => ({
+    overlay: false,
     files: {
       associates: null,
     },
@@ -113,7 +131,7 @@ export default {
             phone: row[3],
             account_type: row[4],
             category: row[5],
-            group: row[6]
+            group: row[6],
           });
         });
         this.$http
@@ -142,7 +160,9 @@ export default {
       var date =
         today.getFullYear() +
         '-' +
-        (String(today.getMonth() + 1).length == 1 ? ('0' + (today.getMonth() + 1)) : (today.getMonth() + 1)) +
+        (String(today.getMonth() + 1).length == 1
+          ? '0' + (today.getMonth() + 1)
+          : today.getMonth() + 1) +
         '-' +
         today.getDate();
       var time =

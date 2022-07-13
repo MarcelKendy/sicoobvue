@@ -580,11 +580,11 @@ export default {
     };
   },
   watch: {
-    item_birthday: function() {
-      this.birthday_text = this.formatDate(this.item_birthday)
+    item_birthday: function () {
+      this.birthday_text = this.formatDate(this.item_birthday);
     },
-    item_job_begin: function() {
-      this.job_begin_text = this.formatDate(this.item_job_begin)
+    item_job_begin: function () {
+      this.job_begin_text = this.formatDate(this.item_job_begin);
     },
     menu_birthday(val) {
       val && setTimeout(() => (this.activePicker_birthday = 'YEAR'));
@@ -605,6 +605,9 @@ export default {
   },
   methods: {
     formatDate(date, y = true) {
+      if (!date || date.length < 5) {
+        return '';
+      }
       let day_month = date.slice(5, 10);
       let day = day_month.slice(3);
       let month = day_month.slice(0, 2);
@@ -701,10 +704,10 @@ export default {
   },
   computed: {
     item_birthday() {
-      return this.item.birthday
+      return this.item.birthday;
     },
     item_job_begin() {
-      return this.item.job_begin
+      return this.item.job_begin;
     },
     dark_theme() {
       try {

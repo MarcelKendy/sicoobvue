@@ -141,7 +141,7 @@
                               v-bind="attrs"
                               v-on="on"
                               icon
-                              @click="show_math = true"
+                              @click="openShowMath(item)"
                               style="position: absolute; top: 0; right: 0"
                             >
                               <v-icon>mdi-calculator</v-icon>
@@ -832,6 +832,11 @@
       @closeDeleteModal="deleteModal"
       @deleteCommission="deleteCommission"
     ></modal-delete>
+    <modal-show-math
+      :open="show_math"
+      :data="item_show_math"
+      @closeShowMathModal="(show_math = false), (item_show_math = {})"
+    ></modal-show-math>
     <v-snackbar
       v-model="snackbar_add"
       timeout="2500"
@@ -889,9 +894,10 @@ import ModalReport from './Modals/ModalReportsCommission.vue';
 import ModalAdd from './Modals/ModalAddCommission.vue';
 import ModalEdit from './Modals/ModalEditCommission.vue';
 import ModalDelete from './Modals/ModalDeleteCommission.vue';
+import ModalShowMath from './Modals/ModalShowMath.vue';
 export default {
   name: 'CommissionComponent',
-  components: { ModalReport, ModalAdd, ModalEdit, ModalDelete },
+  components: { ModalReport, ModalAdd, ModalEdit, ModalDelete, ModalShowMath },
   data() {
     return {
       items: [],
@@ -902,7 +908,9 @@ export default {
       closeTimeouts: {},
       search: '',
       edited_item: {},
+      item_show_math: {},
       deleted_item: {},
+      show_math: false,
       loading_commissions: true,
       menu_indicator: false,
       snackbar_copy: false,
@@ -1092,11 +1100,44 @@ export default {
       element.setAttribute('type', 'hidden');
       window.getSelection().removeAllRanges();
     },
+    openShowMath(item) {
+      this.item_show_math = {
+        product: item.product,
+        value: item.custom_value ? item.custom_value : item.value,
+        commission_percentage: item.commission_percentage,
+        credisg_commission: item.credisg_commission,
+        indicator_commission: item.indicator_commission,
+        indicator: this.getFirstWordsFromString(item.indicator.full_name, 3),
+        seller_commission: item.seller_commission,
+        seller: this.getFirstWordsFromString(item.seller.full_name, 3),
+        operator_commission: item.operator_commission,
+        operator: this.getFirstWordsFromString(item.operator.full_name, 3),
+        percentage_value: (
+          (item.commission_percentage / 100) *
+          item.value
+        ).toFixed(2),
+        percentage_value_effective: (
+          (item.commission_percentage / 100) *
+          item.value *
+          0.8
+        ).toFixed(2),
+        percentage_value_effective_taxes: (
+          (item.commission_percentage / 100) *
+          item.value *
+          0.8 *
+          0.965
+        ).toFixed(2),
+      };
+      this.show_math = true;
+    },
+    getFirstWordsFromString(str, qtt = 2) {
+      return str.split(' ').slice(0, qtt).join(' ');
+    },
     onResize() {
       this.mobile = window.innerWidth < 900;
     },
     getItemId(item) {
-      return item.id; 
+      return item.id;
     },
     toggleExpand(props) {
       const item = props.item;
@@ -1204,7 +1245,7 @@ export default {
           "<span class='teal--text text--lighten-2 ma-2'>Credisg:</span>" +
           "<span class='green--text ma-2'>R$ " +
           item.credisg_commission +
-          "</span><br>" +
+          '</span><br>' +
           "<span class='blue--text ma-2'>Indicador e Vendedor: </span>" +
           item.indicator.full_name +
           ": <span class='green--text ma-2'>R$ " +
@@ -1220,7 +1261,7 @@ export default {
           "<span class='teal--text text--lighten-2 ma-2'>Credisg:</span>" +
           "<span class='green--text ma-2'>R$ " +
           item.credisg_commission +
-          "</span><br>" +
+          '</span><br>' +
           "<span class='blue--text ma-2'>Indicador e Operador: </span>" +
           item.indicator.full_name +
           ": <span class='green--text ma-2'>R$ " +
@@ -1236,7 +1277,7 @@ export default {
           "<span class='teal--text text--lighten-2 ma-2'>Credisg:</span>" +
           "<span class='green--text ma-2'>R$ " +
           item.credisg_commission +
-          "</span><br>" +
+          '</span><br>' +
           "<span class='blue--text ma-2'>Indicador: </span>" +
           item.indicator.full_name +
           ": <span class='green--text ma-2'>R$ " +

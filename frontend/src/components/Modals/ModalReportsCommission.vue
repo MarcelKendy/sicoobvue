@@ -457,7 +457,7 @@
           description="Se você tem certeza de que deveriam haver registros, cheque novamente sua filtragem. Se persistir sem resultados, contate o desenvolvedor."
           footer="Ramal: 1506"
           width="650"
-          image="empty-box.png"
+          prepend_image="icons/empty-box.png"
           @closeOverlay="modalOverlay"
         ></overlay-component>
       </v-card>
