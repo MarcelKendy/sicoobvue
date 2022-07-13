@@ -56,7 +56,7 @@
       </v-card-title>
       <v-card-subtitle>
         <span :class="dark_theme ? 'bold subtitle-card-dark' : 'subtitle-card'"
-          >Listagem completa com informações básicas</span
+          >Listagem completa de associados e suas contas ativas/inativas</span
         >
       </v-card-subtitle>
       <v-card-text>
