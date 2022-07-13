@@ -8,7 +8,10 @@
       width="98%"
       :dark="dark_theme"
     >
-      <v-toolbar :color="dark_theme ? 'rgba(18,110,95)' : 'rgba(18,210,195)'" dark>
+      <v-toolbar
+        :color="dark_theme ? 'rgba(18,110,95)' : 'rgba(18,210,195)'"
+        dark
+      >
         <div class="tooltip_plus">
           <v-fab-transition>
             <v-btn
@@ -138,6 +141,33 @@
           </drag>
         </template>
       </drop-list>
+      <v-card-actions>
+        <span
+          :style="dark_theme ? 'color: white' : ''"
+          class="bold page-items-text mx-3"
+          >Itens por página:</span
+        >
+        <div style="max-width: 37px">
+          <v-form ref="form_page_items" v-model="valid_page" lazy-validation>
+            <vuetify-number
+              class="page-items-textfield"
+              v-model="page_total_items"
+              v-bind:rules="pageItemsRule"
+              v-bind:options="options"
+              v-bind:backgroundColor="dark_theme ? 'rgb(30, 30, 31)' : ''"
+            />
+          </v-form>
+        </div>
+
+        <v-spacer></v-spacer>
+        <v-pagination
+          v-model="page"
+          style="font-weight: bold"
+          circle
+          :length="total_pages"
+          :total-visible="5"
+        ></v-pagination>
+      </v-card-actions>
     </v-card>
     <v-snackbar
       v-model="snackbar_delete_activate"
@@ -164,12 +194,24 @@ export default {
     return {
       snackbar_delete_activate: false,
       items: [],
+      total_pages: 1,
+      page_total_items: 10,
+      page: 1,
+      valid_page: true,
       tasksMutable: [],
       search: '',
       done_filter: false,
       done_filter_loading: false,
       no_tasks: false,
       card_active: false,
+      pageItemsRule: [(v) => v > 0 || 'x > 0'],
+      options: {
+        locale: 'pt-BR',
+        prefix: '',
+        suffix: '',
+        length: 2,
+        precision: 0,
+      },
     };
   },
   created() {
@@ -208,7 +250,7 @@ export default {
     filterTasks() {
       this.items = [];
       if (this.done_filter) {
-        this.items = this.tasksMutable.filter((task) => {
+        this.tasksMutable = this.tasks.filter((task) => {
           return (
             this.search
               .toLowerCase()
@@ -220,8 +262,9 @@ export default {
               ) && task.done
           );
         });
+        this.pagination(true, 1);
       } else {
-        this.items = this.tasksMutable.filter((task) => {
+        this.tasksMutable = this.tasks.filter((task) => {
           return this.search
             .toLowerCase()
             .split(' ')
@@ -231,6 +274,7 @@ export default {
                 task.subtitle.toLowerCase().includes(search_char)
             );
         });
+        this.pagination(true, 1);
       }
       this.done_filter_loading = false;
     },
@@ -250,12 +294,15 @@ export default {
         this.filterTasks();
       } else {
         this.items = [];
+        this.tasksMutable = [];
+        this.tasksMutable = this.tasks
         if (this.done_filter) {
-          this.items = this.tasksMutable.filter((task) => {
+          this.tasksMutable = this.tasksMutable.filter((task) => {
             return task.done;
           });
+          this.pagination()
         } else {
-          this.items = this.tasksMutable;
+          this.pagination()
         }
         this.done_filter_loading = false;
       }
@@ -273,8 +320,31 @@ export default {
       this.card_active = !this.card_active;
       this.$emit('showCard', this.card_active);
     },
+    pagination(reload_total_pages = true, page = this.page) {
+      if (reload_total_pages) {
+        this.total_pages = Math.ceil(
+          this.tasksMutable.length / this.page_total_items
+        );
+      }
+      this.page = page;
+      this.page_total_items = parseInt(this.page_total_items);
+      let begin = (page - 1) * this.page_total_items;
+      let end = begin + this.page_total_items;
+      this.items = this.tasksMutable.slice(begin, end);
+    },
   },
   watch: {
+    page: function () {
+      this.pagination(false);
+    },
+    page_total_items: function () {
+      if (this.$refs.form_page_items.validate()) {
+        this.pagination(true, 1);
+      } else {
+        this.page_total_items = 10;
+        this.pagination(true, 1);
+      }
+    },
     search: function () {
       this.watchSearch();
     },
