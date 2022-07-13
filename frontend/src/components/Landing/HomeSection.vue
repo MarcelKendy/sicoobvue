@@ -2,7 +2,7 @@
   <section id="home">
     <v-parallax
       dark
-      src="@/assets/images/home/circuits1.jpg"
+      src="@/assets/images/home/sicoob-city-resized.jpg"
       height="880"
       alt="background"
     >
@@ -31,7 +31,7 @@
             <v-col cols="12" md="6" xl="8">
               <h1 style="font-size: 32px" class="font-quicksand">Bem-vindo</h1>
               <h1 class="font-weight-light">
-                <span>Novas tecnologias pra você.</span>
+                <span>Temos novidades pra você.</span>
                 <br />
                 <span>Sicoob Credisg - {{ new Date().getFullYear() }}</span>
                 <br />

@@ -12,7 +12,7 @@ class UpdatesController extends Controller
 
     public function getUpdates(Request $request)
     {
-        $allUpdates = Update::all();
+        $allUpdates = Update::orderBy('date', 'desc')->get();
         return response()->json($allUpdates);
     }
 

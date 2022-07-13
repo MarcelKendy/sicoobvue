@@ -22,7 +22,7 @@
                     class="mr-4"
                   />
                   <p class="text-justify">
-                    <strong class="text_gradient">Dashboard de Metas</strong>
+                    <strong class="text_gradient">Dashboard</strong>
                     <br />
                     Através de uma dashboard moderna, diversas análises de dados sobre o sistema são realizadas. Futuramente, também será possível acompanhar o
                     nosso progresso das metas estabelecidas pela cooperativa.

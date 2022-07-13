@@ -12,8 +12,8 @@
               />
             </v-col>
             <v-col cols="12" sm="8" class="white--text text-left pl-10">
-              <span class="mb-2 begin bold">Acesso</span>
-              <h3 class="font-weight-light">Clique aqui e acesse o sistema</h3>
+              <span class="mb-2 begin bold" style="text-shadow: 1px 1px black;">Acesso</span>
+              <h3 class="font-weight-light" style="text-shadow: 1px 1px black;">Clique aqui e acesse o sistema</h3>
               <v-btn
                 rounded
                 outlined
@@ -93,7 +93,7 @@ export default {
 <style scoped>
 #software {
   opacity: 1;
-  background-image: url('~@/assets/images/home/sicoob-city.jpg');
+  background-image: url('~@/assets/images/home/circuits-resized.jpg');
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
